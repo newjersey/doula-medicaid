@@ -1,7 +1,15 @@
-export default function Home() {
+'use client'
+
+import React from 'react';
+import Form from './Form';
+
+const HomePage: React.FC = () => {
   return (
-    <div className="usa-prose">
-      <h1 className="usa-heading">Hello World</h1>
+    <div>
+      <h1 className="usa-heading">PDF Form Filler</h1>
+      <Form />
     </div>
   );
-}
+};
+
+export default HomePage;
