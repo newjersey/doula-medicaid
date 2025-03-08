@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
 
     // Send the email
     const mailOptions = {
-      from: 'test@local.dev',
+      from: 'no-reply.doula-common-app@nj.gov',
       to: ['submissions@mco.com', ccEmail],
       subject: 'Doula Medicare Application',
       text: 'Attached is a PDF application for being a Doula in this service.',
