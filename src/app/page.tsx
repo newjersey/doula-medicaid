@@ -6,7 +6,7 @@ import Form from './Form';
 const HomePage: React.FC = () => {
   return (
     <div>
-      <h1 className="usa-heading">PDF Form Filler</h1>
+      <h1 className="usa-heading">Doula Common Application</h1>
       <Form />
     </div>
   );
