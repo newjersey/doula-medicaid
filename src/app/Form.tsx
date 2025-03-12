@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import JSZip from 'jszip';
-
-interface FormData {
-  ccEmail: string;
-  dob: string;
-  firstName: string;
-  lastName: string;
-}
+import { FormData } from './forms/form';
+import { fillAetnaForm, AETNA_PDF_NAME } from './forms/aetna';
+import { fillFidelisForm, FIDELIS_PDF_NAME } from './forms/fidelis';
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(
@@ -19,67 +15,20 @@ const Form: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const fillAetna = async (data: FormData) => {
-    const { PDFDocument } = await import('pdf-lib');
-    const existingPdfBytes = await fetch('/pdf/aetna.pdf').then((res) =>
-      res.arrayBuffer()
-    );
-  
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const form = pdfDoc.getForm();
-  
-    const firstNameField = form.getTextField('Text3');
-    firstNameField.setText(data.firstName);
-  
-    const lastNameField = form.getTextField('Text1');
-    lastNameField.setText(data.lastName);
-  
-    const dobField = form.getTextField('Text2');
-    dobField.setText(data.dob);
-  
-    return await pdfDoc.save();
-    // return Buffer.from(pdfBytes).toString('base64');
-  };
-
-  const fillFidelis = async (data: FormData) => {
-    const { PDFDocument } = await import('pdf-lib');
-    const existingPdfBytes = await fetch('/pdf/fidelis.pdf').then((res) =>
-      res.arrayBuffer()
-    );
-  
-    const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const form = pdfDoc.getForm();
-  
-    const firstNameField = form.getTextField('Text2');
-    firstNameField.setText(data.firstName);
-  
-    const lastNameField = form.getTextField('Text1');
-    lastNameField.setText(data.lastName);
-  
-    const dobField = form.getTextField('Text3');
-    dobField.setText(data.dob);
-  
-    return await pdfDoc.save();
-    // return Buffer.from(pdfBytes).toString('base64');
-  };
-
-  const zipForms = async (forms: Uint8Array<ArrayBufferLike>[]) => {
+  const zipForms = async (forms: Uint8Array[]) => {
     const zip = new JSZip();
-
-    zip.file('aetna_filled.pdf', forms[0]);
-    zip.file('fidelis_filled.pdf', forms[1]);
-
+    zip.file(AETNA_PDF_NAME, forms[0]);
+    zip.file(FIDELIS_PDF_NAME, forms[1]);
     return await zip.generateAsync({ type: 'blob' });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    const aetnaBytes = await fillAetna(formData)
-    const fidelisBytes = await fillFidelis(formData)
+    const aetnaBytes = await fillAetnaForm(formData);
+    const fidelisBytes = await fillFidelisForm(formData);
 
-    const zipBlob = await zipForms([aetnaBytes, fidelisBytes])
-  
+    const zipBlob = await zipForms([aetnaBytes, fidelisBytes]);
     const url = URL.createObjectURL(zipBlob);
     setZipDownloadUrl(url);
 
