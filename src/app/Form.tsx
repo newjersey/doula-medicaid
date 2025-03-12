@@ -12,6 +12,7 @@ const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(
     { ccEmail: '', dob: '', firstName: '', lastName: '' }
   );
+  const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -80,10 +81,7 @@ const Form: React.FC = () => {
     const zipBlob = await zipForms([aetnaBytes, fidelisBytes])
   
     const url = URL.createObjectURL(zipBlob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'filled_forms.zip';
-    a.click();
+    setZipDownloadUrl(url);
 
     // TODO: I want to replace this with simply drafting an email
     // Send the PDF to the backend
@@ -141,6 +139,16 @@ const Form: React.FC = () => {
       <button className="usa-button" type="submit">
         Submit
       </button>
+
+      {
+        zipDownloadUrl && (
+          <div>
+            <a href={zipDownloadUrl} download="filled_forms.zip">
+              Click here to download the ZIP
+            </a>
+          </div>
+        )
+      }
     </form>
   );
 };
