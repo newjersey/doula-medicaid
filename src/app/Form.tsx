@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import JSZip from 'jszip';
-import { FormData } from './forms/form';
-import { fillAetnaForm, AETNA_PDF_NAME } from './forms/aetna';
-import { fillFidelisForm, FIDELIS_PDF_NAME } from './forms/fidelis';
+import { FormData, PDFData } from './forms/form';
+import { fillAetnaForm } from './forms/aetna';
+import { fillFidelisForm } from './forms/fidelis';
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(
@@ -15,10 +15,13 @@ const Form: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const zipForms = async (forms: Uint8Array[]) => {
+  const zipForms = async (pdfDataList: PDFData[]) => {
     const zip = new JSZip();
-    zip.file(AETNA_PDF_NAME, forms[0]);
-    zip.file(FIDELIS_PDF_NAME, forms[1]);
+
+    pdfDataList.forEach(({ filename, blob }) => {
+      zip.file(filename, blob);
+    });
+
     return await zip.generateAsync({ type: 'blob' });
   };
 

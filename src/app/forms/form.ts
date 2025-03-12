@@ -7,11 +7,17 @@ export interface FormData {
   lastName: string;
 }
 
+export interface PDFData {
+  filename: string;
+  blob: Uint8Array;
+}
+
 export const fillForm = async (
   formData: FormData,
   pdfPath: string,
-  fieldMap: Partial<Record<keyof FormData, string>>
-): Promise<Uint8Array> => {
+  fieldMap: Partial<Record<keyof FormData, string>>,
+  filename: string
+): Promise<PDFData> => {
   const existingPdfBytes = await fetch(pdfPath).then((res) => res.arrayBuffer());
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
   const form = pdfDoc.getForm();
@@ -21,5 +27,6 @@ export const fillForm = async (
     field.setText(formData[key as keyof FormData]);
   });
 
-  return await pdfDoc.save();
+  const pdfBytes = await pdfDoc.save();
+  return { filename, blob: pdfBytes };
 };

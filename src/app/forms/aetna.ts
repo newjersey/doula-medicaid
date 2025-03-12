@@ -9,6 +9,6 @@ export const AETNA_FIELD_MAP: Partial<Record<keyof FormData, string>> = {
   lastName: 'Text1',
 };
 
-export const fillAetnaForm = (formData: FormData): Promise<Uint8Array> => {
-  return fillForm(formData, AETNA_PDF_PATH, AETNA_FIELD_MAP);
+export const fillAetnaForm = (formData: FormData) => {
+  return fillForm(formData, AETNA_PDF_PATH, AETNA_FIELD_MAP, AETNA_PDF_NAME);
 };

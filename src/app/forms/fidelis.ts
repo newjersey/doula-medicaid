@@ -9,6 +9,6 @@ export const FIDELIS_FIELD_MAP: Partial<Record<keyof FormData, string>> = {
   lastName: 'Text1',
 };
 
-export const fillFidelisForm = (formData: FormData): Promise<Uint8Array> => {
-  return fillForm(formData, FIDELIS_PDF_PATH, FIDELIS_FIELD_MAP);
+export const fillFidelisForm = (formData: FormData) => {
+  return fillForm(formData, FIDELIS_PDF_PATH, FIDELIS_FIELD_MAP, FIDELIS_PDF_NAME);
 };
