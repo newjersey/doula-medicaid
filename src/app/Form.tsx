@@ -28,12 +28,13 @@ const Form: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    const aetnaBytes = await fillAetnaForm(formData);
-    const fidelisBytes = await fillFidelisForm(formData);
-
-    const zipBlob = await zipForms([aetnaBytes, fidelisBytes]);
-    const url = URL.createObjectURL(zipBlob);
-    setZipDownloadUrl(url);
+    const pdfDataList = await Promise.all([
+      fillAetnaForm(formData),
+      fillFidelisForm(formData),
+    ]);
+  
+    const zipBlob = await zipForms(pdfDataList);
+    setZipDownloadUrl(URL.createObjectURL(zipBlob));
 
     // TODO: I want to replace this with simply drafting an email
     // Send the PDF to the backend
