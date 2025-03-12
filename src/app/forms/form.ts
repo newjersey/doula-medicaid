@@ -1,4 +1,6 @@
 import { PDFDocument } from 'pdf-lib';
+import { fillAetnaForm } from './aetna';
+import { fillFidelisForm } from './fidelis';
 
 export interface FormData {
   ccEmail: string;
@@ -7,19 +9,27 @@ export interface FormData {
   lastName: string;
 }
 
-export interface PDFData {
+export interface FilledPDFData {
   filename: string;
-  blob: Uint8Array;
+  bytes: Uint8Array;
 }
+
+export const fillAllForms = async (formData: FormData) => {
+  return await Promise.all([
+    fillAetnaForm(formData),
+    fillFidelisForm(formData),
+  ]);
+};
 
 export const fillForm = async (
   formData: FormData,
   pdfPath: string,
   fieldMap: Partial<Record<keyof FormData, string>>,
   filename: string
-): Promise<PDFData> => {
-  const existingPdfBytes = await fetch(pdfPath).then((res) => res.arrayBuffer());
-  const pdfDoc = await PDFDocument.load(existingPdfBytes);
+): Promise<FilledPDFData> => {
+  const unfilledPdfFile = await fetch(pdfPath);
+  const unfilledPdfBytes = await unfilledPdfFile.arrayBuffer();
+  const pdfDoc = await PDFDocument.load(unfilledPdfBytes);
   const form = pdfDoc.getForm();
 
   Object.entries(fieldMap).forEach(([key, fieldName]) => {
@@ -27,6 +37,6 @@ export const fillForm = async (
     field.setText(formData[key as keyof FormData]);
   });
 
-  const pdfBytes = await pdfDoc.save();
-  return { filename, blob: pdfBytes };
+  const filledPdfBytes = await pdfDoc.save();
+  return { filename, bytes: filledPdfBytes };
 };

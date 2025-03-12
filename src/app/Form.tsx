@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import JSZip from 'jszip';
-import { FormData, PDFData } from './forms/form';
-import { fillAetnaForm } from './forms/aetna';
-import { fillFidelisForm } from './forms/fidelis';
+import { fillAllForms, FormData } from './forms/form';
+import { zipForms } from './utils/zip';
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(
@@ -15,25 +13,11 @@ const Form: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const zipForms = async (pdfDataList: PDFData[]) => {
-    const zip = new JSZip();
-
-    pdfDataList.forEach(({ filename, blob }) => {
-      zip.file(filename, blob);
-    });
-
-    return await zip.generateAsync({ type: 'blob' });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
-    const pdfDataList = await Promise.all([
-      fillAetnaForm(formData),
-      fillFidelisForm(formData),
-    ]);
-  
-    const zipBlob = await zipForms(pdfDataList);
+    const filledForms = await fillAllForms(formData);
+    const zipBlob = await zipForms(filledForms);
     setZipDownloadUrl(URL.createObjectURL(zipBlob));
 
     // TODO: I want to replace this with simply drafting an email
