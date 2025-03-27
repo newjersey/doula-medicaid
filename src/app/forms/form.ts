@@ -6,6 +6,8 @@ export interface FormData {
   ccEmail: string;
   dob: string;
   firstName: string;
+  groupPracticeAddress: string;
+  groupPracticeName: string;
   lastName: string;
 }
 
