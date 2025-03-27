@@ -4,7 +4,14 @@ import { zipForms } from './utils/zip';
 
 const Form: React.FC = () => {
   const [formData, setFormData] = useState<FormData>(
-    { ccEmail: '', dob: '', firstName: '', lastName: '' }
+    {
+      ccEmail: '',
+      dob: '',
+      firstName: '',
+      groupPracticeAddress: '',
+      groupPracticeName: '',
+      lastName: ''
+    }
   );
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
 
