@@ -19,8 +19,7 @@ async function convertPdfToPng(pdfPath: string): Promise<string> {
   return res;
 }
 
-async function analyzeImage(imagePath: Tesseract.ImageLike, outputTextFile: fs.PathOrFileDescriptor) {
-  try {
+async function textFromPng(imagePath: Tesseract.ImageLike): Promise<string> {
     console.log(`Analyzing ${imagePath}...`);
 
     // Perform OCR on the image
@@ -28,65 +27,48 @@ async function analyzeImage(imagePath: Tesseract.ImageLike, outputTextFile: fs.P
       logger: info => console.log(info), // Optional: log progress
     });
 
-    console.log(`Extracted Text: \n${text}`);
+    return text;
 
-    // Write the extracted text to a file
-    fs.writeFileSync(outputTextFile, text, 'utf8');
-    console.log(`Text written to ${outputTextFile}`);
-  } catch (error) {
-    console.error('Error during OCR:', error);
-  }
+    // console.log(`Extracted Text: \n${text}`);
+
+    // // Write the extracted text to a file
+    // fs.writeFileSync(outputTextFile, text, 'utf8');
+    // console.log(`Text written to ${outputTextFile}`);
 }
 
-
 async function extractTextFromPDF(filePath: string): Promise<string> {
-
-  const pngPath = await convertPdfToPng(filePath);
+  await convertPdfToPng(filePath);
 
   const outputDir = path.dirname(filePath);
 
   // Define the path to your specific PNG and the output text file
   const imagePath = path.resolve(outputDir, 'output-04.png');
-  const outputTextFile = path.resolve(outputDir, 'output-04.txt');
 
   // Run the OCR and save the result
-  await analyzeImage(imagePath, outputTextFile);
+  const text = await textFromPng(imagePath);
 
-  return pngPath;
-
-  // return new Promise((resolve, reject) => {
-  //   const pdfParser = new PDFParser();
-
-  //   pdfParser.on("pdfParser_dataReady", (pdfData) => {
-  //     resolve(JSON.stringify(pdfData));
-  //    });
-
-  //   pdfParser.on("pdfParser_dataError", err => {
-  //     reject(err);
-  //   });
-
-  //   pdfParser.loadPDF(filePath);
-  // });
+  return text;
 }
 
 export async function validatePDF(filePath: string): Promise<boolean> {
-  try {
-    const text = await extractTextFromPDF(filePath);
 
-    console.log(text);
+  const text = await extractTextFromPDF(filePath);
 
-    const groupNamePattern = /Group Practice Name\s*:\s*(.+?)(?=\s)/;
-    const groupAddressPattern = /Group Practice Address\s*:\s*(.+?)(?=\s)/;
+  console.log(text);
+  
+  const groupNamePattern = /Group Practice Name\s*(.+?)(?=\n|$)/;
+  const groupAddressPattern = /Group Practice Address\s*(.+?)(?=\n|$)/;
 
-    const groupNameMatch = text.match(groupNamePattern);
-    const groupAddressMatch = text.match(groupAddressPattern);
+  const groupNameMatch = text.match(groupNamePattern);
+  const groupAddressMatch = text.match(groupAddressPattern);
 
-    if (groupNameMatch && groupNameMatch[1].trim() !== "") {
-      return groupAddressMatch !== null && groupAddressMatch[1].trim() !== "";
-    }
-    return true;
-  } catch (error) {
-    console.error('Error extracting PDF text:', error);
-    return false;
+  // Check if the address is filled with actual content and not just placeholders like "_"
+  const isAddressValid = groupAddressMatch !== null && groupAddressMatch[1].trim() !== '' && groupAddressMatch[1].trim() !== '_';
+
+  if (groupNameMatch && groupNameMatch[1].trim() !== '' && groupNameMatch[1].trim() !== '_') {
+    // If there's a group name, ensure there's also a valid group address
+    return isAddressValid;
   }
+
+  return true;
 }
