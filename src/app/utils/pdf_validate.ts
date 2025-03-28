@@ -2,12 +2,10 @@ import { Poppler } from 'node-poppler';
 import path from 'path';
 import Tesseract from 'tesseract.js';
 
-async function convertPdfToPng(pdfPath: string): Promise<string> {
+async function convertPdfToPngs(pdfPath: string): Promise<string> {
   const poppler = new Poppler();
   const outputDir = path.dirname(pdfPath);
   const options = {
-    firstPageToConvert: 4, // TODO: don't hardcode
-    lastPageToConvert: 4, // TODO: don't hardcode
     pngFile: true,
     singleFile: false,
   };
@@ -21,7 +19,7 @@ async function textFromPng(imagePath: Tesseract.ImageLike): Promise<string> {
 }
 
 async function extractTextFromPDF(filePath: string): Promise<string> {
-  await convertPdfToPng(filePath);
+  await convertPdfToPngs(filePath);
 
   const outputDir = path.dirname(filePath);
 
@@ -31,20 +29,25 @@ async function extractTextFromPDF(filePath: string): Promise<string> {
   return await textFromPng(imagePath);
 }
 
-export async function validatePDF(filePath: string): Promise<boolean> {
-  const text = await extractTextFromPDF(filePath);
+const entryPresentAfterPromptInText = (prompt: string, text: string) => {
+  const promptPattern = new RegExp(`${prompt}\\s*(.+?)(?=\\n|$)`);
+  const promptMatch = text.match(promptPattern);
+  return promptMatch !== null && promptMatch[1].trim() !== '' && promptMatch[1].trim() !== '_';
+};
 
-  const groupNamePattern = /Group Practice Name\s*(.+?)(?=\n|$)/;
-  const groupAddressPattern = /Group Practice Address\s*(.+?)(?=\n|$)/;
+const validateGroup = (text: string) => {
+  const groupNameValid = entryPresentAfterPromptInText("Group Practice Name", text);
+  const groupAddressValid = entryPresentAfterPromptInText("Group Practice Address", text);
 
-  const groupNameMatch = text.match(groupNamePattern);
-  const groupAddressMatch = text.match(groupAddressPattern);
-
-  const isAddressValid = groupAddressMatch !== null && groupAddressMatch[1].trim() !== '' && groupAddressMatch[1].trim() !== '_';
-
-  if (groupNameMatch && groupNameMatch[1].trim() !== '' && groupNameMatch[1].trim() !== '_') {
-    return isAddressValid;
+  if (groupNameValid) {
+    return groupAddressValid;
   }
 
   return true;
+};
+
+export async function validatePDF(filePath: string): Promise<boolean> {
+  await convertPdfToPngs(filePath);
+  const text = await extractTextFromPDF(filePath);
+  return validateGroup(text);
 }
