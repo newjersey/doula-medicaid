@@ -1,5 +1,7 @@
 import { Poppler } from 'node-poppler';
 import path from 'path';
+import Tesseract from 'tesseract.js';
+import fs from 'fs';
 
 async function convertPdfToPng(pdfPath: string): Promise<string> {
   console.log("convertPdfToPng");
@@ -17,9 +19,38 @@ async function convertPdfToPng(pdfPath: string): Promise<string> {
   return res;
 }
 
+async function analyzeImage(imagePath: Tesseract.ImageLike, outputTextFile: fs.PathOrFileDescriptor) {
+  try {
+    console.log(`Analyzing ${imagePath}...`);
+
+    // Perform OCR on the image
+    const { data: { text } } = await Tesseract.recognize(imagePath, 'eng', {
+      logger: info => console.log(info), // Optional: log progress
+    });
+
+    console.log(`Extracted Text: \n${text}`);
+
+    // Write the extracted text to a file
+    fs.writeFileSync(outputTextFile, text, 'utf8');
+    console.log(`Text written to ${outputTextFile}`);
+  } catch (error) {
+    console.error('Error during OCR:', error);
+  }
+}
+
+
 async function extractTextFromPDF(filePath: string): Promise<string> {
 
   const pngPath = await convertPdfToPng(filePath);
+
+  const outputDir = path.dirname(filePath);
+
+  // Define the path to your specific PNG and the output text file
+  const imagePath = path.resolve(outputDir, 'output-04.png');
+  const outputTextFile = path.resolve(outputDir, 'output-04.txt');
+
+  // Run the OCR and save the result
+  await analyzeImage(imagePath, outputTextFile);
 
   return pngPath;
 
