@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run",
+    "test": "jest"
   },
   "dependencies": {
     "@uswds/uswds": "3.12.0",
