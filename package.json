@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "prettier": "prettier . --write",
+    "prettier:check": "prettier . --check",
+    "prepare": "husky",
     "cypress:run": "cypress run",
     "test": "jest"
   },

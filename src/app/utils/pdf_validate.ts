@@ -1,11 +1,11 @@
-import { Poppler } from 'node-poppler';
-import path from 'path';
+import { Poppler } from "node-poppler";
+import path from "path";
 // import Tesseract from 'tesseract.js';
 
-import { createWorker } from 'tesseract.js';
-import fs from 'fs/promises';
+import { createWorker } from "tesseract.js";
+import fs from "fs/promises";
 
-const TEMP_DIR = 'pdf_validate_temp';
+const TEMP_DIR = "pdf_validate_temp";
 
 async function convertPdfToPngs(pdfPath: string): Promise<string> {
   const poppler = new Poppler();
@@ -18,10 +18,11 @@ async function convertPdfToPngs(pdfPath: string): Promise<string> {
 }
 
 async function textFromPng(imagePath: Tesseract.ImageLike): Promise<string | undefined> {
-
   // const worker = await createWorker('eng');
 
-  const worker = await createWorker('eng',1,{workerPath: "./node_modules/tesseract.js/src/worker-script/node/index.js"});
+  const worker = await createWorker("eng", 1, {
+    workerPath: "./node_modules/tesseract.js/src/worker-script/node/index.js",
+  });
 
   try {
     const {
@@ -37,14 +38,13 @@ async function textFromPng(imagePath: Tesseract.ImageLike): Promise<string | und
     await worker.terminate();
   }
 
-
   // const { data: { text } } = await Tesseract.recognize(imagePath, 'eng');
   // return text;
 }
 
 async function extractTextFromPNGs(): Promise<string | undefined> {
   // TODO: do for all contents of TEMP_DIR
-  const imagePath = path.resolve(TEMP_DIR, 'output-04.png');
+  const imagePath = path.resolve(TEMP_DIR, "output-04.png");
 
   return await textFromPng(imagePath);
 }
@@ -52,7 +52,7 @@ async function extractTextFromPNGs(): Promise<string | undefined> {
 const entryPresentAfterPromptInText = (prompt: string, text: string) => {
   const promptPattern = new RegExp(`${prompt}\\s*(.+?)(?=\\n|$)`);
   const promptMatch = text.match(promptPattern);
-  return promptMatch !== null && promptMatch[1].trim() !== '' && promptMatch[1].trim() !== '_';
+  return promptMatch !== null && promptMatch[1].trim() !== "" && promptMatch[1].trim() !== "_";
 };
 
 const validateGroup = (text: string) => {
@@ -78,12 +78,12 @@ async function cleanupTempDir() {
 
 export async function validatePDF(filePath: string): Promise<boolean> {
   let result = false;
-  
+
   try {
     await fs.mkdir(TEMP_DIR);
     await convertPdfToPngs(filePath);
     const text = await extractTextFromPNGs();
-    
+
     if (text) {
       result = validateGroup(text);
     }

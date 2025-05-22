@@ -1,6 +1,6 @@
-import { PDFDocument } from 'pdf-lib';
-import { fillAetnaForm } from './aetna';
-import { fillFidelisForm } from './fidelis';
+import { PDFDocument } from "pdf-lib";
+import { fillAetnaForm } from "./aetna";
+import { fillFidelisForm } from "./fidelis";
 
 export interface FormData {
   ccEmail: string;
@@ -17,17 +17,14 @@ export interface FilledPDFData {
 }
 
 export const fillAllForms = async (formData: FormData) => {
-  return await Promise.all([
-    fillAetnaForm(formData),
-    fillFidelisForm(formData),
-  ]);
+  return await Promise.all([fillAetnaForm(formData), fillFidelisForm(formData)]);
 };
 
 export const fillForm = async (
   formData: FormData,
   pdfPath: string,
   fieldMap: Partial<Record<keyof FormData, string>>,
-  filename: string
+  filename: string,
 ): Promise<FilledPDFData> => {
   const unfilledPdfFile = await fetch(pdfPath);
   const unfilledPdfBytes = await unfilledPdfFile.arrayBuffer();

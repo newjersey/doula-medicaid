@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const CheckerPage: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -14,10 +14,10 @@ const CheckerPage: React.FC = () => {
   const validatePdf = async () => {
     if (selectedFile) {
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append("file", selectedFile);
 
-      const response = await fetch('/api/validate-pdf', {
-        method: 'POST',
+      const response = await fetch("/api/validate-pdf", {
+        method: "POST",
         body: formData,
       });
 
@@ -27,18 +27,14 @@ const CheckerPage: React.FC = () => {
       // const result = await validatePDF(selectedFile.name);
       // console.log(result);
     } else {
-      console.log('No file selected');
+      console.log("No file selected");
     }
   };
 
   return (
     <div>
       <h1 className="usa-heading">Doula Application PDF Checker</h1>
-      <input
-        type="file"
-        accept="application/pdf"
-        onChange={handleFileChange}
-      />
+      <input type="file" accept="application/pdf" onChange={handleFileChange} />
       <button onClick={validatePdf}>Validate PDF</button>
     </div>
   );

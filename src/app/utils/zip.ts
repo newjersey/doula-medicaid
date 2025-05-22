@@ -1,5 +1,5 @@
-import JSZip from 'jszip';
-import { FilledPDFData } from '../forms/form';
+import JSZip from "jszip";
+import { FilledPDFData } from "../forms/form";
 
 export const zipForms = async (pdfDataList: FilledPDFData[]) => {
   const zip = new JSZip();
@@ -8,5 +8,5 @@ export const zipForms = async (pdfDataList: FilledPDFData[]) => {
     zip.file(filename, bytes);
   });
 
-  return await zip.generateAsync({ type: 'blob' });
+  return await zip.generateAsync({ type: "blob" });
 };

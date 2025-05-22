@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import { fillAllForms, FormData } from './forms/form';
-import { zipForms } from './utils/zip';
+import React, { useState } from "react";
+import { fillAllForms, FormData } from "./forms/form";
+import { zipForms } from "./utils/zip";
 
 const Form: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>(
-    {
-      ccEmail: '',
-      dob: '',
-      firstName: '',
-      groupPracticeAddress: '',
-      groupPracticeName: '',
-      lastName: ''
-    }
-  );
+  const [formData, setFormData] = useState<FormData>({
+    ccEmail: "",
+    dob: "",
+    firstName: "",
+    groupPracticeAddress: "",
+    groupPracticeName: "",
+    lastName: "",
+  });
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +20,7 @@ const Form: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const filledForms = await fillAllForms(formData);
     const zipBlob = await zipForms(filledForms);
     setZipDownloadUrl(URL.createObjectURL(zipBlob));
@@ -40,7 +38,9 @@ const Form: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} className="usa-form">
-      <label className="usa-label" htmlFor="ccEmail">Your Email</label>
+      <label className="usa-label" htmlFor="ccEmail">
+        Your Email
+      </label>
       <input
         className="usa-input"
         id="ccEmail"
@@ -50,7 +50,9 @@ const Form: React.FC = () => {
         onChange={handleChange}
       />
 
-      <label className="usa-label" htmlFor="firstName">First Name</label>
+      <label className="usa-label" htmlFor="firstName">
+        First Name
+      </label>
       <input
         className="usa-input"
         id="firstName"
@@ -60,7 +62,9 @@ const Form: React.FC = () => {
         onChange={handleChange}
       />
 
-      <label className="usa-label" htmlFor="lastName">Last Name</label>
+      <label className="usa-label" htmlFor="lastName">
+        Last Name
+      </label>
       <input
         className="usa-input"
         id="lastName"
@@ -70,7 +74,9 @@ const Form: React.FC = () => {
         onChange={handleChange}
       />
 
-      <label className="usa-label" htmlFor="dob">Date of Birth</label>
+      <label className="usa-label" htmlFor="dob">
+        Date of Birth
+      </label>
       <input
         className="usa-input"
         id="dob"
@@ -84,20 +90,19 @@ const Form: React.FC = () => {
         Submit
       </button>
 
-      {
-        zipDownloadUrl && (
-          <div>
-            <a href={zipDownloadUrl} download="filled_forms.zip">
-              Click here to download the ZIP
-            </a>
-          </div>
-        )
-      }
-<div>
-      <label>Upload filled pdf:
-      <input type="file" name="filledForm" accept=".pdf" />
-      </label>
-</div>
+      {zipDownloadUrl && (
+        <div>
+          <a href={zipDownloadUrl} download="filled_forms.zip">
+            Click here to download the ZIP
+          </a>
+        </div>
+      )}
+      <div>
+        <label>
+          Upload filled pdf:
+          <input type="file" name="filledForm" accept=".pdf" />
+        </label>
+      </div>
     </form>
   );
 };

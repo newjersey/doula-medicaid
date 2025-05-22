@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import React from 'react';
-import Form from './Form';
+import React from "react";
+import Form from "./Form";
 
 const HomePage: React.FC = () => {
   return (
