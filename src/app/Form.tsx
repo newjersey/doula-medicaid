@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { fillAllForms, FormData } from "./forms/form";
+import { fillAllForms, FormData, parseForm } from "./forms/form";
 import { zipForms } from "./utils/zip";
+import { PDFDocument } from "pdf-lib";
+import { parseAetnaForm } from "./forms/aetna";
 
 const Form: React.FC = () => {
+  const [file, setFile] = useState<File>();
   const [formData, setFormData] = useState<FormData>({
     ccEmail: "",
     dob: "",
@@ -18,8 +21,23 @@ const Form: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (file) {
+      const parsedFormData = await parseAetnaForm(file);
+      setFormData({
+        ...formData,
+        ...parsedFormData,
+      });
+      return;
+    }
 
     const filledForms = await fillAllForms(formData);
     const zipBlob = await zipForms(filledForms);
@@ -97,10 +115,17 @@ const Form: React.FC = () => {
           </a>
         </div>
       )}
+
       <div>
-        <label>
+        <label className="usa-label">
           Upload filled pdf:
-          <input type="file" name="filledForm" accept=".pdf" />
+          <input
+            className="usa-input"
+            type="file"
+            name="filledForm"
+            accept=".pdf"
+            onChange={handleFileChange}
+          />
         </label>
       </div>
     </form>
