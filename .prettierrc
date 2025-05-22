@@ -1,0 +1,15 @@
+{
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "jsxSingleQuote": false,
+  "plugins": ["prettier-plugin-jsdoc"],
+  "printWidth": 100,
+  "proseWrap": "always",
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false
+}
