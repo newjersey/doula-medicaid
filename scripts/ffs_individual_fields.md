@@ -68,9 +68,9 @@ import json
 import pandas as pd
 import re
 
-file_path = "/Users/josephine.lee/notes/749477 ffs individual all fields.json"
-output_path = "/Users/josephine.lee/notes/749476 cleaned keys.csv"
-merged_output_path = "/Users/josephine.lee/notes/749476 ffs individual merged.csv"
+file_path = "~/notes/749477 ffs individual all fields.json"
+output_path = "~/notes/749476 cleaned keys.csv"
+merged_output_path = "~/notes/749476 ffs individual merged.csv"
 
 df = pd.read_json(file_path)
 
@@ -97,11 +97,14 @@ def parse_field_name(row):
 df['key_prefix'] = df.apply(lambda row: parse_field_name(row)[0], axis=1)
 df['key_without_prefix'] = df.apply(lambda row: parse_field_name(row)[1], axis=1)
 df["key_without_prefix"].to_csv(output_path, index=True, index_label="index")
+# next time, write keeping the prefix to handle duplicates!
 ```
 
 https://ai-assistant.nj.gov/
 
 This is a csv where the first column is an index, and the second column is key_without_prefix. The second key_without_prefix column contains phrases of words that have been mashed together, and sometimes don't have spaces between the words where they should be. Please create a third column, called cleaned_key, that takes the corresponding value from the second key_without_prefix column and adds spaces between the words. Please preserve all capitalization, and preserve the row ordering. Do not mix up any data between rows.
+
+Doing group gave me a tsv. Next time, specify output should be a CSV. Also specify not to drop any letters. It also modified the second column to clean up double spaces. Tell it not to modify the key_without_prefix column
 
 ```text
 Sure, I will create a third column called
@@ -112,7 +115,7 @@ column.
 ```
 
 ```python
-njai_output_path = "/Users/josephine.lee/notes/749476 njai output.csv"
+njai_output_path = "~/notes/749476 njai output.csv"
 df_ai = pd.read_csv(njai_output_path)
 # it also stripped "_"
 
