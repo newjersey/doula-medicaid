@@ -2,8 +2,8 @@ import { Poppler } from "node-poppler";
 import path from "path";
 // import Tesseract from 'tesseract.js';
 
-import { createWorker } from "tesseract.js";
 import fs from "fs/promises";
+import { createWorker } from "tesseract.js";
 
 const TEMP_DIR = "pdf_validate_temp";
 

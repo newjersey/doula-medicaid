@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { validatePDF } from "../../utils/pdf_validate";
 import fs from "fs";
+import { NextRequest, NextResponse } from "next/server";
 import path from "path";
+import { validatePDF } from "../../utils/pdf_validate";
 
 export const config = {
   api: {

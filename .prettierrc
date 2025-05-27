@@ -4,7 +4,7 @@
   "bracketSpacing": true,
   "endOfLine": "lf",
   "jsxSingleQuote": false,
-  "plugins": ["prettier-plugin-jsdoc"],
+  "plugins": ["prettier-plugin-jsdoc", "prettier-plugin-organize-imports"],
   "printWidth": 100,
   "proseWrap": "always",
   "semi": true,
