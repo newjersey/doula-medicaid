@@ -93,6 +93,11 @@ const Form: React.FC = () => {
           </div>
         )
       }
+<div>
+      <label>Upload filled pdf:
+      <input type="file" name="filledForm" accept=".pdf" />
+      </label>
+</div>
     </form>
   );
 };
