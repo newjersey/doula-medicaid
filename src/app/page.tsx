@@ -1,13 +1,20 @@
 "use client";
 
 import React from "react";
-import Form from "./Form";
 
 const HomePage: React.FC = () => {
   return (
     <div>
-      <h1 className="usa-heading">Doula Common Application</h1>
-      <Form />
+      <h1>Doula Common Application</h1>
+      <h2>Effortless paperwork management starts here</h2>
+      <p className="usa-intro">
+        Focus on care, not paperwork. The doula form filler streamlines your workflow, reducing
+        duplicate effort. Effortlessly convert your Fee for Service application to your preferred
+        MCO applications.
+      </p>
+      <a className="usa-button usa-button--big" href="">
+        Start now
+      </a>
     </div>
   );
 };
