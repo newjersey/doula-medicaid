@@ -45,7 +45,7 @@ export const parseForm = async (
   // pdfPath: string,
   fieldMap: Partial<Record<keyof FormData, string>>,
   // filename: string,
-): Promise<FormData> => {
+): Promise<Partial<FormData>> => {
   const arrayBuffer = await file.arrayBuffer();
   const pdfDoc = await PDFDocument.load(arrayBuffer);
   const form = pdfDoc.getForm();
@@ -53,7 +53,9 @@ export const parseForm = async (
 
   Object.entries(fieldMap).forEach(([key, fieldName]) => {
     const field = form.getTextField(fieldName);
-    formData[key as keyof FormData] = field.getText();
+    if (field.getText()) {
+      formData[key as keyof FormData] = field.getText();
+    }
   });
   return formData as FormData;
 
