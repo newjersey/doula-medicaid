@@ -18,10 +18,6 @@
     "url": "https://github.com/newjersey"
   },
   "dependencies": {
-    "husky": "latest",
-    "lint-staged": "latest",
-    "prettier": "latest",
-    "prettier-plugin-jsdoc": "latest",
     "@uswds/uswds": "3.12.0",
     "jszip": "3.10.1",
     "next": "15.2.4",
@@ -41,6 +37,11 @@
     "cypress": "14.2.1",
     "eslint": "9.23.0",
     "eslint-config-next": "15.2.4",
+    "husky": "latest",
+    "lint-staged": "latest",
+    "prettier": "latest",
+    "prettier-plugin-organize-imports": "latest",
+    "prettier-plugin-jsdoc": "latest",
     "jest": "29.7.0",
     "ts-jest": "29.3.0",
     "typescript": "5.8.2"
