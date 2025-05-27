@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { fillAllForms, FormData, parseFfs, parseForm } from "./forms/form";
-import { zipForms } from "./utils/zip";
-import { PDFDocument } from "pdf-lib";
-import { parseAetnaForm } from "./forms/aetna";
+import { fillAllForms, FormData } from "../forms/form";
+import { zipForms } from "../utils/zip";
+import { parseAetnaForm } from "../forms/aetna";
 
 const Form: React.FC = () => {
   const [file, setFile] = useState<File>();
@@ -31,25 +30,24 @@ const Form: React.FC = () => {
     e.preventDefault();
 
     if (file) {
-      // const parsedFormData = await parseAetnaForm(file);
-      parseFfs(file);
-      //   setFormData({
-      //     ...formData,
-      //     ...parsedFormData,
-      //   });
-      //   return;
+      const parsedFormData = await parseAetnaForm(file);
+      setFormData({
+        ...formData,
+        ...parsedFormData,
+      });
+      return;
     }
 
-    // const filledForms = await fillAllForms(formData);
-    // const zipBlob = await zipForms(filledForms);
-    // setZipDownloadUrl(URL.createObjectURL(zipBlob));
+    const filledForms = await fillAllForms(formData);
+    const zipBlob = await zipForms(filledForms);
+    setZipDownloadUrl(URL.createObjectURL(zipBlob));
 
     // TODO: I want to replace this with simply drafting an email
     // Send the PDF to the backend
-    // await fetch('/api/send-email', {
-    //   method: 'POST',
+    // await fetch("/api/send-email", {
+    //   method: "POST",
     //   headers: {
-    //     'Content-Type': 'application/json',
+    //     "Content-Type": "application/json",
     //   },
     //   body: JSON.stringify({ ccEmail: formData.ccEmail, pdfBytes: aetnaBase64 }),
     // });
