@@ -40,6 +40,7 @@ const Step: React.FC = async ({
   }
 
   const currentStep = steps[currentStepIndex];
+  const isFinalStep = currentStepIndex === steps.length - 1;
 
   return (
     <div className="usa-step-indicator" aria-label="progress">
@@ -74,7 +75,15 @@ const Step: React.FC = async ({
       </ol>
       <div className="margin-top-4">Step {currentStepIndex + 1}</div>
       <h1 className="margin-top-4">{currentStep.title}</h1>
-      <div>{children}</div>
+      <div className="margin-top-4">{children}</div>
+      <div className="margin-top-4">
+        <a
+          className="usa-button usa-button--big"
+          href={isFinalStep ? "" : `./${steps[currentStepIndex + 1].id}`}
+        >
+          {isFinalStep ? "Finish" : "Next"}
+        </a>
+      </div>
     </div>
   );
 };
