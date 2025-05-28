@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@uswds/uswds": "3.12.0",
+    "@newjersey/njwds": "2.6.0",
     "jszip": "3.10.1",
     "next": "15.2.4",
     "node-poppler": "7.2.4",

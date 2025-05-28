@@ -1,5 +1,7 @@
-import "@uswds/uswds/css/uswds.min.css";
+// import "@uswds/uswds/css/uswds.min.css"
+import "@newjersey/njwds/dist/css/styles.css";
 import type { Metadata } from "next";
+import Head from "next/head";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,11 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <Head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      </head>
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      </Head>
       <body>
         <div className="usa-section">
           <div className="grid-container">
