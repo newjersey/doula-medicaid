@@ -12,7 +12,7 @@ const HomePage: React.FC = () => {
         duplicate effort. Effortlessly convert your Fee for Service application to your preferred
         MCO applications.
       </p>
-      <a className="usa-button usa-button--big" href="">
+      <a className="usa-button usa-button--big" href="form/personal-information">
         Start now
       </a>
     </div>

@@ -79,7 +79,7 @@ const Step: React.FC = async ({
       <div className="margin-top-4">
         <a
           className="usa-button usa-button--big"
-          href={isFinalStep ? "" : `./${steps[currentStepIndex + 1].id}`}
+          href={isFinalStep ? "/" : `${steps[currentStepIndex + 1].id}`}
         >
           {isFinalStep ? "Finish" : "Next"}
         </a>
