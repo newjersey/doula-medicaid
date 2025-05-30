@@ -1,5 +1,9 @@
+"use client";
+
 import { notFound } from "next/navigation";
 import React from "react";
+
+import { useParams } from "next/navigation";
 
 const steps = [
   { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
@@ -13,27 +17,11 @@ const steps = [
   },
 ];
 
-// I have no idea of this static page generation is actually working
-export function generateStaticParams() {
-  return [
-    steps.map((x) => {
-      return { stepId: x.id };
-    }),
-  ];
-}
-
 type CompletionState = "complete" | "current" | "incomplete";
 
-const getCompletionState = () => {};
-
-const Step: React.FC = async ({
-  params,
-  children,
-}: {
-  params: Promise<{ stepId: string }>;
-  children: React.ReactNode;
-}) => {
-  const { stepId } = await params;
+const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
+  // const { stepId } = await params;
+  const { stepId } = useParams<{ stepId: string }>();
   const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
   if (currentStepIndex < 0) {
     return notFound();
