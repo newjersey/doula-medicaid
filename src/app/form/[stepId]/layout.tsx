@@ -1,10 +1,10 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import React, { useContext } from "react";
+import React, { useState } from "react";
 
 import { useParams } from "next/navigation";
-import { FormContext } from "../FormContext";
+import { FormContext, FormData, initialFormData } from "../FormContext";
 
 const steps = [
   { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
@@ -20,9 +20,8 @@ const steps = [
 
 type CompletionState = "complete" | "current" | "incomplete";
 
-const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
-  const form = useContext(FormContext);
-
+const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
+  const [formData, setFormData] = useState<FormData>(initialFormData);
   const { stepId } = useParams<{ stepId: string }>();
   const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
   if (currentStepIndex < 0) {
@@ -66,7 +65,9 @@ const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
       </ol>
       <div className="margin-top-4">Step {currentStepIndex + 1}</div>
       <h1 className="margin-top-4">{currentStep.title}</h1>
-      <div className="margin-top-4">{children}</div>
+      <div className="margin-top-4">
+        <FormContext value={{ formData, setFormData }}>{children}</FormContext>
+      </div>
       <div className="margin-top-4">
         <a
           className="usa-button usa-button--outline"
@@ -82,4 +83,4 @@ const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default Step;
+export default FormLayout;

@@ -2,7 +2,7 @@
 
 import React from "react";
 
-const HomePage: React.FC = () => {
+const LandingPage: React.FC = () => {
   return (
     <div>
       <h1>Doula Common Application</h1>
@@ -19,4 +19,4 @@ const HomePage: React.FC = () => {
   );
 };
 
-export default HomePage;
+export default LandingPage;

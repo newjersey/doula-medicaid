@@ -1,11 +1,18 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
+import { FormContext } from "../FormContext";
 
-const FormStep: React.FC = () => {
+const PracticeInformationStep: React.FC = () => {
   const { stepId } = useParams<{ stepId: string }>();
+  const { formData, setFormData } = useContext(FormContext);
+  // const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
+  // if (currentStepIndex < 0) {
+  //   return notFound();
+  // }
 
+  //   const currentStep = steps[currentStepIndex];
   console.log("here");
   return (
     <div className="usa-step-indicator" aria-label="progress">
@@ -18,4 +25,4 @@ const FormStep: React.FC = () => {
   );
 };
 
-export default FormStep;
+export default PracticeInformationStep;
