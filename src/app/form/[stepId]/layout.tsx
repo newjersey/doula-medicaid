@@ -1,9 +1,10 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
 
 import { useParams } from "next/navigation";
+import { FormContext } from "../FormContext";
 
 const steps = [
   { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
@@ -20,7 +21,8 @@ const steps = [
 type CompletionState = "complete" | "current" | "incomplete";
 
 const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
-  // const { stepId } = await params;
+  const form = useContext(FormContext);
+
   const { stepId } = useParams<{ stepId: string }>();
   const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
   if (currentStepIndex < 0) {
@@ -29,6 +31,7 @@ const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
 
   const currentStep = steps[currentStepIndex];
   const isFinalStep = currentStepIndex === steps.length - 1;
+  const isFirstStep = currentStepIndex === 0;
 
   return (
     <div className="usa-step-indicator" aria-label="progress">
@@ -66,9 +69,12 @@ const Step: React.FC = ({ children }: { children: React.ReactNode }) => {
       <div className="margin-top-4">{children}</div>
       <div className="margin-top-4">
         <a
-          className="usa-button usa-button--big"
-          href={isFinalStep ? "/" : `${steps[currentStepIndex + 1].id}`}
+          className="usa-button usa-button--outline"
+          href={isFirstStep ? "/" : `${steps[currentStepIndex - 1].id}`}
         >
+          Back
+        </a>
+        <a className="usa-button" href={isFinalStep ? "/" : `${steps[currentStepIndex + 1].id}`}>
           {isFinalStep ? "Finish" : "Next"}
         </a>
       </div>
