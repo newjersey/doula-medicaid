@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { usePathname } from "next/navigation";
-import { FormContext, FormData, initialFormData } from "../FormContext";
 
 const steps = [
   { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
@@ -25,7 +24,6 @@ const steps = [
 type CompletionState = "complete" | "current" | "incomplete";
 
 const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
-  const [formData, setFormData] = useState<FormData>(initialFormData);
   const pathname = usePathname();
 
   const currentStepIndex = steps.map((x) => x.id).findIndex((stepId) => pathname.endsWith(stepId));
@@ -70,9 +68,7 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
       </ol>
       <div className="margin-top-4">Step {currentStepIndex + 1}</div>
       <h1 className="margin-top-4">{currentStep.title}</h1>
-      <div className="margin-top-4">
-        <FormContext value={{ formData, setFormData }}>{children}</FormContext>
-      </div>
+      <div className="margin-top-4">{children}</div>
       <div className="margin-top-4">
         <a
           className="usa-button usa-button--outline"

@@ -1,13 +1,9 @@
 "use client";
 
-import React, { useContext } from "react";
-import { FormContext } from "../../FormContext";
+import React from "react";
 
 const FormStep: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { formData, setFormData } = useContext(FormContext);
-
-  return <div>{JSON.stringify(formData)}</div>;
+  return <div>hi</div>;
 };
 
 export default FormStep;
