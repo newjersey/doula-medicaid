@@ -1,6 +1,5 @@
 "use client";
 
-import { useParams } from "next/navigation";
 import React, { useContext } from "react";
 import { FormContext } from "../../FormContext";
 // import PracticeInformationStep from "../[stepId]/PracticeInformationStep";
@@ -10,7 +9,7 @@ import { FormContext } from "../../FormContext";
 // };
 
 const FormStep: React.FC = () => {
-  const { stepId } = useParams<{ stepId: string }>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { formData, setFormData } = useContext(FormContext);
 
   console.log("here");
