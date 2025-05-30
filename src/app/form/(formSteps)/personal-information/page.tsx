@@ -1,21 +1,20 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import React, { useContext } from "react";
-import { FormContext } from "../FormContext";
+import React from "react";
+// import PracticeInformationStep from "../[stepId]/PracticeInformationStep";
 
-const PracticeInformationStep: React.FC = () => {
+// const stepIdToComponent = {
+//   "practice-information": PracticeInformationStep,
+// };
+
+const FormStep: React.FC = () => {
   const { stepId } = useParams<{ stepId: string }>();
-  const { formData, setFormData } = useContext(FormContext);
-  // const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
-  // if (currentStepIndex < 0) {
-  //   return notFound();
-  // }
 
-  //   const currentStep = steps[currentStepIndex];
   console.log("here");
   return (
-    <div className="usa-step-indicator" aria-label="progress">
+    <div>
+      {/* {stepId in stepIdToComponent && stepIdToComponent[stepId]} */}
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
       labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
       laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
@@ -25,4 +24,4 @@ const PracticeInformationStep: React.FC = () => {
   );
 };
 
-export default PracticeInformationStep;
+export default FormStep;

@@ -1,6 +1,5 @@
 "use client";
 
-import { notFound } from "next/navigation";
 import React, { useState } from "react";
 
 import { useParams } from "next/navigation";
@@ -22,10 +21,11 @@ type CompletionState = "complete" | "current" | "incomplete";
 
 const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
-  const { stepId } = useParams<{ stepId: string }>();
+  const params = useParams<{ stepId: string }>();
+  console.log("test", params);
   const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
   if (currentStepIndex < 0) {
-    return notFound();
+    // return notFound();
   }
 
   const currentStep = steps[currentStepIndex];
