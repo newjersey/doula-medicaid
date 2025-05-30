@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FormContext, FormData, initialFormData } from "../FormContext";
 
 const steps = [
@@ -21,11 +21,11 @@ type CompletionState = "complete" | "current" | "incomplete";
 
 const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
-  const params = useParams<{ stepId: string }>();
-  console.log("test", params);
-  const currentStepIndex = steps.map((x) => x.id).indexOf(stepId);
+  const pathname = usePathname();
+
+  const currentStepIndex = steps.map((x) => x.id).findIndex((stepId) => pathname.endsWith(stepId));
   if (currentStepIndex < 0) {
-    // return notFound();
+    throw "Step not found for " + pathname;
   }
 
   const currentStep = steps[currentStepIndex];
