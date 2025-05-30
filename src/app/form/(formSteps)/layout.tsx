@@ -15,6 +15,11 @@ const steps = [
     title:
       "Your Medicaid ID application is complete! You're just a few steps away from finishing your Aetna form.",
   },
+  {
+    id: "review",
+    stepName: "Review",
+    title: "Review and download.",
+  },
 ];
 
 type CompletionState = "complete" | "current" | "incomplete";
