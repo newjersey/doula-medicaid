@@ -1,5 +1,6 @@
 import { PDFDocument } from "pdf-lib";
 import { fillAetnaForm } from "./aetna";
+import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";
 
 export interface FormData {
@@ -17,7 +18,11 @@ export interface FilledPDFData {
 }
 
 export const fillAllForms = async (formData: FormData) => {
-  return await Promise.all([fillAetnaForm(formData), fillFidelisForm(formData)]);
+  return await Promise.all([
+    fillAetnaForm(formData),
+    fillFidelisForm(formData),
+    fillFfsIndividualForm(formData),
+  ]);
 };
 
 export const fillForm = async (
