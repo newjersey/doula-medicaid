@@ -2,25 +2,28 @@
 
 import React, { useEffect, useState } from "react";
 
-interface FormData {
+interface PersonalInformationFormData {
   firstName: string | null;
+  lastName: string | null;
 }
 
 const PersonalInformationStep: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({ firstName: null });
-  // const [formData, setFormData] = useState<>();
-  // const { formData, setFormData } = useContext(FormContext);
+  const [formData, setFormData] = useState<PersonalInformationFormData>({
+    firstName: null,
+    lastName: null,
+  });
 
   useEffect(() => {
     setFormData({
       firstName: window?.sessionStorage.getItem("firstName"),
+      lastName: window?.sessionStorage.getItem("lastName"),
     });
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    window.sessionStorage.setItem("firstName", value);
+    window.sessionStorage.setItem(name, value);
   };
   return (
     <div>
@@ -34,6 +37,17 @@ const PersonalInformationStep: React.FC = () => {
           name="firstName"
           type="text"
           value={formData.firstName || ""}
+          onChange={handleChange}
+        />
+        <label className="usa-label" htmlFor="lastName">
+          Last Name
+        </label>
+        <input
+          className="usa-input"
+          id="lastName"
+          name="lastName"
+          type="text"
+          value={formData.lastName || ""}
           onChange={handleChange}
         />
       </form>

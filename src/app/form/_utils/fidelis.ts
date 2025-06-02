@@ -9,6 +9,14 @@ export const FIDELIS_FIELD_MAP: Partial<Record<keyof FormData, string>> = {
   lastName: "Text1",
 };
 
+export const mapFidelisFields = (formData: FormData): { [key: string]: string } => {
+  return {
+    Text3: formData.dob,
+    Text2: formData.firstName,
+    Text1: formData.lastName,
+  };
+};
+
 export const fillFidelisForm = (formData: FormData) => {
-  return fillForm(formData, FIDELIS_PDF_PATH, FIDELIS_FIELD_MAP, FIDELIS_PDF_NAME);
+  return fillForm(mapFidelisFields(formData), FIDELIS_PDF_PATH, FIDELIS_PDF_NAME);
 };

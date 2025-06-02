@@ -4,18 +4,22 @@ import { zipForms } from "@/app/utils/zip";
 import React, { useEffect, useState } from "react";
 import { fillAllForms } from "../../_utils/form";
 
+const getFormData = () => {
+  return {
+    firstName: window?.sessionStorage.getItem("firstName") || "",
+    lastName: window?.sessionStorage.getItem("lastName") || "",
+    ccEmail: "",
+    dob: "",
+    groupPracticeAddress: "",
+    groupPracticeName: "",
+  };
+};
+
 const FormStep: React.FC = () => {
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
   useEffect(() => {
     (async () => {
-      const filledForms = await fillAllForms({
-        firstName: window?.sessionStorage.getItem("firstName") || "",
-        ccEmail: "",
-        dob: "",
-        groupPracticeAddress: "",
-        groupPracticeName: "",
-        lastName: "",
-      });
+      const filledForms = await fillAllForms(getFormData());
       const zipBlob = await zipForms(filledForms);
       setZipDownloadUrl(URL.createObjectURL(zipBlob));
     })();

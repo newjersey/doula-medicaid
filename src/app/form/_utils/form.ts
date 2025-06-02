@@ -26,9 +26,8 @@ export const fillAllForms = async (formData: FormData) => {
 };
 
 export const fillForm = async (
-  formData: FormData,
+  fieldsToFill: { [key: string]: string },
   pdfPath: string,
-  fieldMap: Partial<Record<keyof FormData, string>>,
   filename: string,
 ): Promise<FilledPDFData> => {
   const unfilledPdfFile = await fetch(pdfPath);
@@ -36,9 +35,9 @@ export const fillForm = async (
   const pdfDoc = await PDFDocument.load(unfilledPdfBytes);
   const form = pdfDoc.getForm();
 
-  Object.entries(fieldMap).forEach(([key, fieldName]) => {
+  Object.entries(fieldsToFill).forEach(([fieldName, value]) => {
     const field = form.getTextField(fieldName);
-    field.setText(formData[key as keyof FormData]);
+    field.setText(value);
   });
 
   const filledPdfBytes = await pdfDoc.save();
@@ -63,18 +62,4 @@ export const parseForm = async (
     }
   });
   return formData as FormData;
-
-  // not implemented
-  // const unfilledPdfFile = await fetch(pdfPath);
-  // const unfilledPdfBytes = await unfilledPdfFile.arrayBuffer();
-  // const pdfDoc = await PDFDocument.load(unfilledPdfBytes);
-  // const form = pdfDoc.getForm();
-
-  // Object.entries(fieldMap).forEach(([key, fieldName]) => {
-  //   const field = form.getTextField(fieldName);
-  //   field.setText(formData[key as keyof FormData]);
-  // });
-
-  // const filledPdfBytes = await pdfDoc.save();
-  // return { filename, bytes: filledPdfBytes };
 };
