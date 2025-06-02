@@ -11,7 +11,8 @@
     "prettier:check": "prettier . --check",
     "prepare": "husky",
     "cypress:run": "cypress run",
-    "test": "jest"
+    "test": "jest",
+    "typecheck": "tsc --noemit"
   },
   "author": {
     "name": "New Jersey State Office of Innovation",

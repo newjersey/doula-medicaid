@@ -23,9 +23,11 @@ const FormStep: React.FC = () => {
 
   return (
     <div>
-      <a href={zipDownloadUrl} download="filled_forms.zip">
-        Click here to download the ZIP
-      </a>
+      {zipDownloadUrl && (
+        <a href={zipDownloadUrl} download="filled_forms.zip">
+          Click here to download the ZIP
+        </a>
+      )}
     </div>
   );
 };
