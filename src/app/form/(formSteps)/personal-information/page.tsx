@@ -7,7 +7,6 @@ interface FormData {
 }
 
 const PersonalInformationStep: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [formData, setFormData] = useState<FormData>({ firstName: null });
   // const [formData, setFormData] = useState<>();
   // const { formData, setFormData } = useContext(FormContext);
