@@ -46,9 +46,7 @@ export const fillForm = async (
 
 export const parseForm = async (
   file: File,
-  // pdfPath: string,
   fieldMap: Partial<Record<keyof FormData, string>>,
-  // filename: string,
 ): Promise<Partial<FormData>> => {
   const arrayBuffer = await file.arrayBuffer();
   const pdfDoc = await PDFDocument.load(arrayBuffer);

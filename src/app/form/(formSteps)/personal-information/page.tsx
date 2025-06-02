@@ -50,6 +50,21 @@ const PersonalInformationStep: React.FC = () => {
           value={formData.lastName || ""}
           onChange={handleChange}
         />
+        <label className="usa-label" htmlFor="dateOfBirth">
+          Date of Birth
+        </label>
+        <div className="usa-hint" id="dateOfBirthDescription">
+          mm/dd/yyyy
+        </div>
+        <div className="usa-date-picker">
+          <input
+            className="usa-input"
+            id="dateOfBirth"
+            name="dateOfBirth"
+            type="text"
+            aria-describedby="dateOfBirthDescription"
+          />
+        </div>
       </form>
     </div>
   );
