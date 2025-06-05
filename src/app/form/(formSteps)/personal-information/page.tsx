@@ -2,27 +2,30 @@
 
 import React, { useEffect, useState } from "react";
 
-interface PersonalInformationFormData {
+interface PersonalInformationData {
   firstName: string | null;
   lastName: string | null;
+  dateOfBirth: string | null;
 }
 
 const PersonalInformationStep: React.FC = () => {
-  const [formData, setFormData] = useState<PersonalInformationFormData>({
+  const [personalInformationData, setPersonalInformationData] = useState<PersonalInformationData>({
     firstName: null,
     lastName: null,
+    dateOfBirth: null,
   });
 
   useEffect(() => {
-    setFormData({
+    setPersonalInformationData({
       firstName: window?.sessionStorage.getItem("firstName"),
       lastName: window?.sessionStorage.getItem("lastName"),
+      dateOfBirth: window?.sessionStorage.getItem("dateOfBirth"),
     });
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setPersonalInformationData((prev) => ({ ...prev, [name]: value }));
     window.sessionStorage.setItem(name, value);
   };
   return (
@@ -36,7 +39,7 @@ const PersonalInformationStep: React.FC = () => {
           id="firstName"
           name="firstName"
           type="text"
-          value={formData.firstName || ""}
+          value={personalInformationData.firstName || ""}
           onChange={handleChange}
         />
         <label className="usa-label" htmlFor="lastName">
@@ -47,7 +50,7 @@ const PersonalInformationStep: React.FC = () => {
           id="lastName"
           name="lastName"
           type="text"
-          value={formData.lastName || ""}
+          value={personalInformationData.lastName || ""}
           onChange={handleChange}
         />
         <label className="usa-label" htmlFor="dateOfBirth">
@@ -61,8 +64,10 @@ const PersonalInformationStep: React.FC = () => {
             className="usa-input"
             id="dateOfBirth"
             name="dateOfBirth"
-            type="text"
+            type="date"
             aria-describedby="dateOfBirthDescription"
+            value={personalInformationData.dateOfBirth || ""}
+            onChange={handleChange}
           />
         </div>
       </form>

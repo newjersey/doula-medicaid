@@ -2,16 +2,16 @@
 
 import { zipForms } from "@/app/utils/zip";
 import React, { useEffect, useState } from "react";
-import { fillAllForms } from "../../_utils/form";
+import { fillAllForms, FormData } from "../../_utils/form";
 
-const getFormData = () => {
+const getFormData = (): FormData => {
+  const dateOfBirthString = window?.sessionStorage.getItem("dateOfBirth");
+  const dateOfBirth = dateOfBirthString ? new Date(dateOfBirthString) : null;
+
   return {
-    firstName: window?.sessionStorage.getItem("firstName") || "",
-    lastName: window?.sessionStorage.getItem("lastName") || "",
-    ccEmail: "",
-    dob: "",
-    groupPracticeAddress: "",
-    groupPracticeName: "",
+    firstName: window?.sessionStorage.getItem("firstName") || null,
+    lastName: window?.sessionStorage.getItem("lastName") || null,
+    dateOfBirth: dateOfBirth,
   };
 };
 

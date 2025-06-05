@@ -4,12 +4,9 @@ import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";
 
 export interface FormData {
-  ccEmail: string;
-  dob: string;
-  firstName: string;
-  groupPracticeAddress: string;
-  groupPracticeName: string;
-  lastName: string;
+  firstName: string | null;
+  lastName: string | null;
+  dateOfBirth: Date | null;
 }
 
 export interface FilledPDFData {
@@ -44,20 +41,26 @@ export const fillForm = async (
   return { filename, bytes: filledPdfBytes };
 };
 
-export const parseForm = async (
-  file: File,
-  fieldMap: Partial<Record<keyof FormData, string>>,
-): Promise<Partial<FormData>> => {
-  const arrayBuffer = await file.arrayBuffer();
-  const pdfDoc = await PDFDocument.load(arrayBuffer);
-  const form = pdfDoc.getForm();
-  const formData: Partial<FormData> = {};
+/**
+  Issues/difficulty with parsing
+  - User might upload pdf not as a fillable pdf, or even non-filllable typed-out pdf, but as a scan of handwriting
+  - FFS might have "full legal name", but MCO wants separate first and last names
+  - User might input date in any number of formats (we can likely overcome this)
+ */
+// export const parseForm = async (
+//   file: File,
+//   fieldMap: Partial<Record<keyof FormData, string>>,
+// ): Promise<Partial<FormData>> => {
+//   const arrayBuffer = await file.arrayBuffer();
+//   const pdfDoc = await PDFDocument.load(arrayBuffer);
+//   const form = pdfDoc.getForm();
+//   const formData: Partial<FormData> = {};
 
-  Object.entries(fieldMap).forEach(([key, fieldName]) => {
-    const field = form.getTextField(fieldName);
-    if (field.getText()) {
-      formData[key as keyof FormData] = field.getText();
-    }
-  });
-  return formData as FormData;
-};
+//   Object.entries(fieldMap).forEach(([key, fieldName]) => {
+//     const field = form.getTextField(fieldName);
+//     if (field.getText()) {
+//       formData[key as keyof FormData] = field.getText();
+//     }
+//   });
+//   return formData as FormData;
+// };

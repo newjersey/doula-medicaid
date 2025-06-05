@@ -1,4 +1,3 @@
-// import "@uswds/uswds/css/uswds.min.css"
 import "@newjersey/njwds/dist/css/styles.css";
 import type { Metadata } from "next";
 import Head from "next/head";

@@ -1,19 +1,20 @@
+import { formatDateOfBirth } from "./ formatters";
 import { FormData, fillForm } from "./form";
 
 export const FIDELIS_PDF_NAME = "fidelis_filled.pdf";
 export const FIDELIS_PDF_PATH = "/pdf/fidelis.pdf";
 
 export const FIDELIS_FIELD_MAP: Partial<Record<keyof FormData, string>> = {
-  dob: "Text3",
+  dateOfBirth: "Text3", // on page 7
   firstName: "Text2",
   lastName: "Text1",
 };
 
 export const mapFidelisFields = (formData: FormData): { [key: string]: string } => {
   return {
-    Text3: formData.dob,
-    Text2: formData.firstName,
-    Text1: formData.lastName,
+    Text3: formatDateOfBirth(formData.dateOfBirth),
+    Text2: formData.firstName || "",
+    Text1: formData.lastName || "",
   };
 };
 
