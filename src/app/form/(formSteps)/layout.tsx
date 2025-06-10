@@ -36,7 +36,7 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
   const isFirstStep = currentStepIndex === 0;
 
   return (
-    <div className="usa-step-indicator" aria-label="progress">
+    <div className="usa-step-indicator--counters-sm" aria-label="progress">
       <ol className="usa-step-indicator__segments">
         {steps.map((step, i) => {
           const completionState: CompletionState =
@@ -58,10 +58,10 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
               className={`usa-step-indicator__segment ${liSegmentClassSuffix ? `usa-step-indicator__segment--${liSegmentClassSuffix}` : ""}`}
               {...(completionState === "current" && { "aria-current": "true" })}
             >
-              <span className="usa-step-indicator__segment-label">
+              <a className="usa-step-indicator__segment-label" href={`${step.id}`}>
                 {step.stepName}
                 {screenreaderStatus && <span className="usa-sr-only">{screenreaderStatus}</span>}
-              </span>
+              </a>
             </li>
           );
         })}
