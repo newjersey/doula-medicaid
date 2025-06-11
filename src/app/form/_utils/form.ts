@@ -2,11 +2,18 @@ import { PDFDocument } from "pdf-lib";
 import { fillAetnaForm } from "./aetna";
 import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";
+import { AddressState } from "./types";
 
 export interface FormData {
   firstName: string | null;
+  middleName: string | null;
   lastName: string | null;
   dateOfBirth: Date | null;
+  streetAddress1: string | null;
+  streetAddress2: string | null;
+  city: string | null;
+  state: AddressState | null;
+  zip: string | null;
 }
 
 export interface FilledPDFData {
