@@ -19,8 +19,8 @@
     "url": "https://github.com/newjersey"
   },
   "dependencies": {
-    "@uswds/uswds": "3.12.0",
     "@newjersey/njwds": "2.6.0",
+    "@uswds/uswds": "3.12.0",
     "jszip": "3.10.1",
     "next": "15.2.4",
     "node-poppler": "7.2.4",
@@ -31,6 +31,10 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.3.0",
+    "@testing-library/user-event": "14.6.1",
     "@types/jest": "29.5.14",
     "@types/node": "22.13.14",
     "@types/nodemailer": "6.4.17",
@@ -40,11 +44,12 @@
     "eslint": "9.23.0",
     "eslint-config-next": "15.2.4",
     "husky": "latest",
+    "jest": "29.7.0",
+    "jest-environment-jsdom": "30.0.0",
     "lint-staged": "latest",
     "prettier": "latest",
-    "prettier-plugin-organize-imports": "latest",
     "prettier-plugin-jsdoc": "latest",
-    "jest": "29.7.0",
+    "prettier-plugin-organize-imports": "latest",
     "ts-jest": "29.3.0",
     "typescript": "5.8.2"
   },
