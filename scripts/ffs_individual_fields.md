@@ -50,7 +50,7 @@ export const parseFfs = async (file: File) => {
       pageNum: pageNum,
       yPos: field.acroField.getWidgets()[0].getRectangle().y,
       xPos: field.acroField.getWidgets()[0].getRectangle().x,
-      name: field.getName(),
+      key: field.getName(),
       isReadOnly: field.isReadOnly(),
       isRequired: field.isRequired(),
       maxLength: field instanceof PDFTextField && field.getMaxLength(),
