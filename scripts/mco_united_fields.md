@@ -75,9 +75,10 @@ file_path = "~/Downloads/united_filled_fields.json"
 output_path = "~/Downloads/united_pdf_keys.csv"
 
 df = pd.read_json(file_path)
+display(df)
 
+# remove this column as all values are False
 del df["isReadOnly"]
-del df["isRequired"]
 
 col_order = [
 'pageNum',
@@ -85,7 +86,8 @@ col_order = [
 'xPos',
 'key',
 'type',
-'maxLength'
+'maxLength',
+'isRequired'
 ]
 df = df[col_order]
 df.to_csv(output_path, index=False)
