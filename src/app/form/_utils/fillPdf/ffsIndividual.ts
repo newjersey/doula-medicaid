@@ -1,5 +1,5 @@
-import { formatDateOfBirth } from "./ formatters";
 import { FormData, fillForm } from "./form";
+import { formatDateOfBirth } from "./formatters";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "ffs_individual_filled.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
