@@ -3,5 +3,5 @@ export function setKeyValue(key: string, value: string): void {
 }
 
 export function getValue(key: string): string | null {
-  return window?.sessionStorage.getItem(key);
+  return window.sessionStorage.getItem(key);
 }

@@ -35,10 +35,6 @@ describe("<PersonalInformationStep />", () => {
     checkTextField("Street address 2 (optional)", "Test address 2");
   });
 
-  it("updates street address 2", async () => {
-    checkTextField("Street address 2 (optional)", "Test address 2");
-  });
-
   it("updates city", async () => {
     checkTextField("City", "Test city");
   });
