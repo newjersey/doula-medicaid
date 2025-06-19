@@ -3,7 +3,7 @@
 import { zipForms } from "@/app/utils/zip";
 import React, { useEffect, useState } from "react";
 import { fillAllForms, FormData } from "../../_utils/fillPdf/form";
-import { AddressState } from "../../_utils/inputFields/types";
+import { AddressState, DisclosingEntity } from "../../_utils/inputFields/types";
 import { getValue } from "../../_utils/sessionStorage";
 
 const getFormData = (): FormData => {
@@ -12,6 +12,10 @@ const getFormData = (): FormData => {
 
   const stateString = (getValue("state") as keyof typeof AddressState) || null;
   const state = stateString ? AddressState[stateString] : null;
+  const disclosingEntityString = getValue("natureOfDisclosingEntity") as
+    | keyof typeof DisclosingEntity
+    | null;
+  const disclosingEntity = disclosingEntityString ? DisclosingEntity[disclosingEntityString] : null;
 
   return {
     firstName: getValue("firstName"),
@@ -23,6 +27,10 @@ const getFormData = (): FormData => {
     city: getValue("city"),
     state: state,
     zip: getValue("zip"),
+    phoneNumber: getValue("phoneNumber"),
+    npiNumber: getValue("npiNumber"),
+    ssn: getValue("ssn"),
+    natureOfDisclosingEntity: disclosingEntity,
   };
 };
 
