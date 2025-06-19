@@ -8,8 +8,8 @@
 
 ## Accessibility
 
-- [ ] Tested with screenreader!
-- [ ] Checked with WAVE extension
+- [ ] I have made sure this works with a screenreader!
+- [ ] I have checked this with the WAVE extension.
 
 ## How should a reviewer test?
 
