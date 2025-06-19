@@ -6,6 +6,11 @@
 - Mention any relevant issues or insights to be shared with the reviewer.
 - Alternatives considered
 
+## Accessibility
+
+- [ ] Tested with screenreader!
+- [ ] Checked with WAVE extension
+
 ## How should a reviewer test?
 
 - Describe the testing approach taken to verify the changes, including:
