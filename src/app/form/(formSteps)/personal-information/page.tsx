@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { getValue, setKeyValue } from "../../_utils/sessionStorage";
 import { AddressState } from "../../_utils/types";
 
 interface PersonalInformationData {
@@ -30,22 +31,22 @@ const PersonalInformationStep: React.FC = () => {
 
   useEffect(() => {
     setPersonalInformationData({
-      firstName: window?.sessionStorage.getItem("firstName"),
-      middleName: window?.sessionStorage.getItem("middleName"),
-      lastName: window?.sessionStorage.getItem("lastName"),
-      dateOfBirth: window?.sessionStorage.getItem("dateOfBirth"),
-      streetAddress1: window?.sessionStorage.getItem("streetAddress1"),
-      streetAddress2: window?.sessionStorage.getItem("streetAddress2"),
-      city: window?.sessionStorage.getItem("city"),
-      state: window?.sessionStorage.getItem("state") || "NJ",
-      zip: window?.sessionStorage.getItem("zip"),
+      firstName: getValue("firstName"),
+      middleName: getValue("middleName"),
+      lastName: getValue("lastName"),
+      dateOfBirth: getValue("dateOfBirth"),
+      streetAddress1: getValue("streetAddress1"),
+      streetAddress2: getValue("streetAddress2"),
+      city: getValue("city"),
+      state: getValue("state") || "NJ",
+      zip: getValue("zip"),
     });
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setPersonalInformationData((prev) => ({ ...prev, [name]: value }));
-    window.sessionStorage.setItem(name, value);
+    setKeyValue(name, value);
   };
   return (
     <div>
