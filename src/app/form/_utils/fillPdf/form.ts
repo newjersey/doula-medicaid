@@ -1,8 +1,8 @@
 import { PDFDocument } from "pdf-lib";
+import { AddressState } from "../inputFields/types";
 import { fillAetnaForm } from "./aetna";
 import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";
-import { AddressState } from "./types";
 
 export interface FormData {
   firstName: string | null;

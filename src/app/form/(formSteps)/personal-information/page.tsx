@@ -1,8 +1,10 @@
 "use client";
 
+import { DatePicker, Fieldset, Form, Label, Select, TextInput } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
+import { formatDateOfBirthDefaultValue } from "../../_utils/inputFields/dateOfBirth";
+import { AddressState } from "../../_utils/inputFields/types";
 import { getValue, setKeyValue } from "../../_utils/sessionStorage";
-import { AddressState } from "../../_utils/types";
 
 interface PersonalInformationData {
   firstName: string | null;
@@ -17,6 +19,7 @@ interface PersonalInformationData {
 }
 
 const PersonalInformationStep: React.FC = () => {
+  const [defaultDateOfBirth, setDefaultDateOfBirth] = useState<string | undefined>(undefined);
   const [personalInformationData, setPersonalInformationData] = useState<PersonalInformationData>({
     firstName: null,
     middleName: null,
@@ -41,24 +44,29 @@ const PersonalInformationStep: React.FC = () => {
       state: getValue("state") || "NJ",
       zip: getValue("zip"),
     });
+    setDefaultDateOfBirth(getValue("dateOfBirth") || undefined);
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+    handleValueChange(name, value);
+  };
+
+  const handleValueChange = (name: string, value: string | undefined) => {
+    if (value === undefined) value = "";
     setPersonalInformationData((prev) => ({ ...prev, [name]: value }));
     setKeyValue(name, value);
   };
   return (
     <div>
-      <form className="usa-form">
-        <fieldset className="usa-fieldset">
-          <legend className="usa-legend">Name</legend>
-
-          <label className="usa-label" htmlFor="firstName">
-            First name
-          </label>
-          <input
-            className="usa-input"
+      <Form
+        onSubmit={() => {
+          throw "Not implemented";
+        }}
+      >
+        <Fieldset legend="Name">
+          <Label htmlFor="firstName">First name</Label>
+          <TextInput
             id="firstName"
             name="firstName"
             type="text"
@@ -68,11 +76,10 @@ const PersonalInformationStep: React.FC = () => {
             onChange={handleChange}
           />
 
-          <label className="usa-label" htmlFor="middleName">
-            Middle name <span className="usa-hint">(optional)</span>
-          </label>
-          <input
-            className="usa-input"
+          <Label htmlFor="middleName" hint=" (optional)">
+            Middle name
+          </Label>
+          <TextInput
             id="middleName"
             name="middleName"
             type="text"
@@ -80,11 +87,8 @@ const PersonalInformationStep: React.FC = () => {
             onChange={handleChange}
           />
 
-          <label className="usa-label" htmlFor="lastName">
-            Last name
-          </label>
-          <input
-            className="usa-input"
+          <Label htmlFor="lastName">Last name</Label>
+          <TextInput
             id="lastName"
             name="lastName"
             type="text"
@@ -93,32 +97,36 @@ const PersonalInformationStep: React.FC = () => {
             value={personalInformationData.lastName || ""}
             onChange={handleChange}
           />
-        </fieldset>
+        </Fieldset>
 
-        <label className="usa-label" htmlFor="dateOfBirth">
+        <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
           Date of Birth
-        </label>
-        <div className="usa-hint" id="dateOfBirthDescription">
+        </Label>
+        <div className="usa-hint" id="dateOfBirthHint">
           mm/dd/yyyy
         </div>
-        <div className="usa-date-picker">
-          <input
-            className="usa-input"
-            id="dateOfBirth"
-            name="dateOfBirth"
-            type="date"
-            aria-describedby="dateOfBirthDescription"
-            value={personalInformationData.dateOfBirth || ""}
-            onChange={handleChange}
-          />
-        </div>
-        <fieldset className="usa-fieldset">
-          <legend className="usa-legend">Mail to address</legend>
-          <label className="usa-label" htmlFor="streetAddress1">
-            Street address 1
-          </label>
-          <input
-            className="usa-input"
+        <DatePicker
+          id="dateOfBirth"
+          name="dateOfBirth"
+          aria-describedby="dateOfBirthHint"
+          aria-labelledby="dateOfBirthLabel"
+          /**
+            The DatePicker component is a little weird, vs the other input components in the library
+            1. Unlike other input components, it lacks a value prop for the parent to control its value. See https://github.com/trussworks/react-uswds/issues/3000
+            2. Unlike other input components, the onChange fires with a string value, instead of a change event
+            3. The change string value has the format MM/DD/YYYY, but the defaultValue prop needs to be in the format YYYY-MM-DD
+           */
+          key={defaultDateOfBirth}
+          {...(defaultDateOfBirth && {
+            defaultValue:
+              defaultDateOfBirth && formatDateOfBirthDefaultValue(new Date(defaultDateOfBirth)),
+          })}
+          onChange={(value) => handleValueChange("dateOfBirth", value)}
+        />
+
+        <Fieldset legend="Mail to address">
+          <Label htmlFor="streetAddress1">Street address 1</Label>
+          <TextInput
             id="streetAddress1"
             name="streetAddress1"
             type="text"
@@ -126,11 +134,10 @@ const PersonalInformationStep: React.FC = () => {
             onChange={handleChange}
           />
 
-          <label className="usa-label" htmlFor="streetAddress2">
-            Street address 2 <span className="usa-hint">(optional)</span>
-          </label>
-          <input
-            className="usa-input"
+          <Label htmlFor="streetAddress2" hint=" (optional)">
+            Street address 2
+          </Label>
+          <TextInput
             id="streetAddress2"
             name="streetAddress2"
             type="text"
@@ -140,10 +147,8 @@ const PersonalInformationStep: React.FC = () => {
 
           <div className="grid-row grid-gap">
             <div className="mobile-lg:grid-col-8">
-              <label className="usa-label" htmlFor="city">
-                City
-              </label>
-              <input
+              <Label htmlFor="city">City</Label>
+              <TextInput
                 className="usa-input"
                 id="city"
                 name="city"
@@ -153,10 +158,8 @@ const PersonalInformationStep: React.FC = () => {
               />
             </div>
             <div className="mobile-lg:grid-col-4">
-              <label className="usa-label" htmlFor="state">
-                State
-              </label>
-              <select
+              <Label htmlFor="state">State</Label>
+              <Select
                 className="usa-select"
                 id="state"
                 name="state"
@@ -168,14 +171,12 @@ const PersonalInformationStep: React.FC = () => {
                     {state}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
           </div>
 
-          <label className="usa-label" htmlFor="zip">
-            ZIP
-          </label>
-          <input
+          <Label htmlFor="zip">ZIP</Label>
+          <TextInput
             className="usa-input usa-input--medium"
             id="zip"
             name="zip"
@@ -184,8 +185,8 @@ const PersonalInformationStep: React.FC = () => {
             value={personalInformationData.zip || ""}
             onChange={handleChange}
           />
-        </fieldset>
-      </form>
+        </Fieldset>
+      </Form>
     </div>
   );
 };

@@ -2,9 +2,9 @@
 
 import { zipForms } from "@/app/utils/zip";
 import React, { useEffect, useState } from "react";
-import { fillAllForms, FormData } from "../../_utils/form";
+import { fillAllForms, FormData } from "../../_utils/fillPdf/form";
+import { AddressState } from "../../_utils/inputFields/types";
 import { getValue } from "../../_utils/sessionStorage";
-import { AddressState } from "../../_utils/types";
 
 const getFormData = (): FormData => {
   const dateOfBirthString = getValue("dateOfBirth");
