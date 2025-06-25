@@ -2,48 +2,62 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import PersonalInformationStep from "./page";
 
-async function checkTextField(fieldName: string, expectedValue: string) {
-  const user = userEvent.setup();
-  render(<PersonalInformationStep />);
-  const inputField = screen.getByRole("textbox", {
-    name: fieldName,
-  });
-
-  await user.type(inputField, expectedValue);
-
-  expect(inputField).toHaveValue(expectedValue);
-}
-
 describe("<PersonalInformationStep />", () => {
   afterEach(() => {
     window.sessionStorage.clear();
   });
 
-  it("updates first name", async () => {
-    await checkTextField("First name", "Test first name");
+  it.each([
+    { name: "First name", key: "firstName", testValue: "Test first name" },
+    { name: "Middle name (optional)", key: "middleName", testValue: "Test middle name" },
+    { name: "Last name", key: "lastName", testValue: "Test last name" },
+    { name: "Date of birth", key: "dateOfBirth", testValue: "01/01/1990" },
+    { name: "Email address", key: "email", testValue: "test@test.com" },
+    { name: "NPI number", key: "npiNumber", testValue: "2222222222" },
+    { name: "Street address 1", key: "streetAddress1", testValue: "Test address 1" },
+    { name: "Street address 2 (optional)", key: "streetAddress2", testValue: "Test address 2" },
+    { name: "City", key: "city", testValue: "Test city" },
+    { name: "ZIP", key: "zip", testValue: "12345" },
+  ])("updates the $name text input", async ({ name, key, testValue }) => {
+    const user = userEvent.setup();
+    render(<PersonalInformationStep />);
+    const inputField = screen.getByRole("textbox", {
+      name: name,
+    });
+    expect(window.sessionStorage.getItem(key)).toEqual(null);
+
+    await user.type(inputField, testValue);
+
+    expect(inputField).toHaveValue(testValue);
+    expect(window.sessionStorage.getItem(key)).toEqual(testValue);
   });
 
-  it("updates middle name", async () => {
-    await checkTextField("Middle name (optional)", "Test middle name");
+  it("updates phone number", async () => {
+    const user = userEvent.setup();
+    render(<PersonalInformationStep />);
+    const inputField = screen.getByRole("textbox", {
+      name: "Phone number",
+    });
+    expect(window.sessionStorage.getItem("phoneNumber")).toEqual(null);
+
+    await user.type(inputField, "1111111111");
+
+    expect(inputField).toHaveValue("111-111-1111");
+    expect(window.sessionStorage.getItem("phoneNumber")).toEqual("111-111-1111");
   });
 
-  it("updates last name", async () => {
-    await checkTextField("Last name", "Test last name");
-  });
+  it("updates address state", async () => {
+    const user = userEvent.setup();
+    render(<PersonalInformationStep />);
+    const combobox = screen.getByRole("combobox", {
+      name: "State",
+    });
+    expect(combobox).toHaveValue("NJ");
+    expect(window.sessionStorage.getItem("state")).toEqual("NJ");
 
-  it("updates street address 1", async () => {
-    await checkTextField("Street address 1", "Test address 1");
-  });
+    await user.selectOptions(combobox, "PA");
 
-  it("updates street address 2", async () => {
-    await checkTextField("Street address 2 (optional)", "Test address 2");
-  });
-
-  it("updates city", async () => {
-    await checkTextField("City", "Test city");
-  });
-
-  it("updates zip code", async () => {
-    await checkTextField("ZIP", "12345");
+    expect(combobox).toHaveValue("PA");
+    expect(window.sessionStorage.getItem("state")).toEqual("PA");
   });
 });
