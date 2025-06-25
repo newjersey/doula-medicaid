@@ -9,6 +9,9 @@ export interface FormData {
   middleName: string | null;
   lastName: string | null;
   dateOfBirth: Date | null;
+  phoneNumber: string | null;
+  email: string | null;
+  npiNumber: string | null;
   streetAddress1: string | null;
   streetAddress2: string | null;
   city: string | null;
