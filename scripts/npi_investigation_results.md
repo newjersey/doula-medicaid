@@ -10,15 +10,15 @@ A full table fo the NPI data is available at https://docs.google.com/spreadsheet
 
 ### Only included individual doulas
 
-There are 620 doula individuals with NPI numbers with the doula taxonomy and state NJ, as of 6/30/25. This is a live dataset where the number of due loads is gradually going up. Doulas were getting added as I was doing the analysis, so I might be off by 1 in a couple places.
+There are 620 doula individuals with NPI numbers with the doula taxonomy and state NJ, as of 6/30/25. This is a live dataset where the number of doulas is gradually going up. Doulas were getting added as I was doing the analysis, so I might be off by 1 in a couple places.
 
 There are also 46 doula groups in the NPI database. I excluded all of these. They are available here if interested: https://npiregistry.cms.hhs.gov/api/?taxonomy_description=Doula&state=NJ&limit=200&skip=0&pretty=&enumeration_type=NPI-2&version=2.1
 
 ### Included doulas whose primary taxonomy is not Doula
 
-Of 620 individual doulas, 570 people have the primary taxonomy Doula, 50 people do not.
+Of 620 individual doulas, 570 people have the primary taxonomy Doula, 50 only have Doula as a secondary taxonomy.
 
-The 50 people who do not have doula as their primary taxonomy, mostly have doula-adjacent things as their primary taxonomy:
+The 50 people who only have Doula as a secondary taxonomy, most have doula-adjacent things as their primary taxonomy:
 ```
 Lactation Consultant, Non-RN                     13
 Massage Therapist                                 4
@@ -58,8 +58,8 @@ We always have the following information for each doula (not null, not empty str
 1. Last updated
 1. Created epoch: epoch meaning a timestamp
 1. Last updated epoch: epoch meaning a timestamp
-1. Mailing address: address line 1, city, state, postal code, address type (all DOM), address purpose (MAILING), country code and name (all United States)
-1. Location address: address line 1, city, state, postal code, address type (all DOM), address purpose (LOCATION), country code and name (all United States)
+1. Mailing address: address line 1, city, state, postal code, address purpose (MAILING), country code and name (all United States), address type (all DOM)
+1. Location address: address line 1, city, state, postal code, address purpose (LOCATION), country code and name (all United States), address type (all DOM)
 1. Enumeration type: always "NPI-1", for individual
 1. Status: always "A" (per https://npiregistry.cms.hhs.gov/help/help-details this means Active, vs Deactivated)
 
@@ -68,15 +68,15 @@ We always have the following information for each doula (not null, not empty str
 We have the following information for some doulas:
 
 1. Certification date: 548 doulas, though I don't know what this certification refers to
-1. Middle name: mix of fully spelled out middle names, middle initial e.g. "A", and middle initial including a period e.g. "A."
-1. Name prefix: 165 doulas, 'Mrs.', nan, 'Ms.', 'Miss', '--', 'Dr.', 'Prof.'
-1. Name suffix is an available field, but is empty or "--" for everyone
-1. Other name: 26 doulas
 1. Location and mailing address additional data: fax number, mailing telephone number, address lines 2
+1. Middle name: mix of fully spelled out middle names, middle initial e.g. "A", and middle initial including a period e.g. "A."
+1. Name prefix: 165 doulas, 'Mrs.', 'Ms.', 'Miss', '--', 'Dr.', 'Prof.'
+1. Name suffix: are all empty or "--"
+1. Other name: 26 doulas
 1. Credential: 211 doulas. These are things like "doula", "community doula", and a lot of acronym soup e.g. CBC, IBCLC, RBT, M.S., RN, CLC, CNM
 1. Additional taxonomies: 63 doulas, that aren't just "doula" repeated again as a secondary taxonomy
 1. An additional practice location: 20 doulas
-1. Misc identifiers: 10 doulas have a medicaid identifier, 4 have "Other: non-Medicare)"
+1. Misc identifiers: 10 doulas have a medicaid identifier, 4 have "Other: (non-Medicare)"
 1. Other taxonomies: 63 doulas have another taxonomy. Top 5 are Lactation Consultant (17), Non-RN (17), Health Educator (16), Counselor (11), Midwife (6)
 1. Other contact information: 33 doulas, e.g. websites, emails
 
@@ -85,7 +85,7 @@ We have the following information for some doulas:
 ### Increasing number of doulas with NPI numbers
 
 ```
-Year of enumeration_date (date the NPI was issued)
+Year that NPI was issued (from enumeration_date)
 2025    119
 2024    121
 2023    104
@@ -100,7 +100,7 @@ Year of enumeration_date (date the NPI was issued)
 2014-2005 53
 ```
 
-Most doulas obtained their NPI number in the last 5 years. We are about halfway into 2025, but have about the same number of doulas who got their NPI number as in all of 2024. We seem to be part of an increasing trend!
+Most doulas obtained their NPI number in the last 5 years. We are about halfway into 2025, but have about the same number of doulas who got their NPI number as in all of 2024. The reasons why are unclear (e.g., maybe most training is in the first half of the year), but we seem to be part of an increasing trend!
 
 Some possibilities are that more people might be becoming doulas, and/or that doula services being reimbursed by insurance (and therefore causing doulas to get an NPI number) is a more recent phenomenon.
 
@@ -122,8 +122,9 @@ True     441
 False    179
 ```
 
-This is about the same (73%) for doulas who are sole proprietors
-Mailing exactly equals location address for sole proprietors only
+This is about the same (73%) for doulas who are sole proprietors:
+
+Sole proprietors only, mailing exactly equals location address
 ```
 True     380
 False    140
