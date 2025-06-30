@@ -41,6 +41,10 @@ GA      1
 VA      1
 """
 
+len(df[~((df["mailing_state"] == "NJ") | (df["location_state"] == "NJ"))])
+# 2
+# Both have practice_location_1_state as NJ
+
 df["enumeration_date"].apply(lambda x: x.split("-", 1)[0]).value_counts(sort=False)
 """
 2025    118
@@ -398,6 +402,8 @@ len(medicaid_df[~medicaid_df.apply(first_and_last_found, axis=1)])
 no_match = medicaid_df[~medicaid_df.apply(first_and_last_found, axis=1)].reset_index(
     drop=True
 )
+
+# manually opened the df full npi dataset as a csv, and tried to find first and last names in the whole plain text file
 
 """
 0: last name has a dash in the dhs data but not npi - probably same person
