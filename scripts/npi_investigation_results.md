@@ -4,6 +4,8 @@
 
 See `npi_get_dataset.py` and `npi_investigation.py` for code.
 
+A full table fo the NPI data is available at https://docs.google.com/spreadsheets/d/1NBHxcQUCzqiN0tx8iOg85VmaTVQRONc5GdTUJHSmUG0/edit?gid=0#gid=0
+
 ## Data included/excluded in this analysis
 
 ### Only included individual doulas
@@ -59,7 +61,7 @@ We always have the following information for each doula (not null, not empty str
 1. Mailing address: address line 1, city, state, postal code, address type (all DOM), address purpose (MAILING), country code and name (all United States)
 1. Location address: address line 1, city, state, postal code, address type (all DOM), address purpose (LOCATION), country code and name (all United States)
 1. Enumeration type: always "NPI-1", for individual
-1. Status: always "A"
+1. Status: always "A" (per https://npiregistry.cms.hhs.gov/help/help-details this means Active, vs Deactivated)
 
 ### Available for some doulas
 
@@ -80,26 +82,10 @@ We have the following information for some doulas:
 
 ## Key findings
 
-### Incompleteness of Medicaid information
-
-#### The NPI database clearly does not have the full picture of doulas who are enrolled as Medicaid providers
-Only 10 doulas are listed as having a medicaid identifier. This might be why our partners have been saying that the picture in the NPI data is not complete - it definitely undercounts the number of doulas providing for medicaid. I'm not sure if there are separate NJ vs national medicaid identifiers that might explain the discrepancy.
-
-#### Some doulas listed in the DHS-provided spreadsheet are not found in the NPI database
-The DHS-provided [spreadsheet of Medicaid doulas](https://docs.google.com/spreadsheets/d/1mFCVy1m7CZS4QWtD1Kxjzl1sko7QvGSdV_fTLvzXeh0/edit?gid=476691626#gid=476691626) has 85 doulas. Of those, 77 doulas seem to be found in the NPI database (including those with slight name misspellings, etc). I manually checked the remaining 7 doulas, in could not reasonably find someone in the NPI dataset with the same first and last name.
-
-#### Perhaps consider NPI data an upper bound
-
-As our partners have shared, the NPI database has limitations in that e.g. not all doulas with NPI numbers might still be practicing doulas, let alone interested in providing for medicaid. However, I think this NPI data is still a useful upper bound approximation for the doulas we are attempting to help serve.
-
 ### Increasing number of doulas with NPI numbers
 
-Most doulas obtained their NPI number in the last 5 years. We are about halfway into 2025, but have about the same number of doulas who got their NPI number as in all of 2024. We seem to be part of an increasing trend!
-
-Some possibilities are that more people might be becoming doulas, and/or that doula services being reimbursed by insurance (and therefore causing doulas to get an NPI number) is a more recent phenomenon.
-
 ```
-Year of enumeration_date
+Year of enumeration_date (date the NPI was issued)
 2025    119
 2024    121
 2023    104
@@ -113,6 +99,10 @@ Year of enumeration_date
 2015      6
 2014-2005 53
 ```
+
+Most doulas obtained their NPI number in the last 5 years. We are about halfway into 2025, but have about the same number of doulas who got their NPI number as in all of 2024. We seem to be part of an increasing trend!
+
+Some possibilities are that more people might be becoming doulas, and/or that doula services being reimbursed by insurance (and therefore causing doulas to get an NPI number) is a more recent phenomenon.
 
 I think this increasing trend is strong motivation for the timeliness of our work.
 
@@ -139,11 +129,29 @@ True     380
 False    140
 ```
 
+### Comparing NPI and DOH doula data
+
+#### The NPI database clearly does not have the full picture of doulas who are enrolled as Medicaid providers
+Only 10 doulas are listed as having a medicaid identifier. This might be why our partners have been saying that the picture in the NPI data is not complete - it definitely undercounts the number of doulas providing for medicaid. I'm not sure if there are separate NJ vs national medicaid identifiers that might explain the discrepancy.
+
+#### Some doulas listed in the DOH-provided spreadsheet are not found in the NPI database
+The DOH-provided [spreadsheet of Medicaid doulas](https://docs.google.com/spreadsheets/d/1mFCVy1m7CZS4QWtD1Kxjzl1sko7QvGSdV_fTLvzXeh0/edit?gid=476691626#gid=476691626) has 85 doulas. Of those, 77 doulas seem to be found in the NPI database (including those with slight name misspellings, etc). I manually checked the remaining 7 doulas, in could not reasonably find someone in the NPI dataset with the same first and last name. It's possible that they are not included in the dataset because their NPI record was deactivated.
+
+#### Names in NPI or DOH data may be misspelled
+It's worth noting that the 77 doulas from the DOH sheet who are found in the NPI database also includes 6 doulas whose name I think was misspelled in either the NPI or DOH. For instance, name spellings being one letter off, or a hyphenated last name being NameOne-NameTwo vs NameTwo-NameOne. In addition to considering whether e.g. a doula's address might be outdated, it's possible that their name in the NPI database might not be correct or might not be the name they want to use.
+
+#### Perhaps consider NPI data an upper bound
+
+As our partners have shared, the NPI database has limitations in that e.g. not all doulas with NPI numbers might still be practicing doulas, let alone interested in providing for medicaid. However, I think this NPI data is still a useful upper bound approximation for the doulas we are attempting to help serve.
+
+We could also use NPI data to measure success. E.g., one success metric could be x% of doulas who are issued NPI numbers in this year/after launch also go through our flow. That's just an example; we should still target existing doulas who have had NPI numbers for a while.
+
+
 ## Other findings
 
 ### Unclear what makes a "NJ" doula
 
-All of these doulas were returned when we specified state=NJ for searching the NPI database. However, a couple doulas have location and/or mailing states outside of NJ. I don't know and makes someone a "NJ" NPI provider. It might be one or the other, but this didn't feel worth ascertaining.
+All of these doulas were returned when we specified state=NJ for searching the NPI database. However, a couple doulas have location and/or mailing states outside of NJ. All of them have either mailing, location, or practice location in NJ, but I don't know and makes someone a "NJ" NPI provider.
 
 ```
 location_state
@@ -183,4 +191,5 @@ remaining mix of a bunch of acronym soup (e.g. CD, CBC, IBCLC, RBT, M.S., RN, CD
 
 ## Potential followup questions
 
-1. Why are 7 doulas from the DHS spreadsheet not in the NPI database?
+1. Why are 7 doulas from the DOH spreadsheet not in the NPI database?
+    1. The NPI records only include doulas with status Active ("A"), so it's possible that the discrepancy might be because those doulas have deactivated NPI numbers.
