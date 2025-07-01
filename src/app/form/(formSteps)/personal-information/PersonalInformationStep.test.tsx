@@ -17,7 +17,7 @@ describe("<PersonalInformationStep />", () => {
     { name: "Street address 1", key: "streetAddress1", testValue: "Test address 1" },
     { name: "Street address 2 (optional)", key: "streetAddress2", testValue: "Test address 2" },
     { name: "City", key: "city", testValue: "Test city" },
-    { name: "ZIP", key: "zip", testValue: "12345" },
+    { name: "ZIP code", key: "zip", testValue: "12345" },
   ])("updates the $name text input", async ({ name, key, testValue }) => {
     const user = userEvent.setup();
     render(<PersonalInformationStep />);
