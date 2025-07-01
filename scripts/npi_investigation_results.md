@@ -177,18 +177,106 @@ IL      1
 
 ### Credential information
 
-Most frequent examples of "credential"
+Number of each credential, sorted alphabetically. Doulas may have multiple credentials.
 ```
-credential
-Doula                   53
-CD                      20
-CD(DONA)                16
-doula                    7
+B.S.                     1
+BA                       3
+Birth  Doula             1
+Birth and PP Doula       1
+BS                       1
+BSN                      4
+BSPHE                    1
+C.D.                     2
+CB                       1
+CBC                      2
+CBC (CBI-SBD)            1
+CBC.                     1
+CBD                      2
+CBE                      2
+CCCE                     2
+CCE                      3
+CD                      36
+CD (DONA)                2
+CD (SBD)                 1
+CD CBE                   1
+CD(Certified Doula)      1
+CD(Dona)                 1
+CD(DONA)                27
+CD(DONA) LCCE            1
+CD-L                     1
+CD.                      1
+CD/PCD(DONA)             1
+CERT. M.D.T              1
+certified                1
 Certified Doula          6
-CLD                      5
+CHHC                     1
+CHHP.                    1
+CIPSP                    1
+CLC                     13
+CLD                      6
+cld                      1
+CM                       1
+CNM                      2
+Community Doula          1
+CPD                      2
+CPLD                     1
+CPM                      1
+CPNE                     1
+CPPD                     1
+D.T.R.                   1
+DFM                      1
+DONA                     1
+doula                    7
+Doula                   57
+DOULA                    1
+Doula Taxonomy           1
+DrPH                     1
+EOLD                     1
+FAE                      1
+Full Spectrum Doula      2
+IBCLC                    8
+ICBD                     1
+ICCE                     1
+ICD                      1
+ICEA Certified           1
+IMD                      1
+LAC                      1
+LC                       1
+LCCE                     7
+LCSW                     1
+LM                       1
+LMT                      2
+LPN                      1
+LSW/LCADC                1
+M.P.T.                   1
+M.S.                     2
+MA                       2
+MCD                      1
+MCPD                     1
+MPH                      2
+MS                       3
+MSN                      1
+NBC Specialist/CHHA      1
+ND                       2
+NJ LMT #18KT01515000     1
+P.C.D                    1
+PCD                      1
+PCD (DONA)               1
+PCD(DONA)                1
+Perinatal Doula          1
+Ph.D.                    1
+PhD                      3
+PPD                      1
+PT                       1
+RBT                      2
+RMA                      1
+RN                       7
+RN BSN CD CPD            1
+RN/Doula                 1
+RNC-MNN                  1
+RP                       1
 ```
 
-remaining mix of a bunch of acronym soup (e.g. CD, CBC, IBCLC, RBT, M.S., RN, CD(DONA), CLC, C.D., CNM, CD (SBD))
 
 ## Potential followup questions
 
