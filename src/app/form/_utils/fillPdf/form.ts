@@ -1,5 +1,5 @@
-import { PDFDocument } from "pdf-lib";
-import { AddressState } from "../inputFields/types";
+import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
+import { AddressState, DisclosingEntity } from "../inputFields/enums";
 import { fillAetnaForm } from "./aetna";
 import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";
@@ -17,6 +17,7 @@ export interface FormData {
   city: string | null;
   state: AddressState | null;
   zip: string | null;
+  natureOfDisclosingEntity: DisclosingEntity | null;
 }
 
 export interface FilledPDFData {
@@ -33,7 +34,7 @@ export const fillAllForms = async (formData: FormData) => {
 };
 
 export const fillForm = async (
-  fieldsToFill: { [key: string]: string },
+  fieldsToFill: { [key: string]: string | boolean },
   pdfPath: string,
   filename: string,
 ): Promise<FilledPDFData> => {
@@ -43,8 +44,22 @@ export const fillForm = async (
   const form = pdfDoc.getForm();
 
   Object.entries(fieldsToFill).forEach(([fieldName, value]) => {
-    const field = form.getTextField(fieldName);
-    field.setText(value);
+    const field = form.getField(fieldName);
+    if (field instanceof PDFTextField) {
+      if (typeof value !== "string") {
+        throw new Error(`Expected string for text field, but got ${typeof value}`);
+      }
+      field.setText(value.toString());
+    } else if (field instanceof PDFCheckBox) {
+      if (typeof value !== "boolean") {
+        throw new Error(`Expected boolean for checkbox field, but got ${typeof value}`);
+      }
+      if (value) {
+        field.check();
+      } else {
+        field.uncheck();
+      }
+    }
   });
 
   const filledPdfBytes = await pdfDoc.save();

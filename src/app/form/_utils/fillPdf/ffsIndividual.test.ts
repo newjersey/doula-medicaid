@@ -1,12 +1,12 @@
-import { AddressState } from "../inputFields/types";
+import { AddressState, DisclosingEntity } from "../inputFields/enums";
 import { mapFfsIndividualFields } from "./ffsIndividual";
-import { FormData } from "./form";
+import { type FormData } from "./form";
 
 const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
   return {
-    firstName: null,
+    firstName: "First",
     middleName: null,
-    lastName: null,
+    lastName: "Last",
     dateOfBirth: null,
     phoneNumber: null,
     email: null,
@@ -16,6 +16,7 @@ const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
     city: null,
     state: null,
     zip: null,
+    natureOfDisclosingEntity: null,
     ...formDataOverrides,
   };
 };
@@ -41,6 +42,25 @@ describe("mapFfsIndividualFields", () => {
     });
     const fieldsToFillWithoutMiddleName = mapFfsIndividualFields(formDataWithoutMiddleName);
     expect(fieldsToFillWithoutMiddleName[formKey]).toEqual("First Last");
+
+    const formDataWithoutFirstName: FormData = generateFormData({
+      firstName: null,
+      middleName: "Middle",
+      lastName: "Last",
+    });
+    expect(() => {
+          mapFfsIndividualFields(formDataWithoutFirstName);
+    }).toThrow("First name and last name are required to fill the name field.");
+
+    const formDataWithoutLastName: FormData = generateFormData({
+      firstName: "First",
+      middleName: "Middle",
+      lastName: null,
+    });
+    expect(() => {
+          mapFfsIndividualFields(formDataWithoutLastName);
+    }).toThrow("First name and last name are required to fill the name field.");
+
   };
 
   const testDateOfBirth = (formKey: string) => {
@@ -207,6 +227,58 @@ describe("mapFfsIndividualFields", () => {
       expect(fieldsToFill[address1Key]).toEqual("55 Cherry St");
       expect(fieldsToFill[address2Key]).toEqual("Apt 4");
       expect(fieldsToFill[address3Key]).toEqual("Newark, NJ 08609");
+    });
+  });
+
+  describe("Page 16 - disclosing entity sole proprietorship", () => {
+    describe("when disclosing entity is not Sole Proprietorship", () => {
+      it("it does not fill the page 16 fields", () => {
+        const formData: FormData = generateFormData({
+          natureOfDisclosingEntity: null,
+          firstName: "First",
+          middleName: "Middle",
+          lastName: "Last",
+          phoneNumber: "111-111-1111",
+          npiNumber: "1111111111",
+        });
+        const fieldsToFill = mapFfsIndividualFields(formData);
+        console.log(fieldsToFill);
+        expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityPaternship"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityCorporation"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityOther"]).toBeUndefined();
+
+        expect(fieldsToFill["fd452nameofdisclosingentity"]).toBeUndefined();
+        expect(fieldsToFill["fd452telephonenumber"]).toBeUndefined();
+        expect(fieldsToFill["fd452providernumbandornpi"]).toBeUndefined();
+      });
+    });
+
+    describe("when disclosing entity is Sole Proprietorship", () => {
+      it("fills the page 16 fields", () => {
+        const formData: FormData = generateFormData({
+          natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
+          firstName: "First",
+          middleName: "Middle",
+          lastName: "Last",
+          phoneNumber: "111-111-1111",
+          npiNumber: "1111111111",
+        });
+        const fieldsToFill = mapFfsIndividualFields(formData);
+        expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toEqual(true);
+        expect(fieldsToFill["fd452disclosingentityPaternship"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityCorporation"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
+        expect(fieldsToFill["fd452disclosingentityOther"]).toBeUndefined();
+        expect(fieldsToFill["fd452nameofdisclosingentity"]).toEqual("First Middle Last");
+        expect(fieldsToFill["fd452telephonenumber"]).toEqual("111-111-1111");
+        expect(fieldsToFill["fd452providernumbandornpi"]).toEqual("1111111111");
+      });
     });
   });
 });

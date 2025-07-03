@@ -11,7 +11,7 @@ import {
 } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
 import { formatDateOfBirthDefaultValue } from "../../_utils/inputFields/dateOfBirth";
-import { AddressState } from "../../_utils/inputFields/types";
+import { AddressState } from "../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../_utils/sessionStorage";
 
 interface PersonalInformationData {

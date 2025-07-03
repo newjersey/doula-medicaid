@@ -5,3 +5,7 @@ export function setKeyValue(key: string, value: string): void {
 export function getValue(key: string): string | null {
   return window.sessionStorage.getItem(key);
 }
+
+export function removeKey(key: string): void {
+  window.sessionStorage.removeItem(key);
+}
