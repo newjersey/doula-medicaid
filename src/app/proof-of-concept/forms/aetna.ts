@@ -1,4 +1,5 @@
-import { FormData, fillForm, parseForm } from "./form";
+import type { FormData } from "./form";
+import { fillForm, parseForm } from "./form";
 
 export const AETNA_PDF_NAME = "aetna_filled.pdf";
 export const AETNA_PDF_PATH = "/pdf/aetna.pdf";

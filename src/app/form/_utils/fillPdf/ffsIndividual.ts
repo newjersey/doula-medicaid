@@ -41,8 +41,8 @@ const getPage3Fields = (formData: FormData): PDFData => {
 const getPage5Fields = (formData: FormData): PDFData => {
   // Page 5 - authorization agreement for automated deposits of state payments
   return {
-    fd443telephoneno: formData.phoneNumber || "",
-    fd443npino: formData.npiNumber || "",
+    fd443telephoneno: formData.phoneNumber ?? "",
+    fd443npino: formData.npiNumber ?? "",
   };
 };
 
@@ -51,15 +51,15 @@ const getPage7Fields = (formData: FormData): PDFData => {
   return {
     fd425legalname: formatName(formData),
     fd452dobfdate_af_date: formatDateOfBirth(formData.dateOfBirth),
-    fd425npinumber: formData.npiNumber || "",
-    fd425telephoneno: formData.phoneNumber || "",
-    fd425emailaddress: formData.email || "",
-    fd425socialsecuritynumber: formData.socialSecurityNumber || "",
+    fd425npinumber: formData.npiNumber ?? "",
+    fd425telephoneno: formData.phoneNumber ?? "",
+    fd425emailaddress: formData.email ?? "",
+    fd425socialsecuritynumber: formData.socialSecurityNumber ?? "",
 
-    fd425mailtoaddressstreet: `${formData.streetAddress1}${formData.streetAddress2 ? " " + formData.streetAddress2 : ""}`,
-    fd425mailtoaddressstate: formData.state || "", // input validation not yet implemented
-    fd425mailtoaddresscity: formData.city || "",
-    fd425mailtoaddresszip: formData.zip || "",
+    fd425mailtoaddressstreet: `${formData.streetAddress1}${formData.streetAddress2 ? ` ${formData.streetAddress2}` : ""}`,
+    fd425mailtoaddressstate: formData.state ?? "", // input validation not yet implemented
+    fd425mailtoaddresscity: formData.city ?? "",
+    fd425mailtoaddresszip: formData.zip ?? "",
   };
 };
 
@@ -67,10 +67,10 @@ const getPage12Fields = (formData: FormData): PDFData => {
   // Page 12 - request for paper updates
   return {
     "fd455aREQPAPER_Provider Name": formatName(formData),
-    "fd455aREQPAPER_Provider Number": formData.npiNumber || "",
-    "fd455aREQPAPER_Telephone Number": formData.phoneNumber || "",
-    "fd455aREQPAPER_Mail To Address 1": formData.streetAddress1 || "",
-    "fd455aREQPAPER_Mail To Address 2": formData.streetAddress2 || "",
+    "fd455aREQPAPER_Provider Number": formData.npiNumber ?? "",
+    "fd455aREQPAPER_Telephone Number": formData.phoneNumber ?? "",
+    "fd455aREQPAPER_Mail To Address 1": formData.streetAddress1 ?? "",
+    "fd455aREQPAPER_Mail To Address 2": formData.streetAddress2 ?? "",
     "fd455aREQPAPER_Mail To Address 3": formatAddressLine3(formData),
   };
 };
@@ -81,9 +81,9 @@ const getPage16Fields = (formData: FormData): PDFData => {
     return {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
-      fd452telephonenumber: formData.phoneNumber || "",
-      fd452providernumbandornpi: formData.npiNumber || "",
-      fd452einorothertaxidnumber: formData.socialSecurityNumber || "",
+      fd452telephonenumber: formData.phoneNumber ?? "",
+      fd452providernumbandornpi: formData.npiNumber ?? "",
+      fd452einorothertaxidnumber: formData.socialSecurityNumber ?? "",
     };
   }
 
