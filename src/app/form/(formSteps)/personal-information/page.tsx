@@ -210,7 +210,7 @@ const PersonalInformationStep: React.FC = () => {
             mask="___-__-____"
             pattern="\d{3}-\d{2}-\d{4}"
             required
-            value={personalInformationData.ssn || ""}
+            value={personalInformationData.socialSecurityNumber || ""}
             onChange={handleChange}
           />
 

@@ -1,5 +1,5 @@
-import { type FormData, fillForm } from "./form";
 import { DisclosingEntity } from "../inputFields/enums";
+import { type FormData, fillForm } from "./form";
 import { formatDateOfBirth } from "./formatters";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "ffs_individual_filled.pdf";
@@ -34,6 +34,7 @@ const getPage3Fields = (formData: FormData): PDFData => {
   return {
     fd427dateofbirthDate1_af_date: formatDateOfBirth(formData.dateOfBirth),
     fd427LegalName: formatName(formData),
+    fd427SocialSecurityNumber: formData.socialSecurityNumber || "",
   };
 };
 
@@ -53,10 +54,11 @@ const getPage7Fields = (formData: FormData): PDFData => {
     fd425npinumber: formData.npiNumber || "",
     fd425telephoneno: formData.phoneNumber || "",
     fd425emailaddress: formData.email || "",
+    fd425socialsecuritynumber: formData.socialSecurityNumber || "",
 
     fd425mailtoaddressstreet: `${formData.streetAddress1}${formData.streetAddress2 ? " " + formData.streetAddress2 : ""}`,
     fd425mailtoaddressstate: formData.state || "", // input validation not yet implemented
-    fd425mailtoaddresscity: formData.city || "", 
+    fd425mailtoaddresscity: formData.city || "",
     fd425mailtoaddresszip: formData.zip || "",
   };
 };
@@ -81,11 +83,11 @@ const getPage16Fields = (formData: FormData): PDFData => {
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber || "",
       fd452providernumbandornpi: formData.npiNumber || "",
+      fd452einorothertaxidnumber: formData.socialSecurityNumber || "",
     };
   }
-  
+
   return {};
-  
 };
 
 const formatAddressLine3 = (formData: FormData): string => {

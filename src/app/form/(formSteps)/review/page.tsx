@@ -24,6 +24,7 @@ const getFormData = (): FormData => {
     phoneNumber: getValue("phoneNumber"),
     email: getValue("email"),
     npiNumber: getValue("npiNumber"),
+    socialSecurityNumber: getValue("socialSecurityNumber"),
     streetAddress1: getValue("streetAddress1"),
     streetAddress2: getValue("streetAddress2"),
     city: getValue("city"),
