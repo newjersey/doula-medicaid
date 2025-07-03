@@ -1,5 +1,5 @@
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
-import { AddressState, DisclosingEntity } from "../inputFields/enums";
+import type { AddressState, DisclosingEntity } from "../inputFields/enums";
 import { fillAetnaForm } from "./aetna";
 import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";

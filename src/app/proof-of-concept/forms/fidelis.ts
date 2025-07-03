@@ -1,4 +1,5 @@
-import { FormData, fillForm } from "./form";
+import type { FormData } from "./form";
+import { fillForm } from "./form";
 
 export const FIDELIS_PDF_NAME = "fidelis_filled.pdf";
 export const FIDELIS_PDF_PATH = "/pdf/fidelis.pdf";

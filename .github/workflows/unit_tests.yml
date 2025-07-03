@@ -1,4 +1,4 @@
-name: Pull Request CI
+name: Unit tests
 
 on:
   pull_request:
@@ -19,5 +19,3 @@ jobs:
         run: npm ci
       - name: Run tests
         run: npm run test
-      - name: Build project
-        run: npm run build

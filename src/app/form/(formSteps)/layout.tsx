@@ -28,7 +28,7 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
 
   const currentStepIndex = steps.map((x) => x.id).findIndex((stepId) => pathname.endsWith(stepId));
   if (currentStepIndex < 0) {
-    throw "Step not found for " + pathname;
+    throw new Error(`Step not found for ${pathname}`);
   }
 
   const currentStep = steps[currentStepIndex];

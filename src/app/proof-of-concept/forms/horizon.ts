@@ -1,4 +1,5 @@
-import { FormData, fillForm } from "./form";
+import type { FormData } from "./form";
+import { fillForm } from "./form";
 
 export const HORIZON_PDF_NAME = "horizon_filled.pdf";
 export const HORIZON_PDF_PATH = "/pdf/horizon.pdf";

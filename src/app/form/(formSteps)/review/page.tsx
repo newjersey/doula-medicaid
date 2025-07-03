@@ -2,7 +2,8 @@
 
 import { zipForms } from "@/app/utils/zip";
 import React, { useEffect, useState } from "react";
-import { fillAllForms, FormData } from "../../_utils/fillPdf/form";
+import type { FormData } from "../../_utils/fillPdf/form";
+import { fillAllForms } from "../../_utils/fillPdf/form";
 import { AddressState, DisclosingEntity } from "../../_utils/inputFields/enums";
 import { getValue } from "../../_utils/sessionStorage";
 
@@ -41,7 +42,9 @@ const FormStep: React.FC = () => {
       const filledForms = await fillAllForms(getFormData());
       const zipBlob = await zipForms(filledForms);
       setZipDownloadUrl(URL.createObjectURL(zipBlob));
-    })();
+    })().catch(() => {
+      throw new Error("Error creating pdf zip");
+    });
   }, []);
 
   return (
