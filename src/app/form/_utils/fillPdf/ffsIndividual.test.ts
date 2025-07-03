@@ -1,6 +1,6 @@
 import { AddressState } from "../inputFields/types";
 import { mapFfsIndividualFields } from "./ffsIndividual";
-import { FormData } from "./form";
+import type { FormData } from "./form";
 
 const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
   return {

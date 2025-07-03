@@ -1,5 +1,5 @@
 import { PDFDocument } from "pdf-lib";
-import { AddressState } from "../inputFields/types";
+import type { AddressState } from "../inputFields/types";
 import { fillAetnaForm } from "./aetna";
 import { fillFfsIndividualForm } from "./ffsIndividual";
 import { fillFidelisForm } from "./fidelis";

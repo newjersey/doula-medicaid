@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { zipForms } from "../utils/zip";
 import { parseAetnaForm } from "./forms/aetna";
-import { fillAllForms, FormData } from "./forms/form";
+import type { FormData } from "./forms/form";
+import { fillAllForms } from "./forms/form";
 
 const Form: React.FC = () => {
   const [file, setFile] = useState<File>();
