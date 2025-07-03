@@ -48,7 +48,7 @@ const FormStep: React.FC = () => {
     <div>
       {zipDownloadUrl && (
         <a href={zipDownloadUrl} download="filled_forms.zip">
-          Click here to download the ZIP
+          Download the ZIP
         </a>
       )}
     </div>
