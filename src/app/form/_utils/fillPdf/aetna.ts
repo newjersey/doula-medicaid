@@ -1,4 +1,5 @@
-import { FormData, fillForm } from "./form";
+import type { FormData } from "./form";
+import { fillForm } from "./form";
 import { formatDateOfBirth } from "./formatters";
 
 export const AETNA_PDF_NAME = "aetna_filled.pdf";

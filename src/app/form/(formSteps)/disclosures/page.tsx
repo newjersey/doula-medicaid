@@ -38,7 +38,7 @@ const DisclosuresStep: React.FC = () => {
     <div>
       <Form
         onSubmit={() => {
-          throw "Not implemented";
+          throw new Error("Not implemented");
         }}
       >
         <Fieldset legend="Is your doula business a sole proprietorship?" legendStyle="large">

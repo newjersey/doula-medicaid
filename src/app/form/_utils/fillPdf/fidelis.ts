@@ -1,4 +1,5 @@
-import { FormData, fillForm } from "./form";
+import type { FormData } from "./form";
+import { fillForm } from "./form";
 import { formatDateOfBirth } from "./formatters";
 
 export const FIDELIS_PDF_NAME = "fidelis_filled.pdf";

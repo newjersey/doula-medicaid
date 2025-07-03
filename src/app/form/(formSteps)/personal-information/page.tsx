@@ -93,7 +93,7 @@ const PersonalInformationStep: React.FC = () => {
       {dataHasLoaded && (
         <Form
           onSubmit={() => {
-            throw "Not implemented";
+            throw new Error("Not implemented");
           }}
         >
           <Fieldset legend="Name" legendStyle="srOnly">
