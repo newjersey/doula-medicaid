@@ -16,6 +16,13 @@ const getFormData = (): FormData => {
     (getValue("natureOfDisclosingEntity") as keyof typeof DisclosingEntity) || null;
   const disclosingEntity = disclosingEntityString ? DisclosingEntity[disclosingEntityString] : null;
 
+  const convertToBoolean = (value: string | null): boolean | null => {
+    if (value === null) return null;
+    if (value === "true") return true;
+    if (value === "false") return false;
+    throw new Error(`Invalid boolean value: ${value}`);
+  };
+
   return {
     firstName: getValue("firstName"),
     middleName: getValue("middleName"),
@@ -30,6 +37,7 @@ const getFormData = (): FormData => {
     state: state,
     zip: getValue("zip"),
     natureOfDisclosingEntity: disclosingEntity,
+    separateBusinessAddress: convertToBoolean(getValue("separateBusinessAddress")),
   };
 };
 

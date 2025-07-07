@@ -1,5 +1,5 @@
-import { type FormData, fillForm } from "./form";
 import { DisclosingEntity } from "../inputFields/enums";
+import { type FormData, fillForm } from "./form";
 import { formatDateOfBirth } from "./formatters";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "ffs_individual_filled.pdf";
@@ -56,7 +56,7 @@ const getPage7Fields = (formData: FormData): PDFData => {
 
     fd425mailtoaddressstreet: `${formData.streetAddress1}${formData.streetAddress2 ? " " + formData.streetAddress2 : ""}`,
     fd425mailtoaddressstate: formData.state || "", // input validation not yet implemented
-    fd425mailtoaddresscity: formData.city || "", 
+    fd425mailtoaddresscity: formData.city || "",
     fd425mailtoaddresszip: formData.zip || "",
   };
 };
@@ -76,16 +76,26 @@ const getPage12Fields = (formData: FormData): PDFData => {
 const getPage16Fields = (formData: FormData): PDFData => {
   // Page 16 - disclosing entity sole proprietorship
   if (formData.natureOfDisclosingEntity == DisclosingEntity.SoleProprietorship) {
-    return {
+    const soleProprietorshipFields = {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber || "",
       fd452providernumbandornpi: formData.npiNumber || "",
     };
+
+    if (formData.separateBusinessAddress === false) {
+      return {
+        ...soleProprietorshipFields,
+        fd452businessstreetline1: formData.streetAddress1 || "",
+        fd452businessstreetline2: formData.streetAddress2 || "",
+        fd452businessstreetline3: formatAddressLine3(formData),
+      };
+    } else if (formData.separateBusinessAddress === true) {
+      return soleProprietorshipFields;
+    }
   }
-  
+
   return {};
-  
 };
 
 const formatAddressLine3 = (formData: FormData): string => {

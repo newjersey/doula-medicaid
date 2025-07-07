@@ -18,6 +18,7 @@ export interface FormData {
   state: AddressState | null;
   zip: string | null;
   natureOfDisclosingEntity: DisclosingEntity | null;
+  separateBusinessAddress: boolean | null;
 }
 
 export interface FilledPDFData {

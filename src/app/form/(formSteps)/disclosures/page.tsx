@@ -26,6 +26,24 @@ const DisclosuresStep: React.FC = () => {
             onChange={() => removeKey("natureOfDisclosingEntity")}
           />
         </Fieldset>
+
+        <Fieldset
+          legend="Do you have a separate business address that's different from your mailing address?"
+          legendStyle="large"
+        >
+          <Radio
+            id="separateBusinessAddressYes"
+            name="setSeparateBusinessAddress"
+            label="Yes, I have a separate business address"
+            onChange={() => setKeyValue("separateBusinessAddress", "true")}
+          />
+          <Radio
+            id="separateBusinessAddressNo"
+            name="setSeparateBusinessAddress"
+            label="No, I do not have a separate business address"
+            onChange={() => setKeyValue("separateBusinessAddress", "false")}
+          />
+        </Fieldset>
       </Form>
     </div>
   );
