@@ -46,6 +46,20 @@ describe("<PersonalInformationStep />", () => {
     expect(window.sessionStorage.getItem("phoneNumber")).toEqual("111-111-1111");
   });
 
+  it("updates ssn", async () => {
+    const user = userEvent.setup();
+    render(<PersonalInformationStep />);
+    const inputField = screen.getByRole("textbox", {
+      name: "Social security number",
+    });
+    expect(window.sessionStorage.getItem("socialSecurityNumber")).toEqual(null);
+
+    await user.type(inputField, "123456789");
+
+    expect(inputField).toHaveValue("123-45-6789");
+    expect(window.sessionStorage.getItem("socialSecurityNumber")).toEqual("123-45-6789");
+  });
+
   it("updates address state", async () => {
     const user = userEvent.setup();
     render(<PersonalInformationStep />);

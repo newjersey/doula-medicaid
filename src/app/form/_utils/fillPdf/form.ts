@@ -12,6 +12,7 @@ export interface FormData {
   phoneNumber: string | null;
   email: string | null;
   npiNumber: string | null;
+  socialSecurityNumber: string | null;
   streetAddress1: string | null;
   streetAddress2: string | null;
   city: string | null;
