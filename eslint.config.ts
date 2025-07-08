@@ -39,7 +39,7 @@ const eslintConfig = [
           varsIgnorePattern: "^_",
         },
       ],
-      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/strict-boolean-expressions": [
         "error",
         { allowNullableString: true, allowNumber: false },

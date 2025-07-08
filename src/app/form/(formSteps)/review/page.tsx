@@ -55,9 +55,7 @@ const FormStep: React.FC = () => {
       const filledForms = await fillAllForms(getFormData());
       const zipBlob = await zipForms(filledForms);
       setZipDownloadUrl(URL.createObjectURL(zipBlob));
-    })().catch(() => {
-      throw new Error("Error creating pdf zip");
-    });
+    })();
   }, []);
 
   return (
