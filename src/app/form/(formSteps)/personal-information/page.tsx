@@ -22,6 +22,7 @@ interface PersonalInformationData {
   phoneNumber: string | null;
   email: string | null;
   npiNumber: string | null;
+  socialSecurityNumber: string | null;
   streetAddress1: string | null;
   streetAddress2: string | null;
   city: string | null;
@@ -46,6 +47,7 @@ const PersonalInformationStep: React.FC = () => {
     phoneNumber: null,
     email: null,
     npiNumber: null,
+    socialSecurityNumber: null,
     streetAddress1: null,
     streetAddress2: null,
     city: null,
@@ -66,6 +68,7 @@ const PersonalInformationStep: React.FC = () => {
       phoneNumber: getValue("phoneNumber"),
       email: getValue("email"),
       npiNumber: getValue("npiNumber"),
+      socialSecurityNumber: getValue("socialSecurityNumber"),
       streetAddress1: getValue("streetAddress1"),
       streetAddress2: getValue("streetAddress2"),
       city: getValue("city"),
@@ -195,6 +198,19 @@ const PersonalInformationStep: React.FC = () => {
             pattern="\d{10}"
             required
             value={personalInformationData.npiNumber || ""}
+            onChange={handleChange}
+          />
+
+          <Label htmlFor="socialSecurityNumber">Social security number</Label>
+          <TextInputMask
+            id="socialSecurityNumber"
+            name="socialSecurityNumber"
+            type="text"
+            inputMode="numeric"
+            mask="___-__-____"
+            pattern="\d{3}-\d{2}-\d{4}"
+            required
+            value={personalInformationData.socialSecurityNumber || ""}
             onChange={handleChange}
           />
 

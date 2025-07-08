@@ -11,6 +11,7 @@ const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
     phoneNumber: null,
     email: null,
     npiNumber: null,
+    socialSecurityNumber: null,
     streetAddress1: null,
     streetAddress2: null,
     city: null,
@@ -101,6 +102,17 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("1111111111");
   };
 
+  const testSocialSecurityNumber = (formKey: string) => {
+    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+    testedFormKeys.add(formKey);
+
+    const formData: FormData = generateFormData({
+      socialSecurityNumber: "123-45-6789",
+    });
+    const fieldsToFill = mapFfsIndividualFields(formData);
+    expect(fieldsToFill[formKey]).toEqual("123-45-6789");
+  };
+
   const testEmail = (formKey: string) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
@@ -119,6 +131,10 @@ describe("mapFfsIndividualFields", () => {
 
     it("fills date of birth", () => {
       testDateOfBirth("fd427dateofbirthDate1_af_date");
+    });
+
+    it("fills social security number", () => {
+      testSocialSecurityNumber("fd427SocialSecurityNumber");
     });
   });
 
@@ -151,6 +167,10 @@ describe("mapFfsIndividualFields", () => {
 
     it("fills email address", () => {
       testEmail("fd425emailaddress");
+    });
+
+    it("fills social security number", () => {
+      testSocialSecurityNumber("fd425socialsecuritynumber");
     });
 
     it("fills street address", () => {
@@ -244,6 +264,7 @@ describe("mapFfsIndividualFields", () => {
           middleName: "Middle",
           lastName: "Last",
           phoneNumber: "111-111-1111",
+          socialSecurityNumber: "123-45-6789",
           npiNumber: "1111111111",
         });
         const fieldsToFill = mapFfsIndividualFields(formData);
@@ -258,6 +279,7 @@ describe("mapFfsIndividualFields", () => {
         expect(fieldsToFill["fd452nameofdisclosingentity"]).toBeUndefined();
         expect(fieldsToFill["fd452telephonenumber"]).toBeUndefined();
         expect(fieldsToFill["fd452providernumbandornpi"]).toBeUndefined();
+        expect(fieldsToFill["fd452einorothertaxidnumber"]).toBeUndefined();
       });
     });
 
@@ -269,6 +291,7 @@ describe("mapFfsIndividualFields", () => {
           middleName: "Middle",
           lastName: "Last",
           phoneNumber: "111-111-1111",
+          socialSecurityNumber: "123-45-6789",
           npiNumber: "1111111111",
           streetAddress1: "123 Main St",
           streetAddress2: "Apt 4B",
@@ -329,6 +352,7 @@ describe("mapFfsIndividualFields", () => {
         expect(fieldsToFill["fd452businessstreetline1"]).toEqual("456 Test St");
         expect(fieldsToFill["fd452businessstreetline2"]).toEqual("Suite Test");
         expect(fieldsToFill["fd452businessstreetline3"]).toEqual("Trenton, NJ 22222");
+        expect(fieldsToFill["fd452einorothertaxidnumber"]).toEqual("123-45-6789");
       });
     });
   });

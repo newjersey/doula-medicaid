@@ -31,6 +31,7 @@ const getFormData = (): FormData => {
     phoneNumber: getValue("phoneNumber"),
     email: getValue("email"),
     npiNumber: getValue("npiNumber"),
+    socialSecurityNumber: getValue("socialSecurityNumber"),
     streetAddress1: getValue("streetAddress1"),
     streetAddress2: getValue("streetAddress2"),
     city: getValue("city"),
@@ -60,7 +61,7 @@ const FormStep: React.FC = () => {
     <div>
       {zipDownloadUrl && (
         <a href={zipDownloadUrl} download="filled_forms.zip">
-          Click here to download the ZIP
+          Download your forms
         </a>
       )}
     </div>
