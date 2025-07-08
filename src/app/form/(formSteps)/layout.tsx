@@ -6,14 +6,7 @@ import { usePathname } from "next/navigation";
 
 const steps = [
   { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
-  { id: "practice-information", stepName: "Practice Information", title: "Practice information" },
   { id: "disclosures", stepName: "Disclosures", title: "Disclosures" },
-  {
-    id: "aetna",
-    stepName: "Aetna Application",
-    title:
-      "Your Medicaid ID application is complete! You're just a few steps away from finishing your Aetna form.",
-  },
   {
     id: "review",
     stepName: "Review",

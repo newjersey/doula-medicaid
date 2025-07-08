@@ -1,5 +1,9 @@
 import JSZip from "jszip";
-import type { FilledPDFData } from "../proof-of-concept/forms/form";
+
+export interface FilledPDFData {
+  filename: string;
+  bytes: Uint8Array;
+}
 
 export const zipForms = async (pdfDataList: FilledPDFData[]) => {
   const zip = new JSZip();

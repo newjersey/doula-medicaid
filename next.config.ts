@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
     config.resolve.alias.encoding = false;
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/form/personal-information",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
