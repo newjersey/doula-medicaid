@@ -95,38 +95,43 @@ const PersonalInformationStep: React.FC = () => {
           onSubmit={() => {
             throw new Error("Not implemented");
           }}
+          className="maxw-tablet"
         >
-          <Fieldset legend="Name" legendStyle="srOnly">
-            <Label htmlFor="firstName">First name</Label>
-            <TextInput
-              id="firstName"
-              name="firstName"
-              type="text"
-              required
-              value={personalInformationData.firstName || ""}
-              onChange={handleChange}
-            />
-
-            <Label htmlFor="middleName" hint=" (optional)">
-              Middle name
-            </Label>
-            <TextInput
-              id="middleName"
-              name="middleName"
-              type="text"
-              value={personalInformationData.middleName || ""}
-              onChange={handleChange}
-            />
-
-            <Label htmlFor="lastName">Last name</Label>
-            <TextInput
-              id="lastName"
-              name="lastName"
-              type="text"
-              required
-              value={personalInformationData.lastName || ""}
-              onChange={handleChange}
-            />
+          <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
+            <div className="tablet:grid-col-4">
+              <Label htmlFor="firstName">First name</Label>
+              <TextInput
+                id="firstName"
+                name="firstName"
+                type="text"
+                required
+                value={personalInformationData.firstName || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="tablet:grid-col-4">
+              <Label htmlFor="middleName" hint=" (optional)">
+                Middle name
+              </Label>
+              <TextInput
+                id="middleName"
+                name="middleName"
+                type="text"
+                value={personalInformationData.middleName || ""}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="tablet:grid-col-4">
+              <Label htmlFor="lastName">Last name</Label>
+              <TextInput
+                id="lastName"
+                name="lastName"
+                type="text"
+                required
+                value={personalInformationData.lastName || ""}
+                onChange={handleChange}
+              />
+            </div>
           </Fieldset>
 
           <hr />
