@@ -5,13 +5,11 @@ import {
   Fieldset,
   Form,
   Label,
-  Select,
   TextInput,
   TextInputMask,
 } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
 import { formatDateOfBirthDefaultValue as formatAppointmentDateDefaultValue } from "../../_utils/inputFields/dateOfBirth";
-import { AddressState } from "../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../_utils/sessionStorage";
 
 interface PersonalInformationData {
@@ -170,121 +168,13 @@ const PersonalInformationStep: React.FC = () => {
             id="phoneNumber"
             name="phoneNumber"
             type="tel"
-            inputMode="numeric"
+            inputMode="text"
             mask="___-___-____"
             pattern="\d{3}-\d{3}-\d{4}"
             required
             value={personalInformationData.phoneNumber || ""}
             onChange={handleChange}
           />
-
-          <Label htmlFor="email">Email address</Label>
-          <TextInput
-            id="email"
-            name="email"
-            type="email"
-            autoCorrect="off"
-            autoCapitalize="off"
-            required
-            value={personalInformationData.email || ""}
-            onChange={handleChange}
-          />
-
-          <Label htmlFor="npiNumber">NPI number</Label>
-          <TextInputMask
-            id="npiNumber"
-            name="npiNumber"
-            type="tel"
-            inputMode="numeric"
-            mask="__________"
-            pattern="\d{10}"
-            required
-            value={personalInformationData.npiNumber || ""}
-            onChange={handleChange}
-          />
-
-          <Label htmlFor="socialSecurityNumber">Social security number</Label>
-          <TextInputMask
-            id="socialSecurityNumber"
-            name="socialSecurityNumber"
-            type="text"
-            inputMode="numeric"
-            mask="___-__-____"
-            pattern="\d{3}-\d{2}-\d{4}"
-            required
-            value={personalInformationData.socialSecurityNumber || ""}
-            onChange={handleChange}
-          />
-
-          <hr />
-
-          <Fieldset legend="Mail to address" legendStyle="srOnly">
-            <Label htmlFor="streetAddress1">Street address 1</Label>
-            <TextInput
-              id="streetAddress1"
-              name="streetAddress1"
-              type="text"
-              inputMode="numeric"
-              required
-              value={personalInformationData.streetAddress1 || ""}
-              onChange={handleChange}
-            />
-
-            <Label htmlFor="streetAddress2" hint=" (optional)">
-              Street address 2
-            </Label>
-            <TextInput
-              id="streetAddress2"
-              name="streetAddress2"
-              type="text"
-              value={personalInformationData.streetAddress2 || ""}
-              onChange={handleChange}
-            />
-
-            <div className="grid-row grid-gap">
-              <div className="mobile-lg:grid-col-8">
-                <Label htmlFor="city">City</Label>
-                <TextInput
-                  className="usa-input"
-                  id="city"
-                  name="city"
-                  type="text"
-                  required
-                  value={personalInformationData.city || ""}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mobile-lg:grid-col-4">
-                <Label htmlFor="state">State</Label>
-                <Select
-                  className="usa-select"
-                  id="state"
-                  name="state"
-                  required
-                  value={personalInformationData.state || ""}
-                  onChange={handleChange}
-                >
-                  {Object.keys(AddressState).map((state) => (
-                    <option key={state} value={state}>
-                      {state}
-                    </option>
-                  ))}
-                </Select>
-              </div>
-            </div>
-
-            <Label htmlFor="zip">ZIP code</Label>
-            <TextInput
-              className="usa-input usa-input--medium"
-              id="zip"
-              name="zip"
-              type="text"
-              pattern="[\d]{5}(-[\d]{4})?"
-              required
-              value={personalInformationData.zip || ""}
-              onChange={handleChange}
-            />
-          </Fieldset>
         </Form>
       )}
     </div>
