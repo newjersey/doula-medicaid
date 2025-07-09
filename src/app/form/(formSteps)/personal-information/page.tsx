@@ -10,7 +10,7 @@ import {
   TextInputMask,
 } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
-import { formatDateOfBirthDefaultValue } from "../../_utils/inputFields/dateOfBirth";
+import { formatDateOfBirthDefaultValue as formatAppointmentDateDefaultValue } from "../../_utils/inputFields/dateOfBirth";
 import { AddressState } from "../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../_utils/sessionStorage";
 
@@ -18,7 +18,7 @@ interface PersonalInformationData {
   firstName: string | null;
   middleName: string | null;
   lastName: string | null;
-  dateOfBirth: string | null;
+  appointmentDate: string | null;
   phoneNumber: string | null;
   email: string | null;
   npiNumber: string | null;
@@ -43,7 +43,7 @@ const PersonalInformationStep: React.FC = () => {
     firstName: null,
     middleName: null,
     lastName: null,
-    dateOfBirth: null,
+    appointmentDate: null,
     phoneNumber: null,
     email: null,
     npiNumber: null,
@@ -64,7 +64,7 @@ const PersonalInformationStep: React.FC = () => {
       firstName: getValue("firstName"),
       middleName: getValue("middleName"),
       lastName: getValue("lastName"),
-      dateOfBirth: getValue("dateOfBirth"),
+      appointmentDate: getValue("dateOfBirth"),
       phoneNumber: getValue("phoneNumber"),
       email: getValue("email"),
       npiNumber: getValue("npiNumber"),
@@ -131,17 +131,17 @@ const PersonalInformationStep: React.FC = () => {
 
           <hr />
 
-          <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
-            Date of birth
+          <Label id="appointmentDateLabel" htmlFor="appointmentDate">
+            Appointment date
           </Label>
-          <div className="usa-hint" id="dateOfBirthHint">
+          <div className="usa-hint" id="appointmentDateHint">
             mm/dd/yyyy
           </div>
           <DatePicker
-            id="dateOfBirth"
-            name="dateOfBirth"
-            aria-describedby="dateOfBirthHint"
-            aria-labelledby="dateOfBirthLabel"
+            id="appointmentDate"
+            name="appointmentDate"
+            aria-describedby="appointmentDateHint"
+            aria-labelledby="appointmentDateLabel"
             /**
             The DatePicker component is a little weird, vs the other input components in the library
             1. Unlike other input components, it lacks a value prop for the parent to control its value. See https://github.com/trussworks/react-uswds/issues/3000
@@ -150,16 +150,18 @@ const PersonalInformationStep: React.FC = () => {
            */
             key={dataHasLoaded.toString()}
             defaultValue={
-              personalInformationData.dateOfBirth
-                ? formatDateOfBirthDefaultValue(new Date(personalInformationData.dateOfBirth))
+              personalInformationData.appointmentDate
+                ? formatAppointmentDateDefaultValue(
+                    new Date(personalInformationData.appointmentDate),
+                  )
                 : undefined
             }
             onChange={(value) => {
               if (value === undefined || !dateIsValid(value)) {
-                handleValueChange("dateOfBirth", "");
+                handleValueChange("appointmentDate", "");
                 return;
               }
-              handleValueChange("dateOfBirth", value);
+              handleValueChange("appointmentDate", value);
             }}
           />
 
