@@ -18,6 +18,11 @@ const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
     zip: null,
     natureOfDisclosingEntity: null,
     separateBusinessAddress: null,
+    businessStreetAddress1: null,
+    businessStreetAddress2: null,
+    businessCity: null,
+    businessState: null,
+    businessZip: null,
     ...formDataOverrides,
   };
 };
@@ -304,6 +309,11 @@ describe("mapFfsIndividualFields", () => {
           state: AddressState.NJ,
           zip: "11111",
           separateBusinessAddress: true,
+          businessStreetAddress1: "456 Test St",
+          businessStreetAddress2: "Suite Test",
+          businessCity: "Trenton",
+          businessState: AddressState.NJ,
+          businessZip: "22222",
         });
         const fieldsToFill = mapFfsIndividualFields(formData);
         expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toEqual(true);
@@ -316,9 +326,9 @@ describe("mapFfsIndividualFields", () => {
         expect(fieldsToFill["fd452nameofdisclosingentity"]).toEqual("First Middle Last");
         expect(fieldsToFill["fd452telephonenumber"]).toEqual("111-111-1111");
         expect(fieldsToFill["fd452providernumbandornpi"]).toEqual("1111111111");
-        expect(fieldsToFill["fd452businessstreetline1"]).toBeUndefined();
-        expect(fieldsToFill["fd452businessstreetline2"]).toBeUndefined();
-        expect(fieldsToFill["fd452businessstreetline3"]).toBeUndefined();
+        expect(fieldsToFill["fd452businessstreetline1"]).toEqual("456 Test St");
+        expect(fieldsToFill["fd452businessstreetline2"]).toEqual("Suite Test");
+        expect(fieldsToFill["fd452businessstreetline3"]).toEqual("Trenton, NJ 22222");
       });
     });
   });

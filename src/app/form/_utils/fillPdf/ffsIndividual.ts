@@ -91,7 +91,12 @@ const getPage16Fields = (formData: FormData): PDFData => {
         fd452businessstreetline3: formatAddressLine3(formData),
       };
     } else if (formData.separateBusinessAddress === true) {
-      return soleProprietorshipFields;
+      return {
+        ...soleProprietorshipFields,
+        fd452businessstreetline1: formData.businessStreetAddress1 || "",
+        fd452businessstreetline2: formData.businessStreetAddress2 || "",
+        fd452businessstreetline3: formatBusinessAddressLine3(formData),
+      };
     }
   }
 
@@ -100,6 +105,10 @@ const getPage16Fields = (formData: FormData): PDFData => {
 
 const formatAddressLine3 = (formData: FormData): string => {
   return `${formData.city}, ${formData.state} ${formData.zip}`;
+};
+
+const formatBusinessAddressLine3 = (formData: FormData): string => {
+  return `${formData.businessCity}, ${formData.businessState} ${formData.businessZip}`;
 };
 
 const formatName = (formData: FormData): string => {

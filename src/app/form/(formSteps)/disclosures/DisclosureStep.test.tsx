@@ -44,6 +44,11 @@ describe("<DisclosuresStep />", () => {
   it("saves separateBusinessAddress as true when user selects yes", async () => {
     const user = userEvent.setup();
     render(<DisclosuresStep />);
+    const yesSPButton = screen.getByRole("radio", {
+      name: "Yes, my doula business is a sole proprietorship",
+    });
+    await user.click(yesSPButton);
+    expect(yesSPButton).toBeChecked();
     const noButton = screen.getByRole("radio", {
       name: "No, I do not have a separate business address",
     });
@@ -61,6 +66,11 @@ describe("<DisclosuresStep />", () => {
   it("saves separateBusinessAddress as false when user selects no", async () => {
     const user = userEvent.setup();
     render(<DisclosuresStep />);
+    const yesSPButton = screen.getByRole("radio", {
+      name: "Yes, my doula business is a sole proprietorship",
+    });
+    await user.click(yesSPButton);
+    expect(yesSPButton).toBeChecked();
     const noButton = screen.getByRole("radio", {
       name: "No, I do not have a separate business address",
     });

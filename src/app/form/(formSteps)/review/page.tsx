@@ -38,6 +38,11 @@ const getFormData = (): FormData => {
     zip: getValue("zip"),
     natureOfDisclosingEntity: disclosingEntity,
     separateBusinessAddress: convertToBoolean(getValue("separateBusinessAddress")),
+    businessStreetAddress1: getValue("businessStreetAddress1"),
+    businessStreetAddress2: getValue("businessStreetAddress2"),
+    businessCity: getValue("businessCity"),
+    businessState: getValue("businessState") as AddressState | null,
+    businessZip: getValue("businessZip"),
   };
 };
 
