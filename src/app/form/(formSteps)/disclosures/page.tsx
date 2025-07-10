@@ -64,7 +64,7 @@ const DisclosuresStep: React.FC = () => {
           />
         </Fieldset>
 
-        {isSoleProprietorship && (
+        {isSoleProprietorship !== null && (
           <Fieldset
             legend="Do you have a separate business address that's different from your mailing address?"
             legendStyle="large"
@@ -92,7 +92,7 @@ const DisclosuresStep: React.FC = () => {
           </Fieldset>
         )}
 
-        {hasSeparateBusinessAddress && (
+        {hasSeparateBusinessAddress !== null && (
           <Fieldset legend="Business address" legendStyle="srOnly">
             <Label htmlFor="businessStreetAddress1">Street address 1</Label>
             <TextInput
