@@ -19,6 +19,12 @@ export interface FormData {
   state: AddressState | null;
   zip: string | null;
   natureOfDisclosingEntity: DisclosingEntity | null;
+  separateBusinessAddress: boolean | null;
+  businessStreetAddress1: string | null;
+  businessStreetAddress2: string | null;
+  businessCity: string | null;
+  businessState: AddressState | null;
+  businessZip: string | null;
 }
 
 export interface FilledPDFData {

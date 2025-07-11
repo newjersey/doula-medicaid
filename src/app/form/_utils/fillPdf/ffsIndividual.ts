@@ -78,13 +78,29 @@ const getPage12Fields = (formData: FormData): PDFData => {
 const getPage16Fields = (formData: FormData): PDFData => {
   // Page 16 - disclosing entity sole proprietorship
   if (formData.natureOfDisclosingEntity == DisclosingEntity.SoleProprietorship) {
-    return {
+    const soleProprietorshipFields = {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber ?? "",
       fd452providernumbandornpi: formData.npiNumber ?? "",
       fd452einorothertaxidnumber: formData.socialSecurityNumber ?? "",
     };
+
+    if (formData.separateBusinessAddress === false) {
+      return {
+        ...soleProprietorshipFields,
+        fd452businessstreetline1: formData.streetAddress1 || "",
+        fd452businessstreetline2: formData.streetAddress2 || "",
+        fd452businessstreetline3: formatAddressLine3(formData),
+      };
+    } else if (formData.separateBusinessAddress === true) {
+      return {
+        ...soleProprietorshipFields,
+        fd452businessstreetline1: formData.businessStreetAddress1 || "",
+        fd452businessstreetline2: formData.businessStreetAddress2 || "",
+        fd452businessstreetline3: formatBusinessAddressLine3(formData),
+      };
+    }
   }
 
   return {};
@@ -92,6 +108,10 @@ const getPage16Fields = (formData: FormData): PDFData => {
 
 const formatAddressLine3 = (formData: FormData): string => {
   return `${formData.city}, ${formData.state} ${formData.zip}`;
+};
+
+const formatBusinessAddressLine3 = (formData: FormData): string => {
+  return `${formData.businessCity}, ${formData.businessState} ${formData.businessZip}`;
 };
 
 const formatName = (formData: FormData): string => {
