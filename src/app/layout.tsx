@@ -23,18 +23,12 @@ export default function RootLayout({
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </Head>
       <body>
-        <section className="nj-banner" aria-label="Official government website">
-          <header className="nj-banner__header">
+        <header className="nj-banner" aria-label="Official government website">
+          <div className="nj-banner__header">
             <div className="grid-container">
               <div className="nj-banner__inner">
-                <div className="grid-col-auto">
-                  <Image
-                    className="nj-banner__header-seal"
-                    src={njStateSeal.src}
-                    alt="NJ flag"
-                    width={njStateSeal.width}
-                    height={njStateSeal.height}
-                  ></Image>
+                <div>
+                  <Image className="nj-banner__header-seal" src={njStateSeal} alt="NJ flag"></Image>
                 </div>
                 <div className="grid-col-fill">
                   <a href="https://nj.gov">Official Site of the State of New Jersey</a>
@@ -46,6 +40,7 @@ export default function RootLayout({
                       <li>
                         <a href="https://nj.gov/subscribe/" target="_blank">
                           <svg
+                            id="banner-mail-icon"
                             className="usa-icon bottom-neg-2px margin-right-05"
                             aria-hidden="true"
                             focusable="false"
@@ -61,8 +56,8 @@ export default function RootLayout({
                 </div>
               </div>
             </div>
-          </header>
-        </section>
+          </div>
+        </header>
         <div className="usa-section">
           <div className="grid-container">
             <div className="grid-row">{children}</div>
