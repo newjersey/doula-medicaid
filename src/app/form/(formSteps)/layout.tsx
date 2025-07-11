@@ -82,7 +82,7 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
         </ButtonGroup>
       </div>
       <div className="margin-top-4">Step {currentStepIndex + 1}</div>
-      <h1 className="margin-top-4">{currentStep.title}</h1>
+      <h2 className="margin-top-4">{currentStep.title}</h2>
       <div className="margin-top-4">{children}</div>
     </div>
   );
