@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { AddressState } from "../../_utils/inputFields/enums";
 import { removeKey, setKeyValue } from "../../_utils/sessionStorage";
 
-interface DisclosureData {
+interface DisclosureBusinessAddressData {
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
   businessCity: string | null;
@@ -20,7 +20,7 @@ const DisclosuresStep: React.FC = () => {
     null,
   );
 
-  const [businessAddress, setBusinessAddress] = useState<DisclosureData>({
+  const [businessAddress, setBusinessAddress] = useState<DisclosureBusinessAddressData>({
     businessStreetAddress1: null,
     businessStreetAddress2: null,
     businessCity: null,
