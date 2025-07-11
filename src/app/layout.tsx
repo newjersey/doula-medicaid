@@ -40,7 +40,7 @@ export default function RootLayout({
                       <li>
                         <a href="https://nj.gov/subscribe/" target="_blank">
                           <svg
-                            className="usa-icon bottom-neg-2px margin-right-05"
+                            className="usa-icon nj-banner__mail-icon bottom-neg-2px margin-right-05"
                             aria-hidden="true"
                             focusable="false"
                             role="img"
