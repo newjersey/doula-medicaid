@@ -6,7 +6,7 @@ import Image from "next/image";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Doula Common App",
+  title: { template: "%s | Doula Common App", default: "Doula Common App" },
   description: "Prototype",
 };
 
@@ -58,9 +58,7 @@ export default function RootLayout({
           </div>
         </header>
         <div className="usa-section">
-          <div className="grid-container">
-            <div className="grid-row">{children}</div>
-          </div>
+          <div className="grid-container">{children}</div>
         </div>
       </body>
     </html>

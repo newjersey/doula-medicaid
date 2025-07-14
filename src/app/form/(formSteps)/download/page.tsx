@@ -6,6 +6,7 @@ import type { FormData } from "../../_utils/fillPdf/form";
 import { fillAllForms } from "../../_utils/fillPdf/form";
 import { AddressState, DisclosingEntity } from "../../_utils/inputFields/enums";
 import { getValue } from "../../_utils/sessionStorage";
+import ProgressButtons from "../components/ProgressButtons";
 
 const getFormData = (): FormData => {
   const dateOfBirthString = getValue("dateOfBirth");
@@ -65,6 +66,7 @@ const FormStep: React.FC = () => {
           Download your forms
         </a>
       )}
+      <ProgressButtons />
     </div>
   );
 };

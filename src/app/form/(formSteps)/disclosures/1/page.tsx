@@ -2,8 +2,9 @@
 
 import { Fieldset, Form, Label, Radio, Select, TextInput } from "@trussworks/react-uswds";
 import React, { useState } from "react";
-import { AddressState } from "../../_utils/inputFields/enums";
-import { removeKey, setKeyValue } from "../../_utils/sessionStorage";
+import { AddressState } from "../../../_utils/inputFields/enums";
+import { removeKey, setKeyValue } from "../../../_utils/sessionStorage";
+import ProgressButtons from "../../components/ProgressButtons";
 
 interface DisclosureBusinessAddressData {
   businessStreetAddress1: string | null;
@@ -13,7 +14,7 @@ interface DisclosureBusinessAddressData {
   businessZip: string | null;
 }
 
-const DisclosuresStep: React.FC = () => {
+const DisclosuresStep1: React.FC = () => {
   const [isSoleProprietorship, setIsSoleProprietorship] = useState<boolean | null>(null);
 
   const [hasSeparateBusinessAddress, setHasSeparateBusinessAddress] = useState<boolean | null>(
@@ -162,8 +163,9 @@ const DisclosuresStep: React.FC = () => {
           </Fieldset>
         )}
       </Form>
+      <ProgressButtons />
     </div>
   );
 };
 
-export default DisclosuresStep;
+export default DisclosuresStep1;

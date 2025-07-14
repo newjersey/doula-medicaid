@@ -19,5 +19,5 @@ npm test
 # Run test in specific file path, matching test description
 npm test -- --runTestsByPath "<path to file>" -t "<included in test block name>"
 # e.g.
-npm test -- --runTestsByPath "src/app/form/(formSteps)/personal-information/PersonalInformationStep.test.tsx" -t "updates first name"
+npm test -- --runTestsByPath "src/app/form/(formSteps)/personal-information/PersonalInformationStep1.test.tsx" -t "updates first name"
 ```

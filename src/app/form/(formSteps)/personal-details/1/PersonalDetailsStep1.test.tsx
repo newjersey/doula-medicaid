@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import PersonalInformationStep from "./page";
+import { RouterPathnameProvider } from "../../../_utils/testUtils";
+import PersonalDetailsStep1 from "./page";
 
-describe("<PersonalInformationStep />", () => {
+describe("<PersonalDetailsStep1 />", () => {
   afterEach(() => {
     window.sessionStorage.clear();
   });
@@ -20,7 +21,11 @@ describe("<PersonalInformationStep />", () => {
     { name: "ZIP code", key: "zip", testValue: "12345" },
   ])("updates the $name text input", async ({ name, key, testValue }) => {
     const user = userEvent.setup();
-    render(<PersonalInformationStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/personal-details/1">
+        <PersonalDetailsStep1 />
+      </RouterPathnameProvider>,
+    );
     const inputField = screen.getByRole("textbox", {
       name: name,
     });
@@ -34,7 +39,11 @@ describe("<PersonalInformationStep />", () => {
 
   it("updates phone number", async () => {
     const user = userEvent.setup();
-    render(<PersonalInformationStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/personal-details/1">
+        <PersonalDetailsStep1 />
+      </RouterPathnameProvider>,
+    );
     const inputField = screen.getByRole("textbox", {
       name: "Phone number",
     });
@@ -48,7 +57,11 @@ describe("<PersonalInformationStep />", () => {
 
   it("updates ssn", async () => {
     const user = userEvent.setup();
-    render(<PersonalInformationStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/personal-details/1">
+        <PersonalDetailsStep1 />
+      </RouterPathnameProvider>,
+    );
     const inputField = screen.getByRole("textbox", {
       name: "Social security number",
     });
@@ -62,7 +75,11 @@ describe("<PersonalInformationStep />", () => {
 
   it("updates address state", async () => {
     const user = userEvent.setup();
-    render(<PersonalInformationStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/personal-details/1">
+        <PersonalDetailsStep1 />
+      </RouterPathnameProvider>,
+    );
     const combobox = screen.getByRole("combobox", {
       name: "State",
     });

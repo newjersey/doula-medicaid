@@ -1,16 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { getValue } from "../../_utils/sessionStorage";
-import DisclosuresStep from "./page";
+import { getValue } from "../../../_utils/sessionStorage";
+import { RouterPathnameProvider } from "../../../_utils/testUtils";
+import DisclosuresStep1 from "./page";
 
-describe("<DisclosuresStep />", () => {
+describe("<DisclosuresStep1 />", () => {
   beforeEach(() => {
     sessionStorage.clear();
   });
 
   it("saves natureOfDisclosingEntity as null when user selects no", async () => {
     const user = userEvent.setup();
-    render(<DisclosuresStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/disclosures/1">
+        <DisclosuresStep1 />
+      </RouterPathnameProvider>,
+    );
     const noButton = screen.getByRole("radio", {
       name: "No, my doula business is not a sole proprietorship",
     });
@@ -26,7 +31,11 @@ describe("<DisclosuresStep />", () => {
 
   it("saves natureOfDisclosingEntity as SoleProprietorship when user selects yes", async () => {
     const user = userEvent.setup();
-    render(<DisclosuresStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/disclosures/1">
+        <DisclosuresStep1 />
+      </RouterPathnameProvider>,
+    );
     const noButton = screen.getByRole("radio", {
       name: "No, my doula business is not a sole proprietorship",
     });
@@ -43,7 +52,11 @@ describe("<DisclosuresStep />", () => {
 
   it("saves separateBusinessAddress as true when user selects yes", async () => {
     const user = userEvent.setup();
-    render(<DisclosuresStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/disclosures/1">
+        <DisclosuresStep1 />
+      </RouterPathnameProvider>,
+    );
     const yesSPButton = screen.getByRole("radio", {
       name: "Yes, my doula business is a sole proprietorship",
     });
@@ -65,7 +78,11 @@ describe("<DisclosuresStep />", () => {
 
   it("saves separateBusinessAddress as false when user selects no", async () => {
     const user = userEvent.setup();
-    render(<DisclosuresStep />);
+    render(
+      <RouterPathnameProvider pathname="/form/disclosures/1">
+        <DisclosuresStep1 />
+      </RouterPathnameProvider>,
+    );
     const yesSPButton = screen.getByRole("radio", {
       name: "Yes, my doula business is a sole proprietorship",
     });

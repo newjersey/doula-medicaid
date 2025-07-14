@@ -10,9 +10,10 @@ import {
   TextInputMask,
 } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
-import { formatDateOfBirthDefaultValue } from "../../_utils/inputFields/dateOfBirth";
-import { AddressState } from "../../_utils/inputFields/enums";
-import { getValue, setKeyValue } from "../../_utils/sessionStorage";
+import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
+import { AddressState } from "../../../_utils/inputFields/enums";
+import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
+import ProgressButtons from "../../components/ProgressButtons";
 
 interface PersonalInformationData {
   firstName: string | null;
@@ -37,7 +38,7 @@ const dateIsValid = (date: string): boolean => {
   return !!found;
 };
 
-const PersonalInformationStep: React.FC = () => {
+const PersonalDetailsStep1: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const [personalInformationData, setPersonalInformationData] = useState<PersonalInformationData>({
     firstName: null,
@@ -290,8 +291,9 @@ const PersonalInformationStep: React.FC = () => {
           </Fieldset>
         </Form>
       )}
+      <ProgressButtons />
     </div>
   );
 };
 
-export default PersonalInformationStep;
+export default PersonalDetailsStep1;
