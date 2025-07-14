@@ -1,80 +1,104 @@
-"use client";
-
+import type { Metadata } from "next";
+import { headers } from "next/headers";
 import React from "react";
-
-import { usePathname } from "next/navigation";
-
-const steps = [
-  { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
-  { id: "disclosures", stepName: "Disclosures", title: "Disclosures" },
-  {
-    id: "review",
-    stepName: "Review",
-    title: "Review and download.",
-  },
-];
+import { allSections, getCurrentStep } from "../_utils/sections";
 
 type CompletionState = "complete" | "current" | "incomplete";
 
-const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
-  const pathname = usePathname();
-
-  const currentStepIndex = steps.map((x) => x.id).findIndex((stepId) => pathname.endsWith(stepId));
-  if (currentStepIndex < 0) {
-    throw new Error(`Step not found for ${pathname}`);
+export const generateMetadata = async (): Promise<Metadata> => {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") as string;
+  const { section, stepNum: stepNum } = getCurrentStep(pathname);
+  let title = section.heading;
+  if (stepNum !== null) {
+    title += ` ${stepNum} of ${section.numSteps}`;
   }
+  return {
+    title,
+  };
+};
 
-  const currentStep = steps[currentStepIndex];
-  const isFinalStep = currentStepIndex === steps.length - 1;
-  const isFirstStep = currentStepIndex === 0;
+export const FormLayout = (props: { children?: React.ReactNode; pathname: string }) => {
+  const { section: currentSection, stepNum: currentStepNum } = getCurrentStep(props.pathname);
+  const currentSectionIndex = allSections.findIndex(
+    (sections) => sections.id === currentSection.id,
+  );
 
   return (
-    <div className="usa-step-indicator" aria-label="progress">
-      <ol className="usa-step-indicator__segments">
-        {steps.map((step, i) => {
-          const completionState: CompletionState =
-            i < currentStepIndex ? "complete" : i === currentStepIndex ? "current" : "incomplete";
-          const liSegmentClassSuffix = {
-            complete: "complete",
-            current: "current",
-            incomplete: null,
-          }[completionState];
-          const screenreaderStatus = {
-            complete: "completed",
-            current: null,
-            incomplete: "not completed",
-          }[completionState];
+    <>
+      <div className="usa-step-indicator" aria-label="progress">
+        <ol className="usa-step-indicator__segments">
+          {allSections.map((sections, sectionIndex) => {
+            let completionState: CompletionState;
+            switch (true) {
+              case sectionIndex < currentSectionIndex:
+                completionState = "complete";
+                break;
+              case sectionIndex === currentSectionIndex:
+                completionState = "current";
+                break;
+              case sectionIndex > currentSectionIndex:
+                completionState = "incomplete";
+                break;
+              default:
+                throw new Error(`Unexpected logic path: ${sectionIndex}, ${currentSectionIndex}`);
+                break;
+            }
 
-          return (
-            <li
-              key={step.id}
-              className={`usa-step-indicator__segment ${liSegmentClassSuffix ? `usa-step-indicator__segment--${liSegmentClassSuffix}` : ""}`}
-              {...(completionState === "current" && { "aria-current": "true" })}
-            >
-              <span className="usa-step-indicator__segment-label">
-                {step.stepName}
-                {screenreaderStatus && <span className="usa-sr-only">{screenreaderStatus}</span>}
+            const liSegmentClassSuffix = {
+              complete: "complete",
+              current: "current",
+              incomplete: null,
+            }[completionState];
+            const screenreaderStatus = {
+              complete: "completed",
+              current: null,
+              incomplete: "not completed",
+            }[completionState];
+
+            return (
+              <li
+                key={sections.id}
+                className={`usa-step-indicator__segment ${liSegmentClassSuffix ? `usa-step-indicator__segment--${liSegmentClassSuffix}` : ""}`}
+                {...(completionState === "current" && { "aria-current": "true" })}
+              >
+                <span className="usa-step-indicator__segment-label">
+                  {sections.sectionName}
+                  {screenreaderStatus && <span className="usa-sr-only">{screenreaderStatus}</span>}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+
+        <div className="usa-step-indicator__header">
+          <h1 className="font-heading-lg">
+            {currentStepNum !== null && (
+              <span className="usa-step-indicator__heading-counter">
+                <span className="usa-sr-only" data-testid="step-text">
+                  Step
+                </span>
+                <span className="usa-step-indicator__current-step">{currentStepNum}</span>
+                &nbsp;
+                <span className="usa-step-indicator__total-steps">{`of ${currentSection.numSteps}`}</span>
+                &nbsp;
               </span>
-            </li>
-          );
-        })}
-      </ol>
-      <div className="margin-top-4">Step {currentStepIndex + 1}</div>
-      <h1 className="margin-top-4">{currentStep.title}</h1>
-      <div className="margin-top-4">{children}</div>
-      <div className="margin-top-4">
-        <a
-          className="usa-button usa-button--outline"
-          href={isFirstStep ? "/" : `${steps[currentStepIndex - 1].id}`}
-        >
-          Back
-        </a>
-        <a className="usa-button" href={isFinalStep ? "/" : `${steps[currentStepIndex + 1].id}`}>
-          {isFinalStep ? "Finish" : "Next"}
-        </a>
+            )}
+            <span className="usa-step-indicator__heading-text">{currentSection.heading}</span>
+          </h1>
+        </div>
       </div>
-    </div>
+      <div className="margin-top-4">{props.children}</div>
+    </>
   );
 };
 
-export default FormLayout;
+// Separated this into a wrapper because as of writing, Jest does not support testing NextJs asynchronous server components (https://nextjs.org/docs/app/guides/testing/jest)
+const FormLayoutWithRequestContext = async ({ children }: { children?: React.ReactNode }) => {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") as string;
+
+  return <FormLayout pathname={pathname}>{children}</FormLayout>;
+};
+
+export default FormLayoutWithRequestContext;
