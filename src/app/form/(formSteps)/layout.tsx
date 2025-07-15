@@ -2,7 +2,8 @@
 
 import React from "react";
 
-import { usePathname } from "next/navigation";
+import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
+import { usePathname, useRouter } from "next/navigation";
 
 const steps = [
   { id: "personal-information", stepName: "Personal Information", title: "Personal information" },
@@ -18,6 +19,7 @@ type CompletionState = "complete" | "current" | "incomplete";
 
 const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
   const pathname = usePathname();
+  const router = useRouter();
 
   const currentStepIndex = steps.map((x) => x.id).findIndex((stepId) => pathname.endsWith(stepId));
   if (currentStepIndex < 0) {
@@ -29,7 +31,7 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
   const isFirstStep = currentStepIndex === 0;
 
   return (
-    <div className="usa-step-indicator" aria-label="progress">
+    <div className="usa-step-indicator form-container" aria-label="progress">
       <ol className="usa-step-indicator__segments">
         {steps.map((step, i) => {
           const completionState: CompletionState =
@@ -59,20 +61,29 @@ const FormLayout: React.FC = ({ children }: { children?: React.ReactNode }) => {
           );
         })}
       </ol>
+      <div className="right-align">
+        <ButtonGroup type="default">
+          {!isFirstStep && (
+            <Link href={steps[currentStepIndex - 1].id} className="usa-button usa-button--outline">
+              Previous
+            </Link>
+          )}
+          {!isFinalStep && (
+            <Button
+              type="button"
+              onClick={() => {
+                router.push(steps[currentStepIndex + 1].id);
+                router.refresh();
+              }}
+            >
+              Next
+            </Button>
+          )}
+        </ButtonGroup>
+      </div>
       <div className="margin-top-4">Step {currentStepIndex + 1}</div>
       <h1 className="margin-top-4">{currentStep.title}</h1>
       <div className="margin-top-4">{children}</div>
-      <div className="margin-top-4">
-        <a
-          className="usa-button usa-button--outline"
-          href={isFirstStep ? "/" : `${steps[currentStepIndex - 1].id}`}
-        >
-          Back
-        </a>
-        <a className="usa-button" href={isFinalStep ? "/" : `${steps[currentStepIndex + 1].id}`}>
-          {isFinalStep ? "Finish" : "Next"}
-        </a>
-      </div>
     </div>
   );
 };

@@ -105,7 +105,11 @@ const PersonalInformationStep: React.FC = () => {
               onChange={handleChange}
             />
 
-            <Label htmlFor="middleName" hint=" (optional)">
+            <Label
+              // htmlFor="middleName"
+              htmlFor="midddleName"
+              hint=" (optional)"
+            >
               Middle name
             </Label>
             <TextInput
@@ -132,13 +136,16 @@ const PersonalInformationStep: React.FC = () => {
           <Label id="appointmentDateLabel" htmlFor="appointmentDate">
             Appointment date
           </Label>
-          <div className="usa-hint" id="appointmentDateHint">
+          <div
+            className="usa-hint"
+            // id="appointmentDateHint"
+          >
             mm/dd/yyyy
           </div>
           <DatePicker
             id="appointmentDate"
             name="appointmentDate"
-            aria-describedby="appointmentDateHint"
+            // aria-describedby="appointmentDateHint"
             aria-labelledby="appointmentDateLabel"
             /**
             The DatePicker component is a little weird, vs the other input components in the library

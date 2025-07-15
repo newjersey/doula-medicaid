@@ -22,9 +22,7 @@ export default function RootLayout({
       </Head>
       <body>
         <div className="usa-section">
-          <div className="grid-container">
-            <div className="grid-row">{children}</div>
-          </div>
+          <div className="grid-container">{children}</div>
         </div>
       </body>
     </html>

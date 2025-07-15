@@ -1,0 +1,13 @@
+/* 
+    If you're not reading the full thing, this is technically a copy-paste from a top stackoverflow answer!
+    https://stackoverflow.com/questions/311990/how-do-i-get-a-div-to-float-to-the-bottom-of-its-container#answer-312008
+*/
+.right-align {
+    position: absolute;
+    bottom: -95px;
+    margin-bottom: 15px;
+    right: 40px;
+}
+.form-container {
+    position: relative;
+}
