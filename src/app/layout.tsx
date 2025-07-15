@@ -6,7 +6,7 @@ import Image from "next/image";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Doula Common App",
+  title: "NJ rocks!",
   description: "Prototype",
 };
 
