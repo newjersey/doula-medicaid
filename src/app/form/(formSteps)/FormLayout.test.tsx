@@ -58,4 +58,16 @@ describe("<FormLayout />", () => {
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("Download forms");
   });
+
+  it("shows required field indicator text with an asterisk", () => {
+    render(
+      <FormLayout pathname="/form/disclosures/1">
+        <div>Test content</div>
+      </FormLayout>,
+    );
+
+    expect(screen.getByText(/A red asterisk.*indicates a required field/)).toBeInTheDocument();
+
+    expect(screen.getByText("*")).toBeInTheDocument();
+  });
 });

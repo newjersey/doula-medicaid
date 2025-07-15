@@ -5,6 +5,7 @@ import {
   Fieldset,
   Form,
   Label,
+  RequiredMarker,
   Select,
   TextInput,
   TextInputMask,
@@ -82,7 +83,7 @@ const PersonalDetailsStep1: React.FC = () => {
         >
           <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
             <div className="tablet:grid-col-4">
-              <Label htmlFor="firstName">First name</Label>
+              <Label htmlFor="firstName">First name <RequiredMarker /> </Label>
               <TextInput id="firstName" type="text" required {...register("firstName")} />
             </div>
             <div className="tablet:grid-col-4">
@@ -92,7 +93,7 @@ const PersonalDetailsStep1: React.FC = () => {
               <TextInput id="middleName" type="text" {...register("middleName")} />
             </div>
             <div className="tablet:grid-col-4">
-              <Label htmlFor="lastName">Last name</Label>
+              <Label htmlFor="lastName">Last name <RequiredMarker /> </Label>
               <TextInput id="lastName" type="text" required {...register("lastName")} />
             </div>
           </Fieldset>
@@ -100,7 +101,7 @@ const PersonalDetailsStep1: React.FC = () => {
           <hr />
 
           <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
-            Date of birth
+            Date of birth <RequiredMarker />
           </Label>
           <div className="usa-hint" id="dateOfBirthHint">
             mm/dd/yyyy
@@ -115,6 +116,7 @@ const PersonalDetailsStep1: React.FC = () => {
                 aria-describedby="dateOfBirthHint"
                 aria-labelledby="dateOfBirthLabel"
                 value={field.value || ""}
+                required
                 onChange={(value) => {
                   if (value === undefined || !dateIsValid(value)) {
                     return;
@@ -129,7 +131,7 @@ const PersonalDetailsStep1: React.FC = () => {
               />
             )}
           />
-          <Label htmlFor="phoneNumber">Phone number</Label>
+          <Label htmlFor="phoneNumber">Phone number <RequiredMarker /> </Label>
           <TextInputMask
             id="phoneNumber"
             type="tel"
@@ -140,7 +142,9 @@ const PersonalDetailsStep1: React.FC = () => {
             {...register("phoneNumber")}
           />
 
-          <Label htmlFor="email">Email address</Label>
+          <Label htmlFor="email">
+            Email address <RequiredMarker />
+          </Label>
           <TextInput
             id="email"
             type="email"
@@ -150,7 +154,9 @@ const PersonalDetailsStep1: React.FC = () => {
             {...register("email")}
           />
 
-          <Label htmlFor="npiNumber">NPI number</Label>
+          <Label htmlFor="npiNumber">
+            NPI number <RequiredMarker />
+          </Label>
           <TextInputMask
             id="npiNumber"
             type="tel"
@@ -161,7 +167,9 @@ const PersonalDetailsStep1: React.FC = () => {
             {...register("npiNumber")}
           />
 
-          <Label htmlFor="socialSecurityNumber">Social security number</Label>
+          <Label htmlFor="socialSecurityNumber">
+            Social security number <RequiredMarker />
+          </Label>
           <TextInputMask
             id="socialSecurityNumber"
             type="text"
@@ -175,7 +183,9 @@ const PersonalDetailsStep1: React.FC = () => {
           <hr />
 
           <Fieldset legend="Mail to address" legendStyle="srOnly">
-            <Label htmlFor="streetAddress1">Street address 1</Label>
+            <Label htmlFor="streetAddress1">
+              Street address 1 <RequiredMarker />
+            </Label>
             <TextInput
               id="streetAddress1"
               type="text"
@@ -191,7 +201,9 @@ const PersonalDetailsStep1: React.FC = () => {
 
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-8">
-                <Label htmlFor="city">City</Label>
+                <Label htmlFor="city">
+                  City <RequiredMarker />
+                </Label>
                 <TextInput
                   className="usa-input"
                   id="city"
@@ -201,7 +213,7 @@ const PersonalDetailsStep1: React.FC = () => {
                 />
               </div>
               <div className="mobile-lg:grid-col-4">
-                <Label htmlFor="state">State</Label>
+                <Label htmlFor="state">State <RequiredMarker /> </Label>
                 <Select className="usa-select" id="state" required {...register("state")}>
                   {Object.keys(AddressState).map((state) => (
                     <option key={state} value={state}>
@@ -212,7 +224,9 @@ const PersonalDetailsStep1: React.FC = () => {
               </div>
             </div>
 
-            <Label htmlFor="zip">ZIP code</Label>
+            <Label htmlFor="zip">
+              ZIP code <RequiredMarker />
+            </Label>
             <TextInput
               className="usa-input usa-input--medium"
               id="zip"
