@@ -1,6 +1,6 @@
 import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
-import { FormLayout } from "./layout";
+import { FormLayout } from "./FormLayout";
 
 describe("<FormLayout />", () => {
   it("shows the section progress bar", () => {
