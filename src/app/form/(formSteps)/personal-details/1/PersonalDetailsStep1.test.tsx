@@ -47,11 +47,12 @@ describe("<PersonalDetailsStep1 />", () => {
     const inputField = screen.getByRole("textbox", {
       name: "Phone number",
     });
+    const nextButton = screen.getByRole("button", { name: "Next" });
     expect(window.sessionStorage.getItem("phoneNumber")).toEqual(null);
 
     await user.type(inputField, "1111111111");
+    await user.click(nextButton);
 
-    expect(inputField).toHaveValue("111-111-1111");
     expect(window.sessionStorage.getItem("phoneNumber")).toEqual("111-111-1111");
   });
 

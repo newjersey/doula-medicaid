@@ -198,7 +198,7 @@ const PersonalDetailsStep1: React.FC = () => {
           <input type="submit" />
         </Form>
       )}
-      <ProgressButtons />
+      <ProgressButtons onClickHandler={handleSubmit(onSubmit)} />
     </div>
   );
 };
