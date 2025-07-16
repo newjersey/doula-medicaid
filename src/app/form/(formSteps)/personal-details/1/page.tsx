@@ -1,18 +1,10 @@
 "use client";
 
-import {
-  DatePicker,
-  Fieldset,
-  Form,
-  Label,
-  Select,
-  TextInput,
-  TextInputMask,
-} from "@trussworks/react-uswds";
+import { Fieldset, Form, Label, Select, TextInput, TextInputMask } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
-import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { AddressState } from "../../../_utils/inputFields/enums";
-import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
+import { setKeyValue } from "../../../_utils/sessionStorage";
 import ProgressButtons from "../../components/ProgressButtons";
 
 interface PersonalInformationData {
@@ -33,105 +25,54 @@ interface PersonalInformationData {
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
 
-const dateIsValid = (date: string): boolean => {
-  const found = date.match(MM_DD_YYYY);
-  return !!found;
-};
-
 const PersonalDetailsStep1: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
-  const [personalInformationData, setPersonalInformationData] = useState<PersonalInformationData>({
-    firstName: null,
-    middleName: null,
-    lastName: null,
-    dateOfBirth: null,
-    phoneNumber: null,
-    email: null,
-    npiNumber: null,
-    socialSecurityNumber: null,
-    streetAddress1: null,
-    streetAddress2: null,
-    city: null,
-    state: null,
-    zip: null,
+  const { register, handleSubmit, control } = useForm<PersonalInformationData>({
+    defaultValues: {
+      firstName: null,
+      middleName: null,
+      lastName: null,
+      dateOfBirth: null,
+      phoneNumber: null,
+      email: null,
+      npiNumber: null,
+      socialSecurityNumber: null,
+      streetAddress1: null,
+      streetAddress2: null,
+      city: null,
+      state: "NJ",
+      zip: null,
+    },
   });
-
-  useEffect(() => {
-    const storedState = getValue("state");
-    if (!storedState) {
-      setKeyValue("state", "NJ");
+  const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
+    console.log(data);
+    for (const key in data) {
+      const value = data[key as keyof PersonalInformationData] ?? "";
+      setKeyValue(key, value);
     }
-    setPersonalInformationData({
-      firstName: getValue("firstName"),
-      middleName: getValue("middleName"),
-      lastName: getValue("lastName"),
-      dateOfBirth: getValue("dateOfBirth"),
-      phoneNumber: getValue("phoneNumber"),
-      email: getValue("email"),
-      npiNumber: getValue("npiNumber"),
-      socialSecurityNumber: getValue("socialSecurityNumber"),
-      streetAddress1: getValue("streetAddress1"),
-      streetAddress2: getValue("streetAddress2"),
-      city: getValue("city"),
-      state: getValue("state"),
-      zip: getValue("zip"),
-    });
+  };
+  useEffect(() => {
     setDataHasLoaded(true);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    handleValueChange(name, value);
-  };
-
-  const handleValueChange = (name: string, value: string | undefined) => {
-    if (value === undefined) value = "";
-    setPersonalInformationData((prev) => ({ ...prev, [name]: value }));
-    setKeyValue(name, value);
-  };
   return (
     <div>
       {dataHasLoaded && (
-        <Form
-          onSubmit={() => {
-            throw new Error("Not implemented");
-          }}
-          className="maxw-tablet"
-        >
+        <Form onSubmit={handleSubmit(onSubmit)} className="maxw-tablet">
           <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
             <div className="tablet:grid-col-4">
               <Label htmlFor="firstName">First name</Label>
-              <TextInput
-                id="firstName"
-                name="firstName"
-                type="text"
-                required
-                value={personalInformationData.firstName || ""}
-                onChange={handleChange}
-              />
+              <TextInput id="firstName" type="text" required {...register("firstName")} />
             </div>
             <div className="tablet:grid-col-4">
               <Label htmlFor="middleName" hint=" (optional)">
                 Middle name
               </Label>
-              <TextInput
-                id="middleName"
-                name="middleName"
-                type="text"
-                value={personalInformationData.middleName || ""}
-                onChange={handleChange}
-              />
+              <TextInput id="middleName" type="text" {...register("middleName")} />
             </div>
             <div className="tablet:grid-col-4">
               <Label htmlFor="lastName">Last name</Label>
-              <TextInput
-                id="lastName"
-                name="lastName"
-                type="text"
-                required
-                value={personalInformationData.lastName || ""}
-                onChange={handleChange}
-              />
+              <TextInput id="lastName" type="text" required {...register("lastName")} />
             </div>
           </Fieldset>
 
@@ -143,81 +84,65 @@ const PersonalDetailsStep1: React.FC = () => {
           <div className="usa-hint" id="dateOfBirthHint">
             mm/dd/yyyy
           </div>
+          {/* <Controller
+            name="dateOfBirth"
+            control={control}
+            render={({ field }) => <DatePicker {...field} />}
+          />
           <DatePicker
             id="dateOfBirth"
-            name="dateOfBirth"
             aria-describedby="dateOfBirthHint"
             aria-labelledby="dateOfBirthLabel"
-            /**
-            The DatePicker component is a little weird, vs the other input components in the library
-            1. Unlike other input components, it lacks a value prop for the parent to control its value. See https://github.com/trussworks/react-uswds/issues/3000
-            2. Unlike other input components, the onChange fires with a string value, instead of a change event
-            3. The change string value has the format MM/DD/YYYY, but the defaultValue prop needs to be in the format YYYY-MM-DD
-           */
             key={dataHasLoaded.toString()}
             defaultValue={
               personalInformationData.dateOfBirth
                 ? formatDateOfBirthDefaultValue(new Date(personalInformationData.dateOfBirth))
                 : undefined
             }
-            onChange={(value) => {
-              if (value === undefined || !dateIsValid(value)) {
-                handleValueChange("dateOfBirth", "");
-                return;
-              }
-              handleValueChange("dateOfBirth", value);
-            }}
-          />
+            {...register("dateOfBirth")}
+          /> */}
 
           <Label htmlFor="phoneNumber">Phone number</Label>
           <TextInputMask
             id="phoneNumber"
-            name="phoneNumber"
             type="tel"
             inputMode="numeric"
             mask="___-___-____"
             pattern="\d{3}-\d{3}-\d{4}"
             required
-            value={personalInformationData.phoneNumber || ""}
-            onChange={handleChange}
+            {...register("phoneNumber")}
           />
 
           <Label htmlFor="email">Email address</Label>
           <TextInput
             id="email"
-            name="email"
             type="email"
             autoCorrect="off"
             autoCapitalize="off"
             required
-            value={personalInformationData.email || ""}
-            onChange={handleChange}
+            {...register("email")}
           />
 
           <Label htmlFor="npiNumber">NPI number</Label>
           <TextInputMask
             id="npiNumber"
-            name="npiNumber"
             type="tel"
             inputMode="numeric"
             mask="__________"
             pattern="\d{10}"
             required
-            value={personalInformationData.npiNumber || ""}
-            onChange={handleChange}
+            {...register("npiNumber")}
           />
 
           <Label htmlFor="socialSecurityNumber">Social security number</Label>
           <TextInputMask
             id="socialSecurityNumber"
-            name="socialSecurityNumber"
             type="text"
             inputMode="numeric"
             mask="___-__-____"
             pattern="\d{3}-\d{2}-\d{4}"
             required
-            value={personalInformationData.socialSecurityNumber || ""}
-            onChange={handleChange}
+            {...register("socialSecurityNumber")}
           />
 
           <hr />
@@ -226,24 +151,16 @@ const PersonalDetailsStep1: React.FC = () => {
             <Label htmlFor="streetAddress1">Street address 1</Label>
             <TextInput
               id="streetAddress1"
-              name="streetAddress1"
               type="text"
               inputMode="numeric"
               required
-              value={personalInformationData.streetAddress1 || ""}
-              onChange={handleChange}
+              {...register("streetAddress1")}
             />
 
             <Label htmlFor="streetAddress2" hint=" (optional)">
               Street address 2
             </Label>
-            <TextInput
-              id="streetAddress2"
-              name="streetAddress2"
-              type="text"
-              value={personalInformationData.streetAddress2 || ""}
-              onChange={handleChange}
-            />
+            <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
 
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-8">
@@ -251,23 +168,14 @@ const PersonalDetailsStep1: React.FC = () => {
                 <TextInput
                   className="usa-input"
                   id="city"
-                  name="city"
                   type="text"
                   required
-                  value={personalInformationData.city || ""}
-                  onChange={handleChange}
+                  {...register("city")}
                 />
               </div>
               <div className="mobile-lg:grid-col-4">
                 <Label htmlFor="state">State</Label>
-                <Select
-                  className="usa-select"
-                  id="state"
-                  name="state"
-                  required
-                  value={personalInformationData.state || ""}
-                  onChange={handleChange}
-                >
+                <Select className="usa-select" id="state" required {...register("state")}>
                   {Object.keys(AddressState).map((state) => (
                     <option key={state} value={state}>
                       {state}
@@ -281,14 +189,13 @@ const PersonalDetailsStep1: React.FC = () => {
             <TextInput
               className="usa-input usa-input--medium"
               id="zip"
-              name="zip"
               type="text"
               pattern="[\d]{5}(-[\d]{4})?"
               required
-              value={personalInformationData.zip || ""}
-              onChange={handleChange}
+              {...register("zip")}
             />
           </Fieldset>
+          <input type="submit" />
         </Form>
       )}
       <ProgressButtons />
