@@ -12,6 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { Controller, useForm } from "react-hook-form";
+import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
 import { AddressState } from "../../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import ProgressButtons from "../../components/ProgressButtons";
@@ -32,50 +33,54 @@ interface PersonalInformationData {
   zip: string | null;
 }
 
+const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
+
+const dateIsValid = (date: string): boolean => {
+  const found = date.match(MM_DD_YYYY);
+  return !!found;
+};
+
 const PersonalDetailsStep1: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const { register, handleSubmit, control, setValue } = useForm<PersonalInformationData>({
     defaultValues: {
-      firstName: null,
-      middleName: null,
-      lastName: null,
-      dateOfBirth: null,
-      phoneNumber: null,
-      email: null,
-      npiNumber: null,
-      socialSecurityNumber: null,
-      streetAddress1: null,
-      streetAddress2: null,
-      city: null,
+      firstName: "",
+      middleName: "",
+      lastName: "",
+      phoneNumber: "",
+      email: "",
+      dateOfBirth: "",
+      npiNumber: "",
+      socialSecurityNumber: "",
+      streetAddress1: "",
+      streetAddress2: "",
+      city: "",
       state: "NJ",
-      zip: null,
+      zip: "",
     },
   });
   const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
-    console.log(data);
     for (const key in data) {
       const value = data[key as keyof PersonalInformationData] ?? "";
       setKeyValue(key, value);
     }
   };
   useEffect(() => {
-    setValue("firstName", getValue("firstName"));
-    setValue("middleName", getValue("middleName"));
-    setValue("lastName", getValue("lastName"));
-    setValue("dateOfBirth", getValue("dateOfBirth"));
-    setValue("phoneNumber", getValue("phoneNumber"));
-    setValue("email", getValue("email"));
-    setValue("npiNumber", getValue("npiNumber"));
-    setValue("socialSecurityNumber", getValue("socialSecurityNumber"));
-    setValue("streetAddress1", getValue("streetAddress1"));
-    setValue("streetAddress2", getValue("streetAddress2"));
-    setValue("city", getValue("city"));
-    setValue("state", getValue("state"));
-    setValue("zip", getValue("zip"));
+    setValue("firstName", getValue("firstName") || "");
+    setValue("middleName", getValue("middleName") || "");
+    setValue("lastName", getValue("lastName") || "");
+    setValue("dateOfBirth", getValue("dateOfBirth") || "");
+    setValue("phoneNumber", getValue("phoneNumber") || "");
+    setValue("email", getValue("email") || "");
+    setValue("npiNumber", getValue("npiNumber") || "");
+    setValue("socialSecurityNumber", getValue("socialSecurityNumber") || "");
+    setValue("streetAddress1", getValue("streetAddress1") || "");
+    setValue("streetAddress2", getValue("streetAddress2") || "");
+    setValue("city", getValue("city") || "");
+    setValue("state", getValue("state") || "NJ");
+    setValue("zip", getValue("zip") || "");
     setDataHasLoaded(true);
-    //setValue must be imported from react-hook-form
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setValue]);
 
   return (
     <div>
@@ -123,9 +128,17 @@ const PersonalDetailsStep1: React.FC = () => {
                 aria-describedby="dateOfBirthHint"
                 aria-labelledby="dateOfBirthLabel"
                 value={field.value || ""}
-                onChange={field.onChange}
+                onChange={(value) => {
+                  if (value === undefined || !dateIsValid(value)) {
+                    return;
+                  }
+                  field.onChange(value);
+                }}
                 onBlur={field.onBlur}
                 key={dataHasLoaded.toString()}
+                defaultValue={
+                  field.value ? formatDateOfBirthDefaultValue(new Date(field.value)) : undefined
+                }
               />
             )}
           />
