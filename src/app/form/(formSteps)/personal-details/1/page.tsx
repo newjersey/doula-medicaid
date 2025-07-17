@@ -1,10 +1,19 @@
 "use client";
 
-import { Fieldset, Form, Label, Select, TextInput, TextInputMask } from "@trussworks/react-uswds";
+import {
+  DatePicker,
+  Fieldset,
+  Form,
+  Label,
+  Select,
+  TextInput,
+  TextInputMask,
+} from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { AddressState } from "../../../_utils/inputFields/enums";
-import { setKeyValue } from "../../../_utils/sessionStorage";
+import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import ProgressButtons from "../../components/ProgressButtons";
 
 interface PersonalInformationData {
@@ -23,11 +32,9 @@ interface PersonalInformationData {
   zip: string | null;
 }
 
-const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
-
 const PersonalDetailsStep1: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
-  const { register, handleSubmit, control } = useForm<PersonalInformationData>({
+  const { register, handleSubmit, control, setValue } = useForm<PersonalInformationData>({
     defaultValues: {
       firstName: null,
       middleName: null,
@@ -52,13 +59,35 @@ const PersonalDetailsStep1: React.FC = () => {
     }
   };
   useEffect(() => {
+    setValue("firstName", getValue("firstName"));
+    setValue("middleName", getValue("middleName"));
+    setValue("lastName", getValue("lastName"));
+    setValue("dateOfBirth", getValue("dateOfBirth"));
+    setValue("phoneNumber", getValue("phoneNumber"));
+    setValue("email", getValue("email"));
+    setValue("npiNumber", getValue("npiNumber"));
+    setValue("socialSecurityNumber", getValue("socialSecurityNumber"));
+    setValue("streetAddress1", getValue("streetAddress1"));
+    setValue("streetAddress2", getValue("streetAddress2"));
+    setValue("city", getValue("city"));
+    setValue("state", getValue("state"));
+    setValue("zip", getValue("zip"));
     setDataHasLoaded(true);
+    //setValue must be imported from react-hook-form
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div>
       {dataHasLoaded && (
-        <Form onSubmit={handleSubmit(onSubmit)} className="maxw-tablet">
+        <Form
+          onSubmit={() => {
+            throw new Error(
+              "Form submission does not use the onSubmit handler, use ProgressButtons instead",
+            );
+          }}
+          className="maxw-tablet"
+        >
           <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
             <div className="tablet:grid-col-4">
               <Label htmlFor="firstName">First name</Label>
@@ -84,24 +113,22 @@ const PersonalDetailsStep1: React.FC = () => {
           <div className="usa-hint" id="dateOfBirthHint">
             mm/dd/yyyy
           </div>
-          {/* <Controller
+          <Controller
             name="dateOfBirth"
             control={control}
-            render={({ field }) => <DatePicker {...field} />}
+            render={({ field }) => (
+              <DatePicker
+                name="dateOfBirth"
+                id="dateOfBirth"
+                aria-describedby="dateOfBirthHint"
+                aria-labelledby="dateOfBirthLabel"
+                value={field.value || ""}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                key={dataHasLoaded.toString()}
+              />
+            )}
           />
-          <DatePicker
-            id="dateOfBirth"
-            aria-describedby="dateOfBirthHint"
-            aria-labelledby="dateOfBirthLabel"
-            key={dataHasLoaded.toString()}
-            defaultValue={
-              personalInformationData.dateOfBirth
-                ? formatDateOfBirthDefaultValue(new Date(personalInformationData.dateOfBirth))
-                : undefined
-            }
-            {...register("dateOfBirth")}
-          /> */}
-
           <Label htmlFor="phoneNumber">Phone number</Label>
           <TextInputMask
             id="phoneNumber"
@@ -195,7 +222,6 @@ const PersonalDetailsStep1: React.FC = () => {
               {...register("zip")}
             />
           </Fieldset>
-          <input type="submit" />
         </Form>
       )}
       <ProgressButtons onClickHandler={handleSubmit(onSubmit)} />

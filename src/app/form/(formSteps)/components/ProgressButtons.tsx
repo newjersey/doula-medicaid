@@ -90,9 +90,10 @@ const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => 
         key="previous"
         href={formatStepUrl(previousStep)}
         className="usa-button  usa-button--outline"
-        onClick={async () => {
+        // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
+        onClick={() => {
           if (onClickHandler) {
-            await onClickHandler();
+            onClickHandler();
           }
         }}
       >
@@ -105,9 +106,10 @@ const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => 
       <Button
         key="next"
         type="button"
-        onClick={async () => {
+        // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
+        onClick={() => {
           if (onClickHandler) {
-            await onClickHandler();
+            onClickHandler();
           }
           router.push(formatStepUrl(nextStep));
           router.refresh();
