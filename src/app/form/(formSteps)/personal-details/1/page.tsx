@@ -10,8 +10,7 @@ import {
   TextInputMask,
 } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
-import type { SubmitHandler } from "react-hook-form";
-import { Controller, useForm } from "react-hook-form";
+import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
 import { AddressState } from "../../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";

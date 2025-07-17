@@ -86,7 +86,7 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(window.sessionStorage.getItem("state")).toEqual("PA");
   });
 
-  it("preserves state when reloading page", () => {
+  it("keeps all fields filled when reloading page", () => {
     window.sessionStorage.setItem("firstName", "Jane");
     window.sessionStorage.setItem("middleName", "A");
     window.sessionStorage.setItem("lastName", "Doe");
