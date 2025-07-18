@@ -92,9 +92,7 @@ const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => 
         className="usa-button  usa-button--outline"
         // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
         onClick={() => {
-          if (onClickHandler) {
-            onClickHandler();
-          }
+          onClickHandler?.();
         }}
       >
         Previous
@@ -108,9 +106,7 @@ const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => 
         type="button"
         // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
         onClick={() => {
-          if (onClickHandler) {
-            onClickHandler();
-          }
+          onClickHandler?.();
           router.push(formatStepUrl(nextStep));
           router.refresh();
         }}

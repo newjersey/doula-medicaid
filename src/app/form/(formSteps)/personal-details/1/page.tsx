@@ -41,23 +41,24 @@ const dateIsValid = (date: string): boolean => {
 
 const PersonalDetailsStep1: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
-  const { register, handleSubmit, control, setValue } = useForm<PersonalInformationData>({
+  const { register, handleSubmit, control } = useForm<PersonalInformationData>({
     defaultValues: {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      phoneNumber: "",
-      email: "",
-      dateOfBirth: "",
-      npiNumber: "",
-      socialSecurityNumber: "",
-      streetAddress1: "",
-      streetAddress2: "",
-      city: "",
-      state: "NJ",
-      zip: "",
+      firstName: getValue("firstName") || "",
+      middleName: getValue("middleName") || "",
+      lastName: getValue("lastName") || "",
+      phoneNumber: getValue("phoneNumber") || "",
+      email: getValue("email") || "",
+      dateOfBirth: getValue("dateOfBirth") || "",
+      npiNumber: getValue("npiNumber") || "",
+      socialSecurityNumber: getValue("socialSecurityNumber") || "",
+      streetAddress1: getValue("streetAddress1") || "",
+      streetAddress2: getValue("streetAddress2") || "",
+      city: getValue("city") || "",
+      state: getValue("state") || "NJ",
+      zip: getValue("zip") || "",
     },
   });
+
   const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
     for (const key in data) {
       const value = data[key as keyof PersonalInformationData] ?? "";
@@ -65,21 +66,8 @@ const PersonalDetailsStep1: React.FC = () => {
     }
   };
   useEffect(() => {
-    setValue("firstName", getValue("firstName") || "");
-    setValue("middleName", getValue("middleName") || "");
-    setValue("lastName", getValue("lastName") || "");
-    setValue("dateOfBirth", getValue("dateOfBirth") || "");
-    setValue("phoneNumber", getValue("phoneNumber") || "");
-    setValue("email", getValue("email") || "");
-    setValue("npiNumber", getValue("npiNumber") || "");
-    setValue("socialSecurityNumber", getValue("socialSecurityNumber") || "");
-    setValue("streetAddress1", getValue("streetAddress1") || "");
-    setValue("streetAddress2", getValue("streetAddress2") || "");
-    setValue("city", getValue("city") || "");
-    setValue("state", getValue("state") || "NJ");
-    setValue("zip", getValue("zip") || "");
     setDataHasLoaded(true);
-  }, [setValue]);
+  }, []);
 
   return (
     <div>
