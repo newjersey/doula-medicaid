@@ -1,3 +1,4 @@
+import { RequiredMarker } from "@trussworks/react-uswds";
 import { allSections, getCurrentStep } from "../_utils/sections";
 
 type CompletionState = "complete" | "current" | "incomplete";
@@ -56,7 +57,7 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
           })}
         </ol>
 
-        <div className="usa-step-indicator__header">
+        <div className="usa-step-indicator__header display-flex flex-justify">
           <h1 className="font-heading-lg">
             {currentStepNum !== null && (
               <span className="usa-step-indicator__heading-counter">
@@ -71,6 +72,10 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
             )}
             <span className="usa-step-indicator__heading-text">{currentSection.heading}</span>
           </h1>
+          <div className="text-right">
+            {" "}
+            A red asterisk (<RequiredMarker />) indicates a required field.
+          </div>
         </div>
       </div>
       <div className="margin-top-4">{props.children}</div>

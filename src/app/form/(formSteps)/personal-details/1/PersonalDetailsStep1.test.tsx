@@ -27,23 +27,23 @@ describe("<PersonalDetailsStep1 />", () => {
   };
 
   it.each([
-    { name: "First name", key: "firstName", testValue: "Test first name" },
+    { name: "First name *", key: "firstName", testValue: "Test first name" },
     { name: "Middle name (optional)", key: "middleName", testValue: "Test middle name" },
-    { name: "Last name", key: "lastName", testValue: "Test last name" },
-    { name: "Date of birth", key: "dateOfBirth", testValue: "01/01/1990" },
+    { name: "Last name *", key: "lastName", testValue: "Test last name" },
+    { name: "Date of birth *", key: "dateOfBirth", testValue: "01/01/1990" },
     {
-      name: "Social security number",
+      name: "Social security number *",
       key: "socialSecurityNumber",
       testValue: "123456789",
       type: "ssn",
     },
-    { name: "Email address", key: "email", testValue: "test@test.com" },
-    { name: "NPI number", key: "npiNumber", testValue: "2222222222" },
-    { name: "Phone number", key: "phoneNumber", testValue: "1111111111", type: "tel" },
-    { name: "Street address 1", key: "streetAddress1", testValue: "Test address 1" },
+    { name: "Email address *", key: "email", testValue: "test@test.com" },
+    { name: "NPI number *", key: "npiNumber", testValue: "2222222222" },
+    { name: "Phone number *", key: "phoneNumber", testValue: "1111111111", type: "tel" },
+    { name: "Street address 1 *", key: "streetAddress1", testValue: "Test address 1" },
     { name: "Street address 2 (optional)", key: "streetAddress2", testValue: "Test address 2" },
-    { name: "City", key: "city", testValue: "Test city" },
-    { name: "ZIP code", key: "zip", testValue: "12345" },
+    { name: "City *", key: "city", testValue: "Test city" },
+    { name: "ZIP code *", key: "zip", testValue: "12345" },
   ])("updates the $name text input", async ({ name, key, testValue, type }) => {
     const user = userEvent.setup();
     renderWithRouter();
@@ -75,7 +75,7 @@ describe("<PersonalDetailsStep1 />", () => {
     renderWithRouter();
     const nextButton = screen.getByRole("button", { name: "Next" });
     const combobox = screen.getByRole("combobox", {
-      name: "State",
+      name: "State *",
     });
     expect(combobox).toHaveValue("NJ");
 
@@ -101,24 +101,47 @@ describe("<PersonalDetailsStep1 />", () => {
     window.sessionStorage.setItem("state", "NJ");
     window.sessionStorage.setItem("zip", "12345");
     renderWithRouter();
-    window.location.reload();
 
-    expect(screen.getByRole("textbox", { name: "First name" })).toHaveValue("Jane");
+    expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("Jane");
     expect(screen.getByRole("textbox", { name: "Middle name (optional)" })).toHaveValue("A");
-    expect(screen.getByRole("textbox", { name: "Last name" })).toHaveValue("Doe");
-    expect(screen.getByRole("textbox", { name: "Date of birth" })).toHaveValue("01/01/1990");
-    expect(screen.getByRole("textbox", { name: "Social security number" })).toHaveValue(
+    expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Doe");
+    expect(screen.getByRole("textbox", { name: "Date of birth *" })).toHaveValue("01/01/1990");
+    expect(screen.getByRole("textbox", { name: "Social security number *" })).toHaveValue(
       "123-45-6789",
     );
-    expect(screen.getByRole("textbox", { name: "Email address" })).toHaveValue("example@test.com");
-    expect(screen.getByRole("textbox", { name: "NPI number" })).toHaveValue("1234567890");
-    expect(screen.getByRole("textbox", { name: "Phone number" })).toHaveValue("123-456-7890");
-    expect(screen.getByRole("textbox", { name: "Street address 1" })).toHaveValue("123 Main St");
+    expect(screen.getByRole("textbox", { name: "Email address *" })).toHaveValue("example@test.com");
+    expect(screen.getByRole("textbox", { name: "NPI number *" })).toHaveValue("1234567890");
+    expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
+    expect(screen.getByRole("textbox", { name: "Street address 1 *" })).toHaveValue("123 Main St");
     expect(screen.getByRole("textbox", { name: "Street address 2 (optional)" })).toHaveValue(
       "Apt 4B",
     );
-    expect(screen.getByRole("textbox", { name: "City" })).toHaveValue("Newark");
-    expect(screen.getByRole("combobox", { name: "State" })).toHaveValue("NJ");
-    expect(screen.getByRole("textbox", { name: "ZIP code" })).toHaveValue("12345");
+    expect(screen.getByRole("textbox", { name: "City *" })).toHaveValue("Newark");
+    expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
+    expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
+  });
+
+  describe("<PersonalDetailsStep1 /> required fields", () => {
+    it.each([
+      { label: "First name *", role: "textbox" },
+      { label: "Last name *", role: "textbox" },
+      { label: "Date of birth *", role: "textbox" },
+      { label: "Phone number *", role: "textbox" },
+      { label: "Email address *", role: "textbox" },
+      { label: "Social security number *", role: "textbox" },
+      { label: "NPI number *", role: "textbox" },
+      { label: "Street address 1 *", role: "textbox" },
+      { label: "City *", role: "textbox" },
+      { label: "ZIP code *", role: "textbox" },
+      { label: "State *", role: "combobox" },
+    ])("checks that $label is marked as required", ({ label, role }) => {
+      renderWithRouter();
+
+      const input = screen.getByRole(role, {
+        name: label,
+      });
+
+      expect(input).toBeRequired();
+    });
   });
 });

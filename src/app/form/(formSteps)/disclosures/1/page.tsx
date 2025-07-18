@@ -1,6 +1,6 @@
 "use client";
 
-import { Fieldset, Form, Label, Radio, Select, TextInput } from "@trussworks/react-uswds";
+import { Fieldset, Form, Label, Radio, RequiredMarker, Select, TextInput } from "@trussworks/react-uswds";
 import React, { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { AddressState, DisclosingEntity } from "../../../_utils/inputFields/enums";
@@ -64,7 +64,14 @@ const DisclosuresStep1: React.FC = () => {
           );
         }}
       >
-        <Fieldset legend="Is your doula business a sole proprietorship?" legendStyle="large">
+        <Fieldset
+          legend={
+            <span>
+              Is your doula business a sole proprietorship? <RequiredMarker />
+            </span>
+          }
+          legendStyle="large"
+        >
           <Radio
             id="soleProprietorshipYes"
             label="Yes, my doula business is a sole proprietorship"
@@ -81,7 +88,12 @@ const DisclosuresStep1: React.FC = () => {
 
         {isSoleProprietorship === "yes" && (
           <Fieldset
-            legend="Do you have a separate business address that's different from your mailing address?"
+            legend={
+              <span>
+                Do you have a separate business address that&apos;s different from your mailing
+                address? <RequiredMarker />
+              </span>
+            }
             legendStyle="large"
           >
             <Radio
@@ -101,7 +113,9 @@ const DisclosuresStep1: React.FC = () => {
 
         {hasSeparateBusinessAddress === "yes" && (
           <Fieldset legend="Business address" legendStyle="srOnly">
-            <Label htmlFor="businessStreetAddress1">Street address 1</Label>
+            <Label htmlFor="businessStreetAddress1">
+              Street address 1 <RequiredMarker />
+            </Label>
             <TextInput
               id="businessStreetAddress1"
               type="text"
@@ -121,7 +135,9 @@ const DisclosuresStep1: React.FC = () => {
 
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-8">
-                <Label htmlFor="businessCity">City</Label>
+                <Label htmlFor="businessCity">
+                  City <RequiredMarker />
+                </Label>
                 <TextInput
                   className="usa-input"
                   id="businessCity"
@@ -131,7 +147,9 @@ const DisclosuresStep1: React.FC = () => {
                 />
               </div>
               <div className="mobile-lg:grid-col-4">
-                <Label htmlFor="businessState">State</Label>
+                <Label htmlFor="businessState">
+                  State <RequiredMarker />
+                </Label>
                 <Select
                   className="usa-select"
                   id="businessState"
@@ -147,7 +165,9 @@ const DisclosuresStep1: React.FC = () => {
               </div>
             </div>
 
-            <Label htmlFor="businessZip">ZIP code</Label>
+            <Label htmlFor="businessZip">
+              ZIP code <RequiredMarker />
+            </Label>
             <TextInput
               className="usa-input usa-input--medium"
               id="businessZip"

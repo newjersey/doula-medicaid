@@ -24,16 +24,31 @@ describe("<DisclosuresStep1 />", () => {
     sessionStorage.clear();
   });
 
+  const clickYesSPButton = async () => {
+    const user = userEvent.setup();
+    const yesSPButton = screen.getByRole("radio", {
+      name: "Yes, my doula business is a sole proprietorship",
+    });
+    await user.click(yesSPButton);
+    return { user, yesSPButton };
+  };
+
+  const clickYesSeparateAddressButton = async () => {
+    const { user } = await clickYesSPButton();
+    const yesButton = screen.getByRole("radio", {
+      name: "Yes, I have a separate business address",
+    });
+    await user.click(yesButton);
+    return { user, yesButton };
+  };
+
   it("saves natureOfDisclosingEntity as null when user selects no", async () => {
     const user = userEvent.setup();
     renderWithRouter();
     const noButton = screen.getByRole("radio", {
       name: "No, my doula business is not a sole proprietorship",
     });
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
-    await user.click(yesButton);
+    await clickYesSPButton();
     expect(getValue("natureOfDisclosingEntity")).toBe("SoleProprietorship");
     await user.click(noButton);
     expect(noButton).toBeChecked();
@@ -82,11 +97,8 @@ describe("<DisclosuresStep1 />", () => {
   it("saves separateBusinessAddress as false when user selects no", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const yesSPButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
-    await user.click(yesSPButton);
-    expect(yesSPButton).toBeChecked();
+    const yesSPButton = await clickYesSPButton();
+    expect(yesSPButton.yesSPButton).toBeChecked();
     const noButton = screen.getByRole("radio", {
       name: "No, I do not have a separate business address",
     });
@@ -96,57 +108,47 @@ describe("<DisclosuresStep1 />", () => {
   });
 
   it.each([
-    { name: "Street address 1", key: "businessStreetAddress1", testValue: "Test address 1" },
-    {
-      name: "Street address 2 (optional)",
-      key: "businessStreetAddress2",
-      testValue: "Test address 2",
-    },
-    { name: "City", key: "businessCity", testValue: "Test city" },
-    { name: "ZIP code", key: "businessZip", testValue: "12345" },
-  ])("updates the $name text input", async ({ name, key, testValue }) => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    await user.click(
-      screen.getByRole("radio", {
-        name: "Yes, my doula business is a sole proprietorship",
-      }),
-    );
-    await user.click(
-      screen.getByRole("radio", {
-        name: "Yes, I have a separate business address",
-      }),
-    );
-    const nextButton = screen.getByRole("button", { name: "Next" });
+    { name: "Street address 1 *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
+    { name: "Street address 2 (optional)", key: "businessStreetAddress2", testValue: "Suite 100" },
+    { name: "City *", key: "businessCity", testValue: "Seattle" },
+    { name: "ZIP code *", key: "businessZip", testValue: "98101" },
+  ])(
+    "updates the text input for the $name input upon user interaction",
+    async ({ name, key, testValue }) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+
+      await clickYesSPButton();
+      await clickYesSeparateAddressButton();
+
+      const nextButton = screen.getByRole("button", { name: "Next" });
     const inputField = screen.getByRole("textbox", {
       name: name,
     });
     expect(window.sessionStorage.getItem(key)).toEqual(null);
 
-    await user.type(inputField, testValue);
+       await user.type(inputField, testValue);
     await user.click(nextButton);
 
     expect(inputField).toHaveValue(testValue);
     expect(window.sessionStorage.getItem(key)).toEqual(testValue);
-  });
+
+    },
+  );
 
   it("updates business address state", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    await user.click(
-      screen.getByRole("radio", {
-        name: "Yes, my doula business is a sole proprietorship",
-      }),
-    );
-    await user.click(
-      screen.getByRole("radio", {
-        name: "Yes, I have a separate business address",
-      }),
-    );
+
+    await clickYesSPButton();
+    await clickYesSeparateAddressButton();
+
     const nextButton = screen.getByRole("button", { name: "Next" });
+
     const combobox = screen.getByRole("combobox", {
-      name: "State",
+      name: "State *",
     });
+
     expect(combobox).toHaveValue("NJ");
 
     await user.selectOptions(combobox, "PA");
@@ -154,5 +156,23 @@ describe("<DisclosuresStep1 />", () => {
 
     expect(combobox).toHaveValue("PA");
     expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
+  });
+
+  it.each([
+    { label: "Street address 1 *", role: "textbox" },
+    { label: "City *", role: "textbox" },
+    { label: "ZIP code *", role: "textbox" },
+    { label: "State *", role: "combobox" },
+  ])("input is marked as required", async ({ label, role }) => {
+    renderWithRouter();
+
+    await clickYesSPButton();
+    await clickYesSeparateAddressButton();
+
+    const field = screen.getByRole(role, {
+      name: label,
+    });
+
+    expect(field).toBeRequired();
   });
 });
