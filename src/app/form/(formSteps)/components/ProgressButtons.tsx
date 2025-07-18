@@ -4,6 +4,10 @@ import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
 import { usePathname, useRouter } from "next/navigation";
 import { allSections, getCurrentStep, type Section, type Step } from "../../_utils/sections";
 
+interface ProgressButtonsProps {
+  onClickHandler?: () => Promise<void> | void;
+}
+
 export const getNextStep = (currentStep: Step, allSteps: Array<Section>): Step | null => {
   if (
     currentStep.section.numSteps !== undefined &&
@@ -71,7 +75,7 @@ export const formatStepUrl = (step: Step) => {
   }
 };
 
-const ProgressButtons: React.FC = () => {
+const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -86,6 +90,10 @@ const ProgressButtons: React.FC = () => {
         key="previous"
         href={formatStepUrl(previousStep)}
         className="usa-button  usa-button--outline"
+        // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
+        onClick={() => {
+          onClickHandler?.();
+        }}
       >
         Previous
       </Link>,
@@ -96,7 +104,9 @@ const ProgressButtons: React.FC = () => {
       <Button
         key="next"
         type="button"
+        // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
         onClick={() => {
+          onClickHandler?.();
           router.push(formatStepUrl(nextStep));
           router.refresh();
         }}

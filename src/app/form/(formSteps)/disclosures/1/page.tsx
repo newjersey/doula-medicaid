@@ -1,12 +1,15 @@
 "use client";
 
 import { Fieldset, Form, Label, Radio, Select, TextInput } from "@trussworks/react-uswds";
-import React, { useState } from "react";
-import { AddressState } from "../../../_utils/inputFields/enums";
+import React, { useEffect } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { AddressState, DisclosingEntity } from "../../../_utils/inputFields/enums";
 import { removeKey, setKeyValue } from "../../../_utils/sessionStorage";
 import ProgressButtons from "../../components/ProgressButtons";
 
 interface DisclosureBusinessAddressData {
+  isSoleProprietorship: string;
+  hasSeparateBusinessAddress: string;
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
   businessCity: string | null;
@@ -15,95 +18,96 @@ interface DisclosureBusinessAddressData {
 }
 
 const DisclosuresStep1: React.FC = () => {
-  const [isSoleProprietorship, setIsSoleProprietorship] = useState<boolean | null>(null);
-
-  const [hasSeparateBusinessAddress, setHasSeparateBusinessAddress] = useState<boolean | null>(
-    null,
-  );
-
-  const [businessAddress, setBusinessAddress] = useState<DisclosureBusinessAddressData>({
-    businessStreetAddress1: null,
-    businessStreetAddress2: null,
-    businessCity: null,
-    businessState: null,
-    businessZip: null,
+  const { register, handleSubmit, watch } = useForm<DisclosureBusinessAddressData>({
+    defaultValues: {
+      isSoleProprietorship: "",
+      hasSeparateBusinessAddress: "",
+      businessStreetAddress1: "",
+      businessStreetAddress2: "",
+      businessCity: "",
+      businessState: "NJ",
+      businessZip: "",
+    },
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setBusinessAddress((prev) => ({ ...prev, [name]: value }));
-    setKeyValue(name, value);
+  const isSoleProprietorship = watch("isSoleProprietorship");
+  const hasSeparateBusinessAddress = watch("hasSeparateBusinessAddress");
+
+  useEffect(() => {
+    if (isSoleProprietorship === "yes") {
+      setKeyValue("natureOfDisclosingEntity", DisclosingEntity.SoleProprietorship);
+    }
+    if (isSoleProprietorship === "no") {
+      removeKey("natureOfDisclosingEntity");
+    }
+    if (hasSeparateBusinessAddress) {
+      setKeyValue(
+        "separateBusinessAddress",
+        hasSeparateBusinessAddress === "yes" ? "true" : "false",
+      );
+    }
+  }, [isSoleProprietorship, hasSeparateBusinessAddress]);
+
+  const onSubmit: SubmitHandler<DisclosureBusinessAddressData> = (data) => {
+    for (const key in data) {
+      const value = data[key as keyof DisclosureBusinessAddressData] ?? "";
+      setKeyValue(key, value);
+    }
   };
 
   return (
     <div>
       <Form
         onSubmit={() => {
-          throw new Error("Not implemented");
+          throw new Error(
+            "Form submission does not use the onSubmit handler, use ProgressButtons instead",
+          );
         }}
       >
         <Fieldset legend="Is your doula business a sole proprietorship?" legendStyle="large">
           <Radio
             id="soleProprietorshipYes"
-            name="setSoleProprietorship"
             label="Yes, my doula business is a sole proprietorship"
-            onChange={() => {
-              setKeyValue("natureOfDisclosingEntity", "SoleProprietorship");
-              setIsSoleProprietorship(true);
-            }}
-            checked={isSoleProprietorship === true}
+            value="yes"
+            {...register("isSoleProprietorship")}
           />
           <Radio
             id="soleProprietorshipNo"
-            name="setSoleProprietorship"
             label="No, my doula business is not a sole proprietorship"
-            onChange={() => {
-              removeKey("natureOfDisclosingEntity");
-              setIsSoleProprietorship(false);
-            }}
-            checked={isSoleProprietorship === false}
+            value="no"
+            {...register("isSoleProprietorship")}
           />
         </Fieldset>
 
-        {isSoleProprietorship === true && (
+        {isSoleProprietorship === "yes" && (
           <Fieldset
             legend="Do you have a separate business address that's different from your mailing address?"
             legendStyle="large"
           >
             <Radio
               id="separateBusinessAddressYes"
-              name="setSeparateBusinessAddress"
               label="Yes, I have a separate business address"
-              onChange={() => {
-                setKeyValue("separateBusinessAddress", "true");
-                setHasSeparateBusinessAddress(true);
-              }}
-              checked={hasSeparateBusinessAddress === true}
+              value="yes"
+              {...register("hasSeparateBusinessAddress")}
             />
             <Radio
               id="separateBusinessAddressNo"
-              name="setSeparateBusinessAddress"
               label="No, I do not have a separate business address"
-              onChange={() => {
-                setKeyValue("separateBusinessAddress", "false");
-                setHasSeparateBusinessAddress(false);
-              }}
-              checked={hasSeparateBusinessAddress === false}
+              value="no"
+              {...register("hasSeparateBusinessAddress")}
             />
           </Fieldset>
         )}
 
-        {hasSeparateBusinessAddress === true && (
+        {hasSeparateBusinessAddress === "yes" && (
           <Fieldset legend="Business address" legendStyle="srOnly">
             <Label htmlFor="businessStreetAddress1">Street address 1</Label>
             <TextInput
               id="businessStreetAddress1"
-              name="businessStreetAddress1"
               type="text"
               inputMode="numeric"
               required
-              value={businessAddress.businessStreetAddress1 || ""}
-              onChange={handleChange}
+              {...register("businessStreetAddress1")}
             />
 
             <Label htmlFor="businessStreetAddress2" hint=" (optional)">
@@ -111,10 +115,8 @@ const DisclosuresStep1: React.FC = () => {
             </Label>
             <TextInput
               id="businessStreetAddress2"
-              name="businessStreetAddress2"
               type="text"
-              value={businessAddress.businessStreetAddress2 || ""}
-              onChange={handleChange}
+              {...register("businessStreetAddress2")}
             />
 
             <div className="grid-row grid-gap">
@@ -123,11 +125,9 @@ const DisclosuresStep1: React.FC = () => {
                 <TextInput
                   className="usa-input"
                   id="businessCity"
-                  name="businessCity"
                   type="text"
                   required
-                  value={businessAddress.businessCity || ""}
-                  onChange={handleChange}
+                  {...register("businessCity")}
                 />
               </div>
               <div className="mobile-lg:grid-col-4">
@@ -135,10 +135,8 @@ const DisclosuresStep1: React.FC = () => {
                 <Select
                   className="usa-select"
                   id="businessState"
-                  name="businessState"
                   required
-                  value={businessAddress.businessState || ""}
-                  onChange={handleChange}
+                  {...register("businessState")}
                 >
                   {Object.keys(AddressState).map((state) => (
                     <option key={state} value={state}>
@@ -153,17 +151,15 @@ const DisclosuresStep1: React.FC = () => {
             <TextInput
               className="usa-input usa-input--medium"
               id="businessZip"
-              name="businessZip"
               type="text"
               pattern="[\d]{5}(-[\d]{4})?"
               required
-              value={businessAddress.businessZip || ""}
-              onChange={handleChange}
+              {...register("businessZip")}
             />
           </Fieldset>
         )}
       </Form>
-      <ProgressButtons />
+      <ProgressButtons onClickHandler={handleSubmit(onSubmit)} />
     </div>
   );
 };

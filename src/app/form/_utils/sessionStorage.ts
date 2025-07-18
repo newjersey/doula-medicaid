@@ -3,7 +3,10 @@ export const setKeyValue = (key: string, value: string): void => {
 };
 
 export const getValue = (key: string): string | null => {
-  return window.sessionStorage.getItem(key);
+  if (typeof window !== "undefined") {
+    return window.sessionStorage.getItem(key);
+  }
+  return null;
 };
 
 export const removeKey = (key: string): void => {
