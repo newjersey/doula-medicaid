@@ -20,6 +20,6 @@ jobs:
       - name: Build the application
         run: npm run build
       - name: Start the application
-        run: npm start
+        run: npm start & npx wait-on http://localhost:3000
       - name: Run cypress tests
         run: npm run cypress:run
