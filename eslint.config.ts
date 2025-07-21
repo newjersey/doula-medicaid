@@ -1,7 +1,6 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import { flatConfigs as importXFlatConfigs } from "eslint-plugin-import-x";
 import { dirname } from "path";
-import { configs as tseslintConfigs } from "typescript-eslint";
 import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,7 +14,6 @@ const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   importXFlatConfigs.recommended,
   importXFlatConfigs.typescript,
-  ...tseslintConfigs.recommendedTypeChecked,
   {
     files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
     languageOptions: {

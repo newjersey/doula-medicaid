@@ -21,6 +21,7 @@
   "dependencies": {
     "@newjersey/njwds": "2.6.0",
     "@trussworks/react-uswds": "10.0.2",
+    "jiti": "2.4.2",
     "jszip": "3.10.1",
     "next": "15.2.4",
     "node-poppler": "7.2.4",
@@ -44,7 +45,7 @@
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
     "cypress": "14.2.1",
-    "eslint": "9.23.0",
+    "eslint": "9.31.0",
     "eslint-config-next": "15.2.4",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import-x": "4.16.1",
