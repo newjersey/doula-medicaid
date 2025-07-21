@@ -24,6 +24,21 @@ export const allSections: Array<Section> = [
     numSteps: 1,
   },
   {
+    id: "step-3",
+    sectionName: "Step 3",
+    heading: "Placeholder step 3",
+  },
+  {
+    id: "step-4",
+    sectionName: "Step 4",
+    heading: "Placeholder step 4",
+  },
+  {
+    id: "step-5",
+    sectionName: "Step 5",
+    heading: "Placeholder step 5",
+  },
+  {
     id: "download",
     sectionName: "Download forms",
     heading: "Download forms",

@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Fieldset,
-  Form,
-  Label,
-  RequiredMarker,
-  Select,
-  TextInput,
-  TextInputMask,
-} from "@trussworks/react-uswds";
+import { Fieldset, Form, Label, RequiredMarker, Select, TextInput } from "@trussworks/react-uswds";
 import React from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { AddressState } from "../../../_utils/inputFields/enums";
@@ -19,7 +11,6 @@ import { PersonalInformationData } from "../PersonalInformationData";
 const PersonalDetailsStep2: React.FC = () => {
   const { register, handleSubmit, control } = useForm<PersonalInformationData>({
     defaultValues: {
-      npiNumber: getValue("npiNumber") || "",
       streetAddress1: getValue("streetAddress1") || "",
       streetAddress2: getValue("streetAddress2") || "",
       city: getValue("city") || "",
@@ -43,19 +34,10 @@ const PersonalDetailsStep2: React.FC = () => {
             "Form submission does not use the onSubmit handler, use ProgressButtons instead",
           );
         }}
+        className="maxw-tablet"
       >
-        <Label htmlFor="npiNumber">
-          NPI number <RequiredMarker />
-        </Label>
-        <TextInputMask
-          id="npiNumber"
-          type="tel"
-          inputMode="numeric"
-          mask="__________"
-          pattern="\d{10}"
-          required
-          {...register("npiNumber")}
-        />
+        <h2 className="font-heading-md">Residential Address</h2>
+        <p className="usa-hint">This is the location where you want to receive official mail.</p>
         <Fieldset legend="Mail to address" legendStyle="srOnly">
           <Label htmlFor="streetAddress1">
             Street address 1 <RequiredMarker />

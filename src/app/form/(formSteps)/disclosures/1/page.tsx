@@ -1,6 +1,14 @@
 "use client";
 
-import { Fieldset, Form, Label, Radio, RequiredMarker, Select, TextInput } from "@trussworks/react-uswds";
+import {
+  Fieldset,
+  Form,
+  Label,
+  Radio,
+  RequiredMarker,
+  Select,
+  TextInput,
+} from "@trussworks/react-uswds";
 import React, { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { AddressState, DisclosingEntity } from "../../../_utils/inputFields/enums";
@@ -63,52 +71,59 @@ const DisclosuresStep1: React.FC = () => {
             "Form submission does not use the onSubmit handler, use ProgressButtons instead",
           );
         }}
+        className="maxw-tablet"
       >
+        <h2 className="font-heading-md">Business details</h2>
+        <p>Are you the sole proprietor of your business?</p>
         <Fieldset
           legend={
-            <span>
-              Is your doula business a sole proprietorship? <RequiredMarker />
-            </span>
+            <p className="font-ui-xs">
+              Select one <RequiredMarker />
+            </p>
           }
           legendStyle="large"
         >
           <Radio
             id="soleProprietorshipYes"
-            label="Yes, my doula business is a sole proprietorship"
+            label="Yes"
             value="yes"
             {...register("isSoleProprietorship")}
           />
           <Radio
             id="soleProprietorshipNo"
-            label="No, my doula business is not a sole proprietorship"
+            label="No"
             value="no"
             {...register("isSoleProprietorship")}
           />
         </Fieldset>
 
         {isSoleProprietorship === "yes" && (
-          <Fieldset
-            legend={
-              <span>
-                Do you have a separate business address that&apos;s different from your mailing
-                address? <RequiredMarker />
-              </span>
-            }
-            legendStyle="large"
-          >
-            <Radio
-              id="separateBusinessAddressYes"
-              label="Yes, I have a separate business address"
-              value="yes"
-              {...register("hasSeparateBusinessAddress")}
-            />
-            <Radio
-              id="separateBusinessAddressNo"
-              label="No, I do not have a separate business address"
-              value="no"
-              {...register("hasSeparateBusinessAddress")}
-            />
-          </Fieldset>
+          <div>
+            <h2 className="font-heading-md margin-top-5">Business address</h2>
+            <p className="usa-hint">This is the physical location where your business operates.</p>
+            <p>Is your business address the same as your residential and billing address?</p>
+            <Fieldset
+              legend={
+                <p className="font-ui-xs">
+                  Select one <RequiredMarker />
+                </p>
+              }
+              legendStyle="large"
+            >
+              <Radio
+                id="separateBusinessAddressYes"
+                label="Yes"
+                value="yes"
+                {...register("hasSeparateBusinessAddress")}
+              />
+              <Radio
+                id="separateBusinessAddressNo"
+                label="No"
+                value="no"
+                {...register("hasSeparateBusinessAddress")}
+              />
+            </Fieldset>
+          </div>
         )}
 
         {hasSeparateBusinessAddress === "yes" && (

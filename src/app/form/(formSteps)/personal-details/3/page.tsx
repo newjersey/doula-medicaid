@@ -31,7 +31,9 @@ const PersonalDetailsStep3: React.FC = () => {
             "Form submission does not use the onSubmit handler, use ProgressButtons instead",
           );
         }}
+        className="maxw-tablet"
       >
+        <h2 className="font-heading-md">Provider IDs</h2>
         <Label htmlFor="npiNumber">
           NPI number <RequiredMarker />
         </Label>
