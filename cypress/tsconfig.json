@@ -1,7 +1,6 @@
 {
-  "extends": "../tsconfig.json",
-  "include": ["./**/*.ts", "./**/*.tsx"],
   "compilerOptions": {
     "types": ["cypress"]
-  }
+  },
+  "include": ["./**/*.ts", "./**/*.tsx"]
 }
