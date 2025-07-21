@@ -25,5 +25,5 @@
   },
   "files": ["node_modules/jest-expect-message/types/index.d.ts"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "eslint.config.ts"],
-  "exclude": ["node_modules", "./cypress.config.ts"]
+  "exclude": ["node_modules", "./cypress.config.ts", "./cypress/**/*"]
 }

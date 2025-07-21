@@ -4,6 +4,6 @@ describe("test passes", () => {
   });
 
   it("should pass", () => {
-    expect(true).to.equal(true);
+    expect(true).to.be.true;
   });
 });
