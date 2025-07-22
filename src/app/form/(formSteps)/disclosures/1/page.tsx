@@ -85,12 +85,14 @@ const DisclosuresStep1: React.FC = () => {
         >
           <Radio
             id="soleProprietorshipYes"
+            data-testid="soleProprietorshipYes"
             label="Yes"
             value="yes"
             {...register("isSoleProprietorship")}
           />
           <Radio
             id="soleProprietorshipNo"
+            data-testid="soleProprietorshipNo"
             label="No"
             value="no"
             {...register("isSoleProprietorship")}
@@ -112,12 +114,14 @@ const DisclosuresStep1: React.FC = () => {
             >
               <Radio
                 id="separateBusinessAddressYes"
+                data-testid="separateBusinessAddressYes"
                 label="Yes"
                 value="yes"
                 {...register("hasSeparateBusinessAddress")}
               />
               <Radio
                 id="separateBusinessAddressNo"
+                data-testid="separateBusinessAddressNo"
                 label="No"
                 value="no"
                 {...register("hasSeparateBusinessAddress")}

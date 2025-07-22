@@ -11,13 +11,19 @@ describe("<FormLayout />", () => {
     );
     const progressSection = screen.getByRole("generic", { name: /progress/i });
     const sections = within(progressSection).getAllByRole("listitem");
-    expect(sections.length).toEqual(3);
+    expect(sections.length).toEqual(6);
     expect(sections[0]).toHaveTextContent("Personal details");
     expect(sections[0]).toHaveTextContent("completed");
     expect(sections[1]).toHaveTextContent("Disclosures");
     expect(sections[1].getAttribute("aria-current")).toEqual("true");
-    expect(sections[2]).toHaveTextContent("Download forms");
+    expect(sections[2]).toHaveTextContent("Step 3");
     expect(sections[2]).toHaveTextContent("not completed");
+    expect(sections[3]).toHaveTextContent("Step 4");
+    expect(sections[3]).toHaveTextContent("not completed");
+    expect(sections[4]).toHaveTextContent("Step 5");
+    expect(sections[4]).toHaveTextContent("not completed");
+    expect(sections[5]).toHaveTextContent("Download forms");
+    expect(sections[5]).toHaveTextContent("not completed");
   });
 
   it("shows heading 1 with the step indicator and section title when the title is different from the section name", () => {

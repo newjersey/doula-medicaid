@@ -8,7 +8,7 @@ import ProgressButtons from "../../components/ProgressButtons";
 import { PersonalInformationData } from "../PersonalInformationData";
 
 const PersonalDetailsStep3: React.FC = () => {
-  const { register, handleSubmit } = useForm<PersonalInformationData>({
+  const { register, handleSubmit, control } = useForm<PersonalInformationData>({
     defaultValues: {
       npiNumber: getValue("npiNumber") || "",
       upinNumber: getValue("upinNumber") || "",
@@ -17,6 +17,7 @@ const PersonalDetailsStep3: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
+    console.log("Form submitted with data:", data);
     for (const key in data) {
       const value = data[key as keyof PersonalInformationData] ?? "";
       setKeyValue(key, value);
@@ -47,12 +48,12 @@ const PersonalDetailsStep3: React.FC = () => {
           {...register("npiNumber")}
         />
         <Label htmlFor="upinNumber">UPIN number (if applicable)</Label>
-        <TextInput type="number" id="upinNumber" inputMode="numeric" {...register("upinNumber")} />
+        <TextInput type="text" id="upinNumber" inputMode="text" {...register("upinNumber")} />
         <Label htmlFor="medicaidProviderId">Medicaid provider ID (if applicable)</Label>
         <TextInput
-          type="number"
+          type="text"
           id="medicaidProviderId"
-          inputMode="numeric"
+          inputMode="text"
           {...register("medicaidProviderId")}
         />
       </Form>

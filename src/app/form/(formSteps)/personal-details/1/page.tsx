@@ -56,103 +56,107 @@ const PersonalDetailsStep1: React.FC = () => {
               "Form submission does not use the onSubmit handler, use ProgressButtons instead",
             );
           }}
-          className="maxw-tablet"
+          className="maxw-full"
         >
-          <h2 className="font-heading-md">Personal Identification</h2>
-          <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
-            <div className="tablet:grid-col-4">
-              <Label htmlFor="firstName">
-                First name <RequiredMarker />{" "}
-              </Label>
-              <TextInput id="firstName" type="text" required {...register("firstName")} />
-            </div>
-            <div className="tablet:grid-col-4">
-              <Label htmlFor="middleName" hint=" (optional)">
-                Middle name
-              </Label>
-              <TextInput id="middleName" type="text" {...register("middleName")} />
-            </div>
-            <div className="tablet:grid-col-4">
-              <Label htmlFor="lastName">
-                Last name <RequiredMarker />{" "}
-              </Label>
-              <TextInput id="lastName" type="text" required {...register("lastName")} />
-            </div>
-          </Fieldset>
+          <div className="maxw-tablet">
+            <h2 className="font-heading-md">Personal Identification</h2>
+            <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
+              <div className="tablet:grid-col-4">
+                <Label htmlFor="firstName">
+                  First name <RequiredMarker />{" "}
+                </Label>
+                <TextInput id="firstName" type="text" required {...register("firstName")} />
+              </div>
+              <div className="tablet:grid-col-4">
+                <Label htmlFor="middleName" hint=" (optional)">
+                  Middle name
+                </Label>
+                <TextInput id="middleName" type="text" {...register("middleName")} />
+              </div>
+              <div className="tablet:grid-col-4">
+                <Label htmlFor="lastName">
+                  Last name <RequiredMarker />{" "}
+                </Label>
+                <TextInput id="lastName" type="text" required {...register("lastName")} />
+              </div>
+            </Fieldset>
 
-          <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
-            Date of birth <RequiredMarker />
-          </Label>
-          <p className="usa-hint">For example: March 18 1986</p>
-          <div className="usa-hint" id="dateOfBirthHint">
-            mm/dd/yyyy
-          </div>
-          <Controller
-            name="dateOfBirth"
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                name="dateOfBirth"
-                id="dateOfBirth"
-                aria-describedby="dateOfBirthHint"
-                aria-labelledby="dateOfBirthLabel"
-                value={field.value || ""}
-                required
-                onChange={(value) => {
-                  if (value === undefined || !dateIsValid(value)) {
-                    return;
+            <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
+              Date of birth <RequiredMarker />
+            </Label>
+            <p className="usa-hint">For example: March 18 1986</p>
+            <div className="usa-hint" id="dateOfBirthHint">
+              mm/dd/yyyy
+            </div>
+            <Controller
+              name="dateOfBirth"
+              control={control}
+              render={({ field }) => (
+                <DatePicker
+                  name="dateOfBirth"
+                  id="dateOfBirth"
+                  aria-describedby="dateOfBirthHint"
+                  aria-labelledby="dateOfBirthLabel"
+                  value={field.value || ""}
+                  required
+                  onChange={(value) => {
+                    if (value === undefined || !dateIsValid(value)) {
+                      return;
+                    }
+                    field.onChange(value);
+                  }}
+                  onBlur={field.onBlur}
+                  key={dataHasLoaded.toString()}
+                  defaultValue={
+                    field.value ? formatDateOfBirthDefaultValue(new Date(field.value)) : undefined
                   }
-                  field.onChange(value);
-                }}
-                onBlur={field.onBlur}
-                key={dataHasLoaded.toString()}
-                defaultValue={
-                  field.value ? formatDateOfBirthDefaultValue(new Date(field.value)) : undefined
-                }
-              />
-            )}
-          />
+                />
+              )}
+            />
 
-          <Label htmlFor="socialSecurityNumber">
-            Social security number <RequiredMarker />
-          </Label>
-          <p className="usa-hint">Format XXX-XX-XXXX</p>
-          <TextInputMask
-            id="socialSecurityNumber"
-            type="text"
-            inputMode="numeric"
-            mask="___-__-____"
-            pattern="\d{3}-\d{2}-\d{4}"
-            required
-            {...register("socialSecurityNumber")}
-          />
-          <hr />
-          <h2 className="font-heading-md">Contact Information</h2>
-          <p>This is where we'll send official updates and communications.</p>
-          <Label htmlFor="email">
-            Email address <RequiredMarker />
-          </Label>
-          <TextInput
-            id="email"
-            type="email"
-            autoCorrect="off"
-            autoCapitalize="off"
-            required
-            {...register("email")}
-          />
+            <Label htmlFor="socialSecurityNumber">
+              Social security number <RequiredMarker />
+            </Label>
+            <p className="usa-hint">Format XXX-XX-XXXX</p>
+            <TextInputMask
+              id="socialSecurityNumber"
+              type="text"
+              inputMode="numeric"
+              mask="___-__-____"
+              pattern="\d{3}-\d{2}-\d{4}"
+              required
+              {...register("socialSecurityNumber")}
+            />
+          </div>
+          <hr className="margin-top-5 margin-bottom-5" />
+          <div className="maxw-tablet">
+            <h2 className="font-heading-md">Contact Information</h2>
+            <p>This is where we'll send official updates and communications.</p>
+            <Label htmlFor="email">
+              Email address <RequiredMarker />
+            </Label>
+            <TextInput
+              id="email"
+              type="email"
+              autoCorrect="off"
+              autoCapitalize="off"
+              required
+              {...register("email")}
+            />
 
-          <Label htmlFor="phoneNumber">
-            Phone number <RequiredMarker />{" "}
-          </Label>
-          <TextInputMask
-            id="phoneNumber"
-            type="tel"
-            inputMode="numeric"
-            mask="___-___-____"
-            pattern="\d{3}-\d{3}-\d{4}"
-            required
-            {...register("phoneNumber")}
-          />
+            <Label htmlFor="phoneNumber">
+              Phone number <RequiredMarker />{" "}
+            </Label>
+            <TextInputMask
+              id="phoneNumber"
+              type="tel"
+              inputMode="numeric"
+              mask="___-___-____"
+              pattern="\d{3}-\d{3}-\d{4}"
+              required
+              {...register("phoneNumber")}
+            />
+          </div>
         </Form>
       )}
       <ProgressButtons onClickHandler={handleSubmit(onSubmit)} />

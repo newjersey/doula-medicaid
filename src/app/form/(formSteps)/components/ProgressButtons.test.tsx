@@ -238,9 +238,6 @@ describe("<ProgressButtons />", () => {
     const progressButtonGroup = getProgressButtonsList();
     expect(within(progressButtonGroup).getAllByRole("listitem").length).toEqual(1);
 
-    expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute(
-      "href",
-      "/form/disclosures/1",
-    );
+    expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute("href", "/form/step-5");
   });
 });

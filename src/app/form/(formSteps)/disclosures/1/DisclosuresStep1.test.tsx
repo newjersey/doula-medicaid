@@ -26,18 +26,14 @@ describe("<DisclosuresStep1 />", () => {
 
   const clickYesSPButton = async () => {
     const user = userEvent.setup();
-    const yesSPButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
+    const yesSPButton = screen.getByTestId("soleProprietorshipYes");
     await user.click(yesSPButton);
     return { user, yesSPButton };
   };
 
   const clickYesSeparateAddressButton = async () => {
     const { user } = await clickYesSPButton();
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes, I have a separate business address",
-    });
+    const yesButton = screen.getByTestId("separateBusinessAddressYes");
     await user.click(yesButton);
     return { user, yesButton };
   };
@@ -46,7 +42,7 @@ describe("<DisclosuresStep1 />", () => {
     const user = userEvent.setup();
     renderWithRouter();
     const noButton = screen.getByRole("radio", {
-      name: "No, my doula business is not a sole proprietorship",
+      name: "No",
     });
     await clickYesSPButton();
     expect(getValue("natureOfDisclosingEntity")).toBe("SoleProprietorship");
@@ -59,10 +55,10 @@ describe("<DisclosuresStep1 />", () => {
     const user = userEvent.setup();
     renderWithRouter();
     const noButton = screen.getByRole("radio", {
-      name: "No, my doula business is not a sole proprietorship",
+      name: "No",
     });
     const yesButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
+      name: "Yes",
     });
     expect(yesButton).not.toBeChecked();
     expect(noButton).not.toBeChecked();
@@ -75,17 +71,10 @@ describe("<DisclosuresStep1 />", () => {
   it("saves separateBusinessAddress as true when user selects yes", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const yesSPButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
-    await user.click(yesSPButton);
-    expect(yesSPButton).toBeChecked();
-    const noButton = screen.getByRole("radio", {
-      name: "No, I do not have a separate business address",
-    });
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes, I have a separate business address",
-    });
+    const yesSPButton = await clickYesSPButton();
+    expect(yesSPButton.yesSPButton).toBeChecked();
+    const noButton = screen.getByTestId("separateBusinessAddressNo");
+    const yesButton = screen.getByTestId("separateBusinessAddressYes");
     expect(yesButton).not.toBeChecked();
     expect(noButton).not.toBeChecked();
     expect(getValue("separateBusinessAddress")).toBe(null);
@@ -99,9 +88,7 @@ describe("<DisclosuresStep1 />", () => {
     renderWithRouter();
     const yesSPButton = await clickYesSPButton();
     expect(yesSPButton.yesSPButton).toBeChecked();
-    const noButton = screen.getByRole("radio", {
-      name: "No, I do not have a separate business address",
-    });
+    const noButton = screen.getByTestId("separateBusinessAddressNo");
     await user.click(noButton);
     expect(noButton).toBeChecked();
     expect(getValue("separateBusinessAddress")).toBe("false");
@@ -122,17 +109,16 @@ describe("<DisclosuresStep1 />", () => {
       await clickYesSeparateAddressButton();
 
       const nextButton = screen.getByRole("button", { name: "Next" });
-    const inputField = screen.getByRole("textbox", {
-      name: name,
-    });
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
+      const inputField = screen.getByRole("textbox", {
+        name: name,
+      });
+      expect(window.sessionStorage.getItem(key)).toEqual(null);
 
-       await user.type(inputField, testValue);
-    await user.click(nextButton);
+      await user.type(inputField, testValue);
+      await user.click(nextButton);
 
-    expect(inputField).toHaveValue(testValue);
-    expect(window.sessionStorage.getItem(key)).toEqual(testValue);
-
+      expect(inputField).toHaveValue(testValue);
+      expect(window.sessionStorage.getItem(key)).toEqual(testValue);
     },
   );
 
@@ -152,9 +138,9 @@ describe("<DisclosuresStep1 />", () => {
     expect(combobox).toHaveValue("NJ");
 
     await user.selectOptions(combobox, "PA");
-    await user.click(nextButton);
-
     expect(combobox).toHaveValue("PA");
+
+    await user.click(nextButton);
     expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
   });
 
