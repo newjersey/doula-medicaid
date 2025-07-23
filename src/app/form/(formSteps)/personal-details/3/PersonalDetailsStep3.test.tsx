@@ -53,7 +53,7 @@ describe("<PersonalDetailsStep3 />", () => {
   it("keeps all fields filled when reloading page", () => {
     window.sessionStorage.setItem("npiNumber", "1234567890");
     window.sessionStorage.setItem("upinNumber", "12345");
-    window.sessionStorage.setItem("medicaidProviderNumber", "ABC12345");
+    window.sessionStorage.setItem("medicaidProviderId", "ABC12345");
     renderWithRouter();
 
     expect(screen.getByRole("textbox", { name: "NPI number *" })).toHaveValue("1234567890");

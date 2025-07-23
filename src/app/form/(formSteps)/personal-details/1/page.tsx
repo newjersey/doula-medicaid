@@ -7,14 +7,13 @@ import {
   Label,
   RequiredMarker,
   TextInput,
-  TextInputMask,
 } from "@trussworks/react-uswds";
 import React, { useEffect, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import ProgressButtons from "../../components/ProgressButtons";
-import { PersonalInformationData } from "../PersonalInformationData";
+import { type PersonalInformationData } from "../PersonalInformationData";
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
 
@@ -43,6 +42,7 @@ const PersonalDetailsStep1: React.FC = () => {
       setKeyValue(key, value);
     }
   };
+
   useEffect(() => {
     setDataHasLoaded(true);
   }, []);
@@ -80,7 +80,6 @@ const PersonalDetailsStep1: React.FC = () => {
                 <TextInput id="lastName" type="text" required {...register("lastName")} />
               </div>
             </Fieldset>
-
             <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
               Date of birth <RequiredMarker />
             </Label>
@@ -118,12 +117,9 @@ const PersonalDetailsStep1: React.FC = () => {
               Social security number <RequiredMarker />
             </Label>
             <p className="usa-hint">Format XXX-XX-XXXX</p>
-            <TextInputMask
+            <TextInput
               id="socialSecurityNumber"
               type="text"
-              inputMode="numeric"
-              mask="___-__-____"
-              pattern="\d{3}-\d{2}-\d{4}"
               required
               {...register("socialSecurityNumber")}
             />
@@ -131,7 +127,7 @@ const PersonalDetailsStep1: React.FC = () => {
           <hr className="margin-top-5 margin-bottom-5" />
           <div className="maxw-tablet">
             <h2 className="font-heading-md">Contact Information</h2>
-            <p>This is where we'll send official updates and communications.</p>
+            <p>This is where we&lsquo;ll send official updates and communications.</p>
             <Label htmlFor="email">
               Email address <RequiredMarker />
             </Label>
@@ -147,15 +143,7 @@ const PersonalDetailsStep1: React.FC = () => {
             <Label htmlFor="phoneNumber">
               Phone number <RequiredMarker />{" "}
             </Label>
-            <TextInputMask
-              id="phoneNumber"
-              type="tel"
-              inputMode="numeric"
-              mask="___-___-____"
-              pattern="\d{3}-\d{3}-\d{4}"
-              required
-              {...register("phoneNumber")}
-            />
+            <TextInput id="phoneNumber" type="tel" required {...register("phoneNumber")} />
           </div>
         </Form>
       )}

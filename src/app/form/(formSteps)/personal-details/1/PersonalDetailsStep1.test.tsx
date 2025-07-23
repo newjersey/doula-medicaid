@@ -32,6 +32,8 @@ describe("<PersonalDetailsStep1 />", () => {
     { name: "Last name *", key: "lastName", testValue: "Test last name" },
     { name: "Date of birth *", key: "dateOfBirth", testValue: "01/01/1990" },
     { name: "Email address *", key: "email", testValue: "test@test.com" },
+    { name: "Social security number *", key: "socialSecurityNumber", testValue: "123456789" },
+    { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
   ])("updates the $name text input", async ({ name, key, testValue }) => {
     const user = userEvent.setup();
     renderWithRouter();
@@ -45,40 +47,6 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(inputField).toHaveValue(testValue);
     await user.click(nextButton);
     expect(window.sessionStorage.getItem(key)).toEqual(testValue);
-  });
-
-  it("updates the phone number input", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    const inputField = screen.getByRole("textbox", {
-      name: "Phone number *",
-    });
-    const key = "phoneNumber";
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
-    const testValue = "1111111111";
-
-    await user.type(inputField, testValue);
-    expect(inputField).toHaveValue("111-111-1111");
-    await user.click(nextButton);
-    expect(window.sessionStorage.getItem(key)).toEqual("111-111-1111");
-  });
-
-  it("updates the social security number input", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    const inputField = screen.getByRole("textbox", {
-      name: "Social security number *",
-    });
-    const key = "socialSecurityNumber";
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
-    const testValue = "123456789";
-
-    await user.type(inputField, testValue);
-    expect(inputField).toHaveValue("123-45-6789");
-    await user.click(nextButton);
-    expect(window.sessionStorage.getItem(key)).toEqual("123-45-6789");
   });
 
   it("keeps all fields filled when reloading page", () => {
