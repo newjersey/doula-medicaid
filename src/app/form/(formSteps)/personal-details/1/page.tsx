@@ -8,11 +8,13 @@ import {
   RequiredMarker,
   TextInput,
 } from "@trussworks/react-uswds";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
+import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
 import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
-import ProgressButtons from "../../components/ProgressButtons";
+import FormProgressButtons from "../../components/FormProgressButtons";
 import { type PersonalInformationData } from "../PersonalInformationData";
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
@@ -23,6 +25,8 @@ const dateIsValid = (date: string): boolean => {
 };
 
 const PersonalDetailsStep1: React.FC = () => {
+  const router = useRouter();
+  const formProgressPosition = useFormProgressPosition();
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const { register, handleSubmit, control } = useForm<PersonalInformationData>({
     defaultValues: {
@@ -41,6 +45,7 @@ const PersonalDetailsStep1: React.FC = () => {
       const value = data[key as keyof PersonalInformationData] ?? "";
       setKeyValue(key, value);
     }
+    routeToNextStep(router, formProgressPosition);
   };
 
   useEffect(() => {
@@ -50,14 +55,7 @@ const PersonalDetailsStep1: React.FC = () => {
   return (
     <div>
       {dataHasLoaded && (
-        <Form
-          onSubmit={() => {
-            throw new Error(
-              "Form submission does not use the onSubmit handler, use ProgressButtons instead",
-            );
-          }}
-          className="maxw-full"
-        >
+        <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full">
           <div className="maxw-tablet">
             <h2 className="font-heading-md">Personal Identification</h2>
             <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
@@ -145,9 +143,9 @@ const PersonalDetailsStep1: React.FC = () => {
             </Label>
             <TextInput id="phoneNumber" type="tel" required {...register("phoneNumber")} />
           </div>
+          <FormProgressButtons />
         </Form>
       )}
-      <ProgressButtons onClickHandler={handleSubmit(onSubmit)} />
     </div>
   );
 };

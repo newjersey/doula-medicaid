@@ -18,7 +18,7 @@ const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
     state: null,
     zip: null,
     natureOfDisclosingEntity: null,
-    separateBusinessAddress: null,
+    hasSeparateBusinessAddress: null,
     businessStreetAddress1: null,
     businessStreetAddress2: null,
     businessCity: null,
@@ -298,7 +298,7 @@ describe("mapFfsIndividualFields", () => {
           city: "Trenton",
           state: AddressState.NJ,
           zip: "11111",
-          separateBusinessAddress: false,
+          hasSeparateBusinessAddress: false,
         });
         const fieldsToFill = mapFfsIndividualFields(formData);
         expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toEqual(true);
@@ -332,7 +332,7 @@ describe("mapFfsIndividualFields", () => {
           city: "Trenton",
           state: AddressState.NJ,
           zip: "11111",
-          separateBusinessAddress: true,
+          hasSeparateBusinessAddress: true,
           businessStreetAddress1: "456 Test St",
           businessStreetAddress2: "Suite Test",
           businessCity: "Trenton",

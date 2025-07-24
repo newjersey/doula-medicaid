@@ -86,14 +86,14 @@ const getPage16Fields = (formData: FormData): PDFData => {
       fd452einorothertaxidnumber: formData.socialSecurityNumber ?? "",
     };
 
-    if (formData.separateBusinessAddress === false) {
+    if (formData.hasSeparateBusinessAddress === false) {
       return {
         ...soleProprietorshipFields,
         fd452businessstreetline1: formData.streetAddress1 || "",
         fd452businessstreetline2: formData.streetAddress2 || "",
         fd452businessstreetline3: formatAddressLine3(formData),
       };
-    } else if (formData.separateBusinessAddress === true) {
+    } else if (formData.hasSeparateBusinessAddress === true) {
       return {
         ...soleProprietorshipFields,
         fd452businessstreetline1: formData.businessStreetAddress1 || "",
