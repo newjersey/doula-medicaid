@@ -28,7 +28,7 @@ describe("<PersonalDetailsStep2 />", () => {
 
   it.each([
     { name: "Street address 1 *", key: "streetAddress1", testValue: "Test address 1" },
-    { name: "Street address 2 (optional)", key: "streetAddress2", testValue: "Test address 2" },
+    { name: "Street address line 2", key: "streetAddress2", testValue: "Test address 2" },
     { name: "City *", key: "city", testValue: "Test city" },
     { name: "ZIP code *", key: "zip", testValue: "12345" },
   ])("updates the $name text input", async ({ name, key, testValue }) => {
@@ -52,7 +52,7 @@ describe("<PersonalDetailsStep2 />", () => {
     renderWithRouter();
     const nextButton = screen.getByRole("button", { name: "Next" });
     const combobox = screen.getByRole("combobox", {
-      name: "State *",
+      name: "State, territory, or military post *",
     });
     expect(combobox).toHaveValue("NJ");
 
@@ -72,11 +72,11 @@ describe("<PersonalDetailsStep2 />", () => {
     renderWithRouter();
 
     expect(screen.getByRole("textbox", { name: "Street address 1 *" })).toHaveValue("123 Main St");
-    expect(screen.getByRole("textbox", { name: "Street address 2 (optional)" })).toHaveValue(
-      "Apt 4B",
-    );
+    expect(screen.getByRole("textbox", { name: "Street address line 2" })).toHaveValue("Apt 4B");
     expect(screen.getByRole("textbox", { name: "City *" })).toHaveValue("Newark");
-    expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
+    expect(
+      screen.getByRole("combobox", { name: "State, territory, or military post *" }),
+    ).toHaveValue("NJ");
     expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
   });
 
@@ -85,7 +85,7 @@ describe("<PersonalDetailsStep2 />", () => {
       { label: "Street address 1 *", role: "textbox" },
       { label: "City *", role: "textbox" },
       { label: "ZIP code *", role: "textbox" },
-      { label: "State *", role: "combobox" },
+      { label: "State, territory, or military post *", role: "combobox" },
     ])("checks that $label is marked as required", ({ label, role }) => {
       renderWithRouter();
 

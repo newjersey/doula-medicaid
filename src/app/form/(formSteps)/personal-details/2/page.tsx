@@ -45,24 +45,26 @@ const PersonalDetailsStep2: React.FC = () => {
           <h2 className="font-heading-md">Residential Address</h2>
           <p className="usa-hint">This is the location where you want to receive official mail.</p>
           <Fieldset legend="Mail to address" legendStyle="srOnly">
-            <Label htmlFor="streetAddress1">
-              Street address 1 <RequiredMarker />
-            </Label>
-            <TextInput
-              id="streetAddress1"
-              type="text"
-              inputMode="numeric"
-              required
-              {...register("streetAddress1")}
-            />
-
-            <Label htmlFor="streetAddress2" hint=" (optional)">
-              Street address 2
-            </Label>
-            <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
-
             <div className="grid-row grid-gap">
-              <div className="mobile-lg:grid-col-8">
+              <div className="mobile-lg:grid-col-6">
+                <Label htmlFor="streetAddress1">
+                  Street address 1 <RequiredMarker />
+                </Label>
+                <TextInput
+                  id="streetAddress1"
+                  type="text"
+                  inputMode="numeric"
+                  required
+                  {...register("streetAddress1")}
+                />
+              </div>
+              <div className="mobile-lg:grid-col-6">
+                <Label htmlFor="streetAddress2">Street address line 2</Label>
+                <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
+              </div>
+            </div>
+            <div className="grid-row grid-gap">
+              <div className="mobile-lg:grid-col-6">
                 <Label htmlFor="city">
                   City <RequiredMarker />
                 </Label>
@@ -74,9 +76,11 @@ const PersonalDetailsStep2: React.FC = () => {
                   {...register("city")}
                 />
               </div>
-              <div className="mobile-lg:grid-col-4">
+            </div>
+            <div className="grid-row grid-gap">
+              <div className="mobile-lg:grid-col-6">
                 <Label htmlFor="state">
-                  State <RequiredMarker />{" "}
+                  State, territory, or military post <RequiredMarker />{" "}
                 </Label>
                 <Select className="usa-select" id="state" required {...register("state")}>
                   {Object.keys(AddressState).map((state) => (
@@ -86,19 +90,21 @@ const PersonalDetailsStep2: React.FC = () => {
                   ))}
                 </Select>
               </div>
-            </div>
 
-            <Label htmlFor="zip">
-              ZIP code <RequiredMarker />
-            </Label>
-            <TextInput
-              className="usa-input usa-input--medium"
-              id="zip"
-              type="text"
-              pattern="[\d]{5}(-[\d]{4})?"
-              required
-              {...register("zip")}
-            />
+              <div className="mobile-lg:grid-col-4">
+                <Label htmlFor="zip">
+                  ZIP code <RequiredMarker />
+                </Label>
+                <TextInput
+                  className="usa-input usa-input--medium"
+                  id="zip"
+                  type="text"
+                  pattern="[\d]{5}(-[\d]{4})?"
+                  required
+                  {...register("zip")}
+                />
+              </div>
+            </div>
           </Fieldset>
         </Form>
       )}

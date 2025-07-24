@@ -132,28 +132,30 @@ const DisclosuresStep1: React.FC = () => {
 
         {hasSeparateBusinessAddress === "yes" && (
           <Fieldset legend="Business address" legendStyle="srOnly">
-            <Label htmlFor="businessStreetAddress1">
-              Street address 1 <RequiredMarker />
-            </Label>
-            <TextInput
-              id="businessStreetAddress1"
-              type="text"
-              inputMode="numeric"
-              required
-              {...register("businessStreetAddress1")}
-            />
-
-            <Label htmlFor="businessStreetAddress2" hint=" (optional)">
-              Street address 2
-            </Label>
-            <TextInput
-              id="businessStreetAddress2"
-              type="text"
-              {...register("businessStreetAddress2")}
-            />
-
             <div className="grid-row grid-gap">
-              <div className="mobile-lg:grid-col-8">
+              <div className="mobile-lg:grid-col-6">
+                <Label htmlFor="businessStreetAddress1">
+                  Street address 1 <RequiredMarker />
+                </Label>
+                <TextInput
+                  id="businessStreetAddress1"
+                  type="text"
+                  inputMode="numeric"
+                  required
+                  {...register("businessStreetAddress1")}
+                />
+              </div>
+              <div className="mobile-lg:grid-col-6">
+                <Label htmlFor="businessStreetAddress2">Street address line 2</Label>
+                <TextInput
+                  id="businessStreetAddress2"
+                  type="text"
+                  {...register("businessStreetAddress2")}
+                />
+              </div>
+            </div>
+            <div className="grid-row grid-gap">
+              <div className="mobile-lg:grid-col-6">
                 <Label htmlFor="businessCity">
                   City <RequiredMarker />
                 </Label>
@@ -165,9 +167,11 @@ const DisclosuresStep1: React.FC = () => {
                   {...register("businessCity")}
                 />
               </div>
-              <div className="mobile-lg:grid-col-4">
+            </div>
+            <div className="grid-row grid-gap">
+              <div className="mobile-lg:grid-col-6">
                 <Label htmlFor="businessState">
-                  State <RequiredMarker />
+                  State, territory, or military post <RequiredMarker />{" "}
                 </Label>
                 <Select
                   className="usa-select"
@@ -182,19 +186,21 @@ const DisclosuresStep1: React.FC = () => {
                   ))}
                 </Select>
               </div>
-            </div>
 
-            <Label htmlFor="businessZip">
-              ZIP code <RequiredMarker />
-            </Label>
-            <TextInput
-              className="usa-input usa-input--medium"
-              id="businessZip"
-              type="text"
-              pattern="[\d]{5}(-[\d]{4})?"
-              required
-              {...register("businessZip")}
-            />
+              <div className="mobile-lg:grid-col-4">
+                <Label htmlFor="businessZip">
+                  ZIP code <RequiredMarker />
+                </Label>
+                <TextInput
+                  className="usa-input usa-input--medium"
+                  id="businessZip"
+                  type="text"
+                  pattern="[\d]{5}(-[\d]{4})?"
+                  required
+                  {...register("businessZip")}
+                />
+              </div>
+            </div>
           </Fieldset>
         )}
       </Form>
