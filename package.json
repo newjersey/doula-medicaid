@@ -1,5 +1,5 @@
 {
-  "name": "doula-common-app",
+  "name": "eng-accessibility-training",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "@newjersey/njwds": "2.6.0",
     "@trussworks/react-uswds": "10.0.2",
+    "@cmsgov/design-system":"12.4.1",
     "jszip": "3.10.1",
     "next": "15.2.4",
     "node-poppler": "7.2.4",

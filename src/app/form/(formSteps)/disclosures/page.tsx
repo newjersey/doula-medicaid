@@ -1,10 +1,12 @@
 "use client";
 
 import { Fieldset, Form, Radio } from "@trussworks/react-uswds";
-import React from "react";
-import { removeKey, setKeyValue } from "../../_utils/sessionStorage";
+import React, { useState } from "react";
+import { setKeyValue } from "../../_utils/sessionStorage";
 
 const DisclosuresStep: React.FC = () => {
+  const [hadLunch, setHadLunch] = useState<boolean | null>(null);
+  const [lunchWasTasty, setLunchWasTasty] = useState<boolean | null>(null);
   return (
     <div>
       <Form
@@ -12,20 +14,53 @@ const DisclosuresStep: React.FC = () => {
           throw new Error("Not implemented");
         }}
       >
-        <Fieldset legend="Is your doula business a sole proprietorship?" legendStyle="large">
+        <Fieldset legend="Have you had lunch today?" legendStyle="default">
           <Radio
-            id="soleProprietorshipYes"
-            name="setSoleProprietorship"
-            label="Yes, my doula business is a sole proprietorship"
-            onChange={() => setKeyValue("natureOfDisclosingEntity", "SoleProprietorship")}
+            id="hadLunchYes"
+            name="hadLunch"
+            label="Yes"
+            onChange={() => {
+              setKeyValue("hadLunch", "true");
+              setHadLunch(true);
+            }}
           />
           <Radio
-            id="soleProprietorshipNo"
-            name="setSoleProprietorship"
-            label="No, my doula business is not a sole proprietorship"
-            onChange={() => removeKey("natureOfDisclosingEntity")}
+            id="hadLunchNo"
+            name="hadLunch"
+            label="No"
+            onChange={() => {
+              setKeyValue("hadLunch", "false");
+              setHadLunch(false);
+            }}
           />
         </Fieldset>
+        {hadLunch === true && (
+          <div className="padding-y-4">
+            <Fieldset legend="Was your lunch tasty?" legendStyle="default">
+              <Radio
+                id="lunchYes"
+                name="lunchWasTasty"
+                label="Yes"
+                onChange={() => {
+                  setKeyValue("lunchWasTasty", "true");
+                  setLunchWasTasty(true);
+                }}
+              />
+              <Radio
+                id="lunchNo"
+                name="lunchWasTasty"
+                label="No"
+                onChange={() => {
+                  setKeyValue("lunchWasTasty", "false");
+                  setLunchWasTasty(false);
+                }}
+              />
+            </Fieldset>
+            {lunchWasTasty !== null && (
+              <div className="padding-y-4">{lunchWasTasty ? "Yay!" : "Boo"}</div>
+            )}
+          </div>
+        )}
       </Form>
     </div>
   );

@@ -3,6 +3,7 @@ import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
 import type { Metadata } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import "./cmsgov.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
