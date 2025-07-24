@@ -20,24 +20,16 @@ describe("<DisclosuresStep1 />", () => {
     );
   };
 
-  beforeEach(() => {
-    sessionStorage.clear();
-  });
-
   const clickYesSPButton = async () => {
     const user = userEvent.setup();
-    const yesSPButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
+    const yesSPButton = screen.getByTestId("soleProprietorshipYes");
     await user.click(yesSPButton);
     return { user, yesSPButton };
   };
 
   const clickYesSeparateAddressButton = async () => {
     const { user } = await clickYesSPButton();
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes, I have a separate business address",
-    });
+    const yesButton = screen.getByTestId("separateBusinessAddressYes");
     await user.click(yesButton);
     return { user, yesButton };
   };
@@ -45,9 +37,7 @@ describe("<DisclosuresStep1 />", () => {
   it("saves natureOfDisclosingEntity as null when user selects no", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const noButton = screen.getByRole("radio", {
-      name: "No, my doula business is not a sole proprietorship",
-    });
+    const noButton = screen.getByTestId("soleProprietorshipNo");
     await clickYesSPButton();
     expect(getValue("natureOfDisclosingEntity")).toBe("SoleProprietorship");
     await user.click(noButton);
@@ -58,12 +48,8 @@ describe("<DisclosuresStep1 />", () => {
   it("saves natureOfDisclosingEntity as SoleProprietorship when user selects yes", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const noButton = screen.getByRole("radio", {
-      name: "No, my doula business is not a sole proprietorship",
-    });
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
+    const noButton = screen.getByTestId("soleProprietorshipNo");
+    const yesButton = screen.getByTestId("soleProprietorshipYes");
     expect(yesButton).not.toBeChecked();
     expect(noButton).not.toBeChecked();
     expect(getValue("natureOfDisclosingEntity")).toBe(null);
@@ -75,17 +61,10 @@ describe("<DisclosuresStep1 />", () => {
   it("saves separateBusinessAddress as true when user selects yes", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const yesSPButton = screen.getByRole("radio", {
-      name: "Yes, my doula business is a sole proprietorship",
-    });
-    await user.click(yesSPButton);
-    expect(yesSPButton).toBeChecked();
-    const noButton = screen.getByRole("radio", {
-      name: "No, I do not have a separate business address",
-    });
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes, I have a separate business address",
-    });
+    const yesSPButton = await clickYesSPButton();
+    expect(yesSPButton.yesSPButton).toBeChecked();
+    const noButton = screen.getByTestId("separateBusinessAddressNo");
+    const yesButton = screen.getByTestId("separateBusinessAddressYes");
     expect(yesButton).not.toBeChecked();
     expect(noButton).not.toBeChecked();
     expect(getValue("separateBusinessAddress")).toBe(null);
@@ -99,9 +78,7 @@ describe("<DisclosuresStep1 />", () => {
     renderWithRouter();
     const yesSPButton = await clickYesSPButton();
     expect(yesSPButton.yesSPButton).toBeChecked();
-    const noButton = screen.getByRole("radio", {
-      name: "No, I do not have a separate business address",
-    });
+    const noButton = screen.getByTestId("separateBusinessAddressNo");
     await user.click(noButton);
     expect(noButton).toBeChecked();
     expect(getValue("separateBusinessAddress")).toBe("false");
@@ -109,11 +86,11 @@ describe("<DisclosuresStep1 />", () => {
 
   it.each([
     { name: "Street address 1 *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
-    { name: "Street address 2 (optional)", key: "businessStreetAddress2", testValue: "Suite 100" },
+    { name: "Street address line 2", key: "businessStreetAddress2", testValue: "Suite 100" },
     { name: "City *", key: "businessCity", testValue: "Seattle" },
     { name: "ZIP code *", key: "businessZip", testValue: "98101" },
   ])(
-    "updates the text input for the $name input upon user interaction",
+    "updates the text input for the $name input when user types, saves to session storage when user clicks the next button",
     async ({ name, key, testValue }) => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -122,21 +99,20 @@ describe("<DisclosuresStep1 />", () => {
       await clickYesSeparateAddressButton();
 
       const nextButton = screen.getByRole("button", { name: "Next" });
-    const inputField = screen.getByRole("textbox", {
-      name: name,
-    });
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
+      const inputField = screen.getByRole("textbox", {
+        name: name,
+      });
+      expect(window.sessionStorage.getItem(key)).toEqual(null);
 
-       await user.type(inputField, testValue);
-    await user.click(nextButton);
+      await user.type(inputField, testValue);
+      expect(inputField).toHaveValue(testValue);
 
-    expect(inputField).toHaveValue(testValue);
-    expect(window.sessionStorage.getItem(key)).toEqual(testValue);
-
+      await user.click(nextButton);
+      expect(window.sessionStorage.getItem(key)).toEqual(testValue);
     },
   );
 
-  it("updates business address state", async () => {
+  it("updates business address state when user clicks the next button", async () => {
     const user = userEvent.setup();
     renderWithRouter();
 
@@ -146,15 +122,15 @@ describe("<DisclosuresStep1 />", () => {
     const nextButton = screen.getByRole("button", { name: "Next" });
 
     const combobox = screen.getByRole("combobox", {
-      name: "State *",
+      name: "State, territory, or military post *",
     });
 
     expect(combobox).toHaveValue("NJ");
 
     await user.selectOptions(combobox, "PA");
-    await user.click(nextButton);
-
     expect(combobox).toHaveValue("PA");
+
+    await user.click(nextButton);
     expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
   });
 
@@ -162,7 +138,7 @@ describe("<DisclosuresStep1 />", () => {
     { label: "Street address 1 *", role: "textbox" },
     { label: "City *", role: "textbox" },
     { label: "ZIP code *", role: "textbox" },
-    { label: "State *", role: "combobox" },
+    { label: "State, territory, or military post *", role: "combobox" },
   ])("input is marked as required", async ({ label, role }) => {
     renderWithRouter();
 
