@@ -6,7 +6,14 @@ import type { FormData } from "../../_utils/fillPdf/form";
 import { fillAllForms } from "../../_utils/fillPdf/form";
 import { AddressState, DisclosingEntity } from "../../_utils/inputFields/enums";
 import { getValue } from "../../_utils/sessionStorage";
-import ProgressButtons from "../components/ProgressButtons";
+import FormProgressButtons from "../components/FormProgressButtons";
+
+const convertToBoolean = (value: string | null): boolean | null => {
+  if (value === null) return null;
+  if (value === "true") return true;
+  if (value === "false") return false;
+  throw new Error(`Invalid boolean value: ${value}`);
+};
 
 const getFormData = (): FormData => {
   const dateOfBirthString = getValue("dateOfBirth");
@@ -14,16 +21,10 @@ const getFormData = (): FormData => {
 
   const stateString = (getValue("state") as keyof typeof AddressState) || null;
   const state = stateString ? AddressState[stateString] : null;
-  const disclosingEntityString =
-    (getValue("natureOfDisclosingEntity") as keyof typeof DisclosingEntity) || null;
-  const disclosingEntity = disclosingEntityString ? DisclosingEntity[disclosingEntityString] : null;
-
-  const convertToBoolean = (value: string | null): boolean | null => {
-    if (value === null) return null;
-    if (value === "true") return true;
-    if (value === "false") return false;
-    throw new Error(`Invalid boolean value: ${value}`);
-  };
+  const disclosingEntity =
+    convertToBoolean(getValue("isSoleProprietorship")) === true
+      ? DisclosingEntity.SoleProprietorship
+      : null;
 
   return {
     firstName: getValue("firstName"),
@@ -40,7 +41,7 @@ const getFormData = (): FormData => {
     state: state,
     zip: getValue("zip"),
     natureOfDisclosingEntity: disclosingEntity,
-    separateBusinessAddress: convertToBoolean(getValue("separateBusinessAddress")),
+    hasSeparateBusinessAddress: convertToBoolean(getValue("hasSeparateBusinessAddress")),
     businessStreetAddress1: getValue("businessStreetAddress1"),
     businessStreetAddress2: getValue("businessStreetAddress2"),
     businessCity: getValue("businessCity"),
@@ -49,7 +50,7 @@ const getFormData = (): FormData => {
   };
 };
 
-const FormStep: React.FC = () => {
+const DownloadStep: React.FC = () => {
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
   useEffect(() => {
     (async () => {
@@ -66,9 +67,9 @@ const FormStep: React.FC = () => {
           Download your forms
         </a>
       )}
-      <ProgressButtons />
+      <FormProgressButtons />
     </div>
   );
 };
 
-export default FormStep;
+export default DownloadStep;

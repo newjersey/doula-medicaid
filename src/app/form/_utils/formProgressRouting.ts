@@ -1,0 +1,43 @@
+"use client";
+
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { usePathname } from "next/navigation";
+import {
+  allSections,
+  getCurrentFormProgress,
+  getNextFormProgress,
+  getPreviousFormProgress,
+  type FormProgress,
+} from "./formProgress";
+
+interface FormProgressPosition {
+  previous: FormProgress | null;
+  current: FormProgress;
+  next: FormProgress | null;
+}
+
+export const useFormProgressPosition = (): FormProgressPosition => {
+  const pathname = usePathname();
+  const current = getCurrentFormProgress(pathname);
+  const next = getNextFormProgress(current, allSections);
+  const previous = getPreviousFormProgress(current, allSections);
+  return { current, next, previous };
+};
+
+export const routeToNextStep = (
+  router: AppRouterInstance,
+  formProgressPosition: FormProgressPosition,
+) => {
+  if (formProgressPosition.next !== null) {
+    router.push(formatFormProgressUrl(formProgressPosition.next));
+    router.refresh();
+  }
+};
+
+export const formatFormProgressUrl = (formProgress: FormProgress) => {
+  if (formProgress.step !== undefined) {
+    return `/form/${formProgress.section.id}/${formProgress.step}`;
+  } else {
+    return `/form/${formProgress.section.id}`;
+  }
+};

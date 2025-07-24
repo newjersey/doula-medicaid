@@ -4,49 +4,71 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 import { RouterPathnameProvider } from "../../../_utils/testUtils";
 import PersonalDetailsStep3 from "./page";
 
+const textInputFields = [
+  { name: "NPI number *", key: "npiNumber", testValue: "1111111111" },
+  { name: "UPIN number (if applicable)", key: "upinNumber", testValue: "12345" },
+  {
+    name: "Medicaid provider ID (if applicable)",
+    key: "medicaidProviderId",
+    testValue: "ABC12345",
+  },
+];
+
 describe("<PersonalDetailsStep3 />", () => {
   const renderWithRouter = () => {
     const mockPush = jest.fn();
     const mockRefresh = jest.fn();
-    const router: Partial<AppRouterInstance> = {
+    const mockRouter: Partial<AppRouterInstance> = {
       push: mockPush,
       refresh: mockRefresh,
     };
     render(
       <RouterPathnameProvider
         pathname="/form/personal-details/3"
-        router={router as AppRouterInstance}
+        router={mockRouter as AppRouterInstance}
       >
         <PersonalDetailsStep3 />
       </RouterPathnameProvider>,
     );
+    return mockRouter;
   };
 
-  it.each([
-    { name: "NPI number *", key: "npiNumber", testValue: "1111111111" },
-    { name: "UPIN number (if applicable)", key: "upinNumber", testValue: "12345" },
-    {
-      name: "Medicaid provider ID (if applicable)",
-      key: "medicaidProviderId",
-      testValue: "ABC12345",
-    },
-  ])("updates the $name text input", async ({ name, key, testValue }) => {
+  it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
     const user = userEvent.setup();
     renderWithRouter();
-    const nextButton = screen.getByRole("button", { name: "Next" });
     const inputField = screen.getByRole("textbox", {
       name: name,
     });
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
+    expect(inputField).toHaveValue("");
 
     await user.type(inputField, testValue);
     expect(inputField).toHaveValue(testValue);
-
-    await user.click(nextButton);
-    expect(window.sessionStorage.getItem(key)).toEqual(testValue);
   });
 
-  it("keeps all fields filled when reloading page", () => {
+  it("saves form data on submit", async () => {
+    const user = userEvent.setup();
+    const mockRouter = renderWithRouter();
+    for (const textInputField of textInputFields) {
+      const inputField = screen.getByRole("textbox", {
+        name: textInputField.name,
+      });
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
+      await user.type(inputField, textInputField.testValue);
+    }
+
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    for (const textInputField of textInputFields) {
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+    }
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/disclosures/1");
+    expect(mockRouter.push).toHaveBeenCalledTimes(1);
+    expect(mockRouter.refresh).toHaveBeenCalled();
+  });
+
+  it("fills fields from session storage when page is loaded", () => {
     window.sessionStorage.setItem("npiNumber", "1234567890");
     window.sessionStorage.setItem("upinNumber", "12345");
     window.sessionStorage.setItem("medicaidProviderId", "ABC12345");

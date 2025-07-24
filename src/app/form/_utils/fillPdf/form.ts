@@ -19,7 +19,7 @@ export interface FormData {
   state: AddressState | null;
   zip: string | null;
   natureOfDisclosingEntity: DisclosingEntity | null;
-  separateBusinessAddress: boolean | null;
+  hasSeparateBusinessAddress: boolean | null;
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
   businessCity: string | null;

@@ -4,49 +4,47 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 import { RouterPathnameProvider } from "../../../_utils/testUtils";
 import PersonalDetailsStep2 from "./page";
 
+const textInputFields = [
+  { name: "Street address 1 *", key: "streetAddress1", testValue: "Test address 1" },
+  { name: "Street address line 2", key: "streetAddress2", testValue: "Test address 2" },
+  { name: "City *", key: "city", testValue: "Test city" },
+  { name: "ZIP code *", key: "zip", testValue: "12345" },
+];
+
 describe("<PersonalDetailsStep2 />", () => {
   const renderWithRouter = () => {
     const mockPush = jest.fn();
     const mockRefresh = jest.fn();
-    const router: Partial<AppRouterInstance> = {
+    const mockRouter: Partial<AppRouterInstance> = {
       push: mockPush,
       refresh: mockRefresh,
     };
     render(
       <RouterPathnameProvider
         pathname="/form/personal-details/2"
-        router={router as AppRouterInstance}
+        router={mockRouter as AppRouterInstance}
       >
         <PersonalDetailsStep2 />
       </RouterPathnameProvider>,
     );
+    return mockRouter;
   };
 
-  it.each([
-    { name: "Street address 1 *", key: "streetAddress1", testValue: "Test address 1" },
-    { name: "Street address line 2", key: "streetAddress2", testValue: "Test address 2" },
-    { name: "City *", key: "city", testValue: "Test city" },
-    { name: "ZIP code *", key: "zip", testValue: "12345" },
-  ])("updates the $name text input", async ({ name, key, testValue }) => {
+  it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
     const user = userEvent.setup();
     renderWithRouter();
-    const nextButton = screen.getByRole("button", { name: "Next" });
     const inputField = screen.getByRole("textbox", {
       name: name,
     });
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
+    expect(inputField).toHaveValue("");
 
     await user.type(inputField, testValue);
     expect(inputField).toHaveValue(testValue);
-
-    await user.click(nextButton);
-    expect(window.sessionStorage.getItem(key)).toEqual(testValue);
   });
 
   it("updates address state", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const nextButton = screen.getByRole("button", { name: "Next" });
     const combobox = screen.getByRole("combobox", {
       name: "State, territory, or military post *",
     });
@@ -54,12 +52,36 @@ describe("<PersonalDetailsStep2 />", () => {
 
     await user.selectOptions(combobox, "PA");
     expect(combobox).toHaveValue("PA");
-
-    await user.click(nextButton);
-    expect(window.sessionStorage.getItem("state")).toEqual("PA");
   });
 
-  it("keeps all fields filled when reloading page", () => {
+  it("saves form data on submit", async () => {
+    const user = userEvent.setup();
+    const mockRouter = renderWithRouter();
+    for (const textInputField of textInputFields) {
+      const inputField = screen.getByRole("textbox", {
+        name: textInputField.name,
+      });
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
+      await user.type(inputField, textInputField.testValue);
+    }
+    const combobox = screen.getByRole("combobox", {
+      name: "State, territory, or military post *",
+    });
+    await user.selectOptions(combobox, "PA");
+
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    for (const textInputField of textInputFields) {
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+    }
+    expect(window.sessionStorage.getItem("state")).toEqual("PA");
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/3");
+    expect(mockRouter.refresh).toHaveBeenCalled();
+  });
+
+  it("fills fields from session storage when page is loaded", () => {
     window.sessionStorage.setItem("streetAddress1", "123 Main St");
     window.sessionStorage.setItem("streetAddress2", "Apt 4B");
     window.sessionStorage.setItem("city", "Newark");

@@ -10,3 +10,7 @@ img.nj-banner__header-seal {
 abbr[title] {
   text-decoration: none;
 }
+
+.usa-form .usa-button.margin-top-0 {
+  margin-top: 0;
+}

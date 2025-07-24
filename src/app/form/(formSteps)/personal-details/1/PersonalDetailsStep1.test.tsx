@@ -4,49 +4,68 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 import { RouterPathnameProvider } from "../../../_utils/testUtils";
 import PersonalDetailsStep1 from "./page";
 
+const textInputFields = [
+  { name: "First name *", key: "firstName", testValue: "Test first name" },
+  { name: "Middle name (optional)", key: "middleName", testValue: "Test middle name" },
+  { name: "Last name *", key: "lastName", testValue: "Test last name" },
+  { name: "Date of birth *", key: "dateOfBirth", testValue: "01/01/1990" },
+  { name: "Email address *", key: "email", testValue: "test@test.com" },
+  { name: "Social security number *", key: "socialSecurityNumber", testValue: "123456789" },
+  { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
+];
+
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
     const mockPush = jest.fn();
     const mockRefresh = jest.fn();
-    const router: Partial<AppRouterInstance> = {
+    const mockRouter: Partial<AppRouterInstance> = {
       push: mockPush,
       refresh: mockRefresh,
     };
     render(
       <RouterPathnameProvider
         pathname="/form/personal-details/1"
-        router={router as AppRouterInstance}
+        router={mockRouter as AppRouterInstance}
       >
         <PersonalDetailsStep1 />
       </RouterPathnameProvider>,
     );
+    return mockRouter;
   };
 
-  it.each([
-    { name: "First name *", key: "firstName", testValue: "Test first name" },
-    { name: "Middle name (optional)", key: "middleName", testValue: "Test middle name" },
-    { name: "Last name *", key: "lastName", testValue: "Test last name" },
-    { name: "Date of birth *", key: "dateOfBirth", testValue: "01/01/1990" },
-    { name: "Email address *", key: "email", testValue: "test@test.com" },
-    { name: "Social security number *", key: "socialSecurityNumber", testValue: "123456789" },
-    { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
-  ])(
-    "updates the $name text input upon clicking the next button",
-    async ({ name, key, testValue }) => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const nextButton = screen.getByRole("button", { name: "Next" });
-      const inputField = screen.getByRole("textbox", {
-        name: name,
-      });
-      expect(window.sessionStorage.getItem(key)).toEqual(null);
+  it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const inputField = screen.getByRole("textbox", {
+      name: name,
+    });
+    expect(inputField).toHaveValue("");
 
-      await user.type(inputField, testValue);
-      expect(inputField).toHaveValue(testValue);
-      await user.click(nextButton);
-      expect(window.sessionStorage.getItem(key)).toEqual(testValue);
-    },
-  );
+    await user.type(inputField, testValue);
+    expect(inputField).toHaveValue(testValue);
+  });
+
+  it("saves form data on submit", async () => {
+    const user = userEvent.setup();
+    const mockRouter = renderWithRouter();
+    for (const textInputField of textInputFields) {
+      const inputField = screen.getByRole("textbox", {
+        name: textInputField.name,
+      });
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
+      await user.type(inputField, textInputField.testValue);
+    }
+
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    for (const textInputField of textInputFields) {
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+    }
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
+    expect(mockRouter.refresh).toHaveBeenCalled();
+  });
 
   it("fills fields from session storage when page is loaded", () => {
     window.sessionStorage.setItem("firstName", "Jane");
