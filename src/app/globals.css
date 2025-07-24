@@ -6,3 +6,7 @@ svg[role="img"].nj-banner__mail-icon {
 img.nj-banner__header-seal {
   box-sizing: unset;
 }
+
+abbr[title] {
+  text-decoration: none;
+}

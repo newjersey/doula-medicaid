@@ -5,10 +5,6 @@ import { RouterPathnameProvider } from "../../../_utils/testUtils";
 import PersonalDetailsStep1 from "./page";
 
 describe("<PersonalDetailsStep1 />", () => {
-  afterEach(() => {
-    window.sessionStorage.clear();
-  });
-
   const renderWithRouter = () => {
     const mockPush = jest.fn();
     const mockRefresh = jest.fn();
@@ -34,22 +30,25 @@ describe("<PersonalDetailsStep1 />", () => {
     { name: "Email address *", key: "email", testValue: "test@test.com" },
     { name: "Social security number *", key: "socialSecurityNumber", testValue: "123456789" },
     { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
-  ])("updates the $name text input", async ({ name, key, testValue }) => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    const inputField = screen.getByRole("textbox", {
-      name: name,
-    });
-    expect(window.sessionStorage.getItem(key)).toEqual(null);
+  ])(
+    "updates the $name text input upon clicking the next button",
+    async ({ name, key, testValue }) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      const inputField = screen.getByRole("textbox", {
+        name: name,
+      });
+      expect(window.sessionStorage.getItem(key)).toEqual(null);
 
-    await user.type(inputField, testValue);
-    expect(inputField).toHaveValue(testValue);
-    await user.click(nextButton);
-    expect(window.sessionStorage.getItem(key)).toEqual(testValue);
-  });
+      await user.type(inputField, testValue);
+      expect(inputField).toHaveValue(testValue);
+      await user.click(nextButton);
+      expect(window.sessionStorage.getItem(key)).toEqual(testValue);
+    },
+  );
 
-  it("keeps all fields filled when reloading page", () => {
+  it("fills fields from session storage when page is loaded", () => {
     window.sessionStorage.setItem("firstName", "Jane");
     window.sessionStorage.setItem("middleName", "A");
     window.sessionStorage.setItem("lastName", "Doe");

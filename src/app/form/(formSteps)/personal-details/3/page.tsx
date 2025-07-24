@@ -40,13 +40,17 @@ const PersonalDetailsStep3: React.FC = () => {
           className="maxw-tablet"
         >
           <h2 className="font-heading-md">Provider IDs</h2>
+          <p>This is a general instruction if needed for the user to answer correctly.</p>
           <Label htmlFor="npiNumber">
             NPI number <RequiredMarker />
           </Label>
+          <p className="usa-hint">Format ABCD1234</p>
           <TextInput id="npiNumber" type="text" required {...register("npiNumber")} />
           <Label htmlFor="upinNumber">UPIN number (if applicable)</Label>
+          <p className="usa-hint">Format ABCD1234</p>
           <TextInput type="text" id="upinNumber" inputMode="text" {...register("upinNumber")} />
           <Label htmlFor="medicaidProviderId">Medicaid provider ID (if applicable)</Label>
+          <p className="usa-hint">Format ABCD1234</p>
           <TextInput
             type="text"
             id="medicaidProviderId"

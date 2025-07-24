@@ -20,10 +20,6 @@ describe("<DisclosuresStep1 />", () => {
     );
   };
 
-  beforeEach(() => {
-    sessionStorage.clear();
-  });
-
   const clickYesSPButton = async () => {
     const user = userEvent.setup();
     const yesSPButton = screen.getByTestId("soleProprietorshipYes");
@@ -41,9 +37,7 @@ describe("<DisclosuresStep1 />", () => {
   it("saves natureOfDisclosingEntity as null when user selects no", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const noButton = screen.getByRole("radio", {
-      name: "No",
-    });
+    const noButton = screen.getByTestId("soleProprietorshipNo");
     await clickYesSPButton();
     expect(getValue("natureOfDisclosingEntity")).toBe("SoleProprietorship");
     await user.click(noButton);
@@ -54,12 +48,8 @@ describe("<DisclosuresStep1 />", () => {
   it("saves natureOfDisclosingEntity as SoleProprietorship when user selects yes", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const noButton = screen.getByRole("radio", {
-      name: "No",
-    });
-    const yesButton = screen.getByRole("radio", {
-      name: "Yes",
-    });
+    const noButton = screen.getByTestId("soleProprietorshipNo");
+    const yesButton = screen.getByTestId("soleProprietorshipYes");
     expect(yesButton).not.toBeChecked();
     expect(noButton).not.toBeChecked();
     expect(getValue("natureOfDisclosingEntity")).toBe(null);
@@ -96,11 +86,11 @@ describe("<DisclosuresStep1 />", () => {
 
   it.each([
     { name: "Street address 1 *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
-    { name: "Street address 2 (optional)", key: "businessStreetAddress2", testValue: "Suite 100" },
+    { name: "Street address line 2", key: "businessStreetAddress2", testValue: "Suite 100" },
     { name: "City *", key: "businessCity", testValue: "Seattle" },
     { name: "ZIP code *", key: "businessZip", testValue: "98101" },
   ])(
-    "updates the text input for the $name input upon user interaction",
+    "updates the text input for the $name input when user types, saves to session storage when user clicks the next button",
     async ({ name, key, testValue }) => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -115,14 +105,14 @@ describe("<DisclosuresStep1 />", () => {
       expect(window.sessionStorage.getItem(key)).toEqual(null);
 
       await user.type(inputField, testValue);
-      await user.click(nextButton);
-
       expect(inputField).toHaveValue(testValue);
+
+      await user.click(nextButton);
       expect(window.sessionStorage.getItem(key)).toEqual(testValue);
     },
   );
 
-  it("updates business address state", async () => {
+  it("updates business address state when user clicks the next button", async () => {
     const user = userEvent.setup();
     renderWithRouter();
 
@@ -132,7 +122,7 @@ describe("<DisclosuresStep1 />", () => {
     const nextButton = screen.getByRole("button", { name: "Next" });
 
     const combobox = screen.getByRole("combobox", {
-      name: "State *",
+      name: "State, territory, or military post *",
     });
 
     expect(combobox).toHaveValue("NJ");
@@ -148,7 +138,7 @@ describe("<DisclosuresStep1 />", () => {
     { label: "Street address 1 *", role: "textbox" },
     { label: "City *", role: "textbox" },
     { label: "ZIP code *", role: "textbox" },
-    { label: "State *", role: "combobox" },
+    { label: "State, territory, or military post *", role: "combobox" },
   ])("input is marked as required", async ({ label, role }) => {
     renderWithRouter();
 

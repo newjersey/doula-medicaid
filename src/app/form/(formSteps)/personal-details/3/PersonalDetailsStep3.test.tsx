@@ -5,10 +5,6 @@ import { RouterPathnameProvider } from "../../../_utils/testUtils";
 import PersonalDetailsStep3 from "./page";
 
 describe("<PersonalDetailsStep3 />", () => {
-  afterEach(() => {
-    window.sessionStorage.clear();
-  });
-
   const renderWithRouter = () => {
     const mockPush = jest.fn();
     const mockRefresh = jest.fn();
