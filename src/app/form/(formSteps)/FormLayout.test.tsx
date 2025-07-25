@@ -16,11 +16,11 @@ describe("<FormLayout />", () => {
     expect(sections[0]).toHaveTextContent("completed");
     expect(sections[1]).toHaveTextContent("Disclosures");
     expect(sections[1].getAttribute("aria-current")).toEqual("true");
-    expect(sections[2]).toHaveTextContent("Step 3");
+    expect(sections[2]).toHaveTextContent("Section 3");
     expect(sections[2]).toHaveTextContent("not completed");
-    expect(sections[3]).toHaveTextContent("Step 4");
+    expect(sections[3]).toHaveTextContent("Section 4");
     expect(sections[3]).toHaveTextContent("not completed");
-    expect(sections[4]).toHaveTextContent("Step 5");
+    expect(sections[4]).toHaveTextContent("Section 5");
     expect(sections[4]).toHaveTextContent("not completed");
     expect(sections[5]).toHaveTextContent("Download forms");
     expect(sections[5]).toHaveTextContent("not completed");

@@ -1,6 +1,6 @@
 "use client";
 
-import { Fieldset, Form, Label, RequiredMarker, Select, TextInput } from "@trussworks/react-uswds";
+import { Fieldset, Form, Label, Select, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -48,8 +48,8 @@ const PersonalDetailsStep2: React.FC = () => {
             <Fieldset legend="Mail to address" legendStyle="srOnly">
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="streetAddress1">
-                    Street address 1 <RequiredMarker />
+                  <Label htmlFor="streetAddress1" requiredMarker>
+                    Street address 1
                   </Label>
                   <TextInput
                     id="streetAddress1"
@@ -66,8 +66,8 @@ const PersonalDetailsStep2: React.FC = () => {
               </div>
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="city">
-                    City <RequiredMarker />
+                  <Label htmlFor="city" requiredMarker>
+                    City
                   </Label>
                   <TextInput
                     className="usa-input"
@@ -80,8 +80,8 @@ const PersonalDetailsStep2: React.FC = () => {
               </div>
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="state">
-                    State, territory, or military post <RequiredMarker />{" "}
+                  <Label htmlFor="state" requiredMarker>
+                    State, territory, or military post
                   </Label>
                   <Select className="usa-select" id="state" required {...register("state")}>
                     {Object.keys(AddressState).map((state) => (
@@ -93,8 +93,8 @@ const PersonalDetailsStep2: React.FC = () => {
                 </div>
 
                 <div className="mobile-lg:grid-col-4">
-                  <Label htmlFor="zip">
-                    ZIP code <RequiredMarker />
+                  <Label htmlFor="zip" requiredMarker>
+                    ZIP code
                   </Label>
                   <TextInput
                     className="usa-input usa-input--medium"
