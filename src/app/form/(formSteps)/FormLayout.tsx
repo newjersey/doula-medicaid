@@ -1,11 +1,11 @@
 import { RequiredMarker } from "@trussworks/react-uswds";
-import { allSections, getCurrentStep } from "../_utils/sections";
+import { allSections, getCurrentFormProgress } from "../_utils/formProgress";
 
 type CompletionState = "complete" | "current" | "incomplete";
 
 // Separated this into a separate testable component because as of writing, Jest does not support testing NextJs asynchronous server components (https://nextjs.org/docs/app/guides/testing/jest)
 export const FormLayout = (props: { children?: React.ReactNode; pathname: string }) => {
-  const { section: currentSection, stepNum: currentStepNum } = getCurrentStep(props.pathname);
+  const { section: currentSection, step: currentStep } = getCurrentFormProgress(props.pathname);
   const currentSectionIndex = allSections.findIndex(
     (sections) => sections.id === currentSection.id,
   );
@@ -49,7 +49,7 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
                 {...(completionState === "current" && { "aria-current": "true" })}
               >
                 <span className="usa-step-indicator__segment-label">
-                  {sections.sectionName}
+                  {sections.progressBarTitle}
                   {screenreaderStatus && <span className="usa-sr-only">{screenreaderStatus}</span>}
                 </span>
               </li>
@@ -59,12 +59,12 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
 
         <div className="usa-step-indicator__header display-flex flex-justify">
           <h1 className="font-heading-lg">
-            {currentStepNum !== null && (
+            {currentStep !== undefined && (
               <span className="usa-step-indicator__heading-counter">
                 <span className="usa-sr-only" data-testid="step-text">
                   Step
                 </span>
-                <span className="usa-step-indicator__current-step">{currentStepNum}</span>
+                <span className="usa-step-indicator__current-step">{currentStep}</span>
                 &nbsp;
                 <span className="usa-step-indicator__total-steps">{`of ${currentSection.numSteps}`}</span>
                 &nbsp;

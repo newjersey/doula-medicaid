@@ -2,50 +2,62 @@
 
 import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
 import { usePathname, useRouter } from "next/navigation";
-import { allSections, getCurrentStep, type Section, type Step } from "../../_utils/sections";
+import {
+  allSections,
+  getCurrentFormProgress,
+  type FormProgress,
+  type Section,
+} from "../../_utils/formProgress";
 
 interface ProgressButtonsProps {
   onClickHandler?: () => Promise<void> | void;
 }
 
-export const getNextStep = (currentStep: Step, allSteps: Array<Section>): Step | null => {
+export const getNextFormProgress = (
+  currentStep: FormProgress,
+  allSections: Array<Section>,
+): FormProgress | null => {
   if (
     currentStep.section.numSteps !== undefined &&
-    currentStep.stepNum !== null &&
-    currentStep.stepNum < currentStep.section.numSteps
+    currentStep.step !== undefined &&
+    currentStep.step < currentStep.section.numSteps
   ) {
     // Increment step
     return {
       section: currentStep.section,
-      stepNum: currentStep.stepNum + 1,
+      step: currentStep.step + 1,
     };
   } else {
     // Increment section
-    const currentSectionIndex = allSteps.findIndex(
+    const currentSectionIndex = allSections.findIndex(
       (section) => section.id === currentStep.section.id,
     );
-    const isFinalStep = currentSectionIndex === allSteps.length - 1;
+    const isFinalStep = currentSectionIndex === allSections.length - 1;
     if (isFinalStep) {
       return null;
     }
     const nextSectionIndex = currentSectionIndex + 1;
     return {
-      section: allSteps[nextSectionIndex],
-      stepNum: allSteps[nextSectionIndex].numSteps === undefined ? null : 1,
+      section: allSections[nextSectionIndex],
+      ...(allSections[nextSectionIndex].numSteps !== undefined && { step: 1 }),
+      // step: allSteps[nextSectionIndex].numSteps === undefined ? null : 1,
     };
   }
 };
 
-export const getPreviousStep = (currentStep: Step, allSections: Array<Section>): Step | null => {
+export const getPreviousFormProgress = (
+  currentStep: FormProgress,
+  allSections: Array<Section>,
+): FormProgress | null => {
   if (
     currentStep.section.numSteps !== undefined &&
-    currentStep.stepNum !== null &&
-    currentStep.stepNum > 1
+    currentStep.step !== undefined &&
+    currentStep.step > 1
   ) {
     // Decrement step
     return {
       section: currentStep.section,
-      stepNum: currentStep.stepNum - 1,
+      step: currentStep.step - 1,
     };
   } else {
     // Decrement section
@@ -56,22 +68,21 @@ export const getPreviousStep = (currentStep: Step, allSections: Array<Section>):
     if (isFirstStep) {
       return null;
     }
-    const nextStepIndex = currentSectionIndex - 1;
+    const nextSectionIndex = currentSectionIndex - 1;
     return {
-      section: allSections[nextStepIndex],
-      stepNum:
-        allSections[nextStepIndex].numSteps === undefined
-          ? null
-          : allSections[nextStepIndex].numSteps,
+      section: allSections[nextSectionIndex],
+      ...(allSections[nextSectionIndex].numSteps !== undefined && {
+        step: allSections[nextSectionIndex].numSteps,
+      }),
     };
   }
 };
 
-export const formatStepUrl = (step: Step) => {
-  if (step.stepNum !== null) {
-    return `/form/${step.section.id}/${step.stepNum}`;
+export const formatFormProgressUrl = (formProgress: FormProgress) => {
+  if (formProgress.step !== undefined) {
+    return `/form/${formProgress.section.id}/${formProgress.step}`;
   } else {
-    return `/form/${step.section.id}`;
+    return `/form/${formProgress.section.id}`;
   }
 };
 
@@ -79,16 +90,16 @@ const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => 
   const pathname = usePathname();
   const router = useRouter();
 
-  const currentStep = getCurrentStep(pathname);
-  const nextStep = getNextStep(currentStep, allSections);
-  const previousStep = getPreviousStep(currentStep, allSections);
+  const currentStep = getCurrentFormProgress(pathname);
+  const nextStep = getNextFormProgress(currentStep, allSections);
+  const previousStep = getPreviousFormProgress(currentStep, allSections);
 
   const buttons: Array<React.ReactNode> = [];
   if (previousStep) {
     buttons.push(
       <Link
         key="previous"
-        href={formatStepUrl(previousStep)}
+        href={formatFormProgressUrl(previousStep)}
         className="usa-button  usa-button--outline"
         // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
         onClick={() => {
@@ -107,7 +118,7 @@ const ProgressButtons: React.FC<ProgressButtonsProps> = ({ onClickHandler }) => 
         // TODO: https://github.com/newjersey/doula-pm/issues/30 If validation fails do not continue
         onClick={() => {
           onClickHandler?.();
-          router.push(formatStepUrl(nextStep));
+          router.push(formatFormProgressUrl(nextStep));
           router.refresh();
         }}
       >

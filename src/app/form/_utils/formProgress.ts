@@ -1,51 +1,51 @@
 export interface Section {
   id: string;
-  sectionName: string;
+  progressBarTitle: string;
   heading: string;
   numSteps?: number;
 }
 
-export interface Step {
+export interface FormProgress {
   section: Section;
-  stepNum: number | null;
+  step?: number;
 }
 
 export const allSections: Array<Section> = [
   {
     id: "personal-details",
-    sectionName: "Personal details",
+    progressBarTitle: "Personal details",
     heading: "Personal details",
     numSteps: 3,
   },
   {
     id: "disclosures",
-    sectionName: "Disclosures",
+    progressBarTitle: "Disclosures",
     heading: "Disclosure of ownership",
     numSteps: 1,
   },
   {
     id: "step-3",
-    sectionName: "Step 3",
+    progressBarTitle: "Step 3",
     heading: "Placeholder step 3",
   },
   {
     id: "step-4",
-    sectionName: "Step 4",
+    progressBarTitle: "Step 4",
     heading: "Placeholder step 4",
   },
   {
     id: "step-5",
-    sectionName: "Step 5",
+    progressBarTitle: "Step 5",
     heading: "Placeholder step 5",
   },
   {
     id: "download",
-    sectionName: "Download forms",
+    progressBarTitle: "Download forms",
     heading: "Download forms",
   },
 ];
 
-export const getCurrentStep = (pathname: string): Step => {
+export const getCurrentFormProgress = (pathname: string): FormProgress => {
   const pathParts = pathname.split("/");
   if (pathParts[0] !== "" || pathParts[1] !== "form") {
     throw new Error(`Unexpected route ${pathname}`);
@@ -55,15 +55,14 @@ export const getCurrentStep = (pathname: string): Step => {
     throw new Error(`Section not found for ${pathname}`);
   }
 
-  let stepNum = null;
-  if (currentSection.numSteps !== undefined) {
+  if (currentSection.numSteps === undefined) {
+    return { section: currentSection };
+  } else {
     const pathStep = Number(pathParts[3]);
 
-    if (new Set([...Array(currentSection.numSteps + 1).keys()].slice(1)).has(pathStep)) {
-      stepNum = pathStep;
-    } else {
+    if (!new Set([...Array(currentSection.numSteps + 1).keys()].slice(1)).has(pathStep)) {
       throw new Error(`Substep not found for ${pathname}`);
     }
+    return { section: currentSection, step: pathStep };
   }
-  return { section: currentSection, stepNum: stepNum };
 };

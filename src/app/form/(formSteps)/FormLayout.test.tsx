@@ -32,14 +32,14 @@ describe("<FormLayout />", () => {
         <div>Test content</div>
       </FormLayout>,
     );
-    const sectionName = "Disclosures";
+    const progressBarTitle = "Disclosures";
     const sectionTitle = "Disclosure of ownership";
 
     const progressSection = screen.getByRole("generic", { name: /progress/i });
-    const sectionNames = within(progressSection)
+    const progressBarTitles = within(progressSection)
       .getAllByRole("listitem")
       .map((section) => section.textContent);
-    expect(sectionNames.includes(sectionName)).toBe(true);
+    expect(progressBarTitles.includes(progressBarTitle)).toBe(true);
 
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent(`1 of 1 ${sectionTitle}`);
