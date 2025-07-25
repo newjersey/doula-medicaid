@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
-import { getCurrentStep } from "../_utils/sections";
+import { getCurrentFormProgress } from "../_utils/formProgress";
 import { FormLayout } from "./FormLayout";
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") as string;
-  const { section, stepNum: stepNum } = getCurrentStep(pathname);
+  const { section, step } = getCurrentFormProgress(pathname);
   let title = section.heading;
-  if (stepNum !== null) {
-    title += ` ${stepNum} of ${section.numSteps}`;
+  if (step !== undefined) {
+    title += ` ${step} of ${section.numSteps}`;
   }
   return {
     title,

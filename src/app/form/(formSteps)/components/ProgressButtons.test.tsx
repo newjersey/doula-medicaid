@@ -3,7 +3,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { RouterPathnameProvider } from "../../_utils/testUtils";
-import ProgressButtons, { formatStepUrl, getNextStep, getPreviousStep } from "./ProgressButtons";
+import ProgressButtons, {
+  formatFormProgressUrl,
+  getNextFormProgress,
+  getPreviousFormProgress,
+} from "./ProgressButtons";
 
 const getProgressButtonsList = () => {
   const allLists = screen.getAllByRole("list");
@@ -20,57 +24,55 @@ const getProgressButtonsList = () => {
   return progressButtonsList as HTMLElement;
 };
 
-describe("getNextStep", () => {
+describe("getNextFormProgress", () => {
   it("returns null when the current section has no steps and is the last one", () => {
-    const section = { id: "section1", sectionName: "Section 1", heading: "Section 1" };
+    const section = { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" };
     const allSections = [section];
-    const currentStep = {
+    const currentFormProgress = {
       section,
-      stepNum: null,
     };
-    expect(getNextStep(currentStep, allSections)).toEqual(null);
+    expect(getNextFormProgress(currentFormProgress, allSections)).toEqual(null);
   });
 
   it("returns null when the current section has steps and is the last one", () => {
     const section = {
       id: "section1",
-      sectionName: "Section 1",
+      progressBarTitle: "Section 1",
       heading: "Section 1",
       numSteps: 2,
     };
     const allSections = [section];
-    const currentStep = {
+    const currentFormProgress = {
       section,
-      stepNum: 2,
+      step: 2,
     };
-    expect(getNextStep(currentStep, allSections)).toEqual(null);
+    expect(getNextFormProgress(currentFormProgress, allSections)).toEqual(null);
   });
 });
 
-describe("getPreviousStep", () => {
+describe("getPreviousFormProgress", () => {
   it("returns null when the current section has no steps and is the first one", () => {
-    const section = { id: "section1", sectionName: "Section 1", heading: "Section 1" };
+    const section = { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" };
     const allSections = [section];
-    const currentStep = {
+    const currentFormProgress = {
       section,
-      stepNum: null,
     };
-    expect(getPreviousStep(currentStep, allSections)).toEqual(null);
+    expect(getPreviousFormProgress(currentFormProgress, allSections)).toEqual(null);
   });
 
   it("returns null when the current section has steps and is the first one", () => {
     const section = {
       id: "section1",
-      sectionName: "Section 1",
+      progressBarTitle: "Section 1",
       heading: "Section 1",
       numSteps: 2,
     };
     const allSections = [section];
-    const currentStep = {
+    const currentFormProgress = {
       section,
-      stepNum: 1,
+      step: 1,
     };
-    expect(getPreviousStep(currentStep, allSections)).toEqual(null);
+    expect(getPreviousFormProgress(currentFormProgress, allSections)).toEqual(null);
   });
 });
 
@@ -78,93 +80,108 @@ describe("getNextStep and getPreviousStep", () => {
   it("gets the correct next and previous steps when transitioning within a section", () => {
     const section = {
       id: "section1",
-      sectionName: "Section 1",
+      progressBarTitle: "Section 1",
       heading: "Section 1",
       numSteps: 2,
     };
     const allSections = [section];
-    const firstStep = {
+    const firstFormProgress = {
       section,
-      stepNum: 1,
+      step: 1,
     };
-    const secondStep = {
+    const secondFormProgress = {
       section,
-      stepNum: 2,
+      step: 2,
     };
 
-    expect(getNextStep(firstStep, allSections)).toEqual(secondStep);
-    expect(getPreviousStep(secondStep, allSections)).toEqual(firstStep);
+    expect(getNextFormProgress(firstFormProgress, allSections)).toEqual(secondFormProgress);
+    expect(getPreviousFormProgress(secondFormProgress, allSections)).toEqual(firstFormProgress);
   });
 
   it.each([
     {
       name: "both the first and second sections have no steps",
-      firstStep: {
-        section: { id: "section1", sectionName: "Section 1", heading: "Section 1" },
-        stepNum: null,
+      firstFormProgress: {
+        section: { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" },
       },
-      secondStep: {
-        section: { id: "section2", sectionName: "Section 2", heading: "Section 2" },
-        stepNum: null,
+      secondFormProgress: {
+        section: { id: "section2", progressBarTitle: "Section 2", heading: "Section 2" },
       },
     },
     {
       name: "the first section has no steps and the second section has steps",
-      firstStep: {
-        section: { id: "section1", sectionName: "Section 1", heading: "Section 1" },
-        stepNum: null,
+      firstFormProgress: {
+        section: { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" },
       },
-      secondStep: {
-        section: { id: "section2", sectionName: "Section 2", heading: "Section 2", numSteps: 3 },
-        stepNum: 1,
+      secondFormProgress: {
+        section: {
+          id: "section2",
+          progressBarTitle: "Section 2",
+          heading: "Section 2",
+          numSteps: 3,
+        },
+        step: 1,
       },
     },
     {
       name: "the first section has steps and the second section has no steps",
-      firstStep: {
-        section: { id: "section1", sectionName: "Section 1", heading: "Section 1", numSteps: 3 },
-        stepNum: 3,
+      firstFormProgress: {
+        section: {
+          id: "section1",
+          progressBarTitle: "Section 1",
+          heading: "Section 1",
+          numSteps: 3,
+        },
+        step: 3,
       },
-      secondStep: {
-        section: { id: "section2", sectionName: "Section 2", heading: "Section 2" },
-        stepNum: null,
+      secondFormProgress: {
+        section: { id: "section2", progressBarTitle: "Section 2", heading: "Section 2" },
       },
     },
     {
       name: "both the first and second section have steps",
-      firstStep: {
-        section: { id: "section1", sectionName: "Section 1", heading: "Section 1", numSteps: 3 },
-        stepNum: 3,
+      firstFormProgress: {
+        section: {
+          id: "section1",
+          progressBarTitle: "Section 1",
+          heading: "Section 1",
+          numSteps: 3,
+        },
+        step: 3,
       },
-      secondStep: {
-        section: { id: "section2", sectionName: "Section 2", heading: "Section 2", numSteps: 3 },
-        stepNum: 1,
+      secondFormProgress: {
+        section: {
+          id: "section2",
+          progressBarTitle: "Section 2",
+          heading: "Section 2",
+          numSteps: 3,
+        },
+        step: 1,
       },
     },
   ])(
     "gets the correct next and previous steps when transitioning between sections and $name",
-    ({ firstStep, secondStep }) => {
-      const allSections = [firstStep.section, secondStep.section];
-      expect(getNextStep(firstStep, allSections)).toEqual(secondStep);
-      expect(getPreviousStep(secondStep, allSections)).toEqual(firstStep);
+    ({ firstFormProgress, secondFormProgress }) => {
+      const allSections = [firstFormProgress.section, secondFormProgress.section];
+      expect(getNextFormProgress(firstFormProgress, allSections)).toEqual(secondFormProgress);
+      expect(getPreviousFormProgress(secondFormProgress, allSections)).toEqual(firstFormProgress);
     },
   );
 });
 
-describe("formatStepUrl", () => {
+describe("formatFormProgressUrl", () => {
   it("formats the URL correctly when the section has no steps", () => {
-    const step = {
-      section: { id: "section1", sectionName: "Section 1", heading: "Section 1" },
-      stepNum: null,
+    const formProgress = {
+      section: { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" },
     };
-    expect(formatStepUrl(step)).toEqual("/form/section1");
+    expect(formatFormProgressUrl(formProgress)).toEqual("/form/section1");
   });
   it("formats the URL correctly when the section has steps", () => {
-    const step = {
-      section: { id: "section1", sectionName: "Section 1", heading: "Section 1", numSteps: 3 },
-      stepNum: 2,
+    const formProgress = {
+      section: { id: "section1", progressBarTitle: "Section 1", heading: "Section 1", numSteps: 3 },
+      step: 2,
     };
-    expect(formatStepUrl(step)).toEqual("/form/section1/2");
+    expect(formatFormProgressUrl(formProgress)).toEqual("/form/section1/2");
   });
 });
 
