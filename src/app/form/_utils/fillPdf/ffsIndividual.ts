@@ -86,7 +86,7 @@ const getPage16Fields = (formData: FormData): PDFData => {
       fd452einorothertaxidnumber: formData.socialSecurityNumber ?? "",
     };
 
-    if (formData.hasSameBusinessAddress) {
+    if (formData.hasSameBusinessAddress === true) {
       return {
         ...soleProprietorshipFields,
         fd452businessstreetline1: formData.streetAddress1 || "",
