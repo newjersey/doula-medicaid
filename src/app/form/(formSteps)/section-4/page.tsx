@@ -1,11 +1,11 @@
 "use client";
 
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { routeToNextStep, useFormProgressPosition } from "../../_utils/formProgressRouting";
-import FormProgressButtons from "../components/FormProgressButtons";
 
 const FormStep: React.FC = () => {
   const router = useRouter();

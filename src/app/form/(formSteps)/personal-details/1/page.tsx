@@ -1,14 +1,14 @@
 "use client";
 
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import { type PersonalInformationData } from "@form/(formSteps)/personal-details/PersonalInformationData";
+import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { formatDateOfBirthDefaultValue } from "@form/_utils/inputFields/dateOfBirth";
+import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
-import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
-import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
-import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
-import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalInformationData } from "../PersonalInformationData";
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
 

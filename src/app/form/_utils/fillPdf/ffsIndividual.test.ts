@@ -1,6 +1,6 @@
-import { AddressState, DisclosingEntity } from "../inputFields/enums";
-import { mapFfsIndividualFields } from "./ffsIndividual";
-import { type FormData } from "./form";
+import { mapFfsIndividualFields } from "@form/_utils/fillPdf/ffsIndividual";
+import { type FormData } from "@form/_utils/fillPdf/form";
+import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 
 const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
   return {

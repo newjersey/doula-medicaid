@@ -1,8 +1,8 @@
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { RouterPathnameProvider } from "../../_utils/testUtils";
-import FormProgressButtons from "./FormProgressButtons";
 
 const getFormProgressButtonsList = () => {
   const allLists = screen.getAllByRole("list");

@@ -1,6 +1,6 @@
-import { DisclosingEntity } from "../inputFields/enums";
-import { type FormData, fillForm } from "./form";
-import { formatDateOfBirth } from "./formatters";
+import { type FormData, fillForm } from "@form/_utils/fillPdf/form";
+import { formatDateOfBirth } from "@form/_utils/fillPdf/formatters";
+import { DisclosingEntity } from "@form/_utils/inputFields/enums";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "ffs_individual_filled.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";

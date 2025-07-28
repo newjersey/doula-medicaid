@@ -1,12 +1,12 @@
 "use client";
 
-import { zipForms } from "@/app/utils/zip";
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import type { FormData } from "@form/_utils/fillPdf/form";
+import { fillAllForms } from "@form/_utils/fillPdf/form";
+import { zipForms } from "@form/_utils/fillPdf/zip";
+import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
+import { getValue } from "@form/_utils/sessionStorage";
 import React, { useEffect, useState } from "react";
-import type { FormData } from "../../_utils/fillPdf/form";
-import { fillAllForms } from "../../_utils/fillPdf/form";
-import { AddressState, DisclosingEntity } from "../../_utils/inputFields/enums";
-import { getValue } from "../../_utils/sessionStorage";
-import FormProgressButtons from "../components/FormProgressButtons";
 
 const convertToBoolean = (value: string | null): boolean | null => {
   if (value === null) return null;

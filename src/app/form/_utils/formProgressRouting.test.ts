@@ -1,4 +1,4 @@
-import { formatFormProgressUrl } from "./formProgressRouting";
+import { formatFormProgressUrl } from "@form/_utils/formProgressRouting";
 
 describe("formatFormProgressUrl", () => {
   it("formats the URL correctly when the section has no steps", () => {

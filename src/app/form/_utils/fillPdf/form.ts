@@ -1,8 +1,8 @@
+import { fillAetnaForm } from "@form/_utils/fillPdf/aetna";
+import { fillFfsIndividualForm } from "@form/_utils/fillPdf/ffsIndividual";
+import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
+import type { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
-import type { AddressState, DisclosingEntity } from "../inputFields/enums";
-import { fillAetnaForm } from "./aetna";
-import { fillFfsIndividualForm } from "./ffsIndividual";
-import { fillFidelisForm } from "./fidelis";
 
 export interface FormData {
   firstName: string | null;

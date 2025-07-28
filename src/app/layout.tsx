@@ -1,9 +1,9 @@
+import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
 import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
 import type { Metadata } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: { template: "%s | Doula Common App", default: "Doula Common App" },

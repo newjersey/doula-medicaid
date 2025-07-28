@@ -1,9 +1,9 @@
+import DisclosuresStep1 from "@form/(formSteps)/disclosures/1/page";
+import { getValue } from "@form/_utils/sessionStorage";
+import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { getValue } from "../../../_utils/sessionStorage";
-import { RouterPathnameProvider } from "../../../_utils/testUtils";
-import DisclosuresStep1 from "./page";
 
 describe("<DisclosuresStep1 />", () => {
   const renderWithRouter = () => {
