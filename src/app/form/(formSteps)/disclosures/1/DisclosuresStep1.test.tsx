@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { getValue } from "../../../_utils/sessionStorage";
@@ -24,47 +24,73 @@ describe("<DisclosuresStep1 />", () => {
     return mockRouter;
   };
 
-  const clickYesSPButton = async () => {
+  const getYesSoleProprietorButton = () => {
+    const soleProprietorGroup = screen.getByRole("group", {
+      name: "Are you the sole proprietor of your business? Select one *",
+    });
+    const yesSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
+      name: "Yes",
+    });
+    return yesSoleProprietorButton;
+  };
+
+  const getNoSoleProprietorButton = () => {
+    const soleProprietorGroup = screen.getByRole("group", {
+      name: "Are you the sole proprietor of your business? Select one *",
+    });
+    const noSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
+      name: "No",
+    });
+    return noSoleProprietorButton;
+  };
+
+  const getYesSameAddressButton = () => {
+    const separateAddressGroup = screen.getByRole("group", {
+      name: "Is your business address the same as your residential and billing address? Select one *",
+    });
+    const getYesSeparateAddressButton = within(separateAddressGroup).getByRole("radio", {
+      name: "Yes",
+    });
+    return getYesSeparateAddressButton;
+  };
+
+  const getNoSameAddressButton = () => {
+    const separateAddressGroup = screen.getByRole("group", {
+      name: "Is your business address the same as your residential and billing address? Select one *",
+    });
+    const getNoSeparateAddressButton = within(separateAddressGroup).getByRole("radio", {
+      name: "No",
+    });
+    return getNoSeparateAddressButton;
+  };
+
+  const clickYesSoleProprietorButton = async () => {
     const user = userEvent.setup();
-    const yesSPButton = screen.getByTestId("soleProprietorshipYes");
+    const yesSPButton = getYesSoleProprietorButton();
     await user.click(yesSPButton);
     return { user, yesSPButton };
   };
 
-  const clickYesSeparateAddressButton = async () => {
-    const { user } = await clickYesSPButton();
-    const yesSeparateAddressButton = screen.getByTestId("separateBusinessAddressYes");
-    await user.click(yesSeparateAddressButton);
-    return { user, yesSPButton: yesSeparateAddressButton };
-  };
-
-  it("prompts the separate address question when user selects yes for sole proprietorship", async () => {
+  const clickNoSameAddressButton = async () => {
     const user = userEvent.setup();
-    renderWithRouter();
-    const yesSPButton = screen.getByTestId("soleProprietorshipYes");
-    expect(yesSPButton).not.toBeChecked();
-    await user.click(yesSPButton);
-    expect(yesSPButton).toBeChecked();
-
-    const separateBusinessAddressQuestion = screen.getByText(
-      "Is your business address the same as your residential and billing address?",
-    );
-    expect(separateBusinessAddressQuestion).toBeInTheDocument();
-  });
+    const noSeperateAddressButton = getNoSameAddressButton();
+    await user.click(noSeperateAddressButton);
+    return { user, noSeperateAddressButton };
+  };
 
   it("saves isSoleProprietorship as false when user selects no for sole proprietorship and submits", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    const noSPButton = screen.getByTestId("soleProprietorshipNo");
-    expect(noSPButton).not.toBeChecked();
-    await user.click(noSPButton);
-    expect(noSPButton).toBeChecked();
+    const noSoleProprietorButton = getNoSoleProprietorButton();
+    expect(noSoleProprietorButton).not.toBeChecked();
+    await user.click(noSoleProprietorButton);
+    expect(noSoleProprietorButton).toBeChecked();
 
     const nextButton = screen.getByRole("button", { name: "Next" });
     await user.click(nextButton);
     expect(getValue("isSoleProprietorship")).toBe("false");
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/step-3");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
@@ -72,41 +98,46 @@ describe("<DisclosuresStep1 />", () => {
     const user = userEvent.setup();
     renderWithRouter();
 
-    const yesSPButton = screen.getByTestId("soleProprietorshipYes");
-    expect(yesSPButton).not.toBeChecked();
-    await user.click(yesSPButton);
-    expect(yesSPButton).toBeChecked();
+    const yesSoleProprietorButton = getYesSoleProprietorButton();
+    expect(yesSoleProprietorButton).not.toBeChecked();
+    await user.click(yesSoleProprietorButton);
+    expect(yesSoleProprietorButton).toBeChecked();
 
     const businessAddressInput = screen.getByRole("heading", {
       name: "Business address",
     });
+    // TODO: JOHN ADD the business address input fields
     expect(businessAddressInput).toBeInTheDocument();
   });
 
-  it("saves hasSeparateBusinessAddress as false when user selects no for separate business address and submits", async () => {
+  it("saves hasSameBusinessAddress as true when user selects yes for same business address and submits", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    const yesSPButton = await clickYesSPButton();
-    expect(yesSPButton.yesSPButton).toBeChecked();
-    const noSPButton = screen.getByTestId("separateBusinessAddressNo");
-    await user.click(noSPButton);
-    expect(noSPButton).toBeChecked();
+    const yesSoleProprietorButton = getYesSoleProprietorButton();
+    expect(yesSoleProprietorButton).not.toBeChecked();
+    await user.click(yesSoleProprietorButton);
+    expect(yesSoleProprietorButton).toBeChecked();
+
+    const yesSameAddressButton = getYesSameAddressButton();
+    await user.click(yesSameAddressButton);
+    expect(yesSameAddressButton).toBeChecked();
 
     const nextButton = screen.getByRole("button", { name: "Next" });
     await user.click(nextButton);
 
     expect(getValue("isSoleProprietorship")).toBe("true");
-    expect(getValue("hasSeparateBusinessAddress")).toBe("false");
+    expect(getValue("hasSameBusinessAddress")).toBe("true");
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/step-3");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
-  it("updates and saves the separate business address when user submits", async () => {
+  it("updates business address fields when user clicks the next button", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    await clickYesSPButton();
-    await clickYesSeparateAddressButton();
+
+    await clickYesSoleProprietorButton();
+    await clickNoSameAddressButton();
 
     const addressTextInputFields = [
       { name: "Street address 1 *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
@@ -138,7 +169,7 @@ describe("<DisclosuresStep1 />", () => {
     await user.click(nextButton);
 
     expect(getValue("isSoleProprietorship")).toBe("true");
-    expect(getValue("hasSeparateBusinessAddress")).toBe("true");
+    expect(getValue("hasSameBusinessAddress")).toBe("false");
 
     for (const addressTextInputField of addressTextInputFields) {
       expect(window.sessionStorage.getItem(addressTextInputField.key)).toEqual(
@@ -146,8 +177,25 @@ describe("<DisclosuresStep1 />", () => {
       );
     }
     expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/step-3");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
     expect(mockRouter.refresh).toHaveBeenCalled();
+  });
+
+  it.each([
+    { label: "Street address 1 *", role: "textbox" },
+    { label: "City *", role: "textbox" },
+    { label: "ZIP code *", role: "textbox" },
+    { label: "State, territory, or military post *", role: "combobox" },
+  ])("input is marked as required", async ({ label, role }) => {
+    renderWithRouter();
+
+    await clickYesSoleProprietorButton();
+    await clickNoSameAddressButton();
+
+    const field = screen.getByRole(role, {
+      name: label,
+    });
+
+    expect(field).toBeRequired();
   });
 });

@@ -23,19 +23,19 @@ export const allSections: Array<Section> = [
     numSteps: 1,
   },
   {
-    id: "step-3",
-    progressBarTitle: "Step 3",
-    heading: "Placeholder step 3",
+    id: "section-3",
+    progressBarTitle: "Section 3",
+    heading: "Placeholder section 3",
   },
   {
-    id: "step-4",
-    progressBarTitle: "Step 4",
-    heading: "Placeholder step 4",
+    id: "section-4",
+    progressBarTitle: "Section 4",
+    heading: "Placeholder section 4",
   },
   {
-    id: "step-5",
-    progressBarTitle: "Step 5",
-    heading: "Placeholder step 5",
+    id: "section-5",
+    progressBarTitle: "Section 5",
+    heading: "Placeholder section 5",
   },
   {
     id: "download",

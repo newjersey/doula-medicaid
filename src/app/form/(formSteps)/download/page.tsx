@@ -41,7 +41,7 @@ const getFormData = (): FormData => {
     state: state,
     zip: getValue("zip"),
     natureOfDisclosingEntity: disclosingEntity,
-    hasSeparateBusinessAddress: convertToBoolean(getValue("hasSeparateBusinessAddress")),
+    hasSameBusinessAddress: convertToBoolean(getValue("hasSameBusinessAddress")),
     businessStreetAddress1: getValue("businessStreetAddress1"),
     businessStreetAddress2: getValue("businessStreetAddress2"),
     businessCity: getValue("businessCity"),

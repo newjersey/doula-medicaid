@@ -1,6 +1,6 @@
 "use client";
 
-import { Form, Label, RequiredMarker, TextInput } from "@trussworks/react-uswds";
+import { Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
@@ -40,20 +40,39 @@ const PersonalDetailsStep3: React.FC = () => {
           <div className="maxw-tablet">
             <h2 className="font-heading-md">Provider IDs</h2>
             <p>This is a general instruction if needed for the user to answer correctly.</p>
-            <Label htmlFor="npiNumber">
-              NPI number <RequiredMarker />
+            <Label htmlFor="npiNumber" requiredMarker>
+              NPI number
             </Label>
-            <p className="usa-hint">Format ABCD1234</p>
-            <TextInput id="npiNumber" type="text" required {...register("npiNumber")} />
+            <p id="npiNumberHint" className="usa-hint">
+              Format ABCD1234
+            </p>
+            <TextInput
+              id="npiNumber"
+              type="text"
+              required
+              aria-describedby="npiNumberHint"
+              {...register("npiNumber")}
+            />
             <Label htmlFor="upinNumber">UPIN number (if applicable)</Label>
-            <p className="usa-hint">Format ABCD1234</p>
-            <TextInput type="text" id="upinNumber" inputMode="text" {...register("upinNumber")} />
+            <p id="upinNumberHint" className="usa-hint">
+              Format ABCD1234
+            </p>
+            <TextInput
+              type="text"
+              id="upinNumber"
+              inputMode="text"
+              aria-describedby="upinNumberHint"
+              {...register("upinNumber")}
+            />
             <Label htmlFor="medicaidProviderId">Medicaid provider ID (if applicable)</Label>
-            <p className="usa-hint">Format ABCD1234</p>
+            <p id="medicaidProviderIdHint" className="usa-hint">
+              Format ABCD1234
+            </p>
             <TextInput
               type="text"
               id="medicaidProviderId"
               inputMode="text"
+              aria-describedby="medicaidProviderIdHint"
               {...register("medicaidProviderId")}
             />
           </div>

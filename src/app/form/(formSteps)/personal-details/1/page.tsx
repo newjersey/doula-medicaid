@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  DatePicker,
-  Fieldset,
-  Form,
-  Label,
-  RequiredMarker,
-  TextInput,
-} from "@trussworks/react-uswds";
+import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
@@ -57,32 +50,30 @@ const PersonalDetailsStep1: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full">
           <div className="maxw-tablet">
-            <h2 className="font-heading-md">Personal Identification</h2>
+            <h2 className="font-heading-md">Personal identification</h2>
             <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
               <div className="tablet:grid-col-4">
-                <Label htmlFor="firstName">
-                  First name <RequiredMarker />{" "}
+                <Label htmlFor="firstName" requiredMarker>
+                  First name
                 </Label>
                 <TextInput id="firstName" type="text" required {...register("firstName")} />
               </div>
               <div className="tablet:grid-col-4">
-                <Label htmlFor="middleName" hint=" (optional)">
-                  Middle name
-                </Label>
+                <Label htmlFor="middleName">Middle name</Label>
                 <TextInput id="middleName" type="text" {...register("middleName")} />
               </div>
               <div className="tablet:grid-col-4">
-                <Label htmlFor="lastName">
-                  Last name <RequiredMarker />{" "}
+                <Label htmlFor="lastName" requiredMarker>
+                  Last name
                 </Label>
                 <TextInput id="lastName" type="text" required {...register("lastName")} />
               </div>
             </Fieldset>
-            <Label id="dateOfBirthLabel" htmlFor="dateOfBirth">
-              Date of birth <RequiredMarker />
+            <Label id="dateOfBirthLabel" htmlFor="dateOfBirth" requiredMarker>
+              Date of birth
             </Label>
-            <p className="usa-hint">For example: March 18 1986</p>
             <div className="usa-hint" id="dateOfBirthHint">
+              <p className="usa-hint">For example: 03/31/1986</p>
               mm/dd/yyyy
             </div>
             <Controller
@@ -111,23 +102,26 @@ const PersonalDetailsStep1: React.FC = () => {
               )}
             />
 
-            <Label htmlFor="socialSecurityNumber">
-              Social security number <RequiredMarker />
+            <Label htmlFor="socialSecurityNumber" requiredMarker>
+              Social security number
             </Label>
-            <p className="usa-hint">Format XXX-XX-XXXX</p>
+            <p id="socialSecurityNumberHint" className="usa-hint">
+              Format XXX-XX-XXXX
+            </p>
             <TextInput
               id="socialSecurityNumber"
               type="text"
               required
+              aria-describedby="socialSecurityNumberHint"
               {...register("socialSecurityNumber")}
             />
           </div>
           <hr className="margin-top-5 margin-bottom-5" />
           <div className="maxw-tablet">
-            <h2 className="font-heading-md">Contact Information</h2>
+            <h2 className="font-heading-md">Contact information</h2>
             <p>This is where we&lsquo;ll send official updates and communications.</p>
-            <Label htmlFor="email">
-              Email address <RequiredMarker />
+            <Label htmlFor="email" requiredMarker>
+              Email address
             </Label>
             <TextInput
               id="email"
@@ -138,8 +132,8 @@ const PersonalDetailsStep1: React.FC = () => {
               {...register("email")}
             />
 
-            <Label htmlFor="phoneNumber">
-              Phone number <RequiredMarker />{" "}
+            <Label htmlFor="phoneNumber" requiredMarker>
+              Phone number
             </Label>
             <TextInput id="phoneNumber" type="tel" required {...register("phoneNumber")} />
           </div>

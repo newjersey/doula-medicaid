@@ -6,7 +6,7 @@ import PersonalDetailsStep1 from "./page";
 
 const textInputFields = [
   { name: "First name *", key: "firstName", testValue: "Test first name" },
-  { name: "Middle name (optional)", key: "middleName", testValue: "Test middle name" },
+  { name: "Middle name", key: "middleName", testValue: "Test middle name" },
   { name: "Last name *", key: "lastName", testValue: "Test last name" },
   { name: "Date of birth *", key: "dateOfBirth", testValue: "01/01/1990" },
   { name: "Email address *", key: "email", testValue: "test@test.com" },
@@ -78,7 +78,7 @@ describe("<PersonalDetailsStep1 />", () => {
     renderWithRouter();
 
     expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("Jane");
-    expect(screen.getByRole("textbox", { name: "Middle name (optional)" })).toHaveValue("A");
+    expect(screen.getByRole("textbox", { name: "Middle name" })).toHaveValue("A");
     expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Doe");
     expect(screen.getByRole("textbox", { name: "Date of birth *" })).toHaveValue("01/01/1990");
     expect(screen.getByRole("textbox", { name: "Social security number *" })).toHaveValue(
