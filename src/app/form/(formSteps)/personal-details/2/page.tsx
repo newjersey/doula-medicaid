@@ -41,11 +41,11 @@ const PersonalDetailsStep2: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full">
           <div className="maxw-tablet">
-            <h2 className="font-heading-md">Residential Address</h2>
+            <h2 className="font-heading-md">Mailing address</h2>
             <p className="usa-hint">
               This is the location where you want to receive official mail.
             </p>
-            <Fieldset legend="Mail to address" legendStyle="srOnly">
+            <Fieldset legend="Mailing address" legendStyle="srOnly">
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
                   <Label htmlFor="streetAddress1" requiredMarker>

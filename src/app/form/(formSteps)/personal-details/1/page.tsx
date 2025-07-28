@@ -50,7 +50,7 @@ const PersonalDetailsStep1: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full">
           <div className="maxw-tablet">
-            <h2 className="font-heading-md">Personal Identification</h2>
+            <h2 className="font-heading-md">Personal identification</h2>
             <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
               <div className="tablet:grid-col-4">
                 <Label htmlFor="firstName" requiredMarker>
@@ -72,8 +72,8 @@ const PersonalDetailsStep1: React.FC = () => {
             <Label id="dateOfBirthLabel" htmlFor="dateOfBirth" requiredMarker>
               Date of birth
             </Label>
-            <p className="usa-hint">For example: March 18 1986</p>
             <div className="usa-hint" id="dateOfBirthHint">
+              <p className="usa-hint">For example: 03/31/1986</p>
               mm/dd/yyyy
             </div>
             <Controller
@@ -118,7 +118,7 @@ const PersonalDetailsStep1: React.FC = () => {
           </div>
           <hr className="margin-top-5 margin-bottom-5" />
           <div className="maxw-tablet">
-            <h2 className="font-heading-md">Contact Information</h2>
+            <h2 className="font-heading-md">Contact information</h2>
             <p>This is where we&lsquo;ll send official updates and communications.</p>
             <Label htmlFor="email" requiredMarker>
               Email address

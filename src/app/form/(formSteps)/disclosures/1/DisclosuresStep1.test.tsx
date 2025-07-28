@@ -25,20 +25,20 @@ describe("<DisclosuresStep1 />", () => {
   };
 
   const getYesSoleProprietorButton = () => {
-    const soleProprietorshipGroup = screen.getByRole("group", {
+    const soleProprietorGroup = screen.getByRole("group", {
       name: "Are you the sole proprietor of your business? Select one *",
     });
-    const yesSoleProprietorButton = within(soleProprietorshipGroup).getByRole("radio", {
+    const yesSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
       name: "Yes",
     });
     return yesSoleProprietorButton;
   };
 
   const getNoSoleProprietorButton = () => {
-    const soleProprietorshipGroup = screen.getByRole("group", {
+    const soleProprietorGroup = screen.getByRole("group", {
       name: "Are you the sole proprietor of your business? Select one *",
     });
-    const noSoleProprietorButton = within(soleProprietorshipGroup).getByRole("radio", {
+    const noSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
       name: "No",
     });
     return noSoleProprietorButton;
