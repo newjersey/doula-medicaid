@@ -12,6 +12,6 @@ export interface PersonalInformationData {
   state: string | null;
   zip: string | null;
   npiNumber: string | null;
-  medicaidProviderId: string | null;
+  medicareProviderId: string | null;
   upinNumber: string | null;
 }

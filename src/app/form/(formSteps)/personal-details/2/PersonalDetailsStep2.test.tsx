@@ -42,7 +42,7 @@ describe("<PersonalDetailsStep2 />", () => {
     expect(inputField).toHaveValue(testValue);
   });
 
-  it("updates address state", async () => {
+  it("defaults address state to NJ and updates it", async () => {
     const user = userEvent.setup();
     renderWithRouter();
     const combobox = screen.getByRole("combobox", {
@@ -98,20 +98,27 @@ describe("<PersonalDetailsStep2 />", () => {
     expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
   });
 
-  describe("<PersonalDetailsStep2 /> required fields", () => {
-    it.each([
-      { label: "Street address 1 *", role: "textbox" },
-      { label: "City *", role: "textbox" },
-      { label: "ZIP code *", role: "textbox" },
-      { label: "State, territory, or military post *", role: "combobox" },
-    ])("checks that $label is marked as required", ({ label, role }) => {
+  it.each([
+    { labelWithoutAsterisk: "Street address 1" },
+    { labelWithoutAsterisk: "City" },
+    { labelWithoutAsterisk: "ZIP code" },
+  ])(
+    "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+    async ({ labelWithoutAsterisk }) => {
+      const user = userEvent.setup();
       renderWithRouter();
 
-      const input = screen.getByRole(role, {
-        name: label,
+      const input = screen.getByRole("textbox", {
+        name: `${labelWithoutAsterisk} *`,
       });
-
       expect(input).toBeRequired();
-    });
-  });
+
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      await user.click(nextButton);
+
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      );
+    },
+  );
 });

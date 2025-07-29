@@ -90,22 +90,30 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
   });
 
-  describe("<PersonalDetailsStep1 /> required fields", () => {
-    it.each([
-      { label: "First name *", role: "textbox" },
-      { label: "Last name *", role: "textbox" },
-      { label: "Date of birth *", role: "textbox" },
-      { label: "Phone number *", role: "textbox" },
-      { label: "Email address *", role: "textbox" },
-      { label: "Social security number *", role: "textbox" },
-    ])("checks that $label is marked as required", ({ label, role }) => {
+  it.each([
+    { labelWithoutAsterisk: "First name" },
+    { labelWithoutAsterisk: "Last name" },
+    { labelWithoutAsterisk: "Date of birth" },
+    { labelWithoutAsterisk: "Phone number" },
+    { labelWithoutAsterisk: "Email address" },
+    { labelWithoutAsterisk: "Social security number" },
+  ])(
+    "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+    async ({ labelWithoutAsterisk }) => {
+      const user = userEvent.setup();
       renderWithRouter();
 
-      const input = screen.getByRole(role, {
-        name: label,
+      const input = screen.getByRole("textbox", {
+        name: `${labelWithoutAsterisk} *`,
       });
-
       expect(input).toBeRequired();
-    });
-  });
+
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      await user.click(nextButton);
+
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      );
+    },
+  );
 });

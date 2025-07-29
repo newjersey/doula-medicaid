@@ -13,11 +13,15 @@ const PersonalDetailsStep3: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
-  const { register, handleSubmit } = useForm<PersonalInformationData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PersonalInformationData>({
     defaultValues: {
       npiNumber: getValue("npiNumber") || "",
       upinNumber: getValue("upinNumber") || "",
-      medicaidProviderId: getValue("medicaidProviderId") || "",
+      medicareProviderId: getValue("medicareProviderId") || "",
     },
   });
 
@@ -36,7 +40,7 @@ const PersonalDetailsStep3: React.FC = () => {
   return (
     <div>
       {dataHasLoaded && (
-        <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full">
+        <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
             <h2 className="font-heading-md">Provider IDs</h2>
             <p>This is a general instruction if needed for the user to answer correctly.</p>
@@ -50,9 +54,16 @@ const PersonalDetailsStep3: React.FC = () => {
               id="npiNumber"
               type="text"
               required
-              aria-describedby="npiNumberHint"
-              {...register("npiNumber")}
+              aria-describedby="npiNumberHint npiNumberErrorMessage"
+              aria-invalid={errors.npiNumber ? "true" : "false"}
+              className={errors.npiNumber ? "usa-input--error" : ""}
+              {...register("npiNumber", { required: true })}
             />
+            {errors.npiNumber?.type === "required" && (
+              <span id="npiNumberErrorMessage" className="usa-error-message" role="alert">
+                NPI number is required
+              </span>
+            )}
             <Label htmlFor="upinNumber">UPIN number (if applicable)</Label>
             <p id="upinNumberHint" className="usa-hint">
               Format ABCD1234
@@ -64,16 +75,16 @@ const PersonalDetailsStep3: React.FC = () => {
               aria-describedby="upinNumberHint"
               {...register("upinNumber")}
             />
-            <Label htmlFor="medicaidProviderId">Medicaid provider ID (if applicable)</Label>
-            <p id="medicaidProviderIdHint" className="usa-hint">
+            <Label htmlFor="medicareProviderId">Medicare provider ID (if applicable)</Label>
+            <p id="medicareProviderIdHint" className="usa-hint">
               Format ABCD1234
             </p>
             <TextInput
               type="text"
-              id="medicaidProviderId"
+              id="medicareProviderId"
               inputMode="text"
-              aria-describedby="medicaidProviderIdHint"
-              {...register("medicaidProviderId")}
+              aria-describedby="medicareProviderIdHint"
+              {...register("medicareProviderId")}
             />
           </div>
           <FormProgressButtons />

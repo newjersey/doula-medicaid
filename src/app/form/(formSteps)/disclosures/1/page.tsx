@@ -133,7 +133,6 @@ const DisclosuresStep1: React.FC = () => {
                     <TextInput
                       id="businessStreetAddress1"
                       type="text"
-                      inputMode="numeric"
                       required
                       {...register("businessStreetAddress1")}
                     />
