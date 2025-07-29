@@ -1,8 +1,8 @@
+import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
+import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { RouterPathnameProvider } from "../../../_utils/testUtils";
-import PersonalDetailsStep2 from "./page";
 
 const textInputFields = [
   { name: "Street address 1 *", key: "streetAddress1", testValue: "Test address 1" },

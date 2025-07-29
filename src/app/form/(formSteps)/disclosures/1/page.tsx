@@ -1,5 +1,9 @@
 "use client";
 
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { AddressState } from "@form/_utils/inputFields/enums";
+import { setKeyValue } from "@form/_utils/sessionStorage";
 import {
   Fieldset,
   Form,
@@ -12,10 +16,6 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
-import { AddressState } from "../../../_utils/inputFields/enums";
-import { setKeyValue } from "../../../_utils/sessionStorage";
-import FormProgressButtons from "../../components/FormProgressButtons";
 
 interface DisclosureBusinessAddressData {
   isSoleProprietorship: "true" | "false" | "";

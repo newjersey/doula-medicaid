@@ -1,13 +1,13 @@
 "use client";
 
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import { type PersonalInformationData } from "@form/(formSteps)/personal-details/PersonalInformationData";
+import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import { Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
-import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
-import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalInformationData } from "../PersonalInformationData";
 
 const PersonalDetailsStep3: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);

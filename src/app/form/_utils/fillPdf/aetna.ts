@@ -1,6 +1,5 @@
-import type { FormData } from "./form";
-import { fillForm } from "./form";
-import { formatDateOfBirth } from "./formatters";
+import { type FormData, fillForm } from "@form/_utils/fillPdf/form";
+import { formatDateOfBirth } from "@form/_utils/fillPdf/formatters";
 
 export const AETNA_PDF_NAME = "aetna_filled.pdf";
 export const AETNA_PDF_PATH = "/pdf/aetna.pdf";

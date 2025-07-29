@@ -1,5 +1,5 @@
+import { allSections, getCurrentFormProgress } from "@form/_utils/formProgress";
 import { RequiredMarker } from "@trussworks/react-uswds";
-import { allSections, getCurrentFormProgress } from "../_utils/formProgress";
 
 type CompletionState = "complete" | "current" | "incomplete";
 

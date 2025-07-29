@@ -1,14 +1,14 @@
 "use client";
 
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { usePathname } from "next/navigation";
 import {
   allSections,
   getCurrentFormProgress,
   getNextFormProgress,
   getPreviousFormProgress,
   type FormProgress,
-} from "./formProgress";
+} from "@form/_utils/formProgress";
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { usePathname } from "next/navigation";
 
 interface FormProgressPosition {
   previous: FormProgress | null;

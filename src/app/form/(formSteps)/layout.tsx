@@ -1,8 +1,8 @@
+import { FormLayout } from "@form/(formSteps)/FormLayout";
+import { getCurrentFormProgress } from "@form/_utils/formProgress";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import React from "react";
-import { getCurrentFormProgress } from "../_utils/formProgress";
-import { FormLayout } from "./FormLayout";
 
 export const generateMetadata = async (): Promise<Metadata> => {
   const headersList = await headers();

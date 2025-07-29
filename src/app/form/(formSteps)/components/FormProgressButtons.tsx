@@ -1,7 +1,7 @@
 "use client";
 
+import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
-import { formatFormProgressUrl, useFormProgressPosition } from "../../_utils/formProgressRouting";
 
 const FormProgressButtons: React.FC = () => {
   const formProgressPosition = useFormProgressPosition();

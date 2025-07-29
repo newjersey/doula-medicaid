@@ -1,8 +1,8 @@
+import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
+import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { RouterPathnameProvider } from "../../../_utils/testUtils";
-import PersonalDetailsStep3 from "./page";
 
 const textInputFields = [
   { name: "NPI number *", key: "npiNumber", testValue: "1111111111" },

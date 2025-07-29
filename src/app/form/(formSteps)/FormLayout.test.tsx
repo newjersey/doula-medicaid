@@ -1,6 +1,6 @@
+import { FormLayout } from "@form/(formSteps)/FormLayout";
 import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
-import { FormLayout } from "./FormLayout";
 
 describe("<FormLayout />", () => {
   it("shows the section progress bar", () => {

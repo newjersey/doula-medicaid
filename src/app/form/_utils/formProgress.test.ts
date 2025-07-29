@@ -2,7 +2,7 @@ import {
   getCurrentFormProgress,
   getNextFormProgress,
   getPreviousFormProgress,
-} from "./formProgress";
+} from "@form/_utils/formProgress";
 
 describe("getCurrentFormProgress", () => {
   it("returns the correct step when the path has no steps", () => {
