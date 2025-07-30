@@ -19,6 +19,12 @@ const dateIsValid = (date: string): boolean => {
 
 const inputNameToLabel: { [key in keyof PersonalDetails1Data]: string } = {
   firstName: "First name",
+  middleName: "Middle name",
+  lastName: "Last name",
+  dateOfBirth: "Date of birth",
+  socialSecurityNumber: "Social security number",
+  email: "Email address",
+  phoneNumber: "Phone number",
 };
 
 const PersonalDetailsStep1: React.FC = () => {
@@ -64,6 +70,7 @@ const PersonalDetailsStep1: React.FC = () => {
               {Object.keys(errors).length > 0 && (
                 <ul>
                   {Object.entries(errors).map(([field, error]) => {
+                    console.log("field", field);
                     return "hi";
                     // <li key={field}>{error.type + error.message || "This field is required"}</li>
                   })}
@@ -92,12 +99,12 @@ const PersonalDetailsStep1: React.FC = () => {
                 )}
               </div>
               <div className="tablet:grid-col-4">
-                <Label htmlFor="middleName">Middle name</Label>
+                <Label htmlFor="middleName">{inputNameToLabel["middleName"]}</Label>
                 <TextInput id="middleName" type="text" {...register("middleName")} />
               </div>
               <div className="tablet:grid-col-4">
                 <Label htmlFor="lastName" requiredMarker>
-                  Last name
+                  {inputNameToLabel["lastName"]}
                 </Label>
                 <TextInput
                   id="lastName"
@@ -110,13 +117,13 @@ const PersonalDetailsStep1: React.FC = () => {
                 />
                 {errors.lastName?.type === "required" && (
                   <span id="lastNameErrorMessage" className="usa-error-message" role="alert">
-                    Last name is required
+                    {inputNameToLabel["lastName"]} is required
                   </span>
                 )}
               </div>
             </Fieldset>
             <Label id="dateOfBirthLabel" htmlFor="dateOfBirth" requiredMarker>
-              Date of birth
+              {inputNameToLabel["dateOfBirth"]}
             </Label>
             <div className="usa-hint" id="dateOfBirthHint">
               <p className="usa-hint">For example: 03/31/1986</p>
@@ -152,11 +159,11 @@ const PersonalDetailsStep1: React.FC = () => {
             />
             {errors.dateOfBirth?.type === "required" && (
               <span id="dateOfBirthErrorMessage" className="usa-error-message" role="alert">
-                Date of birth is required
+                {inputNameToLabel["dateOfBirth"]} is required
               </span>
             )}
             <Label htmlFor="socialSecurityNumber" requiredMarker>
-              Social security number
+              {inputNameToLabel["socialSecurityNumber"]}
             </Label>
             <p id="socialSecurityNumberHint" className="usa-hint">
               Format XXX-XX-XXXX
@@ -176,7 +183,7 @@ const PersonalDetailsStep1: React.FC = () => {
                 className="usa-error-message"
                 role="alert"
               >
-                Social security number is required
+                {inputNameToLabel["socialSecurityNumber"]} is required
               </span>
             )}
           </div>
@@ -185,7 +192,7 @@ const PersonalDetailsStep1: React.FC = () => {
             <h2 className="font-heading-md">Contact information</h2>
             <p>This is where we&lsquo;ll send official updates and communications.</p>
             <Label htmlFor="email" requiredMarker>
-              Email address
+              {inputNameToLabel["email"]}
             </Label>
             <TextInput
               id="email"
@@ -207,13 +214,13 @@ const PersonalDetailsStep1: React.FC = () => {
             {errors.email && (
               <span id="emailErrorMessage" className="usa-error-message" role="alert">
                 {errors.email?.type === "required"
-                  ? "Email address is required"
+                  ? `${inputNameToLabel["email"]} is required`
                   : errors.email.message}
               </span>
             )}
 
             <Label htmlFor="phoneNumber" requiredMarker>
-              Phone number
+              {inputNameToLabel["phoneNumber"]}
             </Label>
             <TextInput
               id="phoneNumber"
@@ -226,7 +233,7 @@ const PersonalDetailsStep1: React.FC = () => {
             />
             {errors.phoneNumber?.type === "required" && (
               <span id="phoneNumberErrorMessage" className="usa-error-message" role="alert">
-                Phone number is required
+                {inputNameToLabel["phoneNumber"]} is required
               </span>
             )}
           </div>
