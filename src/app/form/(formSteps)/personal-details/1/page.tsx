@@ -90,11 +90,13 @@ const PersonalDetailsStep1: React.FC = () => {
                   validationStatus={errors.firstName ? "error" : undefined}
                   aria-invalid={errors.firstName ? "true" : "false"}
                   aria-describedby="firstNameErrorMessage"
-                  {...register("firstName", { required: true })}
+                  {...register("firstName", {
+                    required: `${inputNameToLabel["firstName"]} is required`,
+                  })}
                 />
-                {errors.firstName?.type === "required" && (
+                {errors.firstName && (
                   <span id="firstNameErrorMessage" className="usa-error-message" role="alert">
-                    {inputNameToLabel["firstName"]} is required
+                    {errors.firstName.message}
                   </span>
                 )}
               </div>
@@ -203,7 +205,7 @@ const PersonalDetailsStep1: React.FC = () => {
               autoCapitalize="off"
               aria-describedby="emailErrorMessage"
               {...register("email", {
-                required: "required",
+                required: `${inputNameToLabel["email"]} is required`,
                 pattern: {
                   value: /\S+@\S+\.\S+/,
                   message: "Entered value does not match email format",
@@ -213,9 +215,7 @@ const PersonalDetailsStep1: React.FC = () => {
             />
             {errors.email && (
               <span id="emailErrorMessage" className="usa-error-message" role="alert">
-                {errors.email?.type === "required"
-                  ? `${inputNameToLabel["email"]} is required`
-                  : errors.email.message}
+                {errors.email.message}
               </span>
             )}
 
