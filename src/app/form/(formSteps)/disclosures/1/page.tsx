@@ -133,7 +133,6 @@ const DisclosuresStep1: React.FC = () => {
                     <TextInput
                       id="businessStreetAddress1"
                       type="text"
-                      inputMode="numeric"
                       required
                       {...register("businessStreetAddress1")}
                     />
@@ -164,7 +163,7 @@ const DisclosuresStep1: React.FC = () => {
                 <div className="grid-row grid-gap">
                   <div className="mobile-lg:grid-col-6">
                     <Label requiredMarker htmlFor="businessState">
-                      State, territory, or military post
+                      State
                     </Label>
                     <Select
                       className="usa-select"

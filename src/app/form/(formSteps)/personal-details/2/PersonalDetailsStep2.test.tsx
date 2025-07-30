@@ -1,6 +1,6 @@
 import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
 import { RouterPathnameProvider } from "@form/_utils/testUtils";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
@@ -42,11 +42,11 @@ describe("<PersonalDetailsStep2 />", () => {
     expect(inputField).toHaveValue(testValue);
   });
 
-  it("updates address state", async () => {
+  it("defaults address state to NJ and updates it", async () => {
     const user = userEvent.setup();
     renderWithRouter();
     const combobox = screen.getByRole("combobox", {
-      name: "State, territory, or military post *",
+      name: "State *",
     });
     expect(combobox).toHaveValue("NJ");
 
@@ -65,7 +65,7 @@ describe("<PersonalDetailsStep2 />", () => {
       await user.type(inputField, textInputField.testValue);
     }
     const combobox = screen.getByRole("combobox", {
-      name: "State, territory, or military post *",
+      name: "State *",
     });
     await user.selectOptions(combobox, "PA");
 
@@ -92,26 +92,75 @@ describe("<PersonalDetailsStep2 />", () => {
     expect(screen.getByRole("textbox", { name: "Street address 1 *" })).toHaveValue("123 Main St");
     expect(screen.getByRole("textbox", { name: "Street address line 2" })).toHaveValue("Apt 4B");
     expect(screen.getByRole("textbox", { name: "City *" })).toHaveValue("Newark");
-    expect(
-      screen.getByRole("combobox", { name: "State, territory, or military post *" }),
-    ).toHaveValue("NJ");
+    expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
     expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
   });
 
-  describe("<PersonalDetailsStep2 /> required fields", () => {
-    it.each([
-      { label: "Street address 1 *", role: "textbox" },
-      { label: "City *", role: "textbox" },
-      { label: "ZIP code *", role: "textbox" },
-      { label: "State, territory, or military post *", role: "combobox" },
-    ])("checks that $label is marked as required", ({ label, role }) => {
+  it.each([
+    { labelWithoutAsterisk: "Street address 1" },
+    { labelWithoutAsterisk: "City" },
+    { labelWithoutAsterisk: "ZIP code" },
+  ])(
+    "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+    async ({ labelWithoutAsterisk }) => {
+      const user = userEvent.setup();
       renderWithRouter();
 
-      const input = screen.getByRole(role, {
-        name: label,
+      const input = screen.getByRole("textbox", {
+        name: `${labelWithoutAsterisk} *`,
       });
-
       expect(input).toBeRequired();
-    });
+
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      await user.click(nextButton);
+
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      );
+      expect(input).toHaveAttribute("aria-invalid", "true");
+    },
+  );
+
+  it("shows an error summary if there are 3 or more errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    const focusedElement = document.activeElement as HTMLElement;
+    const errorSummary = within(focusedElement).getByRole("alert", { name: "There is a problem" });
+
+    const expectedErrorMessages = [
+      "Street address 1 is required",
+      "City is required",
+      "ZIP code is required",
+    ];
+    for (const errorMessage of expectedErrorMessages) {
+      expect(errorSummary).toHaveTextContent(errorMessage);
+    }
+  });
+
+  it("does not show an error summary if there are fewer than 3 errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+
+    const requiredInputsToLeaveEmpty = [
+      { label: "Street address 1 *", errorMessage: "Street address is required" },
+    ];
+    const requiredInputsToLeaveEmptyLabels = new Set(
+      requiredInputsToLeaveEmpty.map((x) => x.label),
+    );
+    for (const textInputField of textInputFields) {
+      if (!requiredInputsToLeaveEmptyLabels.has(textInputField.name)) {
+        const inputField = screen.getByRole("textbox", {
+          name: textInputField.name,
+        });
+        await user.type(inputField, textInputField.testValue);
+      }
+    }
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
   });
 });
