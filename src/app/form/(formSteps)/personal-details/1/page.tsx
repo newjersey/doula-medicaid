@@ -1,6 +1,6 @@
 "use client";
 
-import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
+import { DatePicker, Fieldset, Form, Label, SummaryBox, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
@@ -8,13 +8,17 @@ import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formPr
 import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalInformationData } from "../PersonalInformationData";
+import { type PersonalDetails1Data } from "../PersonalDetailsData";
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
 
 const dateIsValid = (date: string): boolean => {
   const found = date.match(MM_DD_YYYY);
   return !!found;
+};
+
+const inputNameToLabel: { [key in keyof PersonalDetails1Data]: string } = {
+  firstName: "First name",
 };
 
 const PersonalDetailsStep1: React.FC = () => {
@@ -26,7 +30,7 @@ const PersonalDetailsStep1: React.FC = () => {
     formState: { errors },
     handleSubmit,
     control,
-  } = useForm<PersonalInformationData>({
+  } = useForm<PersonalDetails1Data>({
     defaultValues: {
       firstName: getValue("firstName") || "",
       middleName: getValue("middleName") || "",
@@ -38,13 +42,14 @@ const PersonalDetailsStep1: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
+  const onSubmit: SubmitHandler<PersonalDetails1Data> = (data) => {
     for (const key in data) {
-      const value = data[key as keyof PersonalInformationData] ?? "";
+      const value = data[key as keyof PersonalDetails1Data] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
   };
+  console.log(Object.values(errors).map((error) => error.message));
 
   useEffect(() => {
     setDataHasLoaded(true);
@@ -55,11 +60,21 @@ const PersonalDetailsStep1: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
+            <SummaryBox>
+              {Object.keys(errors).length > 0 && (
+                <ul>
+                  {Object.entries(errors).map(([field, error]) => {
+                    return "hi";
+                    // <li key={field}>{error.type + error.message || "This field is required"}</li>
+                  })}
+                </ul>
+              )}
+            </SummaryBox>
             <h2 className="font-heading-md">Personal identification</h2>
             <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
               <div className="tablet:grid-col-4">
                 <Label htmlFor="firstName" requiredMarker>
-                  First name
+                  {inputNameToLabel["firstName"]}
                 </Label>
                 <TextInput
                   id="firstName"
@@ -72,7 +87,7 @@ const PersonalDetailsStep1: React.FC = () => {
                 />
                 {errors.firstName?.type === "required" && (
                   <span id="firstNameErrorMessage" className="usa-error-message" role="alert">
-                    First name is required
+                    {inputNameToLabel["firstName"]} is required
                   </span>
                 )}
               </div>

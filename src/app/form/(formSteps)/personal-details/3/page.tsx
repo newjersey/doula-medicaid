@@ -7,7 +7,7 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalInformationData } from "../PersonalInformationData";
+import { type PersonalDetailsData } from "../PersonalDetailsData";
 
 const PersonalDetailsStep3: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
@@ -17,7 +17,7 @@ const PersonalDetailsStep3: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PersonalInformationData>({
+  } = useForm<PersonalDetailsData>({
     defaultValues: {
       npiNumber: getValue("npiNumber") || "",
       upinNumber: getValue("upinNumber") || "",
@@ -25,9 +25,9 @@ const PersonalDetailsStep3: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
+  const onSubmit: SubmitHandler<PersonalDetailsData> = (data) => {
     for (const key in data) {
-      const value = data[key as keyof PersonalInformationData] ?? "";
+      const value = data[key as keyof PersonalDetailsData] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);

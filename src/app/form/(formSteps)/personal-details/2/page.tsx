@@ -8,7 +8,7 @@ import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formPr
 import { AddressState } from "../../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalInformationData } from "../PersonalInformationData";
+import { type PersonalDetailsData } from "../PersonalDetailsData";
 
 const PersonalDetailsStep2: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
@@ -18,7 +18,7 @@ const PersonalDetailsStep2: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PersonalInformationData>({
+  } = useForm<PersonalDetailsData>({
     defaultValues: {
       streetAddress1: getValue("streetAddress1") || "",
       streetAddress2: getValue("streetAddress2") || "",
@@ -28,9 +28,9 @@ const PersonalDetailsStep2: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<PersonalInformationData> = (data) => {
+  const onSubmit: SubmitHandler<PersonalDetailsData> = (data) => {
     for (const key in data) {
-      const value = data[key as keyof PersonalInformationData] ?? "";
+      const value = data[key as keyof PersonalDetailsData] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
