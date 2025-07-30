@@ -159,7 +159,7 @@ describe("<DisclosuresStep1 />", () => {
     }
 
     const combobox = screen.getByRole("combobox", {
-      name: "State, territory, or military post *",
+      name: "State *",
     });
     expect(combobox).toHaveValue("NJ");
     await user.selectOptions(combobox, "PA");
@@ -185,7 +185,7 @@ describe("<DisclosuresStep1 />", () => {
     { label: "Street address 1 *", role: "textbox" },
     { label: "City *", role: "textbox" },
     { label: "ZIP code *", role: "textbox" },
-    { label: "State, territory, or military post *", role: "combobox" },
+    { label: "State *", role: "combobox" },
   ])("input is marked as required", async ({ label, role }) => {
     renderWithRouter();
 
