@@ -1,8 +1,8 @@
 "use client";
 
-import { DatePicker, Fieldset, Form, Label, SummaryBox, TextInput } from "@trussworks/react-uswds";
+import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
 import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
@@ -47,6 +47,7 @@ const PersonalDetailsStep1: React.FC = () => {
       phoneNumber: getValue("phoneNumber") || "",
     },
   });
+  const errorSummaryRef = useRef<HTMLInputElement>(null);
 
   const onSubmit: SubmitHandler<PersonalDetails1Data> = (data) => {
     for (const key in data) {
@@ -57,6 +58,14 @@ const PersonalDetailsStep1: React.FC = () => {
   };
   console.log(Object.values(errors).map((error) => error.message));
 
+  const shouldShowErrorSummary = Object.keys(errors).length >= 3;
+
+  useEffect(() => {
+    if (shouldShowErrorSummary) {
+      errorSummaryRef.current?.focus();
+    }
+  }, [shouldShowErrorSummary]);
+
   useEffect(() => {
     setDataHasLoaded(true);
   }, []);
@@ -66,17 +75,28 @@ const PersonalDetailsStep1: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
-            <SummaryBox>
-              {Object.keys(errors).length > 0 && (
-                <ul>
-                  {Object.entries(errors).map(([field, error]) => {
-                    console.log("field", field);
-                    return "hi";
-                    // <li key={field}>{error.type + error.message || "This field is required"}</li>
-                  })}
-                </ul>
-              )}
-            </SummaryBox>
+            {shouldShowErrorSummary && (
+              <div
+                className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
+                role="alert"
+                aria-labelledby="error-summary-heading"
+                tabIndex={-1}
+                ref={errorSummaryRef}
+              >
+                <div className="usa-alert__body">
+                  <h2 className="usa-alert__heading" id="error-summary-heading">
+                    There is a problem
+                  </h2>
+
+                  <ul className="usa-list usa-list--unstyled">
+                    {Object.entries(errors).map(([field, error]) => {
+                      console.log("field", field);
+                      return <li key={field}>{error.message}</li>;
+                    })}
+                  </ul>
+                </div>
+              </div>
+            )}
             <h2 className="font-heading-md">Personal identification</h2>
             <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
               <div className="tablet:grid-col-4">
@@ -115,11 +135,13 @@ const PersonalDetailsStep1: React.FC = () => {
                   validationStatus={errors.lastName ? "error" : undefined}
                   aria-invalid={errors.lastName ? "true" : "false"}
                   aria-describedby="lastNameErrorMessage"
-                  {...register("lastName", { required: true })}
+                  {...register("lastName", {
+                    required: `${inputNameToLabel["lastName"]} is required`,
+                  })}
                 />
-                {errors.lastName?.type === "required" && (
+                {errors.lastName && (
                   <span id="lastNameErrorMessage" className="usa-error-message" role="alert">
-                    {inputNameToLabel["lastName"]} is required
+                    {errors.lastName.message}
                   </span>
                 )}
               </div>
@@ -134,7 +156,7 @@ const PersonalDetailsStep1: React.FC = () => {
             <Controller
               name="dateOfBirth"
               control={control}
-              rules={{ required: true }}
+              rules={{ required: `${inputNameToLabel["dateOfBirth"]} is required` }}
               render={({ field }) => (
                 <DatePicker
                   name="dateOfBirth"
@@ -159,9 +181,9 @@ const PersonalDetailsStep1: React.FC = () => {
                 />
               )}
             />
-            {errors.dateOfBirth?.type === "required" && (
+            {errors.dateOfBirth && (
               <span id="dateOfBirthErrorMessage" className="usa-error-message" role="alert">
-                {inputNameToLabel["dateOfBirth"]} is required
+                {errors.dateOfBirth.message}
               </span>
             )}
             <Label htmlFor="socialSecurityNumber" requiredMarker>
@@ -177,15 +199,17 @@ const PersonalDetailsStep1: React.FC = () => {
               validationStatus={errors.socialSecurityNumber ? "error" : undefined}
               aria-invalid={errors.socialSecurityNumber ? "true" : "false"}
               aria-describedby="socialSecurityNumberHint socialSecurityNumberErrorMessage"
-              {...register("socialSecurityNumber", { required: true })}
+              {...register("socialSecurityNumber", {
+                required: `${inputNameToLabel["socialSecurityNumber"]} is required`,
+              })}
             />
-            {errors.socialSecurityNumber?.type === "required" && (
+            {errors.socialSecurityNumber && (
               <span
                 id="socialSecurityNumberErrorMessage"
                 className="usa-error-message"
                 role="alert"
               >
-                {inputNameToLabel["socialSecurityNumber"]} is required
+                {errors.socialSecurityNumber.message}
               </span>
             )}
           </div>
@@ -229,11 +253,13 @@ const PersonalDetailsStep1: React.FC = () => {
               validationStatus={errors.phoneNumber ? "error" : undefined}
               aria-invalid={errors.phoneNumber ? "true" : "false"}
               aria-describedby="phoneNumberErrorMessage"
-              {...register("phoneNumber", { required: true })}
+              {...register("phoneNumber", {
+                required: `${inputNameToLabel["phoneNumber"]} is required`,
+              })}
             />
-            {errors.phoneNumber?.type === "required" && (
+            {errors.phoneNumber && (
               <span id="phoneNumberErrorMessage" className="usa-error-message" role="alert">
-                {inputNameToLabel["phoneNumber"]} is required
+                {errors.phoneNumber.message}
               </span>
             )}
           </div>
