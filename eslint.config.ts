@@ -50,6 +50,7 @@ const eslintConfig = [
           fixStyle: "separate-type-imports",
         },
       ],
+      "no-restricted-imports": ["error", { patterns: ["..*"] }],
     },
   },
 ];
