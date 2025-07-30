@@ -7,7 +7,13 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalDetailsData } from "../PersonalDetailsData";
+import { type PersonalDetails3Data } from "../PersonalDetailsData";
+
+const inputNameToLabel: { [key in keyof PersonalDetails3Data]: string } = {
+  npiNumber: "NPI number",
+  upinNumber: "UPIN number",
+  medicareProviderId: "Medicare provider ID",
+};
 
 const PersonalDetailsStep3: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
@@ -17,7 +23,7 @@ const PersonalDetailsStep3: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PersonalDetailsData>({
+  } = useForm<PersonalDetails3Data>({
     defaultValues: {
       npiNumber: getValue("npiNumber") || "",
       upinNumber: getValue("upinNumber") || "",
@@ -25,9 +31,9 @@ const PersonalDetailsStep3: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<PersonalDetailsData> = (data) => {
+  const onSubmit: SubmitHandler<PersonalDetails3Data> = (data) => {
     for (const key in data) {
-      const value = data[key as keyof PersonalDetailsData] ?? "";
+      const value = data[key as keyof PersonalDetails3Data] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
@@ -45,7 +51,7 @@ const PersonalDetailsStep3: React.FC = () => {
             <h2 className="font-heading-md">Provider IDs</h2>
             <p>This is a general instruction if needed for the user to answer correctly.</p>
             <Label htmlFor="npiNumber" requiredMarker>
-              NPI number
+              {inputNameToLabel["npiNumber"]}
             </Label>
             <p id="npiNumberHint" className="usa-hint">
               Format ABCD1234
@@ -57,14 +63,16 @@ const PersonalDetailsStep3: React.FC = () => {
               aria-describedby="npiNumberHint npiNumberErrorMessage"
               aria-invalid={errors.npiNumber ? "true" : "false"}
               className={errors.npiNumber ? "usa-input--error" : ""}
-              {...register("npiNumber", { required: true })}
+              {...register("npiNumber", {
+                required: `${inputNameToLabel["npiNumber"]} is required`,
+              })}
             />
-            {errors.npiNumber?.type === "required" && (
+            {errors.npiNumber && (
               <span id="npiNumberErrorMessage" className="usa-error-message" role="alert">
-                NPI number is required
+                {errors.npiNumber.message}
               </span>
             )}
-            <Label htmlFor="upinNumber">UPIN number (if applicable)</Label>
+            <Label htmlFor="upinNumber">{inputNameToLabel["upinNumber"]} (if applicable)</Label>
             <p id="upinNumberHint" className="usa-hint">
               Format ABCD1234
             </p>
@@ -75,7 +83,9 @@ const PersonalDetailsStep3: React.FC = () => {
               aria-describedby="upinNumberHint"
               {...register("upinNumber")}
             />
-            <Label htmlFor="medicareProviderId">Medicare provider ID (if applicable)</Label>
+            <Label htmlFor="medicareProviderId">
+              {inputNameToLabel["medicareProviderId"]} (if applicable)
+            </Label>
             <p id="medicareProviderIdHint" className="usa-hint">
               Format ABCD1234
             </p>

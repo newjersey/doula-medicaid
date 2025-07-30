@@ -8,7 +8,15 @@ import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formPr
 import { AddressState } from "../../../_utils/inputFields/enums";
 import { getValue, setKeyValue } from "../../../_utils/sessionStorage";
 import FormProgressButtons from "../../components/FormProgressButtons";
-import { type PersonalDetailsData } from "../PersonalDetailsData";
+import { type PersonalDetails2Data } from "../PersonalDetailsData";
+
+const inputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
+  streetAddress1: "Street address 1",
+  streetAddress2: "Street address line 2",
+  city: "City",
+  state: "State, territory, or military post",
+  zip: "ZIP code",
+};
 
 const PersonalDetailsStep2: React.FC = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
@@ -18,7 +26,7 @@ const PersonalDetailsStep2: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<PersonalDetailsData>({
+  } = useForm<PersonalDetails2Data>({
     defaultValues: {
       streetAddress1: getValue("streetAddress1") || "",
       streetAddress2: getValue("streetAddress2") || "",
@@ -28,9 +36,9 @@ const PersonalDetailsStep2: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<PersonalDetailsData> = (data) => {
+  const onSubmit: SubmitHandler<PersonalDetails2Data> = (data) => {
     for (const key in data) {
-      const value = data[key as keyof PersonalDetailsData] ?? "";
+      const value = data[key as keyof PersonalDetails2Data] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
@@ -45,6 +53,25 @@ const PersonalDetailsStep2: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
+            {Object.keys(errors).length >= 3 && (
+              <div
+                className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
+                role="alert"
+                aria-labelledby="error-summary-heading"
+                tabIndex={-1}
+              >
+                <div className="usa-alert__body">
+                  <h2 className="usa-alert__heading" id="error-summary-heading">
+                    There is a problem
+                  </h2>
+                  <ul className="usa-list usa-list--unstyled">
+                    {Object.entries(errors).map(([field, error]) => (
+                      <li key={field}>{error.message}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
             <h2 className="font-heading-md">Mailing address</h2>
             <p className="usa-hint">
               This is the location where you want to receive official mail.
@@ -53,7 +80,7 @@ const PersonalDetailsStep2: React.FC = () => {
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
                   <Label htmlFor="streetAddress1" requiredMarker>
-                    Street address 1
+                    {inputNameToLabel["streetAddress1"]}
                   </Label>
                   <TextInput
                     id="streetAddress1"
@@ -62,27 +89,29 @@ const PersonalDetailsStep2: React.FC = () => {
                     aria-describedby="streetAddress1ErrorMessage"
                     validationStatus={errors.streetAddress1 ? "error" : undefined}
                     aria-invalid={errors.streetAddress1 ? "true" : "false"}
-                    {...register("streetAddress1", { required: true })}
+                    {...register("streetAddress1", {
+                      required: `${inputNameToLabel["streetAddress1"]} is required`,
+                    })}
                   />
-                  {errors.streetAddress1?.type === "required" && (
+                  {errors.streetAddress1 && (
                     <span
                       id="streetAddress1ErrorMessage"
                       className="usa-error-message"
                       role="alert"
                     >
-                      Street address 1 is required
+                      {errors.streetAddress1.message}
                     </span>
                   )}
                 </div>
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="streetAddress2">Street address line 2</Label>
+                  <Label htmlFor="streetAddress2">{inputNameToLabel["streetAddress2"]}</Label>
                   <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
                 </div>
               </div>
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
                   <Label htmlFor="city" requiredMarker>
-                    City
+                    {inputNameToLabel["city"]}
                   </Label>
                   <TextInput
                     id="city"
@@ -91,11 +120,13 @@ const PersonalDetailsStep2: React.FC = () => {
                     aria-describedby="cityErrorMessage"
                     validationStatus={errors.city ? "error" : undefined}
                     aria-invalid={errors.city ? "true" : "false"}
-                    {...register("city", { required: true })}
+                    {...register("city", {
+                      required: `${inputNameToLabel["city"]} is required`,
+                    })}
                   />
-                  {errors.city?.type === "required" && (
+                  {errors.city && (
                     <span id="cityErrorMessage" className="usa-error-message" role="alert">
-                      City is required
+                      {errors.city.message}
                     </span>
                   )}
                 </div>
@@ -103,20 +134,34 @@ const PersonalDetailsStep2: React.FC = () => {
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
                   <Label htmlFor="state" requiredMarker>
-                    State, territory, or military post
+                    {inputNameToLabel["state"]}
                   </Label>
-                  <Select className="usa-select" id="state" {...register("state")}>
+                  <Select
+                    className="usa-select"
+                    id="state"
+                    required
+                    aria-describedby="stateErrorMessage"
+                    validationStatus={errors.state ? "error" : undefined}
+                    aria-invalid={errors.state ? "true" : "false"}
+                    {...register("state", {
+                      required: `${inputNameToLabel["state"]} is required`,
+                    })}
+                  >
                     {Object.keys(AddressState).map((state) => (
                       <option key={state} value={state}>
                         {state}
                       </option>
                     ))}
                   </Select>
+                  {errors.state && (
+                    <span id="stateErrorMessage" className="usa-error-message" role="alert">
+                      {errors.state.message}
+                    </span>
+                  )}
                 </div>
-
                 <div className="mobile-lg:grid-col-4">
                   <Label htmlFor="zip" requiredMarker>
-                    ZIP code
+                    {inputNameToLabel["zip"]}
                   </Label>
                   <TextInput
                     className="usa-input--medium"
@@ -127,11 +172,13 @@ const PersonalDetailsStep2: React.FC = () => {
                     aria-describedby="zipErrorMessage"
                     validationStatus={errors.zip ? "error" : undefined}
                     aria-invalid={errors.zip ? "true" : "false"}
-                    {...register("zip", { required: true })}
+                    {...register("zip", {
+                      required: `${inputNameToLabel["zip"]} is required`,
+                    })}
                   />
-                  {errors.zip?.type === "required" && (
+                  {errors.zip && (
                     <span id="zipErrorMessage" className="usa-error-message" role="alert">
-                      ZIP code is required
+                      {errors.zip.message}
                     </span>
                   )}
                 </div>
