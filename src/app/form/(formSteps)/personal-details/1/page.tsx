@@ -2,7 +2,7 @@
 
 import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { type SubmitHandler, Controller, useForm } from "react-hook-form";
 import { routeToNextStep, useFormProgressPosition } from "../../../_utils/formProgressRouting";
 import { formatDateOfBirthDefaultValue } from "../../../_utils/inputFields/dateOfBirth";
@@ -47,7 +47,6 @@ const PersonalDetailsStep1: React.FC = () => {
       phoneNumber: getValue("phoneNumber") || "",
     },
   });
-  const errorSummaryRef = useRef<HTMLInputElement>(null);
 
   const onSubmit: SubmitHandler<PersonalDetails1Data> = (data) => {
     for (const key in data) {
@@ -72,7 +71,6 @@ const PersonalDetailsStep1: React.FC = () => {
                 role="alert"
                 aria-labelledby="error-summary-heading"
                 tabIndex={-1}
-                ref={errorSummaryRef}
               >
                 <div className="usa-alert__body">
                   <h2 className="usa-alert__heading" id="error-summary-heading">

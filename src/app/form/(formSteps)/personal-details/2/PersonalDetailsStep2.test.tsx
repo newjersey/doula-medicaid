@@ -121,4 +121,39 @@ describe("<PersonalDetailsStep2 />", () => {
       );
     },
   );
+
+  it("shows an error summary if there are 3 or more errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    const errorSummary = screen.getByRole("alert", { name: "There is a problem" });
+    const expectedErrorMessages = [
+      "Street address 1 is required",
+      "City is required",
+      "ZIP code is required",
+    ];
+    for (const errorMessage of expectedErrorMessages) {
+      expect(errorSummary).toHaveTextContent(errorMessage);
+    }
+  });
+
+  it("does not show an error summary if there are fewer than 3 errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+
+    const inputLabelsToFill = ["Street address 1 *", "City *"];
+
+    for (const label of inputLabelsToFill) {
+      const inputField = screen.getByRole("textbox", {
+        name: label,
+      });
+      await user.type(inputField, "Test");
+    }
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
+  });
 });

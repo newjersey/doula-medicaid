@@ -14,15 +14,6 @@ const textInputFields = [
   { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
 ];
 
-const requiredInputFields = [
-  { labelWithoutAsterisk: "First name" },
-  { labelWithoutAsterisk: "Last name" },
-  { labelWithoutAsterisk: "Date of birth" },
-  { labelWithoutAsterisk: "Phone number" },
-  { labelWithoutAsterisk: "Email address" },
-  { labelWithoutAsterisk: "Social security number" },
-];
-
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
     const mockPush = jest.fn();
@@ -99,7 +90,14 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
   });
 
-  it.each(requiredInputFields)(
+  it.each([
+    { labelWithoutAsterisk: "First name" },
+    { labelWithoutAsterisk: "Last name" },
+    { labelWithoutAsterisk: "Date of birth" },
+    { labelWithoutAsterisk: "Phone number" },
+    { labelWithoutAsterisk: "Email address" },
+    { labelWithoutAsterisk: "Social security number" },
+  ])(
     "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
     async ({ labelWithoutAsterisk }) => {
       const user = userEvent.setup();
@@ -138,17 +136,17 @@ describe("<PersonalDetailsStep1 />", () => {
   it("shows an error summary if there are 3 or more errors", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const requiredFieldsToLeaveEmpty = [
+    const requiredInputsToLeaveEmpty = [
       { label: "First name *", errorMessage: "First name is required" },
       { label: "Date of birth *", errorMessage: "Date of birth is required" },
       { label: "Email address *", errorMessage: "Email address is required" },
     ];
 
-    const requiredFieldsToLeaveEmptyLabels = new Set(
-      requiredFieldsToLeaveEmpty.map((x) => x.label),
+    const requiredInputsToLeaveEmptyLabels = new Set(
+      requiredInputsToLeaveEmpty.map((x) => x.label),
     );
     for (const textInputField of textInputFields) {
-      if (!requiredFieldsToLeaveEmptyLabels.has(textInputField.name)) {
+      if (!requiredInputsToLeaveEmptyLabels.has(textInputField.name)) {
         const inputField = screen.getByRole("textbox", {
           name: textInputField.name,
         });
@@ -160,7 +158,7 @@ describe("<PersonalDetailsStep1 />", () => {
     await user.click(nextButton);
 
     const errorSummary = screen.getByRole("alert", { name: "There is a problem" });
-    for (const field of requiredFieldsToLeaveEmpty) {
+    for (const field of requiredInputsToLeaveEmpty) {
       expect(errorSummary).toHaveTextContent(field.errorMessage);
     }
   });
@@ -168,16 +166,16 @@ describe("<PersonalDetailsStep1 />", () => {
   it("does not show an error summary if there are fewer than 3 errors", async () => {
     const user = userEvent.setup();
     renderWithRouter();
-    const requiredFieldsToLeaveEmpty = [
+    const requiredInputsToLeaveEmpty = [
       { label: "First name *", errorMessage: "First name is required" },
       { label: "Date of birth *", errorMessage: "Date of birth is required" },
     ];
 
-    const requiredFieldsToLeaveEmptyLabels = new Set(
-      requiredFieldsToLeaveEmpty.map((x) => x.label),
+    const requiredInputsToLeaveEmptyLabels = new Set(
+      requiredInputsToLeaveEmpty.map((x) => x.label),
     );
     for (const textInputField of textInputFields) {
-      if (!requiredFieldsToLeaveEmptyLabels.has(textInputField.name)) {
+      if (!requiredInputsToLeaveEmptyLabels.has(textInputField.name)) {
         const inputField = screen.getByRole("textbox", {
           name: textInputField.name,
         });
