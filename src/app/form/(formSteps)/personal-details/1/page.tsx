@@ -56,15 +56,6 @@ const PersonalDetailsStep1: React.FC = () => {
     }
     routeToNextStep(router, formProgressPosition);
   };
-  console.log(Object.values(errors).map((error) => error.message));
-
-  const shouldShowErrorSummary = Object.keys(errors).length >= 3;
-
-  useEffect(() => {
-    if (shouldShowErrorSummary) {
-      errorSummaryRef.current?.focus();
-    }
-  }, [shouldShowErrorSummary]);
 
   useEffect(() => {
     setDataHasLoaded(true);
@@ -75,7 +66,7 @@ const PersonalDetailsStep1: React.FC = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
-            {shouldShowErrorSummary && (
+            {Object.keys(errors).length >= 3 && (
               <div
                 className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
                 role="alert"
