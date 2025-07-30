@@ -1,6 +1,6 @@
 import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
 import { RouterPathnameProvider } from "@form/_utils/testUtils";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
@@ -90,22 +90,106 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
   });
 
-  describe("<PersonalDetailsStep1 /> required fields", () => {
-    it.each([
-      { label: "First name *", role: "textbox" },
-      { label: "Last name *", role: "textbox" },
-      { label: "Date of birth *", role: "textbox" },
-      { label: "Phone number *", role: "textbox" },
-      { label: "Email address *", role: "textbox" },
-      { label: "Social security number *", role: "textbox" },
-    ])("checks that $label is marked as required", ({ label, role }) => {
+  it.each([
+    { labelWithoutAsterisk: "First name" },
+    { labelWithoutAsterisk: "Last name" },
+    { labelWithoutAsterisk: "Date of birth" },
+    { labelWithoutAsterisk: "Phone number" },
+    { labelWithoutAsterisk: "Email address" },
+    { labelWithoutAsterisk: "Social security number" },
+  ])(
+    "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+    async ({ labelWithoutAsterisk }) => {
+      const user = userEvent.setup();
       renderWithRouter();
 
-      const input = screen.getByRole(role, {
-        name: label,
+      const input = screen.getByRole("textbox", {
+        name: `${labelWithoutAsterisk} *`,
       });
-
       expect(input).toBeRequired();
-    });
+
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      await user.click(nextButton);
+
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      );
+      expect(input).toHaveAttribute("aria-invalid", "true");
+    },
+  );
+
+  it.each([["invalid-email"], ["invalid@email"], ["invalid.email"]])(
+    "displays an error message if the invalid email format %s is submitted",
+    async (invalidEmail) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+
+      const input = screen.getByRole("textbox", {
+        name: `Email address *`,
+      });
+      await user.type(input, invalidEmail);
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      await user.click(nextButton);
+
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining("Entered value does not match email format"),
+      );
+    },
+  );
+
+  it("shows an error summary if there are 3 or more errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const requiredInputsToLeaveEmpty = [
+      { label: "First name *", errorMessage: "First name is required" },
+      { label: "Date of birth *", errorMessage: "Date of birth is required" },
+      { label: "Email address *", errorMessage: "Email address is required" },
+    ];
+
+    const requiredInputsToLeaveEmptyLabels = new Set(
+      requiredInputsToLeaveEmpty.map((x) => x.label),
+    );
+    for (const textInputField of textInputFields) {
+      if (!requiredInputsToLeaveEmptyLabels.has(textInputField.name)) {
+        const inputField = screen.getByRole("textbox", {
+          name: textInputField.name,
+        });
+        await user.type(inputField, textInputField.testValue);
+      }
+    }
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    const focusedElement = document.activeElement as HTMLElement;
+    const errorSummary = within(focusedElement).getByRole("alert", { name: "There is a problem" });
+
+    for (const field of requiredInputsToLeaveEmpty) {
+      expect(errorSummary).toHaveTextContent(field.errorMessage);
+    }
+  });
+
+  it("does not show an error summary if there are fewer than 3 errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const requiredInputsToLeaveEmpty = [
+      { label: "First name *", errorMessage: "First name is required" },
+      { label: "Date of birth *", errorMessage: "Date of birth is required" },
+    ];
+
+    const requiredInputsToLeaveEmptyLabels = new Set(
+      requiredInputsToLeaveEmpty.map((x) => x.label),
+    );
+    for (const textInputField of textInputFields) {
+      if (!requiredInputsToLeaveEmptyLabels.has(textInputField.name)) {
+        const inputField = screen.getByRole("textbox", {
+          name: textInputField.name,
+        });
+        await user.type(inputField, textInputField.testValue);
+      }
+    }
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
   });
 });
