@@ -14,6 +14,15 @@ const textInputFields = [
   { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
 ];
 
+const requiredInputFields = [
+  { labelWithoutAsterisk: "First name" },
+  { labelWithoutAsterisk: "Last name" },
+  { labelWithoutAsterisk: "Date of birth" },
+  { labelWithoutAsterisk: "Phone number" },
+  { labelWithoutAsterisk: "Email address" },
+  { labelWithoutAsterisk: "Social security number" },
+];
+
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
     const mockPush = jest.fn();
@@ -90,14 +99,7 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
   });
 
-  it.each([
-    { labelWithoutAsterisk: "First name" },
-    { labelWithoutAsterisk: "Last name" },
-    { labelWithoutAsterisk: "Date of birth" },
-    { labelWithoutAsterisk: "Phone number" },
-    { labelWithoutAsterisk: "Email address" },
-    { labelWithoutAsterisk: "Social security number" },
-  ])(
+  it.each(requiredInputFields)(
     "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
     async ({ labelWithoutAsterisk }) => {
       const user = userEvent.setup();
@@ -116,4 +118,76 @@ describe("<PersonalDetailsStep1 />", () => {
       );
     },
   );
+
+  it("displays an error message if the email format is invalid", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+
+    const input = screen.getByRole("textbox", {
+      name: `Email address *`,
+    });
+    await user.type(input, "invalid-email");
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    expect(input).toHaveAccessibleDescription(
+      expect.stringContaining("Entered value does not match email format"),
+    );
+  });
+
+  it("shows an error summary if there are 3 or more errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const requiredFieldsToLeaveEmpty = [
+      { label: "First name *", errorMessage: "First name is required" },
+      { label: "Date of birth *", errorMessage: "Date of birth is required" },
+      { label: "Email address *", errorMessage: "Email address is required" },
+    ];
+
+    const requiredFieldsToLeaveEmptyLabels = new Set(
+      requiredFieldsToLeaveEmpty.map((x) => x.label),
+    );
+    for (const textInputField of textInputFields) {
+      if (!requiredFieldsToLeaveEmptyLabels.has(textInputField.name)) {
+        const inputField = screen.getByRole("textbox", {
+          name: textInputField.name,
+        });
+        expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
+        await user.type(inputField, textInputField.testValue);
+      }
+    }
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    const errorSummary = screen.getByRole("alert", { name: "There is a problem" });
+    for (const field of requiredFieldsToLeaveEmpty) {
+      expect(errorSummary).toHaveTextContent(field.errorMessage);
+    }
+  });
+
+  it("does not show an error summary if there are fewer than 3 errors", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const requiredFieldsToLeaveEmpty = [
+      { label: "First name *", errorMessage: "First name is required" },
+      { label: "Date of birth *", errorMessage: "Date of birth is required" },
+    ];
+
+    const requiredFieldsToLeaveEmptyLabels = new Set(
+      requiredFieldsToLeaveEmpty.map((x) => x.label),
+    );
+    for (const textInputField of textInputFields) {
+      if (!requiredFieldsToLeaveEmptyLabels.has(textInputField.name)) {
+        const inputField = screen.getByRole("textbox", {
+          name: textInputField.name,
+        });
+        expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
+        await user.type(inputField, textInputField.testValue);
+      }
+    }
+    const nextButton = screen.getByRole("button", { name: "Next" });
+    await user.click(nextButton);
+
+    expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
+  });
 });

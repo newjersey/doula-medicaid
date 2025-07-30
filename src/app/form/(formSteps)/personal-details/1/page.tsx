@@ -81,7 +81,6 @@ const PersonalDetailsStep1: React.FC = () => {
 
                   <ul className="usa-list usa-list--unstyled">
                     {Object.entries(errors).map(([field, error]) => {
-                      console.log("field", field);
                       return <li key={field}>{error.message}</li>;
                     })}
                   </ul>
