@@ -195,20 +195,11 @@ const PersonalDetailsStep1: React.FC = () => {
                     required
                     validationStatus={errors.dateOfBirthMonth ? "error" : undefined}
                     aria-invalid={errors.dateOfBirthMonth ? "true" : "false"}
-                    aria-describedby="dateOfBirthErrorMessage"
+                    aria-describedby="dateOfBirthMonthErrorMessage"
                     {...register("dateOfBirthMonth", {
                       required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
-                      validate: {
-                        checkMonthSelected: (dateOfBirthMonth) => {
-                          return (
-                            dateOfBirthMonth !== "- Select -" ||
-                            `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`
-                          );
-                        },
-                      },
                     })}
                   >
-                    <option>- Select -</option>
                     <option value="1">01 - January</option>
                     <option value="2">02 - February</option>
                     <option value="3">03 - March</option>
@@ -237,7 +228,7 @@ const PersonalDetailsStep1: React.FC = () => {
                     required
                     validationStatus={errors.dateOfBirthDay ? "error" : undefined}
                     aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
-                    aria-describedby="dateOfBirthErrorMessage"
+                    aria-describedby="dateOfBirthDayErrorMessage"
                     {...register("dateOfBirthDay", {
                       required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
                       valueAsNumber: true,
@@ -270,7 +261,7 @@ const PersonalDetailsStep1: React.FC = () => {
                     required
                     validationStatus={errors.dateOfBirthYear ? "error" : undefined}
                     aria-invalid={errors.dateOfBirthYear ? "true" : "false"}
-                    aria-describedby="dateOfBirthErrorMessage"
+                    aria-describedby="dateOfBirthYearErrorMessage"
                     {...register("dateOfBirthYear", {
                       required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
                       valueAsNumber: true,
@@ -287,15 +278,31 @@ const PersonalDetailsStep1: React.FC = () => {
                   />
                 </FormGroup>
               </DateInputGroup>
-              {(errors.dateOfBirthMonth || errors.dateOfBirthDay || errors.dateOfBirthYear) && (
+              {errors.dateOfBirthMonth && (
                 <div
-                  id="dateOfBirthErrorMessage"
+                  id="dateOfBirthMonthErrorMessage"
                   className="usa-error-message"
                   {...(shouldSummarizeErrors ? {} : { role: "alert" })}
                 >
-                  {errors.dateOfBirthMonth && <div>{errors.dateOfBirthMonth.message}</div>}
-                  {errors.dateOfBirthDay && <div>{errors.dateOfBirthDay.message}</div>}
-                  {errors.dateOfBirthYear && <div>{errors.dateOfBirthYear.message}</div>}
+                  {errors.dateOfBirthMonth.message}
+                </div>
+              )}
+              {errors.dateOfBirthDay && (
+                <div
+                  id="dateOfBirthDayErrorMessage"
+                  className="usa-error-message"
+                  {...(shouldSummarizeErrors ? {} : { role: "alert" })}
+                >
+                  {errors.dateOfBirthDay.message}
+                </div>
+              )}
+              {errors.dateOfBirthYear && (
+                <div
+                  id="dateOfBirthYearErrorMessage"
+                  className="usa-error-message"
+                  {...(shouldSummarizeErrors ? {} : { role: "alert" })}
+                >
+                  {errors.dateOfBirthYear.message}
                 </div>
               )}
             </Fieldset>
