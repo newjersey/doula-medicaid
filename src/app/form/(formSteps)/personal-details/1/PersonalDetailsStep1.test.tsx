@@ -66,6 +66,10 @@ describe("<PersonalDetailsStep1 />", () => {
       expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
       await user.type(inputField, textInputField.testValue);
     }
+    const combobox = screen.getByRole("combobox", {
+      name: "Month *",
+    });
+    await user.selectOptions(combobox, "07 - July");
 
     const nextButton = screen.getByRole("button", { name: "Next" });
     await user.click(nextButton);
@@ -138,6 +142,26 @@ describe("<PersonalDetailsStep1 />", () => {
     },
   );
 
+  it.each([{ labelWithoutAsterisk: "Day" }, { labelWithoutAsterisk: "Year" }])(
+    "it validates that $labelWithoutAsterisk is a number",
+    async ({ labelWithoutAsterisk }) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+
+      const input = screen.getByRole("textbox", {
+        name: `${labelWithoutAsterisk} *`,
+      });
+
+      await user.type(input, "test");
+      const nextButton = screen.getByRole("button", { name: "Next" });
+      await user.click(nextButton);
+
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining(`${labelWithoutAsterisk} must be a number`),
+      );
+    },
+  );
+
   it("displays an error message if the email format is invalid", async () => {
     const user = userEvent.setup();
     renderWithRouter();
@@ -159,7 +183,7 @@ describe("<PersonalDetailsStep1 />", () => {
     renderWithRouter();
     const requiredInputsToLeaveEmpty = [
       { label: "First name *", errorMessage: "First name is required" },
-      { label: "Date of birth *", errorMessage: "Date of birth is required" },
+      { label: "Day *", errorMessage: "Day is required" },
       { label: "Email address *", errorMessage: "Email address is required" },
     ];
 
@@ -175,6 +199,11 @@ describe("<PersonalDetailsStep1 />", () => {
         await user.type(inputField, textInputField.testValue);
       }
     }
+    const combobox = screen.getByRole("combobox", {
+      name: "Month *",
+    });
+    await user.selectOptions(combobox, "07 - July");
+
     const nextButton = screen.getByRole("button", { name: "Next" });
     await user.click(nextButton);
 
@@ -191,7 +220,7 @@ describe("<PersonalDetailsStep1 />", () => {
     renderWithRouter();
     const requiredInputsToLeaveEmpty = [
       { label: "First name *", errorMessage: "First name is required" },
-      { label: "Date of birth *", errorMessage: "Date of birth is required" },
+      { label: "Day *", errorMessage: "Day is required" },
     ];
 
     const requiredInputsToLeaveEmptyLabels = new Set(
@@ -206,6 +235,11 @@ describe("<PersonalDetailsStep1 />", () => {
         await user.type(inputField, textInputField.testValue);
       }
     }
+    const combobox = screen.getByRole("combobox", {
+      name: "Month *",
+    });
+    await user.selectOptions(combobox, "07 - July");
+
     const nextButton = screen.getByRole("button", { name: "Next" });
     await user.click(nextButton);
 
