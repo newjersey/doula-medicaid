@@ -6,10 +6,14 @@ import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgr
 import { formatDateOfBirthDefaultValue } from "@form/_utils/inputFields/dateOfBirth";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
+  DateInput,
+  DateInputGroup,
   DatePicker,
   Fieldset,
   Form,
+  FormGroup,
   Label,
+  Select,
   TextInput,
   TextInputMask,
 } from "@trussworks/react-uswds";
@@ -29,6 +33,9 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } =
   middleName: "Middle name",
   lastName: "Last name",
   dateOfBirth: "Date of birth",
+  dateOfBirthMonth: "Month",
+  dateOfBirthDay: "Day",
+  dateOfBirthYear: "Year",
   socialSecurityNumber: "Social security number",
   email: "Email address",
   phoneNumber: "Phone number",
@@ -183,6 +190,81 @@ const PersonalDetailsStep1: React.FC = () => {
                 )}
               </div>
             </Fieldset>
+
+            <Fieldset legend="Date of birth" requiredMarker>
+              <span className="usa-hint" id="dateOfBirthHint">
+                For example: April 28 1986
+              </span>
+              <DateInputGroup aria-describedby="dateOfBirthHint">
+                <FormGroup className="usa-form-group--month usa-form-group--select">
+                  <Label htmlFor="input-select">Month</Label>
+                  <Select
+                    id="dateOfBirthMonth"
+                    required
+                    validationStatus={errors.dateOfBirthMonth ? "error" : undefined}
+                    aria-invalid={errors.dateOfBirthMonth ? "true" : "false"}
+                    aria-describedby="dateOfBirthErrorMessage"
+                    {...register("dateOfBirthMonth", {
+                      required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
+                    })}
+                  >
+                    <option>- Select -</option>
+                    <option value="1">01 - January</option>
+                    <option value="2">02 - February</option>
+                    <option value="3">03 - March</option>
+                    <option value="4">04 - April</option>
+                    <option value="5">05 - May</option>
+                    <option value="6">06 - June</option>
+                    <option value="7">07 - July</option>
+                    <option value="8">08 - August</option>
+                    <option value="9">09 - September</option>
+                    <option value="10">10 - October</option>
+                    <option value="11">11 - November</option>
+                    <option value="12">12 - December</option>
+                  </Select>
+                </FormGroup>
+                <DateInput
+                  id="dateOfBirthDay"
+                  label="Day"
+                  unit="day"
+                  maxLength={2}
+                  minLength={2}
+                  required
+                  validationStatus={errors.dateOfBirthDay ? "error" : undefined}
+                  aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
+                  aria-describedby="dateOfBirthErrorMessage"
+                  {...register("dateOfBirthDay", {
+                    required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
+                  })}
+                />
+                <DateInput
+                  id="dateOfBirthYear"
+                  label="Year"
+                  unit="year"
+                  maxLength={4}
+                  minLength={4}
+                  required
+                  validationStatus={errors.dateOfBirthYear ? "error" : undefined}
+                  aria-invalid={errors.dateOfBirthYear ? "true" : "false"}
+                  aria-describedby="dateOfBirthErrorMessage"
+                  {...register("dateOfBirthYear", {
+                    required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
+                  })}
+                />
+              </DateInputGroup>
+              {(errors.dateOfBirthMonth || errors.dateOfBirthDay || errors.dateOfBirthYear) && (
+                <div
+                  id="dateOfBirthErrorMessage"
+                  className="usa-error-message"
+                  {...(shouldSummarizeErrors ? {} : { role: "alert" })}
+                >
+                  {errors.dateOfBirthMonth && <div>{errors.dateOfBirthMonth.message}</div>}
+                  {errors.dateOfBirthDay && <div>{errors.dateOfBirthDay.message}</div>}
+                  {errors.dateOfBirthYear && <div>{errors.dateOfBirthYear.message}</div>}
+                </div>
+              )}
+            </Fieldset>
+
             <Label id="dateOfBirthLabel" htmlFor="dateOfBirth" requiredMarker>
               {orderedInputNameToLabel["dateOfBirth"]}
             </Label>
@@ -207,7 +289,7 @@ const PersonalDetailsStep1: React.FC = () => {
                   required
                   validationStatus={errors.dateOfBirth ? "error" : undefined}
                   aria-invalid={errors.dateOfBirth ? "true" : "false"}
-                  aria-describedby="dateOfBirthErrorMessage dateOfBirthHint"
+                  aria-describedby="dateOfBirthErrorMessagePicker dateOfBirthHint"
                   aria-labelledby="dateOfBirthLabel"
                   value={field.value || ""}
                   onChange={(value) => {
@@ -226,7 +308,7 @@ const PersonalDetailsStep1: React.FC = () => {
             />
             {errors.dateOfBirth && (
               <span
-                id="dateOfBirthErrorMessage"
+                id="dateOfBirthErrorMessagePicker"
                 className="usa-error-message"
                 {...(shouldSummarizeErrors ? {} : { role: "alert" })}
               >

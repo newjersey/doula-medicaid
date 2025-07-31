@@ -3,6 +3,9 @@ export interface PersonalDetails1Data {
   middleName: string | null;
   lastName: string | null;
   dateOfBirth: string | null;
+  dateOfBirthMonth: string | null;
+  dateOfBirthDay: string | null;
+  dateOfBirthYear: string | null;
   socialSecurityNumber: string | null;
   email: string | null;
   phoneNumber: string | null;
