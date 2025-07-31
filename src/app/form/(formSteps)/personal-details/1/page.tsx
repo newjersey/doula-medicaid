@@ -193,7 +193,13 @@ const PersonalDetailsStep1: React.FC = () => {
             <Controller
               name="dateOfBirth"
               control={control}
-              rules={{ required: `${orderedInputNameToLabel["dateOfBirth"]} is required` }}
+              rules={{
+                required: `${orderedInputNameToLabel["dateOfBirth"]} is required`,
+                pattern: {
+                  value: /^\/(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
+                  message: "Entered value does not match date format",
+                },
+              }}
               render={({ field }) => (
                 <DatePicker
                   name="dateOfBirth"
@@ -239,7 +245,6 @@ const PersonalDetailsStep1: React.FC = () => {
               inputMode="numeric"
               mask="___-__-____"
               pattern="\d{3}-\d{2}-\d{4}"
-              value="000-00-0000"
               required
               validationStatus={errors.socialSecurityNumber ? "error" : undefined}
               aria-invalid={errors.socialSecurityNumber ? "true" : "false"}
@@ -301,7 +306,6 @@ const PersonalDetailsStep1: React.FC = () => {
               inputMode="numeric"
               mask="___-___-____"
               pattern="\d{3}-\d{3}-\d{4}"
-              value="000-00-0000"
               required
               validationStatus={errors.phoneNumber ? "error" : undefined}
               aria-invalid={errors.phoneNumber ? "true" : "false"}
