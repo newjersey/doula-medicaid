@@ -106,7 +106,20 @@ const PersonalDetailsStep1: React.FC = () => {
 
                     <ul className="usa-list usa-list--unstyled">
                       {Object.entries(errors).map(([field, error]) => {
-                        return <li key={field}>{error.message}</li>;
+                        return (
+                          <li key={field}>
+                            {" "}
+                            <a
+                              href={`#${field}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setFocus(field as keyof PersonalDetails1Data);
+                              }}
+                            >
+                              {error.message}
+                            </a>
+                          </li>
+                        );
                       })}
                     </ul>
                   </div>
@@ -288,7 +301,7 @@ const PersonalDetailsStep1: React.FC = () => {
               inputMode="numeric"
               mask="___-___-____"
               pattern="\d{3}-\d{3}-\d{4}"
-              value="000-000-0000"
+              value="000-00-0000"
               required
               validationStatus={errors.phoneNumber ? "error" : undefined}
               aria-invalid={errors.phoneNumber ? "true" : "false"}
