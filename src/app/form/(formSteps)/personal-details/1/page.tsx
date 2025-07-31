@@ -3,12 +3,10 @@
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { formatDateOfBirthDefaultValue } from "@form/_utils/inputFields/dateOfBirth";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
   DateInput,
   DateInputGroup,
-  DatePicker,
   Fieldset,
   Form,
   FormGroup,
@@ -19,7 +17,7 @@ import {
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
-import { Controller, type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
+import { type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
 
@@ -205,7 +203,15 @@ const PersonalDetailsStep1: React.FC = () => {
                     aria-invalid={errors.dateOfBirthMonth ? "true" : "false"}
                     aria-describedby="dateOfBirthErrorMessage"
                     {...register("dateOfBirthMonth", {
-                      required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
+                      // required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
+                      validate: {
+                        checkMonthSelected: (dateOfBirthMonth) => {
+                          return (
+                            dateOfBirthMonth !== "- Select -" ||
+                            `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`
+                          );
+                        },
+                      },
                     })}
                   >
                     <option>- Select -</option>
@@ -234,7 +240,19 @@ const PersonalDetailsStep1: React.FC = () => {
                   aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
                   aria-describedby="dateOfBirthErrorMessage"
                   {...register("dateOfBirthDay", {
-                    required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
+                    valueAsNumber: true,
+                    validate: (value) => {
+                      if (value === null) {
+                        return `${orderedInputNameToLabel["dateOfBirthDay"]} is required`;
+                      }
+                      if (Number.isNaN(value) || typeof value === "string") {
+                        return `${orderedInputNameToLabel["dateOfBirthDay"]} must be a number`;
+                      }
+                      if (value <= 0 || value > 31) {
+                        return `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`;
+                      }
+                      return true;
+                    },
                   })}
                 />
                 <DateInput
@@ -249,6 +267,16 @@ const PersonalDetailsStep1: React.FC = () => {
                   aria-describedby="dateOfBirthErrorMessage"
                   {...register("dateOfBirthYear", {
                     required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
+                    valueAsNumber: true,
+                    validate: (value) => {
+                      if (value === null) {
+                        return `${orderedInputNameToLabel["dateOfBirthYear"]} is required`;
+                      }
+                      if (Number.isNaN(value) || typeof value === "string") {
+                        return `${orderedInputNameToLabel["dateOfBirthYear"]} must be a number`;
+                      }
+                      return true;
+                    },
                   })}
                 />
               </DateInputGroup>
@@ -264,7 +292,7 @@ const PersonalDetailsStep1: React.FC = () => {
                 </div>
               )}
             </Fieldset>
-
+            {/* 
             <Label id="dateOfBirthLabel" htmlFor="dateOfBirth" requiredMarker>
               {orderedInputNameToLabel["dateOfBirth"]}
             </Label>
@@ -314,7 +342,7 @@ const PersonalDetailsStep1: React.FC = () => {
               >
                 {errors.dateOfBirth.message}
               </span>
-            )}
+            )} */}
             <Label htmlFor="socialSecurityNumber" requiredMarker>
               {orderedInputNameToLabel["socialSecurityNumber"]}
             </Label>
