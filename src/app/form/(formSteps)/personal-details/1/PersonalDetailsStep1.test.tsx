@@ -11,8 +11,18 @@ const textInputFields = [
   { name: "Day *", key: "dateOfBirthDay", testValue: "6" },
   { name: "Year *", key: "dateOfBirthYear", testValue: "1988" },
   { name: "Email address *", key: "email", testValue: "test@test.com" },
-  { name: "Social security number *", key: "socialSecurityNumber", testValue: "123456789" },
-  { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
+  {
+    name: "Social security number *",
+    key: "socialSecurityNumber",
+    testValue: "123456789",
+    expectedValue: "123-45-6789",
+  },
+  {
+    name: "Phone number *",
+    key: "phoneNumber",
+    testValue: "3211234567",
+    expectedValue: "321-123-4567",
+  },
 ];
 
 describe("<PersonalDetailsStep1 />", () => {
@@ -34,17 +44,20 @@ describe("<PersonalDetailsStep1 />", () => {
     return mockRouter;
   };
 
-  it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    const inputField = screen.getByRole("textbox", {
-      name: name,
-    });
-    expect(inputField).toHaveValue("");
+  it.each(textInputFields)(
+    "updates the $name text input",
+    async ({ name, testValue, expectedValue }) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+      const inputField = screen.getByRole("textbox", {
+        name: name,
+      });
+      expect(inputField).toHaveValue("");
 
-    await user.type(inputField, testValue);
-    expect(inputField).toHaveValue(testValue);
-  });
+      await user.type(inputField, testValue);
+      expect(inputField).toHaveValue(expectedValue ?? testValue);
+    },
+  );
 
   it("updates the date of birth month", async () => {
     const user = userEvent.setup();
@@ -75,7 +88,9 @@ describe("<PersonalDetailsStep1 />", () => {
     await user.click(nextButton);
 
     for (const textInputField of textInputFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(
+        textInputField.expectedValue ?? textInputField.testValue,
+      );
     }
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
