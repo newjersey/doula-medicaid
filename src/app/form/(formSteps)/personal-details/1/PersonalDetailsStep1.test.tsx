@@ -8,7 +8,8 @@ const textInputFields = [
   { name: "First name *", key: "firstName", testValue: "Test first name" },
   { name: "Middle name", key: "middleName", testValue: "Test middle name" },
   { name: "Last name *", key: "lastName", testValue: "Test last name" },
-  { name: "Date of birth *", key: "dateOfBirth", testValue: "01/01/1990" },
+  { name: "Day *", key: "dateOfBirthDay", testValue: "6" },
+  { name: "Year *", key: "dateOfBirthYear", testValue: "1988" },
   { name: "Email address *", key: "email", testValue: "test@test.com" },
   { name: "Social security number *", key: "socialSecurityNumber", testValue: "123456789" },
   { name: "Phone number *", key: "phoneNumber", testValue: "3211234567" },
@@ -45,6 +46,16 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(inputField).toHaveValue(testValue);
   });
 
+  it("updates the date of birth month", async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+    const combobox = screen.getByRole("combobox", {
+      name: "Month *",
+    });
+    await user.selectOptions(combobox, "07 - July");
+    expect(combobox).toHaveValue("7");
+  });
+
   it("saves form data on submit", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
@@ -71,7 +82,9 @@ describe("<PersonalDetailsStep1 />", () => {
     window.sessionStorage.setItem("firstName", "Jane");
     window.sessionStorage.setItem("middleName", "A");
     window.sessionStorage.setItem("lastName", "Doe");
-    window.sessionStorage.setItem("dateOfBirth", "01/01/1990");
+    window.sessionStorage.setItem("dateOfBirthMonth", "1");
+    window.sessionStorage.setItem("dateOfBirthDay", "8");
+    window.sessionStorage.setItem("dateOfBirthYear", "1990");
     window.sessionStorage.setItem("socialSecurityNumber", "123-45-6789");
     window.sessionStorage.setItem("email", "example@test.com");
     window.sessionStorage.setItem("phoneNumber", "123-456-7890");
@@ -80,7 +93,13 @@ describe("<PersonalDetailsStep1 />", () => {
     expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("Jane");
     expect(screen.getByRole("textbox", { name: "Middle name" })).toHaveValue("A");
     expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Doe");
-    expect(screen.getByRole("textbox", { name: "Date of birth *" })).toHaveValue("01/01/1990");
+    expect(
+      screen.getByRole("combobox", {
+        name: "Month *",
+      }),
+    ).toHaveDisplayValue("01 - January");
+    expect(screen.getByRole("textbox", { name: "Day *" })).toHaveValue("8");
+    expect(screen.getByRole("textbox", { name: "Year *" })).toHaveValue("1990");
     expect(screen.getByRole("textbox", { name: "Social security number *" })).toHaveValue(
       "123-45-6789",
     );
@@ -91,19 +110,21 @@ describe("<PersonalDetailsStep1 />", () => {
   });
 
   it.each([
-    { labelWithoutAsterisk: "First name" },
-    { labelWithoutAsterisk: "Last name" },
-    { labelWithoutAsterisk: "Date of birth" },
-    { labelWithoutAsterisk: "Phone number" },
-    { labelWithoutAsterisk: "Email address" },
-    { labelWithoutAsterisk: "Social security number" },
+    { labelWithoutAsterisk: "First name", role: "textbox" },
+    { labelWithoutAsterisk: "Last name", role: "textbox" },
+    { labelWithoutAsterisk: "Month", role: "combobox" },
+    { labelWithoutAsterisk: "Day", role: "textbox" },
+    { labelWithoutAsterisk: "Year", role: "textbox" },
+    { labelWithoutAsterisk: "Phone number", role: "textbox" },
+    { labelWithoutAsterisk: "Email address", role: "textbox" },
+    { labelWithoutAsterisk: "Social security number", role: "textbox" },
   ])(
     "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-    async ({ labelWithoutAsterisk }) => {
+    async ({ labelWithoutAsterisk, role }) => {
       const user = userEvent.setup();
       renderWithRouter();
 
-      const input = screen.getByRole("textbox", {
+      const input = screen.getByRole(role, {
         name: `${labelWithoutAsterisk} *`,
       });
       expect(input).toBeRequired();

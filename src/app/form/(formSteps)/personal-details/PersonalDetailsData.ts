@@ -2,7 +2,6 @@ export interface PersonalDetails1Data {
   firstName: string | null;
   middleName: string | null;
   lastName: string | null;
-  dateOfBirth: string | null;
   dateOfBirthMonth: string | null;
   dateOfBirthDay: string | null;
   dateOfBirthYear: string | null;

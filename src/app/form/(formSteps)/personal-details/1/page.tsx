@@ -18,18 +18,10 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
 
-const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
-
-const dateIsValid = (date: string): boolean => {
-  const found = date.match(MM_DD_YYYY);
-  return !!found;
-};
-
 const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } = {
   firstName: "First name",
   middleName: "Middle name",
   lastName: "Last name",
-  dateOfBirth: "Date of birth",
   dateOfBirthMonth: "Month",
   dateOfBirthDay: "Day",
   dateOfBirthYear: "Year",
@@ -48,13 +40,14 @@ const PersonalDetailsStep1: React.FC = () => {
     formState: { errors },
     handleSubmit,
     setFocus,
-    control,
   } = useForm<PersonalDetails1Data>({
     defaultValues: {
       firstName: getValue("firstName") || "",
       middleName: getValue("middleName") || "",
       lastName: getValue("lastName") || "",
-      dateOfBirth: getValue("dateOfBirth") || "",
+      dateOfBirthMonth: getValue("dateOfBirthMonth") || "",
+      dateOfBirthDay: getValue("dateOfBirthDay") || "",
+      dateOfBirthYear: getValue("dateOfBirthYear") || "",
       socialSecurityNumber: getValue("socialSecurityNumber") || "",
       email: getValue("email") || "",
       phoneNumber: getValue("phoneNumber") || "",
@@ -204,7 +197,7 @@ const PersonalDetailsStep1: React.FC = () => {
                     aria-invalid={errors.dateOfBirthMonth ? "true" : "false"}
                     aria-describedby="dateOfBirthErrorMessage"
                     {...register("dateOfBirthMonth", {
-                      // required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
+                      required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
                       validate: {
                         checkMonthSelected: (dateOfBirthMonth) => {
                           return (
@@ -246,6 +239,7 @@ const PersonalDetailsStep1: React.FC = () => {
                     aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
                     aria-describedby="dateOfBirthErrorMessage"
                     {...register("dateOfBirthDay", {
+                      required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
                       valueAsNumber: true,
                       validate: (value) => {
                         if (value === null) {
@@ -305,57 +299,6 @@ const PersonalDetailsStep1: React.FC = () => {
                 </div>
               )}
             </Fieldset>
-            {/* 
-            <Label id="dateOfBirthLabel" htmlFor="dateOfBirth" requiredMarker>
-              {orderedInputNameToLabel["dateOfBirth"]}
-            </Label>
-            <div className="usa-hint" id="dateOfBirthHint">
-              <p className="usa-hint">For example: 03/31/1986</p>
-              mm/dd/yyyy
-            </div>
-            <Controller
-              name="dateOfBirth"
-              control={control}
-              rules={{
-                required: `${orderedInputNameToLabel["dateOfBirth"]} is required`,
-                pattern: {
-                  value: /^\/(0[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/,
-                  message: "Entered value does not match date format",
-                },
-              }}
-              render={({ field }) => (
-                <DatePicker
-                  name="dateOfBirth"
-                  id="dateOfBirth"
-                  required
-                  validationStatus={errors.dateOfBirth ? "error" : undefined}
-                  aria-invalid={errors.dateOfBirth ? "true" : "false"}
-                  aria-describedby="dateOfBirthErrorMessagePicker dateOfBirthHint"
-                  aria-labelledby="dateOfBirthLabel"
-                  value={field.value || ""}
-                  onChange={(value) => {
-                    if (value === undefined || !dateIsValid(value)) {
-                      return;
-                    }
-                    field.onChange(value);
-                  }}
-                  onBlur={field.onBlur}
-                  key={dataHasLoaded.toString()}
-                  defaultValue={
-                    field.value ? formatDateOfBirthDefaultValue(new Date(field.value)) : undefined
-                  }
-                />
-              )}
-            />
-            {errors.dateOfBirth && (
-              <span
-                id="dateOfBirthErrorMessagePicker"
-                className="usa-error-message"
-                {...(shouldSummarizeErrors ? {} : { role: "alert" })}
-              >
-                {errors.dateOfBirth.message}
-              </span>
-            )} */}
             <Label htmlFor="socialSecurityNumber" requiredMarker>
               {orderedInputNameToLabel["socialSecurityNumber"]}
             </Label>
