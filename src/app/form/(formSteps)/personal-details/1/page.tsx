@@ -5,7 +5,6 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
-  DateInput,
   DateInputGroup,
   Fieldset,
   Form,
@@ -195,7 +194,9 @@ const PersonalDetailsStep1: React.FC = () => {
               </span>
               <DateInputGroup aria-describedby="dateOfBirthHint">
                 <FormGroup className="usa-form-group--month usa-form-group--select">
-                  <Label htmlFor="input-select">Month</Label>
+                  <Label htmlFor="dateOfBirthMonth" requiredMarker>
+                    {orderedInputNameToLabel["dateOfBirthMonth"]}
+                  </Label>
                   <Select
                     id="dateOfBirthMonth"
                     required
@@ -229,56 +230,68 @@ const PersonalDetailsStep1: React.FC = () => {
                     <option value="12">12 - December</option>
                   </Select>
                 </FormGroup>
-                <DateInput
-                  id="dateOfBirthDay"
-                  label="Day"
-                  unit="day"
-                  maxLength={2}
-                  minLength={2}
-                  required
-                  validationStatus={errors.dateOfBirthDay ? "error" : undefined}
-                  aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
-                  aria-describedby="dateOfBirthErrorMessage"
-                  {...register("dateOfBirthDay", {
-                    valueAsNumber: true,
-                    validate: (value) => {
-                      if (value === null) {
-                        return `${orderedInputNameToLabel["dateOfBirthDay"]} is required`;
-                      }
-                      if (Number.isNaN(value) || typeof value === "string") {
-                        return `${orderedInputNameToLabel["dateOfBirthDay"]} must be a number`;
-                      }
-                      if (value <= 0 || value > 31) {
-                        return `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`;
-                      }
-                      return true;
-                    },
-                  })}
-                />
-                <DateInput
-                  id="dateOfBirthYear"
-                  label="Year"
-                  unit="year"
-                  maxLength={4}
-                  minLength={4}
-                  required
-                  validationStatus={errors.dateOfBirthYear ? "error" : undefined}
-                  aria-invalid={errors.dateOfBirthYear ? "true" : "false"}
-                  aria-describedby="dateOfBirthErrorMessage"
-                  {...register("dateOfBirthYear", {
-                    required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
-                    valueAsNumber: true,
-                    validate: (value) => {
-                      if (value === null) {
-                        return `${orderedInputNameToLabel["dateOfBirthYear"]} is required`;
-                      }
-                      if (Number.isNaN(value) || typeof value === "string") {
-                        return `${orderedInputNameToLabel["dateOfBirthYear"]} must be a number`;
-                      }
-                      return true;
-                    },
-                  })}
-                />
+                <FormGroup className="usa-form-group--day">
+                  <Label htmlFor={"dateOfBirthDay"} requiredMarker>
+                    {orderedInputNameToLabel["dateOfBirthDay"]}
+                  </Label>
+                  <TextInput
+                    id={"dateOfBirthDay"}
+                    type="text"
+                    pattern="[0-9]*"
+                    inputMode="numeric"
+                    maxLength={2}
+                    minLength={2}
+                    required
+                    validationStatus={errors.dateOfBirthDay ? "error" : undefined}
+                    aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
+                    aria-describedby="dateOfBirthErrorMessage"
+                    {...register("dateOfBirthDay", {
+                      valueAsNumber: true,
+                      validate: (value) => {
+                        if (value === null) {
+                          return `${orderedInputNameToLabel["dateOfBirthDay"]} is required`;
+                        }
+                        if (Number.isNaN(value) || typeof value === "string") {
+                          return `${orderedInputNameToLabel["dateOfBirthDay"]} must be a number`;
+                        }
+                        if (value <= 0 || value > 31) {
+                          return `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`;
+                        }
+                        return true;
+                      },
+                    })}
+                  />
+                </FormGroup>
+                <FormGroup className="usa-form-group--year">
+                  <Label htmlFor="dateOfBirthYear" requiredMarker>
+                    {orderedInputNameToLabel["dateOfBirthYear"]}
+                  </Label>
+                  <TextInput
+                    id="dateOfBirthYear"
+                    type="text"
+                    maxLength={4}
+                    minLength={4}
+                    pattern="[0-9]*"
+                    inputMode="numeric"
+                    required
+                    validationStatus={errors.dateOfBirthYear ? "error" : undefined}
+                    aria-invalid={errors.dateOfBirthYear ? "true" : "false"}
+                    aria-describedby="dateOfBirthErrorMessage"
+                    {...register("dateOfBirthYear", {
+                      required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
+                      valueAsNumber: true,
+                      validate: (value) => {
+                        if (value === null) {
+                          return `${orderedInputNameToLabel["dateOfBirthYear"]} is required`;
+                        }
+                        if (Number.isNaN(value) || typeof value === "string") {
+                          return `${orderedInputNameToLabel["dateOfBirthYear"]} must be a number`;
+                        }
+                        return true;
+                      },
+                    })}
+                  />
+                </FormGroup>
               </DateInputGroup>
               {(errors.dateOfBirthMonth || errors.dateOfBirthDay || errors.dateOfBirthYear) && (
                 <div
