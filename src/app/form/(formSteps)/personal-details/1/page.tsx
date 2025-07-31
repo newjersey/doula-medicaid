@@ -235,15 +235,20 @@ const PersonalDetailsStep1: React.FC = () => {
                     {...register("dateOfBirthDay", {
                       required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
                       valueAsNumber: true,
+                      min: {
+                        value: 1,
+                        message: `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`,
+                      },
+                      max: {
+                        value: 31,
+                        message: `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`,
+                      },
                       validate: (value) => {
                         if (value === null) {
                           return `${orderedInputNameToLabel["dateOfBirthDay"]} is required`;
                         }
                         if (Number.isNaN(value) || typeof value === "string") {
                           return `${orderedInputNameToLabel["dateOfBirthDay"]} must be a number`;
-                        }
-                        if (value <= 0 || value > 31) {
-                          return `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`;
                         }
                         return true;
                       },
@@ -268,12 +273,23 @@ const PersonalDetailsStep1: React.FC = () => {
                     {...register("dateOfBirthYear", {
                       required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
                       valueAsNumber: true,
+                      // pattern: {
+                      //   value: /\S+@\S+\.\S+/,
+                      //   message: "Entered value does not match email format",
+                      // },
+                      // pattern: {
+                      //   value: /\d{4}/,
+                      //   message: `${orderedInputNameToLabel["dateOfBirthYear"]} must have 4 digits`,
+                      // },
                       validate: (value) => {
                         if (value === null) {
                           return `${orderedInputNameToLabel["dateOfBirthYear"]} is required`;
                         }
                         if (Number.isNaN(value) || typeof value === "string") {
                           return `${orderedInputNameToLabel["dateOfBirthYear"]} must be a number`;
+                        }
+                        if ((value as number).toString().length !== 4) {
+                          return `${orderedInputNameToLabel["dateOfBirthYear"]} must have 4 digits`;
                         }
                         return true;
                       },
@@ -390,6 +406,10 @@ const PersonalDetailsStep1: React.FC = () => {
               aria-describedby="phoneNumberErrorMessage"
               {...register("phoneNumber", {
                 required: `${orderedInputNameToLabel["phoneNumber"]} is required`,
+                pattern: {
+                  value: /\d{3}-\d{3}-\d{4}/,
+                  message: "Entered value does not match phone number format",
+                },
               })}
             />
             {errors.phoneNumber && (
