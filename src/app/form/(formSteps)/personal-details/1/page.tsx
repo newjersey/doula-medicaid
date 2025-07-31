@@ -5,7 +5,14 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { formatDateOfBirthDefaultValue } from "@form/_utils/inputFields/dateOfBirth";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
-import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
+import {
+  DatePicker,
+  Fieldset,
+  Form,
+  Label,
+  TextInput,
+  TextInputMask,
+} from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
@@ -213,9 +220,13 @@ const PersonalDetailsStep1: React.FC = () => {
             <p id="socialSecurityNumberHint" className="usa-hint">
               Format XXX-XX-XXXX
             </p>
-            <TextInput
+            <TextInputMask
               id="socialSecurityNumber"
               type="text"
+              inputMode="numeric"
+              mask="___-__-____"
+              pattern="\d{3}-\d{2}-\d{4}"
+              value="000-00-0000"
               required
               validationStatus={errors.socialSecurityNumber ? "error" : undefined}
               aria-invalid={errors.socialSecurityNumber ? "true" : "false"}
@@ -271,9 +282,13 @@ const PersonalDetailsStep1: React.FC = () => {
             <Label htmlFor="phoneNumber" requiredMarker>
               {orderedInputNameToLabel["phoneNumber"]}
             </Label>
-            <TextInput
+            <TextInputMask
               id="phoneNumber"
               type="tel"
+              inputMode="numeric"
+              mask="___-___-____"
+              pattern="\d{3}-\d{3}-\d{4}"
+              value="000-000-0000"
               required
               validationStatus={errors.phoneNumber ? "error" : undefined}
               aria-invalid={errors.phoneNumber ? "true" : "false"}
