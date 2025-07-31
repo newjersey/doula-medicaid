@@ -40,6 +40,7 @@ const PersonalDetailsStep1: React.FC = () => {
     formState: { errors },
     handleSubmit,
     setFocus,
+    watch,
   } = useForm<PersonalDetails1Data>({
     defaultValues: {
       firstName: getValue("firstName") || "",
@@ -55,6 +56,8 @@ const PersonalDetailsStep1: React.FC = () => {
     shouldFocusError: false,
   });
   const errorSummaryRef = useRef<HTMLInputElement>(null);
+  const watchPhoneNumber = watch("phoneNumber");
+  const watchSocialSecurityNumber = watch("socialSecurityNumber");
 
   const onSubmit: SubmitHandler<PersonalDetails1Data> = (data) => {
     for (const key in data) {
@@ -316,6 +319,7 @@ const PersonalDetailsStep1: React.FC = () => {
               id="socialSecurityNumber"
               type="text"
               inputMode="numeric"
+              value={watchSocialSecurityNumber ?? ""}
               mask="___-__-____"
               pattern="\d{3}-\d{2}-\d{4}"
               required
@@ -376,6 +380,7 @@ const PersonalDetailsStep1: React.FC = () => {
             <TextInputMask
               id="phoneNumber"
               type="tel"
+              value={watchPhoneNumber ?? ""}
               inputMode="numeric"
               mask="___-___-____"
               pattern="\d{3}-\d{3}-\d{4}"
