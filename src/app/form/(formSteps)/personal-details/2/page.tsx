@@ -5,7 +5,7 @@ import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/Pe
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
-import { Fieldset, Form, Label, Select, TextInput } from "@trussworks/react-uswds";
+import { Fieldset, Form, Label, Select, TextInput, TextInputMask } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm, type SubmitErrorHandler, type SubmitHandler } from "react-hook-form";
@@ -27,6 +27,7 @@ const PersonalDetailsStep2 = () => {
     handleSubmit,
     formState: { errors },
     setFocus,
+    watch,
   } = useForm<PersonalDetails2Data>({
     defaultValues: {
       streetAddress1: getValue("streetAddress1") || "",
@@ -39,10 +40,12 @@ const PersonalDetailsStep2 = () => {
   });
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
   const errorSummaryRef = useRef<HTMLInputElement>(null);
+  const zip = watch("zip");
 
   const onSubmit: SubmitHandler<PersonalDetails2Data> = (data) => {
-    for (const key in data) {
-      const value = data[key as keyof PersonalDetails2Data] ?? "";
+    let key: keyof PersonalDetails2Data;
+    for (key in data) {
+      const value = data[key] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
@@ -77,7 +80,6 @@ const PersonalDetailsStep2 = () => {
               {shouldSummarizeErrors && Object.keys(errors).length >= 1 && (
                 <div
                   className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
-                  role="alert"
                   aria-labelledby="error-summary-heading"
                 >
                   <div className="usa-alert__body">
@@ -86,7 +88,17 @@ const PersonalDetailsStep2 = () => {
                     </h2>
                     <ul className="usa-list usa-list--unstyled">
                       {Object.entries(errors).map(([field, error]) => (
-                        <li key={field}>{error.message}</li>
+                        <li key={field}>
+                          <a
+                            href={`#${field}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setFocus(field as keyof PersonalDetails2Data);
+                            }}
+                          >
+                            {error.message}
+                          </a>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -115,11 +127,7 @@ const PersonalDetailsStep2 = () => {
                     })}
                   />
                   {errors.streetAddress1 && (
-                    <span
-                      id="streetAddress1ErrorMessage"
-                      className="usa-error-message"
-                      role="alert"
-                    >
+                    <span id="streetAddress1ErrorMessage" className="usa-error-message">
                       {errors.streetAddress1.message}
                     </span>
                   )}
@@ -148,7 +156,7 @@ const PersonalDetailsStep2 = () => {
                     })}
                   />
                   {errors.city && (
-                    <span id="cityErrorMessage" className="usa-error-message" role="alert">
+                    <span id="cityErrorMessage" className="usa-error-message">
                       {errors.city.message}
                     </span>
                   )}
@@ -171,20 +179,27 @@ const PersonalDetailsStep2 = () => {
                   <Label htmlFor="zip" requiredMarker>
                     {orderedInputNameToLabel["zip"]}
                   </Label>
-                  <TextInput
+                  <TextInputMask
                     className="usa-input--medium"
                     id="zip"
                     type="text"
+                    value={zip ?? ""}
+                    mask="#####"
+                    pattern="\d{5}"
                     required
                     validationStatus={errors.zip ? "error" : undefined}
                     aria-invalid={errors.zip ? "true" : "false"}
                     aria-describedby={errors.zip && "zipErrorMessage"}
                     {...register("zip", {
                       required: `${orderedInputNameToLabel["zip"]} is required`,
+                      minLength: {
+                        value: 5,
+                        message: `${orderedInputNameToLabel["zip"]} must have five digits`,
+                      },
                     })}
                   />
                   {errors.zip && (
-                    <span id="zipErrorMessage" className="usa-error-message" role="alert">
+                    <span id="zipErrorMessage" className="usa-error-message">
                       {errors.zip.message}
                     </span>
                   )}

@@ -9,7 +9,7 @@
 ## Accessibility
 
 - [ ] I have made sure this works with a screenreader!
-- [ ] I have checked this with the WAVE extension.
+- [ ] I have checked this with the [WAVE extension](https://wave.webaim.org/extension/).
 
 ## How should a reviewer test?
 

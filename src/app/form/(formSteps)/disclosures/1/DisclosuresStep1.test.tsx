@@ -86,8 +86,7 @@ describe("<DisclosuresStep1 />", () => {
     await user.click(noSoleProprietorButton);
     expect(noSoleProprietorButton).toBeChecked();
 
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    await user.click(nextButton);
+    await user.click(screen.getByRole("button", { name: "Next" }));
     expect(getValue("isSoleProprietorship")).toBe("false");
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
@@ -122,8 +121,7 @@ describe("<DisclosuresStep1 />", () => {
     await user.click(yesSameAddressButton);
     expect(yesSameAddressButton).toBeChecked();
 
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    await user.click(nextButton);
+    await user.click(screen.getByRole("button", { name: "Next" }));
 
     expect(getValue("isSoleProprietorship")).toBe("true");
     expect(getValue("hasSameBusinessAddress")).toBe("true");
@@ -151,11 +149,11 @@ describe("<DisclosuresStep1 />", () => {
     ];
 
     for (const addressTextInputField of addressTextInputFields) {
-      const inputField = screen.getByRole("textbox", {
+      const input = screen.getByRole("textbox", {
         name: addressTextInputField.name,
       });
-      await user.type(inputField, addressTextInputField.testValue);
-      expect(inputField).toHaveValue(addressTextInputField.testValue);
+      await user.type(input, addressTextInputField.testValue);
+      expect(input).toHaveValue(addressTextInputField.testValue);
     }
 
     const combobox = screen.getByRole("combobox", {
@@ -165,8 +163,7 @@ describe("<DisclosuresStep1 />", () => {
     await user.selectOptions(combobox, "PA");
     expect(combobox).toHaveValue("PA");
 
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    await user.click(nextButton);
+    await user.click(screen.getByRole("button", { name: "Next" }));
 
     expect(getValue("isSoleProprietorship")).toBe("true");
     expect(getValue("hasSameBusinessAddress")).toBe("false");
