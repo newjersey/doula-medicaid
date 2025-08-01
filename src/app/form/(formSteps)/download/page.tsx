@@ -16,8 +16,14 @@ const convertToBoolean = (value: string | null): boolean | null => {
 };
 
 const getFormData = (): FormData => {
-  const dateOfBirthString = getValue("dateOfBirth");
-  const dateOfBirth = dateOfBirthString ? new Date(dateOfBirthString) : null;
+  const dateOfBirth =
+    getValue("dateOfBirthMonth") === null ||
+    getValue("dateOfBirthDay") === null ||
+    getValue("dateOfBirthYear") === null
+      ? null
+      : new Date(
+          `${getValue("dateOfBirthMonth")}/${getValue("dateOfBirthDay")}/${getValue("dateOfBirthYear")}`,
+        );
 
   const stateString = (getValue("state") as keyof typeof AddressState) || null;
   const state = stateString ? AddressState[stateString] : null;

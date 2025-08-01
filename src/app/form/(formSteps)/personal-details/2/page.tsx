@@ -41,8 +41,9 @@ const PersonalDetailsStep2: React.FC = () => {
   const errorSummaryRef = useRef<HTMLInputElement>(null);
 
   const onSubmit: SubmitHandler<PersonalDetails2Data> = (data) => {
-    for (const key in data) {
-      const value = data[key as keyof PersonalDetails2Data] ?? "";
+    let key: keyof PersonalDetails2Data;
+    for (key in data) {
+      const value = data[key] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
@@ -77,7 +78,6 @@ const PersonalDetailsStep2: React.FC = () => {
               {shouldSummarizeErrors && Object.keys(errors).length >= 1 && (
                 <div
                   className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
-                  role="alert"
                   aria-labelledby="error-summary-heading"
                 >
                   <div className="usa-alert__body">
@@ -86,7 +86,18 @@ const PersonalDetailsStep2: React.FC = () => {
                     </h2>
                     <ul className="usa-list usa-list--unstyled">
                       {Object.entries(errors).map(([field, error]) => (
-                        <li key={field}>{error.message}</li>
+                        <li key={field}>
+                          {" "}
+                          <a
+                            href={`#${field}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              setFocus(field as keyof PersonalDetails2Data);
+                            }}
+                          >
+                            {error.message}
+                          </a>
+                        </li>
                       ))}
                     </ul>
                   </div>
@@ -115,11 +126,7 @@ const PersonalDetailsStep2: React.FC = () => {
                     })}
                   />
                   {errors.streetAddress1 && (
-                    <span
-                      id="streetAddress1ErrorMessage"
-                      className="usa-error-message"
-                      role="alert"
-                    >
+                    <span id="streetAddress1ErrorMessage" className="usa-error-message">
                       {errors.streetAddress1.message}
                     </span>
                   )}
@@ -148,7 +155,7 @@ const PersonalDetailsStep2: React.FC = () => {
                     })}
                   />
                   {errors.city && (
-                    <span id="cityErrorMessage" className="usa-error-message" role="alert">
+                    <span id="cityErrorMessage" className="usa-error-message">
                       {errors.city.message}
                     </span>
                   )}
@@ -185,7 +192,7 @@ const PersonalDetailsStep2: React.FC = () => {
                     })}
                   />
                   {errors.zip && (
-                    <span id="zipErrorMessage" className="usa-error-message" role="alert">
+                    <span id="zipErrorMessage" className="usa-error-message">
                       {errors.zip.message}
                     </span>
                   )}
