@@ -73,7 +73,6 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
             <span className="usa-step-indicator__heading-text">{currentSection.heading}</span>
           </h1>
           <div className="text-right">
-            {" "}
             A red asterisk (<RequiredMarker />) indicates a required field.
           </div>
         </div>

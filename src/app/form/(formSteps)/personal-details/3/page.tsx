@@ -32,8 +32,9 @@ const PersonalDetailsStep3 = () => {
   });
 
   const onSubmit: SubmitHandler<PersonalDetails3Data> = (data) => {
-    for (const key in data) {
-      const value = data[key as keyof PersonalDetails3Data] ?? "";
+    let key: keyof PersonalDetails3Data;
+    for (key in data) {
+      const value = data[key] ?? "";
       setKeyValue(key, value);
     }
     routeToNextStep(router, formProgressPosition);
@@ -68,7 +69,7 @@ const PersonalDetailsStep3 = () => {
               })}
             />
             {errors.npiNumber && (
-              <span id="npiNumberErrorMessage" className="usa-error-message" role="alert">
+              <span id="npiNumberErrorMessage" className="usa-error-message">
                 {errors.npiNumber.message}
               </span>
             )}

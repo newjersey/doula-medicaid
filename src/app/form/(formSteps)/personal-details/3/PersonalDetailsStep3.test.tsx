@@ -1,5 +1,5 @@
 import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
-import { RouterPathnameProvider } from "@form/_utils/testUtils";
+import { fillAllInputsExcept, RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -33,31 +33,42 @@ describe("<PersonalDetailsStep3 />", () => {
     return mockRouter;
   };
 
-  it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    const inputField = screen.getByRole("textbox", {
-      name: name,
-    });
-    expect(inputField).toHaveValue("");
+  describe("input updates", () => {
+    it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+      const input = screen.getByRole("textbox", {
+        name: name,
+      });
+      expect(input).toHaveValue("");
 
-    await user.type(inputField, testValue);
-    expect(inputField).toHaveValue(testValue);
+      await user.type(input, testValue);
+      expect(input).toHaveValue(testValue);
+    });
+  });
+
+  describe("validation and error messages", () => {
+    it("marks NPI as required and displays error messages if it is not filled in", async () => {
+      const user = userEvent.setup();
+      renderWithRouter();
+
+      const input = screen.getByRole("textbox", {
+        name: "NPI number *",
+      });
+      expect(input).toBeRequired();
+
+      await user.click(screen.getByRole("button", { name: "Next" }));
+
+      expect(input).toHaveAccessibleDescription(expect.stringContaining(`NPI number is required`));
+      expect(input).toHaveAttribute("aria-invalid", "true");
+    });
   });
 
   it("saves form data on submit", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    for (const textInputField of textInputFields) {
-      const inputField = screen.getByRole("textbox", {
-        name: textInputField.name,
-      });
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(null);
-      await user.type(inputField, textInputField.testValue);
-    }
-
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    await user.click(nextButton);
+    await fillAllInputsExcept(screen, user, textInputFields, new Set());
+    await user.click(screen.getByRole("button", { name: "Next" }));
 
     for (const textInputField of textInputFields) {
       expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
@@ -81,21 +92,5 @@ describe("<PersonalDetailsStep3 />", () => {
     expect(
       screen.getByRole("textbox", { name: "Medicare provider ID (if applicable)" }),
     ).toHaveValue("ABC12345");
-  });
-
-  it("marks NPI as required and displays error messages if it is not filled in", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-
-    const input = screen.getByRole("textbox", {
-      name: "NPI number *",
-    });
-    expect(input).toBeRequired();
-
-    const nextButton = screen.getByRole("button", { name: "Next" });
-    await user.click(nextButton);
-
-    expect(input).toHaveAccessibleDescription(expect.stringContaining(`NPI number is required`));
-    expect(input).toHaveAttribute("aria-invalid", "true");
   });
 });
