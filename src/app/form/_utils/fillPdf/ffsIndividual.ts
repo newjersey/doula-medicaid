@@ -43,6 +43,9 @@ const getPage5Fields = (formData: FormData): PDFData => {
   return {
     fd443telephoneno: formData.phoneNumber ?? "",
     fd443npino: formData.npiNumber ?? "",
+    fd443paytoaddressline1: formData.billingStreetAddress1 ?? "",
+    fd443paytoaddressline2: formData.billingStreetAddress2 ?? "",
+    fd443paytoaddressline3: formatBillingAddressLine3(formData),
   };
 };
 
@@ -57,9 +60,14 @@ const getPage7Fields = (formData: FormData): PDFData => {
     fd425socialsecuritynumber: formData.socialSecurityNumber ?? "",
 
     fd425mailtoaddressstreet: `${formData.streetAddress1}${formData.streetAddress2 ? ` ${formData.streetAddress2}` : ""}`,
-    fd425mailtoaddressstate: formData.state ?? "", // input validation not yet implemented
+    fd425mailtoaddressstate: formData.state ?? "",
     fd425mailtoaddresscity: formData.city ?? "",
     fd425mailtoaddresszip: formData.zip ?? "",
+
+    fd425paytoaddressstreet: `${formData.billingStreetAddress1}${formData.billingStreetAddress2 ? ` ${formData.billingStreetAddress2}` : ""}`,
+    fd425paytoaddresscity: formData.billingCity ?? "",
+    fd425paytoaddressstate: formData.billingState ?? "",
+    fd425paytoaddresszip: formData.billingZip ?? "",
   };
 };
 
@@ -112,6 +120,10 @@ const formatAddressLine3 = (formData: FormData): string => {
 
 const formatBusinessAddressLine3 = (formData: FormData): string => {
   return `${formData.businessCity}, ${formData.businessState} ${formData.businessZip}`;
+};
+
+const formatBillingAddressLine3 = (formData: FormData): string => {
+  return `${formData.billingCity}, ${formData.billingState} ${formData.billingZip}`;
 };
 
 const formatName = (formData: FormData): string => {

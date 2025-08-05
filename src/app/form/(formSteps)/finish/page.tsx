@@ -31,6 +31,8 @@ const getFormData = (): FormData => {
     convertToBoolean(getValue("isSoleProprietorship")) === true
       ? DisclosingEntity.SoleProprietorship
       : null;
+  const hasSameBillingMailingAddress =
+    convertToBoolean(getValue("hasSameBillingMailingAddress")) === true ? true : false;
 
   return {
     firstName: getValue("firstName"),
@@ -46,6 +48,18 @@ const getFormData = (): FormData => {
     city: getValue("city"),
     state: state,
     zip: getValue("zip"),
+    hasSameBillingMailingAddress: hasSameBillingMailingAddress,
+    billingStreetAddress1: hasSameBillingMailingAddress
+      ? getValue("streetAddress1")
+      : getValue("billingStreetAddress1"),
+    billingStreetAddress2: hasSameBillingMailingAddress
+      ? getValue("streetAddress2")
+      : getValue("billingStreetAddress2"),
+    billingCity: hasSameBillingMailingAddress ? getValue("city") : getValue("billingCity"),
+    billingState: hasSameBillingMailingAddress
+      ? state
+      : (getValue("billingState") as AddressState | null),
+    billingZip: hasSameBillingMailingAddress ? getValue("zip") : getValue("billingZip"),
     natureOfDisclosingEntity: disclosingEntity,
     hasSameBusinessAddress: convertToBoolean(getValue("hasSameBusinessAddress")),
     businessStreetAddress1: getValue("businessStreetAddress1"),

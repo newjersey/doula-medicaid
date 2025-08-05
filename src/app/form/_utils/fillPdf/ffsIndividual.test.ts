@@ -17,6 +17,12 @@ const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
     city: null,
     state: null,
     zip: null,
+    hasSameBillingMailingAddress: null,
+    billingStreetAddress1: null,
+    billingStreetAddress2: null,
+    billingCity: null,
+    billingState: null,
+    billingZip: null,
     natureOfDisclosingEntity: null,
     hasSameBusinessAddress: null,
     businessStreetAddress1: null,
@@ -124,6 +130,113 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("test@test.com");
   };
 
+  const testBillingAddressLine1 = (formKey: string) => {
+    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+    testedFormKeys.add(formKey);
+
+    const formData: FormData = generateFormData({
+      billingStreetAddress1: "123 Main St",
+    });
+    const fieldsToFill = mapFfsIndividualFields(formData);
+    expect(fieldsToFill[formKey]).toEqual("123 Main St");
+  };
+
+  const testBillingAddressLine2 = (formKey: string) => {
+    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+    testedFormKeys.add(formKey);
+
+    const formData: FormData = generateFormData({
+      billingStreetAddress2: "Apt 2F",
+    });
+    const fieldsToFill = mapFfsIndividualFields(formData);
+    expect(fieldsToFill[formKey]).toEqual("Apt 2F");
+  };
+
+  const testBillingAddressLine3 = (formKey: string) => {
+    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+    testedFormKeys.add(formKey);
+
+    const formData: FormData = generateFormData({
+      billingCity: "Trenton",
+      billingState: AddressState.NJ,
+      billingZip: "11111",
+    });
+    const fieldsToFill = mapFfsIndividualFields(formData);
+    expect(fieldsToFill[formKey]).toEqual("Trenton, NJ 11111");
+  };
+
+  const testStreetAddress = (formKey: string) => {
+    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+    testedFormKeys.add(formKey);
+
+    const formDataOnlyAddress1: FormData = generateFormData({
+      streetAddress1: "55 Cherry St",
+    });
+    const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
+    expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
+
+    const formDataAddress1And2: FormData = generateFormData({
+      streetAddress1: "55 Cherry St",
+      streetAddress2: "Apt 4",
+    });
+    const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
+    expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
+  };
+
+  const testCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {
+    const cityStateZipKeys = [cityKey, stateKey, zipKey];
+    for (const formKey of cityStateZipKeys) {
+      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+      testedFormKeys.add(formKey);
+    }
+
+    const formData: FormData = generateFormData({
+      city: "Newark",
+      state: AddressState.NJ,
+      zip: "08609",
+    });
+    const fieldsToFill = mapFfsIndividualFields(formData);
+    expect(fieldsToFill[cityKey]).toEqual("Newark");
+    expect(fieldsToFill[stateKey]).toEqual("NJ");
+    expect(fieldsToFill[zipKey]).toEqual("08609");
+  };
+
+  const testBillingCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {
+    const cityStateZipKeys = [cityKey, stateKey, zipKey];
+    for (const formKey of cityStateZipKeys) {
+      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+      testedFormKeys.add(formKey);
+    }
+
+    const formData: FormData = generateFormData({
+      billingCity: "Newark",
+      billingState: AddressState.NJ,
+      billingZip: "08609",
+    });
+    const fieldsToFill = mapFfsIndividualFields(formData);
+    expect(fieldsToFill[cityKey]).toEqual("Newark");
+    expect(fieldsToFill[stateKey]).toEqual("NJ");
+    expect(fieldsToFill[zipKey]).toEqual("08609");
+  };
+
+  const testBillingStreetAddress = (formKey: string) => {
+    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+    testedFormKeys.add(formKey);
+
+    const formDataOnlyAddress1: FormData = generateFormData({
+      billingStreetAddress1: "55 Cherry St",
+    });
+    const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
+    expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
+
+    const formDataAddress1And2: FormData = generateFormData({
+      billingStreetAddress1: "55 Cherry St",
+      billingStreetAddress2: "Apt 4",
+    });
+    const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
+    expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
+  };
+
   describe("Page 3 - doula qualifications form", () => {
     it("fills legal name", () => {
       testLegalName("fd427LegalName");
@@ -145,6 +258,18 @@ describe("mapFfsIndividualFields", () => {
 
     it("fills NPI number", () => {
       testNpiNumber("fd443npino");
+    });
+
+    it("fills billing address line 1", () => {
+      testBillingAddressLine1("fd443paytoaddressline1");
+    });
+
+    it("fills billing address line 2", () => {
+      testBillingAddressLine2("fd443paytoaddressline2");
+    });
+
+    it("fills billing address line 3", () => {
+      testBillingAddressLine3("fd443paytoaddressline3");
     });
   });
 
@@ -174,45 +299,27 @@ describe("mapFfsIndividualFields", () => {
     });
 
     it("fills street address", () => {
-      const formKey = "fd425mailtoaddressstreet";
-      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-      testedFormKeys.add(formKey);
-
-      const formDataOnlyAddress1: FormData = generateFormData({
-        streetAddress1: "55 Cherry St",
-      });
-      const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
-      expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
-
-      const formDataAddress1And2: FormData = generateFormData({
-        streetAddress1: "55 Cherry St",
-        streetAddress2: "Apt 4",
-      });
-      const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
-      expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
+      testStreetAddress("fd425mailtoaddressstreet");
     });
 
     it("fills city, state, and zip", () => {
-      const cityStateZipKeys = [
+      testCityStateZip(
         "fd425mailtoaddresscity",
         "fd425mailtoaddressstate",
         "fd425mailtoaddresszip",
-      ];
-      for (const formKey of cityStateZipKeys) {
-        expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-        testedFormKeys.add(formKey);
-      }
-      const [cityKey, stateKey, zipKey] = cityStateZipKeys;
+      );
+    });
 
-      const formData: FormData = generateFormData({
-        city: "Newark",
-        state: AddressState.NJ,
-        zip: "08609",
-      });
-      const fieldsToFill = mapFfsIndividualFields(formData);
-      expect(fieldsToFill[cityKey]).toEqual("Newark");
-      expect(fieldsToFill[stateKey]).toEqual("NJ");
-      expect(fieldsToFill[zipKey]).toEqual("08609");
+    it("fills billing street address", () => {
+      testBillingStreetAddress("fd425paytoaddressstreet");
+    });
+
+    it("fills billing city, state, and zip", () => {
+      testBillingCityStateZip(
+        "fd425paytoaddresscity",
+        "fd425paytoaddressstate",
+        "fd425paytoaddresszip",
+      );
     });
   });
 

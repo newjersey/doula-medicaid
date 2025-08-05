@@ -1,4 +1,5 @@
 import type { Screen } from "@testing-library/dom";
+import { within } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 import {
   AppRouterContext,
@@ -20,7 +21,7 @@ export const RouterPathnameProvider = (props: {
 
 export interface InputField {
   name: string;
-  role?: "textbox" | "combobox";
+  role?: "textbox" | "combobox" | "radio";
   testValue?: string;
 }
 
@@ -29,14 +30,19 @@ export const fillAllInputsExcept = async (
   user: UserEvent,
   allInputs: Array<InputField>,
   namesToSkip: Set<string>,
+  withinGroup?: HTMLElement,
 ) => {
   for (const input of allInputs) {
     if (!namesToSkip.has(input.name)) {
       const role = input.role ?? "textbox";
       const value = input.testValue ?? "test";
-      const inputField = screen.getByRole(role, {
-        name: input.name,
-      });
+      const inputField = withinGroup
+        ? within(withinGroup).getByRole(role, {
+            name: input.name,
+          })
+        : screen.getByRole(role, {
+            name: input.name,
+          });
 
       switch (role) {
         case "textbox":
@@ -44,6 +50,9 @@ export const fillAllInputsExcept = async (
           break;
         case "combobox":
           await user.selectOptions(inputField, value);
+          break;
+        case "radio":
+          await user.click(inputField);
           break;
         default:
           throw new Error(`Role ${role} not implemented`);
