@@ -6,7 +6,7 @@ import { fillAllForms } from "@form/_utils/fillPdf/form";
 import { zipForms } from "@form/_utils/fillPdf/zip";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 import { getValue } from "@form/_utils/sessionStorage";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const convertToBoolean = (value: string | null): boolean | null => {
   if (value === null) return null;
@@ -50,7 +50,7 @@ const getFormData = (): FormData => {
   };
 };
 
-const DownloadStep: React.FC = () => {
+const DownloadStep = () => {
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
   useEffect(() => {
     (async () => {
