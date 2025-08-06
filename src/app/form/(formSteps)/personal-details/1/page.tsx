@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
@@ -55,7 +56,7 @@ const PersonalDetailsStep1 = () => {
     },
     shouldFocusError: false,
   });
-  const errorSummaryRef = useRef<HTMLInputElement>(null);
+  const errorSummaryRef = useRef<HTMLDivElement>(null);
   const phoneNumber = watch("phoneNumber");
   const socialSecurityNumber = watch("socialSecurityNumber");
 
@@ -93,38 +94,12 @@ const PersonalDetailsStep1 = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit, onError)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
-            <div tabIndex={-1} ref={errorSummaryRef}>
-              {shouldSummarizeErrors && Object.keys(errors).length >= 1 && (
-                <div
-                  className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
-                  aria-labelledby="error-summary-heading"
-                >
-                  <div className="usa-alert__body">
-                    <h2 className="usa-alert__heading" id="error-summary-heading">
-                      There is a problem
-                    </h2>
-
-                    <ul className="usa-list usa-list--unstyled">
-                      {Object.entries(errors).map(([field, error]) => {
-                        return (
-                          <li key={field}>
-                            <a
-                              href={`#${field}`}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setFocus(field as keyof PersonalDetails1Data);
-                              }}
-                            >
-                              {error.message}
-                            </a>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
+            <ErrorSummary<PersonalDetails1Data>
+              shouldSummarizeErrors={shouldSummarizeErrors}
+              errors={errors}
+              ref={errorSummaryRef}
+              setFocus={setFocus}
+            />
             <h2 className="font-heading-md">Personal identification</h2>
             <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
               <div className="tablet:grid-col-4">
