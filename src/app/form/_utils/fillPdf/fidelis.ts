@@ -19,5 +19,5 @@ export const mapFidelisFields = (formData: FormData): { [key: string]: string } 
 };
 
 export const fillFidelisForm = (formData: FormData) => {
-  return fillForm(mapFidelisFields(formData), FIDELIS_PDF_PATH, FIDELIS_PDF_NAME);
+  return fillForm(mapFidelisFields(formData), FIDELIS_PDF_PATH, FIDELIS_PDF_NAME, formData);
 };

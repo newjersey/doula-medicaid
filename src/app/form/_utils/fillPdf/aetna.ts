@@ -13,5 +13,5 @@ export const mapAetnaFields = (formData: FormData): { [key: string]: string } =>
 };
 
 export const fillAetnaForm = (formData: FormData) => {
-  return fillForm(mapAetnaFields(formData), AETNA_PDF_PATH, AETNA_PDF_NAME);
+  return fillForm(mapAetnaFields(formData), AETNA_PDF_PATH, AETNA_PDF_NAME, formData);
 };

@@ -5,8 +5,16 @@ import type { FormData } from "@form/_utils/fillPdf/form";
 import { fillAllForms } from "@form/_utils/fillPdf/form";
 import { zipForms } from "@form/_utils/fillPdf/zip";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
-import { getValue } from "@form/_utils/sessionStorage";
-import React, { useEffect, useState } from "react";
+import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
+import dynamic from "next/dynamic";
+import React, { useState } from "react";
+
+const SignatureMaker = dynamic(
+  () => import("@docuseal/signature-maker-react").then((mod) => ({ default: mod.SignatureMaker })),
+  {
+    ssr: false,
+  },
+);
 
 const convertToBoolean = (value: string | null): boolean | null => {
   if (value === null) return null;
@@ -47,21 +55,46 @@ const getFormData = (): FormData => {
     businessCity: getValue("businessCity"),
     businessState: getValue("businessState") as AddressState | null,
     businessZip: getValue("businessZip"),
+    signature: getValue("signature"),
   };
 };
 
 const DownloadStep: React.FC = () => {
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
-  useEffect(() => {
-    (async () => {
-      const filledForms = await fillAllForms(getFormData());
-      const zipBlob = await zipForms(filledForms);
-      setZipDownloadUrl(URL.createObjectURL(zipBlob));
-    })();
-  }, []);
+  // const [hasSignature, setHasSignature] = useState<boolean>(!!getValue("signature"));
+
+  const handleSignatureChange = async (event: { base64: string | null }) => {
+    console.log("Signature event:", event);
+    if (event === undefined) {
+      return;
+    }
+    setKeyValue("signature", event.base64 || "");
+    // setHasSignature(!!event.base64);
+
+    if (zipDownloadUrl) {
+      URL.revokeObjectURL(zipDownloadUrl);
+      setZipDownloadUrl(null);
+    }
+
+    const filledForms = await fillAllForms(getFormData());
+    const zipBlob = await zipForms(filledForms);
+    setZipDownloadUrl(URL.createObjectURL(zipBlob));
+  };
+
+  // useEffect(() => {
+  //   console.log("hasSignature:", hasSignature);
+  //   if (hasSignature) {
+  //     (async () => {
+  //       const filledForms = await fillAllForms(getFormData());
+  //       const zipBlob = await zipForms(filledForms);
+  //       setZipDownloadUrl(URL.createObjectURL(zipBlob));
+  //     })();
+  //   }
+  // }, [hasSignature]);
 
   return (
     <div>
+      <SignatureMaker withSubmit={false} onChange={handleSignatureChange} />
       {zipDownloadUrl && (
         <a href={zipDownloadUrl} download="filled_forms.zip">
           Download your forms

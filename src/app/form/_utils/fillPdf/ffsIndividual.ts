@@ -12,6 +12,7 @@ export interface PDFData {
 export const mapFfsIndividualFields = (formData: FormData): PDFData => {
   const fieldsToFill: PDFData = {
     ...getPage3Fields(formData),
+    ...getPage4Fields(formData),
     ...getPage5Fields(formData),
     ...getPage7Fields(formData),
     ...getPage12Fields(formData),
@@ -26,6 +27,7 @@ export const fillFfsIndividualForm = (formData: FormData) => {
     mapFfsIndividualFields(formData),
     FFS_INDIVIDUAL_PDF_PATH,
     FFS_INDIVIDUAL_PDF_NAME,
+    formData,
   );
 };
 
@@ -35,6 +37,14 @@ const getPage3Fields = (formData: FormData): PDFData => {
     fd427dateofbirthDate1_af_date: formatDateOfBirth(formData.dateOfBirth),
     fd427LegalName: formatName(formData),
     fd427SocialSecurityNumber: formData.socialSecurityNumber || "",
+  };
+};
+
+const getPage4Fields = (formData: FormData): PDFData => {
+  // Page 4 - doula signature authorization form
+  return {
+    fd444authorizationname1: formatName(formData),
+    fd444authorizationsignaturename1: "",
   };
 };
 
@@ -125,3 +135,21 @@ const formatName = (formData: FormData): string => {
 
   return `${formData.firstName} ${formData.lastName}`;
 };
+
+// const formatSignature = (formData: FormData): string => {
+//     const pages = pdfDoc.getPages();
+//   const firstPage = pages[0];
+
+//   // Assuming formData.signature is a base64 string of the JPEG image
+//   const jpgImageBytes = formData.signature;
+
+//   const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
+//   const jpgDims = jpgImage.scale(0.25);
+
+//   firstPage.drawImage(jpgImage, {
+//     x: firstPage.getWidth() / 2 - jpgDims.width / 2,
+//     y: firstPage.getHeight() / 2 - jpgDims.height / 2,
+//     width: jpgDims.width,
+//     height: jpgDims.height,
+//   });
+// }

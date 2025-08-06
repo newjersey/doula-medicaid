@@ -24,6 +24,7 @@ const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
     businessCity: null,
     businessState: null,
     businessZip: null,
+    signature: null,
     ...formDataOverrides,
   };
 };
