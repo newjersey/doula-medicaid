@@ -1,5 +1,6 @@
 "use client";
 
+import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
@@ -39,7 +40,7 @@ const PersonalDetailsStep2 = () => {
     shouldFocusError: false,
   });
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
-  const errorSummaryRef = useRef<HTMLInputElement>(null);
+  const errorSummaryRef = useRef<HTMLDivElement>(null);
   const zip = watch("zip");
 
   const onSubmit: SubmitHandler<PersonalDetails2Data> = (data) => {
@@ -76,35 +77,12 @@ const PersonalDetailsStep2 = () => {
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit, onError)} className="maxw-full" noValidate>
           <div className="maxw-tablet">
-            <div tabIndex={-1} ref={errorSummaryRef}>
-              {shouldSummarizeErrors && Object.keys(errors).length >= 1 && (
-                <div
-                  className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
-                  aria-labelledby="error-summary-heading"
-                >
-                  <div className="usa-alert__body">
-                    <h2 className="usa-alert__heading" id="error-summary-heading">
-                      There is a problem
-                    </h2>
-                    <ul className="usa-list usa-list--unstyled">
-                      {Object.entries(errors).map(([field, error]) => (
-                        <li key={field}>
-                          <a
-                            href={`#${field}`}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setFocus(field as keyof PersonalDetails2Data);
-                            }}
-                          >
-                            {error.message}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
+            <ErrorSummary<PersonalDetails2Data>
+              shouldSummarizeErrors={shouldSummarizeErrors}
+              errors={errors}
+              ref={errorSummaryRef}
+              setFocus={setFocus}
+            />
             <h2 className="font-heading-md">Mailing address</h2>
             <p className="usa-hint">
               This is the location where you want to receive official mail.
