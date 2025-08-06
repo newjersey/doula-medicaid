@@ -4,10 +4,9 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { useForm } from "react-hook-form";
 
-const FormStep: React.FC = () => {
+const FormStep = () => {
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
   const { handleSubmit } = useForm<object>({

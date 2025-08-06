@@ -7,7 +7,7 @@ import { AddressState } from "@form/_utils/inputFields/enums";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import { Fieldset, Form, Label, Select, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, type SubmitErrorHandler, type SubmitHandler } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
@@ -18,7 +18,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } =
   zip: "ZIP code",
 };
 
-const PersonalDetailsStep2: React.FC = () => {
+const PersonalDetailsStep2 = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();

@@ -7,7 +7,7 @@ import { formatDateOfBirthDefaultValue } from "@form/_utils/inputFields/dateOfBi
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import { DatePicker, Fieldset, Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Controller, type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
 
 const MM_DD_YYYY = /(\d{1,2})\/(\d{1,2})\/(\d{4})/;
@@ -27,7 +27,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } =
   phoneNumber: "Phone number",
 };
 
-const PersonalDetailsStep1: React.FC = () => {
+const PersonalDetailsStep1 = () => {
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);

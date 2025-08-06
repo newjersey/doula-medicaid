@@ -14,7 +14,7 @@ import {
   TextInput,
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 interface DisclosureBusinessAddressData {
@@ -27,7 +27,7 @@ interface DisclosureBusinessAddressData {
   businessZip: string | null;
 }
 
-const DisclosuresStep1: React.FC = () => {
+const DisclosuresStep1 = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();

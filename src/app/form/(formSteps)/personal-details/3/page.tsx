@@ -6,7 +6,7 @@ import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgr
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
 import { Form, Label, TextInput } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 
 const inputNameToLabel: { [key in keyof PersonalDetails3Data]: string } = {
@@ -15,7 +15,7 @@ const inputNameToLabel: { [key in keyof PersonalDetails3Data]: string } = {
   medicareProviderId: "Medicare provider ID",
 };
 
-const PersonalDetailsStep3: React.FC = () => {
+const PersonalDetailsStep3 = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
