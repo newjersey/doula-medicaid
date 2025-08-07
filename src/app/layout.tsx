@@ -38,7 +38,7 @@ export default function RootLayout({
                     <ul>
                       <li>Governor Phil Murphy &bull; Lt. Governor Tahesha Way</li>
                       <li>
-                        <a href="https://nj.gov/subscribe/" target="_blank">
+                        <a href="https://nj.gov/subscribe/" target="_blank" rel="noopener">
                           <svg
                             className="usa-icon nj-banner__mail-icon bottom-neg-2px margin-right-05"
                             aria-hidden="true"
