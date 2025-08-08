@@ -13,6 +13,7 @@ const SignatureSection: React.FC<SignatureSectionProps> = ({ onSignatureChange }
     onSignatureChange?.(event.base64);
   };
 
+  // Never tested the upload component of the SignatureMaker need to test before merging to main
   return (
     <div className="maxw-tablet">
       <h2 className="font-heading-md">Signature</h2>

@@ -20,7 +20,7 @@ describe("<FormLayout />", () => {
     expect(sections[2]).toHaveTextContent("not completed");
     expect(sections[3]).toHaveTextContent("Section 4");
     expect(sections[3]).toHaveTextContent("not completed");
-    expect(sections[4]).toHaveTextContent("Section 5");
+    expect(sections[4]).toHaveTextContent("Signature");
     expect(sections[4]).toHaveTextContent("not completed");
     expect(sections[5]).toHaveTextContent("Download forms");
     expect(sections[5]).toHaveTextContent("not completed");

@@ -34,8 +34,8 @@ export const allSections: Array<Section> = [
   },
   {
     id: "section-5",
-    progressBarTitle: "Section 5",
-    heading: "Placeholder section 5",
+    progressBarTitle: "Signature",
+    heading: "Signature",
   },
   {
     id: "download",

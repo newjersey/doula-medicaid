@@ -58,51 +58,6 @@ export const fillForm = async (
   const pdfDoc = await PDFDocument.load(unfilledPdfBytes);
   const form = pdfDoc.getForm();
 
-  // const pages = pdfDoc.getPages();
-  // const firstPage = pages[0];
-
-  // Fetch JPEG image
-  // Fetch JPEG image
-  // const jpgUrl = "https://pdf-lib.js.org/assets/cat_riding_unicorn.jpg";
-  // const jpgImageBytes = await fetch(jpgUrl).then((res) => res.arrayBuffer());
-
-  // const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
-  // const jpgDims = jpgImage.scale(0.25);
-
-  // firstPage.drawImage(jpgImage, {
-  //   x: firstPage.getWidth() / 2 - jpgDims.width / 2,
-  //   y: firstPage.getHeight() / 2 - jpgDims.height / 2,
-  //   width: jpgDims.width,
-  //   height: jpgDims.height,
-  // });
-
-  // Assuming formData.signature is a base64 string of the JPEG image
-  // const jpgUrl = "https://pdf-lib.js.org/assets/cat_riding_unicorn.jpg";
-  // const jpgImageBytes = await fetch(jpgUrl).then((res) => res.arrayBuffer());
-
-  // const signatureField = form.getField("signature");
-  // const jpgImage = await pdfDoc.embedPng(signatureField);
-  // const jpgDims = jpgImage.scale(0.25);
-
-  // firstPage.drawImage(jpgImage, {
-  //   x: firstPage.getWidth() / 2 - jpgDims.width / 2,
-  //   y: firstPage.getHeight() / 2 - jpgDims.height / 2,
-  //   width: jpgDims.width,
-  //   height: jpgDims.height,
-  // });
-
-  // if (formData.signature) {
-  //   const signatureImage = await pdfDoc.embedPng(formData.signature);
-  //   const jpgDims = signatureImage.scale(0.25);
-
-  //   firstPage.drawImage(signatureImage, {
-  //     x: firstPage.getWidth() / 2 - jpgDims.width / 2,
-  //     y: firstPage.getHeight() / 2 - jpgDims.height / 2,
-  //     width: jpgDims.width,
-  //     height: jpgDims.height,
-  //   });
-  // }
-
   Object.entries(fieldsToFill).forEach(([fieldName, value]) => {
     const field = form.getField(fieldName);
     if (field instanceof PDFTextField) {
@@ -122,7 +77,6 @@ export const fillForm = async (
     }
   });
 
-  // Draw signature over the fd444authorizationsignaturename1 field (only for FFS Individual)
   if (formData.signature && filename === "ffs_individual_filled.pdf") {
     try {
       const signatureField = form.getField("fd444authorizationsignaturename1");
@@ -148,19 +102,14 @@ export const fillForm = async (
         const centerX = rect.x + rect.width / 2;
         const centerY = rect.y + rect.height / 2;
 
-        // Compute bottom-left of the image after centering
         const imageX = -signatureDims.width / 2;
         const imageY = -signatureDims.height / 2;
 
-        // Move canvas origin to center of signature field, rotate, then draw image centered
         targetPage.pushOperators(
-          // Move origin to center
           concatTransformationMatrix(1, 0, 0, 1, centerX, centerY),
-          // Rotate 180 degrees
           rotateRadians(Math.PI),
         );
 
-        // Draw image at adjusted origin
         targetPage.drawImage(signatureImage, {
           x: imageX,
           y: imageY,

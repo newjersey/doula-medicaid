@@ -135,21 +135,3 @@ const formatName = (formData: FormData): string => {
 
   return `${formData.firstName} ${formData.lastName}`;
 };
-
-// const formatSignature = (formData: FormData): string => {
-//     const pages = pdfDoc.getPages();
-//   const firstPage = pages[0];
-
-//   // Assuming formData.signature is a base64 string of the JPEG image
-//   const jpgImageBytes = formData.signature;
-
-//   const jpgImage = await pdfDoc.embedJpg(jpgImageBytes);
-//   const jpgDims = jpgImage.scale(0.25);
-
-//   firstPage.drawImage(jpgImage, {
-//     x: firstPage.getWidth() / 2 - jpgDims.width / 2,
-//     y: firstPage.getHeight() / 2 - jpgDims.height / 2,
-//     width: jpgDims.width,
-//     height: jpgDims.height,
-//   });
-// }
