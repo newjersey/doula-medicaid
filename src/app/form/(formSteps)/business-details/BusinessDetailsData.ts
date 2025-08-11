@@ -1,4 +1,4 @@
-export interface Disclosure1Data {
+export interface BusinessDetails1Data {
   isSoleProprietorship: "true" | "false" | "";
   hasSameBusinessAddress: "true" | "false" | "";
   businessStreetAddress1: string | null;

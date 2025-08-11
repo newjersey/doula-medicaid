@@ -88,7 +88,7 @@ describe("<PersonalDetailsStep3 />", () => {
       expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
     }
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/disclosures/1");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/1");
     expect(mockRouter.push).toHaveBeenCalledTimes(1);
     expect(mockRouter.refresh).toHaveBeenCalled();
   });

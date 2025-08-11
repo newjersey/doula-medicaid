@@ -1,6 +1,6 @@
 "use client";
 
-import type { Disclosure1Data } from "@/app/form/(formSteps)/disclosures/DisclosureData";
+import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
@@ -18,11 +18,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
-const DisclosuresStep1 = () => {
+const BusinessDetails1 = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
-  const { register, handleSubmit, watch } = useForm<Disclosure1Data>({
+  const { register, handleSubmit, watch } = useForm<BusinessDetails1Data>({
     defaultValues: {
       isSoleProprietorship: "",
       hasSameBusinessAddress: "",
@@ -36,8 +36,8 @@ const DisclosuresStep1 = () => {
 
   const hasSameBusinessAddress = watch("hasSameBusinessAddress");
 
-  const onSubmit: SubmitHandler<Disclosure1Data> = (data) => {
-    let key: keyof Disclosure1Data;
+  const onSubmit: SubmitHandler<BusinessDetails1Data> = (data) => {
+    let key: keyof BusinessDetails1Data;
     for (key in data) {
       const value = data[key] ?? "";
       setKeyValue(key, value);
@@ -195,4 +195,4 @@ const DisclosuresStep1 = () => {
   );
 };
 
-export default DisclosuresStep1;
+export default BusinessDetails1;

@@ -1,4 +1,4 @@
-import type { Disclosure1Data } from "@/app/form/(formSteps)/disclosures/DisclosureData";
+import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
   PersonalDetails2Data,
@@ -9,7 +9,7 @@ type SessionStorageKey =
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data
   | keyof PersonalDetails3Data
-  | keyof Disclosure1Data;
+  | keyof BusinessDetails1Data;
 
 export const setKeyValue = (key: SessionStorageKey, value: string): void => {
   window.sessionStorage.setItem(key, value);
