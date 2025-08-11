@@ -6,9 +6,9 @@ import {
 
 describe("getCurrentFormProgress", () => {
   it("returns the correct step when the path has no steps", () => {
-    const currentFormProgress = getCurrentFormProgress("/form/download");
+    const currentFormProgress = getCurrentFormProgress("/form/finish");
     expect(currentFormProgress).toEqual({
-      section: { id: "download", progressBarTitle: "Download forms", heading: "Download forms" },
+      section: { id: "finish", progressBarTitle: "Finish", heading: "Download forms" },
     });
   });
 

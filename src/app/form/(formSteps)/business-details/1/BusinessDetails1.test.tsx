@@ -1,11 +1,11 @@
-import DisclosuresStep1 from "@form/(formSteps)/disclosures/1/page";
+import BusinessDetails1 from "@form/(formSteps)/business-details/1/page";
 import { getValue } from "@form/_utils/sessionStorage";
 import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-describe("<DisclosuresStep1 />", () => {
+describe("<BusinessDetailsStep1 />", () => {
   const renderWithRouter = () => {
     const mockPush = jest.fn();
     const mockRefresh = jest.fn();
@@ -15,10 +15,10 @@ describe("<DisclosuresStep1 />", () => {
     };
     render(
       <RouterPathnameProvider
-        pathname="/form/disclosures/1"
+        pathname="/form/business-details/1"
         router={mockRouter as AppRouterInstance}
       >
-        <DisclosuresStep1 />
+        <BusinessDetails1 />
       </RouterPathnameProvider>,
     );
     return mockRouter;
@@ -89,7 +89,7 @@ describe("<DisclosuresStep1 />", () => {
     await user.click(screen.getByRole("button", { name: "Next" }));
     expect(getValue("isSoleProprietorship")).toBe("false");
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
@@ -126,7 +126,7 @@ describe("<DisclosuresStep1 />", () => {
     expect(getValue("isSoleProprietorship")).toBe("true");
     expect(getValue("hasSameBusinessAddress")).toBe("true");
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
@@ -174,7 +174,7 @@ describe("<DisclosuresStep1 />", () => {
       );
     }
     expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/section-3");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 

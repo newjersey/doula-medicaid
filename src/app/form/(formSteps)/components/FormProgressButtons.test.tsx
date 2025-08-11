@@ -28,10 +28,7 @@ describe("<FormProgressButtons />", () => {
       refresh: mockRefresh,
     };
     render(
-      <RouterPathnameProvider
-        pathname="/form/personal-details/1"
-        router={router as AppRouterInstance}
-      >
+      <RouterPathnameProvider pathname="/form/screening" router={router as AppRouterInstance}>
         <FormProgressButtons />
       </RouterPathnameProvider>,
     );
@@ -73,7 +70,7 @@ describe("<FormProgressButtons />", () => {
 
   it("shows only the previous button when on the last step", () => {
     render(
-      <RouterPathnameProvider pathname="/form/download">
+      <RouterPathnameProvider pathname="/form/finish">
         <FormProgressButtons />
       </RouterPathnameProvider>,
     );
@@ -83,7 +80,7 @@ describe("<FormProgressButtons />", () => {
 
     expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute(
       "href",
-      "/form/section-5",
+      "/form/business-details/1",
     );
   });
 });

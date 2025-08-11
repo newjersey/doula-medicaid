@@ -11,35 +11,35 @@ export interface FormProgress {
 }
 export const allSections: Array<Section> = [
   {
+    id: "screening",
+    progressBarTitle: "Screening",
+    heading: "Screening",
+  },
+  {
+    id: "insurance",
+    progressBarTitle: "Insurance",
+    heading: "Insurance",
+  },
+  {
+    id: "training",
+    progressBarTitle: "Training",
+    heading: "Training",
+  },
+  {
     id: "personal-details",
     progressBarTitle: "Personal details",
     heading: "Personal details",
     numSteps: 3,
   },
   {
-    id: "disclosures",
-    progressBarTitle: "Disclosures",
-    heading: "Disclosure of ownership",
+    id: "business-details",
+    progressBarTitle: "Business details",
+    heading: "Business details",
     numSteps: 1,
   },
   {
-    id: "section-3",
-    progressBarTitle: "Section 3",
-    heading: "Placeholder section 3",
-  },
-  {
-    id: "section-4",
-    progressBarTitle: "Section 4",
-    heading: "Placeholder section 4",
-  },
-  {
-    id: "section-5",
-    progressBarTitle: "Section 5",
-    heading: "Placeholder section 5",
-  },
-  {
-    id: "download",
-    progressBarTitle: "Download forms",
+    id: "finish",
+    progressBarTitle: "Finish",
     heading: "Download forms",
   },
 ];
