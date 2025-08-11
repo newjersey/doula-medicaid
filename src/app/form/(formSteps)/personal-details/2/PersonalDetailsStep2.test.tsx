@@ -205,4 +205,38 @@ describe("<PersonalDetailsStep2 />", () => {
     expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
     expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
   });
+
+  describe("Public information explainer", () => {
+    it("orders the public information explainer immediately after the address input", async () => {
+      const user = userEvent.setup();
+      renderWithRouter();
+
+      const zipCodeInput = screen.getByRole("textbox", {
+        name: "ZIP code *",
+      });
+      const publicInformationExplainer = screen.getByRole("button", {
+        name: "Will my information be public?",
+      });
+      await user.type(zipCodeInput, "1");
+      expect(zipCodeInput).toHaveFocus();
+
+      await user.tab();
+      expect(publicInformationExplainer).toHaveFocus();
+    });
+
+    it("has a heading level one greater than the section heading level", () => {
+      renderWithRouter();
+      const sectionHeadingLevel = 2;
+      const addressSectionHeading = screen.getByRole("heading", {
+        name: "Mailing address",
+        level: sectionHeadingLevel,
+      });
+      expect(addressSectionHeading).toBeInTheDocument();
+      const publicInformationExplainer = screen.getByRole("heading", {
+        name: "Will my information be public?",
+        level: sectionHeadingLevel + 1,
+      });
+      expect(publicInformationExplainer).toBeInTheDocument();
+    });
+  });
 });

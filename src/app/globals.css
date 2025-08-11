@@ -37,7 +37,7 @@ abbr[title] {
   }
 }
 @media (max-width: 1023px) {
-  .form-first-question-explainer {
+  .form-explainer {
     margin-top: 20px;
   }
 }

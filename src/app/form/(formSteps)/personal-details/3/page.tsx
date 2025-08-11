@@ -95,7 +95,7 @@ const PersonalDetailsStep3 = () => {
                 </span>
               )}
             </div>
-            <div className="form-first-question-explainer">
+            <div className="form-explainer form-first-question-explainer">
               <NpiExplainer />
             </div>
             <div>
