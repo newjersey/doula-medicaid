@@ -1,6 +1,7 @@
 "use client";
 
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
+import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
@@ -76,114 +77,119 @@ const PersonalDetailsStep2 = () => {
     <div>
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit, onError)} className="maxw-full" noValidate>
-          <div className="maxw-tablet">
-            <ErrorSummary<PersonalDetails2Data>
-              shouldSummarizeErrors={shouldSummarizeErrors}
-              errors={errors}
-              ref={errorSummaryRef}
-              setFocus={setFocus}
-            />
-            <h2 className="font-heading-md">Mailing address</h2>
-            <p className="usa-hint">
-              This is the location where you want to receive official mail.
-            </p>
-            <Fieldset legend="Mailing address" legendStyle="srOnly">
-              <div className="grid-row grid-gap">
-                <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="streetAddress1" requiredMarker>
-                    {orderedInputNameToLabel["streetAddress1"]}
-                  </Label>
-                  <TextInput
-                    id="streetAddress1"
-                    type="text"
-                    required
-                    validationStatus={errors.streetAddress1 ? "error" : undefined}
-                    aria-invalid={errors.streetAddress1 ? "true" : "false"}
-                    aria-describedby={errors.streetAddress1 && "streetAddress1ErrorMessage"}
-                    {...register("streetAddress1", {
-                      required: `${orderedInputNameToLabel["streetAddress1"]} is required`,
-                    })}
-                  />
-                  {errors.streetAddress1 && (
-                    <span id="streetAddress1ErrorMessage" className="usa-error-message">
-                      {errors.streetAddress1.message}
-                    </span>
-                  )}
+          <div className="form-grid">
+            <div>
+              <ErrorSummary<PersonalDetails2Data>
+                shouldSummarizeErrors={shouldSummarizeErrors}
+                errors={errors}
+                ref={errorSummaryRef}
+                setFocus={setFocus}
+              />
+              <h2 className="font-heading-md">Mailing address</h2>
+              <p className="usa-hint">
+                We will send official mail here. It can be your home address.
+              </p>
+              <Fieldset legend="Mailing address" legendStyle="srOnly">
+                <div className="grid-row grid-gap">
+                  <div className="mobile-lg:grid-col-6">
+                    <Label htmlFor="streetAddress1" requiredMarker>
+                      {orderedInputNameToLabel["streetAddress1"]}
+                    </Label>
+                    <TextInput
+                      id="streetAddress1"
+                      type="text"
+                      required
+                      validationStatus={errors.streetAddress1 ? "error" : undefined}
+                      aria-invalid={errors.streetAddress1 ? "true" : "false"}
+                      aria-describedby={errors.streetAddress1 && "streetAddress1ErrorMessage"}
+                      {...register("streetAddress1", {
+                        required: `${orderedInputNameToLabel["streetAddress1"]} is required`,
+                      })}
+                    />
+                    {errors.streetAddress1 && (
+                      <span id="streetAddress1ErrorMessage" className="usa-error-message">
+                        {errors.streetAddress1.message}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mobile-lg:grid-col-6">
+                    <Label htmlFor="streetAddress2">
+                      {orderedInputNameToLabel["streetAddress2"]}
+                    </Label>
+                    <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
+                  </div>
                 </div>
-                <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="streetAddress2">
-                    {orderedInputNameToLabel["streetAddress2"]}
-                  </Label>
-                  <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
+                <div className="grid-row grid-gap">
+                  <div className="mobile-lg:grid-col-6">
+                    <Label htmlFor="city" requiredMarker>
+                      {orderedInputNameToLabel["city"]}
+                    </Label>
+                    <TextInput
+                      id="city"
+                      type="text"
+                      required
+                      validationStatus={errors.city ? "error" : undefined}
+                      aria-invalid={errors.city ? "true" : "false"}
+                      aria-describedby={errors.city && "cityErrorMessage"}
+                      {...register("city", {
+                        required: `${orderedInputNameToLabel["city"]} is required`,
+                      })}
+                    />
+                    {errors.city && (
+                      <span id="cityErrorMessage" className="usa-error-message">
+                        {errors.city.message}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="grid-row grid-gap">
-                <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="city" requiredMarker>
-                    {orderedInputNameToLabel["city"]}
-                  </Label>
-                  <TextInput
-                    id="city"
-                    type="text"
-                    required
-                    validationStatus={errors.city ? "error" : undefined}
-                    aria-invalid={errors.city ? "true" : "false"}
-                    aria-describedby={errors.city && "cityErrorMessage"}
-                    {...register("city", {
-                      required: `${orderedInputNameToLabel["city"]} is required`,
-                    })}
-                  />
-                  {errors.city && (
-                    <span id="cityErrorMessage" className="usa-error-message">
-                      {errors.city.message}
-                    </span>
-                  )}
+                <div className="grid-row grid-gap">
+                  <div className="mobile-lg:grid-col-6">
+                    <Label htmlFor="state" requiredMarker>
+                      {orderedInputNameToLabel["state"]}
+                    </Label>
+                    <Select className="usa-select" id="state" required {...register("state")}>
+                      {Object.keys(AddressState).map((state) => (
+                        <option key={state} value={state}>
+                          {state}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="mobile-lg:grid-col-4">
+                    <Label htmlFor="zip" requiredMarker>
+                      {orderedInputNameToLabel["zip"]}
+                    </Label>
+                    <TextInputMask
+                      className="usa-input--medium"
+                      id="zip"
+                      type="text"
+                      value={zip ?? ""}
+                      mask="#####"
+                      pattern="\d{5}"
+                      required
+                      validationStatus={errors.zip ? "error" : undefined}
+                      aria-invalid={errors.zip ? "true" : "false"}
+                      aria-describedby={errors.zip && "zipErrorMessage"}
+                      {...register("zip", {
+                        required: `${orderedInputNameToLabel["zip"]} is required`,
+                        minLength: {
+                          value: 5,
+                          message: `${orderedInputNameToLabel["zip"]} must have five digits`,
+                        },
+                      })}
+                    />
+                    {errors.zip && (
+                      <span id="zipErrorMessage" className="usa-error-message">
+                        {errors.zip.message}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-              <div className="grid-row grid-gap">
-                <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="state" requiredMarker>
-                    {orderedInputNameToLabel["state"]}
-                  </Label>
-                  <Select className="usa-select" id="state" required {...register("state")}>
-                    {Object.keys(AddressState).map((state) => (
-                      <option key={state} value={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="mobile-lg:grid-col-4">
-                  <Label htmlFor="zip" requiredMarker>
-                    {orderedInputNameToLabel["zip"]}
-                  </Label>
-                  <TextInputMask
-                    className="usa-input--medium"
-                    id="zip"
-                    type="text"
-                    value={zip ?? ""}
-                    mask="#####"
-                    pattern="\d{5}"
-                    required
-                    validationStatus={errors.zip ? "error" : undefined}
-                    aria-invalid={errors.zip ? "true" : "false"}
-                    aria-describedby={errors.zip && "zipErrorMessage"}
-                    {...register("zip", {
-                      required: `${orderedInputNameToLabel["zip"]} is required`,
-                      minLength: {
-                        value: 5,
-                        message: `${orderedInputNameToLabel["zip"]} must have five digits`,
-                      },
-                    })}
-                  />
-                  {errors.zip && (
-                    <span id="zipErrorMessage" className="usa-error-message">
-                      {errors.zip.message}
-                    </span>
-                  )}
-                </div>
-              </div>
-            </Fieldset>
+              </Fieldset>
+            </div>
+            <div className="form-explainer">
+              <PublicInformationExplainer />
+            </div>
           </div>
           <FormProgressButtons />
         </Form>
