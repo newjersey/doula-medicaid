@@ -22,17 +22,17 @@ import { useEffect, useRef, useState } from "react";
 import { useForm, type SubmitErrorHandler, type SubmitHandler } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
-  streetAddress1: "Street address 1",
+  streetAddress1: "Street address",
   streetAddress2: "Street address line 2",
   city: "City",
   state: "State",
   zip: "ZIP code",
   hasSameBillingMailingAddress: "Are your billing and residential addresses the same?",
-  billingStreetAddress1: "Billing street address 1",
-  billingStreetAddress2: "Billing street address 2",
-  billingCity: "Billing city",
-  billingState: "Billing state",
-  billingZip: "Billing zip",
+  billingStreetAddress1: "Street address",
+  billingStreetAddress2: "Street address line 2",
+  billingCity: "City",
+  billingState: "State",
+  billingZip: "ZIP code",
 };
 
 const PersonalDetailsStep2 = () => {
@@ -52,7 +52,7 @@ const PersonalDetailsStep2 = () => {
       city: getValue("city") || "",
       state: getValue("state") || "NJ",
       zip: getValue("zip") || "",
-      hasSameBillingMailingAddress: "",
+      hasSameBillingMailingAddress: getValue("hasSameBillingMailingAddress") || "",
       billingStreetAddress1: getValue("billingStreetAddress1") || "",
       billingStreetAddress2: getValue("billingStreetAddress2") || "",
       billingCity: getValue("billingCity") || "",
@@ -64,6 +64,7 @@ const PersonalDetailsStep2 = () => {
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const zip = watch("zip");
+  const billingZip = watch("billingZip");
   const hasSameBillingMailingAddress = watch("hasSameBillingMailingAddress");
 
   const onSubmit: SubmitHandler<PersonalDetails2Data> = (data) => {
@@ -229,23 +230,51 @@ const PersonalDetailsStep2 = () => {
                   </div>
                 }
                 legendStyle="large"
+                aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
+                aria-describedby={
+                  errors.hasSameBillingMailingAddress && "hasSameBillingMailingAddressErrorMessage"
+                }
               >
+                {errors.hasSameBillingMailingAddress && (
+                  <span
+                    id="hasSameBillingMailingAddressErrorMessage"
+                    className="usa-error-message"
+                    role="alert"
+                  >
+                    {errors.hasSameBillingMailingAddress.message}
+                  </span>
+                )}
                 <Radio
                   id="sameBillingMailingAddressYes"
                   label="Yes"
                   value="true"
-                  {...register("hasSameBillingMailingAddress")}
+                  checked={hasSameBillingMailingAddress === "true"}
+                  required
+                  {...register("hasSameBillingMailingAddress", {
+                    required: `This question is required`,
+                  })}
                 />
                 <Radio
                   id="sameBillingMailingAddressNo"
                   label="No"
                   value="false"
-                  {...register("hasSameBillingMailingAddress")}
+                  checked={hasSameBillingMailingAddress === "false"}
+                  required
+                  {...register("hasSameBillingMailingAddress", {
+                    required: `This question is required`,
+                  })}
                 />
               </Fieldset>
 
               {hasSameBillingMailingAddress === "false" && (
-                <Fieldset legend="Mailing address" legendStyle="srOnly">
+                <Fieldset
+                  legend={
+                    <p className="font-ui-xs text-normal margin-top-5">
+                      What&apos;s your billing address?
+                    </p>
+                  }
+                  legendStyle="large"
+                >
                   <div className="grid-row grid-gap">
                     <div className="mobile-lg:grid-col-6">
                       <Label htmlFor="billingStreetAddress1" requiredMarker>
@@ -261,7 +290,7 @@ const PersonalDetailsStep2 = () => {
                           errors.billingStreetAddress1 && "billingStreetAddress1ErrorMessage"
                         }
                         {...register("billingStreetAddress1", {
-                          required: `${orderedInputNameToLabel["billingStreetAddress1"]} is required`,
+                          required: `Billing ${orderedInputNameToLabel["billingStreetAddress1"].toLowerCase()} is required`,
                         })}
                       />
                       {errors.billingStreetAddress1 && (
@@ -298,7 +327,7 @@ const PersonalDetailsStep2 = () => {
                         aria-invalid={errors.billingCity ? "true" : "false"}
                         aria-describedby={errors.billingCity && "billingCityErrorMessage"}
                         {...register("billingCity", {
-                          required: `${orderedInputNameToLabel["billingCity"]} is required`,
+                          required: `Billing ${orderedInputNameToLabel["billingCity"].toLowerCase()} is required`,
                         })}
                       />
                       {errors.billingCity && (
@@ -334,25 +363,27 @@ const PersonalDetailsStep2 = () => {
                       <Label htmlFor="billingZip" requiredMarker>
                         {orderedInputNameToLabel["billingZip"]}
                       </Label>
-                      <TextInput
+                      <TextInputMask
                         className="usa-input--medium"
                         id="billingZip"
                         type="text"
-                        pattern="[\d]{5}(-[\d]{4})?"
+                        value={billingZip ?? ""}
+                        mask="#####"
+                        pattern="\d{5}"
                         required
                         validationStatus={errors.billingZip ? "error" : undefined}
                         aria-invalid={errors.billingZip ? "true" : "false"}
                         aria-describedby={errors.billingZip && "billingZipErrorMessage"}
                         {...register("billingZip", {
-                          required: `${orderedInputNameToLabel["billingZip"]} is required`,
+                          required: `Billing ${orderedInputNameToLabel["billingZip"].toLowerCase()} is required`,
+                          minLength: {
+                            value: 5,
+                            message: `Billing ${orderedInputNameToLabel["billingZip"].toLowerCase()} must have five digits`,
+                          },
                         })}
                       />
                       {errors.billingZip && (
-                        <span
-                          id="billingZipErrorMessage"
-                          className="usa-error-message"
-                          role="alert"
-                        >
+                        <span id="billingZipErrorMessage" className="usa-error-message">
                           {errors.billingZip.message}
                         </span>
                       )}

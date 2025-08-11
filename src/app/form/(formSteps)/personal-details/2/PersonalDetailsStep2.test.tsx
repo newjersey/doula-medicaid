@@ -41,7 +41,7 @@ const billingAddressFields = [
   { name: "Street address *", key: "billingStreetAddress1", testValue: "Test address 1" },
   { name: "Street address line 2", key: "billingStreetAddress2", testValue: "Test address 2" },
   { name: "City *", key: "billingCity", testValue: "Test city" },
-  { name: "Zip code *", key: "billingZip", testValue: "12345" },
+  { name: "ZIP code *", key: "billingZip", testValue: "12345" },
 ];
 
 const allInputFields: Array<InputField> = [
