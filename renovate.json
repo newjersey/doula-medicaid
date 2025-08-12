@@ -3,11 +3,7 @@
   "timezone": "US/Eastern",
   "extends": ["config:recommended"],
   "automergeSchedule": ["* * * * 0,6", "* 0-6 * * 1"],
-  "packageRules": [
-    {
-      "ignoreDeps": ["numpy", "pandas", "python-dateutil", "pytz", "six", "tzdata"],
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
-    }
-  ]
+  "ignoreDeps": ["numpy", "pandas", "python-dateutil", "pytz", "six", "tzdata"],
+  "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+  "automerge": true
 }
