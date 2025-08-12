@@ -1,6 +1,6 @@
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import BusinessDetails1 from "@form/(formSteps)/business-details/1/page";
 import { getValue } from "@form/_utils/sessionStorage";
-import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -138,7 +138,7 @@ describe("<BusinessDetailsStep1 />", () => {
     await clickNoSameAddressButton();
 
     const addressTextInputFields = [
-      { name: "Street address 1 *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
+      { name: "Street address *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
       {
         name: "Street address line 2",
         key: "businessStreetAddress2",
@@ -179,7 +179,7 @@ describe("<BusinessDetailsStep1 />", () => {
   });
 
   it.each([
-    { label: "Street address 1 *", role: "textbox" },
+    { label: "Street address *", role: "textbox" },
     { label: "City *", role: "textbox" },
     { label: "ZIP code *", role: "textbox" },
     { label: "State *", role: "combobox" },

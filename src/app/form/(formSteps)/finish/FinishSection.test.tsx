@@ -1,6 +1,6 @@
 import FinishSection from "@form/(formSteps)/finish/page";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
-import { RouterPathnameProvider } from "@form/_utils/testUtils";
+import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
