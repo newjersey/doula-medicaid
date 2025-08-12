@@ -1,11 +1,13 @@
-import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import type { BusinessDetails1Data } from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
   PersonalDetails2Data,
   PersonalDetails3Data,
-} from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+} from "@form/(formSteps)/personal-details/PersonalDetailsData";
+import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
 
 type SessionStorageKey =
+  | keyof TrainingData
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data
   | keyof PersonalDetails3Data
