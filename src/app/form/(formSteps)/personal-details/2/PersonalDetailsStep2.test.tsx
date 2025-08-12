@@ -1,10 +1,11 @@
-import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
+import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
 import {
   fillAllInputsExcept,
   getInputField,
-  RouterPathnameProvider,
   type InputField,
-} from "@form/_utils/testUtils";
+} from "@/app/form/_utils/testUtils/fillInputs";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -143,6 +144,11 @@ describe("<PersonalDetailsStep2 />", () => {
 
       await user.selectOptions(combobox, "PA");
       expect(combobox).toHaveValue("PA");
+    });
+
+    it("enables autocompleting the mailing address", () => {
+      renderWithRouter();
+      expectAddressHasAutocomplete("Mailing address", "shipping");
     });
   });
 

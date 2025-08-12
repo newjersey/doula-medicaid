@@ -2,6 +2,7 @@
 
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
+import { typecheckAutocomplete } from "@/app/form/_utils/types/autocomplete";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
@@ -121,6 +122,7 @@ const PersonalDetailsStep2 = () => {
                     <TextInput
                       id="streetAddress1"
                       type="text"
+                      autoComplete={typecheckAutocomplete("shipping address-line1")}
                       required
                       validationStatus={errors.streetAddress1 ? "error" : undefined}
                       aria-invalid={errors.streetAddress1 ? "true" : "false"}
@@ -139,7 +141,12 @@ const PersonalDetailsStep2 = () => {
                     <Label htmlFor="streetAddress2">
                       {orderedInputNameToLabel["streetAddress2"]}
                     </Label>
-                    <TextInput id="streetAddress2" type="text" {...register("streetAddress2")} />
+                    <TextInput
+                      id="streetAddress2"
+                      type="text"
+                      autoComplete={typecheckAutocomplete("shipping address-line2")}
+                      {...register("streetAddress2")}
+                    />
                   </div>
                 </div>
                 <div className="grid-row grid-gap">
@@ -150,6 +157,7 @@ const PersonalDetailsStep2 = () => {
                     <TextInput
                       id="city"
                       type="text"
+                      autoComplete={typecheckAutocomplete("shipping address-level2")}
                       required
                       validationStatus={errors.city ? "error" : undefined}
                       aria-invalid={errors.city ? "true" : "false"}
@@ -170,7 +178,13 @@ const PersonalDetailsStep2 = () => {
                     <Label htmlFor="state" requiredMarker>
                       {orderedInputNameToLabel["state"]}
                     </Label>
-                    <Select className="usa-select" id="state" required {...register("state")}>
+                    <Select
+                      className="usa-select"
+                      id="state"
+                      autoComplete={typecheckAutocomplete("shipping address-level1")}
+                      required
+                      {...register("state")}
+                    >
                       {Object.keys(AddressState).map((state) => (
                         <option key={state} value={state}>
                           {state}
@@ -186,6 +200,7 @@ const PersonalDetailsStep2 = () => {
                       className="usa-input--medium"
                       id="zip"
                       type="text"
+                      autoComplete={typecheckAutocomplete("shipping postal-code")}
                       value={zip ?? ""}
                       mask="#####"
                       pattern="\d{5}"

@@ -120,7 +120,7 @@ const BusinessDetails1 = () => {
                 <div className="grid-row grid-gap">
                   <div className="mobile-lg:grid-col-6">
                     <Label requiredMarker htmlFor="businessStreetAddress1">
-                      Street address 1
+                      Street address
                     </Label>
                     <TextInput
                       id="businessStreetAddress1"

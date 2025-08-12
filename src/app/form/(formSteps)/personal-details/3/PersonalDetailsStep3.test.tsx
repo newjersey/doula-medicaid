@@ -1,5 +1,6 @@
+import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
-import { fillAllInputsExcept, RouterPathnameProvider } from "@form/_utils/testUtils";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
