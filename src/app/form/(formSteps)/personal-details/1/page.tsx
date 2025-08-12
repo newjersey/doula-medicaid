@@ -305,7 +305,7 @@ const PersonalDetailsStep1 = () => {
           <hr className="margin-top-5 margin-bottom-5" />
           <div className="maxw-tablet">
             <h2 className="font-heading-md">Contact information</h2>
-            <p>This is where we&lsquo;ll send official updates and communications.</p>
+            <p>We&apos;ll send official updates here.</p>
             <Label htmlFor="email" requiredMarker>
               {orderedInputNameToLabel["email"]}
             </Label>
