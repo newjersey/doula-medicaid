@@ -56,7 +56,7 @@ const getFormData = (): FormData => {
   };
 };
 
-const DownloadStep = () => {
+const FinishSection = () => {
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
   useEffect(() => {
     (async () => {
@@ -78,4 +78,4 @@ const DownloadStep = () => {
   );
 };
 
-export default DownloadStep;
+export default FinishSection;
