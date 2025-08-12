@@ -4,6 +4,10 @@
   "extends": ["config:recommended"],
   "automergeSchedule": ["* * * * 0,6", "* 0-6 * * 1"],
   "ignorePaths": ["**/scripts/**"],
-  "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
-  "automerge": true
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    }
+  ]
 }
