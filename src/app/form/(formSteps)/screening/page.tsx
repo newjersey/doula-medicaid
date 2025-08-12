@@ -6,7 +6,7 @@ import { Form } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-const FormStep = () => {
+const FormSection = () => {
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
   const { handleSubmit } = useForm<object>({
@@ -26,4 +26,4 @@ const FormStep = () => {
   );
 };
 
-export default FormStep;
+export default FormSection;
