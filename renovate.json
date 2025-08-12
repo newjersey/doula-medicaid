@@ -1,6 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "timezone": "US/Eastern",
   "extends": ["config:recommended"],
+  "automergeSchedule": ["* * * * 0,6", "* 0-6 * * 1"],
   "packageRules": [
     {
       "ignoreDeps": ["numpy", "pandas", "python-dateutil", "pytz", "six", "tzdata"],
