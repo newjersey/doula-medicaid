@@ -151,7 +151,6 @@ describe("<PersonalDetailsStep2 />", () => {
         const input = await getInputField(screen, { name, key });
         expect(input).toBeRequired();
         await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set([key]));
-        console.log(key);
         await user.click(screen.getByRole("button", { name: "Next" }));
 
         expect(input).toHaveAccessibleDescription(

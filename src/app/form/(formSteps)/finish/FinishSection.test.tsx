@@ -1,9 +1,10 @@
-import FinishSection, { getFormData } from "@form/(formSteps)/finish/page";
+import FinishSection from "@form/(formSteps)/finish/page";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { getFormData } from "./getFormData";
 
 jest.mock("@form/_utils/fillPdf/form");
 jest.mock("@form/_utils/fillPdf/zip");
