@@ -1,57 +1,42 @@
-import * as fillPdfForm from "@form/_utils/fillPdf/form";
-import * as zipForms from "@form/_utils/fillPdf/zip";
+import FinishSection, { getFormData } from "@form/(formSteps)/finish/page";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
-import * as sessionStorage from "@form/_utils/sessionStorage";
+import { RouterPathnameProvider } from "@form/_utils/testUtils";
 import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
-import FinishSection from "./page";
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-// Mock the dependencies
-jest.mock("@form/_utils/sessionStorage");
 jest.mock("@form/_utils/fillPdf/form");
 jest.mock("@form/_utils/fillPdf/zip");
-jest.mock("@form/(formSteps)/components/FormProgressButtons", () => {
-  return function MockFormProgressButtons() {
-    return <div data-testid="form-progress-buttons">Form Progress Buttons</div>;
-  };
-});
 
-const mockGetValue = sessionStorage.getValue as jest.MockedFunction<typeof sessionStorage.getValue>;
-const mockFillAllForms = fillPdfForm.fillAllForms as jest.MockedFunction<
-  typeof fillPdfForm.fillAllForms
->;
-const mockZipForms = zipForms.zipForms as jest.MockedFunction<typeof zipForms.zipForms>;
-
-// Mock URL.createObjectURL
 const mockCreateObjectURL = jest.fn();
 (global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
 
-describe("<FinishSection/>", () => {
+const renderWithRouter = () => {
+  const mockPush = jest.fn();
+  const mockRefresh = jest.fn();
+  const mockRouter: Partial<AppRouterInstance> = {
+    push: mockPush,
+    refresh: mockRefresh,
+  };
+  render(
+    <RouterPathnameProvider pathname="/form/finish/1" router={mockRouter as AppRouterInstance}>
+      <FinishSection />
+    </RouterPathnameProvider>,
+  );
+  return mockRouter;
+};
+
+describe("<FinishSection />", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockCreateObjectURL.mockReturnValue("mock-blob-url");
-    mockFillAllForms.mockResolvedValue([
-      { filename: "form1.pdf", bytes: new Uint8Array() },
-      { filename: "form2.pdf", bytes: new Uint8Array() },
-      { filename: "form3.pdf", bytes: new Uint8Array() },
-    ]);
-    mockZipForms.mockResolvedValue(new Blob());
   });
 
-  const setupMockSessionStorage = (values: Record<string, string | null>) => {
-    mockGetValue.mockImplementation((key: string) => values[key] || null);
-  };
+  it("builds form, renders download link, and previous buttons", async () => {
+    renderWithRouter();
 
-  it("builds form, renders download link, and form progress buttons", async () => {
-    setupMockSessionStorage({});
-    render(<FinishSection />);
-
-    await waitFor(() => {
-      expect(mockFillAllForms).toHaveBeenCalledTimes(1);
-      expect(mockZipForms).toHaveBeenCalledTimes(1);
-    });
-
-    expect(screen.getByTestId("form-progress-buttons")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Previous" })).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Next" })).not.toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByText("Download your forms")).toBeInTheDocument();
@@ -63,151 +48,136 @@ describe("<FinishSection/>", () => {
   });
 
   describe("when hasSameBillingMailingAddress is true", () => {
-    it("overwrites all billing address values with mailing address values", async () => {
-      setupMockSessionStorage({
+    it("overwrites all billing address values with mailing address values", () => {
+      window.sessionStorage.setItem("streetAddress1", "123 Main St");
+      window.sessionStorage.setItem("streetAddress2", "Apt 4B");
+      window.sessionStorage.setItem("city", "Trenton");
+      window.sessionStorage.setItem("state", "NJ");
+      window.sessionStorage.setItem("zip", "10001");
+      window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
+      window.sessionStorage.setItem("billingStreetAddress1", "400 Ignore St");
+      window.sessionStorage.setItem("billingStreetAddress2", "Unit 4");
+      window.sessionStorage.setItem("billingCity", "New York");
+      window.sessionStorage.setItem("billingState", "NY");
+      window.sessionStorage.setItem("billingZip", "22222");
+
+      renderWithRouter();
+
+      expect(getFormData()).toMatchObject({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
-        city: "New York",
-        state: "NY",
+        city: "Trenton",
+        state: AddressState.NJ,
         zip: "10001",
-        hasSameBillingMailingAddress: "true",
-        // These billing values should be ignored
-        billingStreetAddress1: "456 Oak Ave",
-        billingStreetAddress2: "Suite 200",
-        billingCity: "Los Angeles",
-        billingState: "CA",
-        billingZip: "90210",
+        hasSameBillingMailingAddress: true,
+        billingStreetAddress1: "123 Main St",
+        billingStreetAddress2: "Apt 4B",
+        billingCity: "Trenton",
+        billingState: AddressState.NJ,
+        billingZip: "10001",
       });
+    });
+  });
 
-      render(<FinishSection />);
+  describe("when hasSameBillingMailingAddress is false", () => {
+    it("uses separate billing address values", () => {
+      window.sessionStorage.setItem("streetAddress1", "123 Main St");
+      window.sessionStorage.setItem("streetAddress2", "Apt 4B");
+      window.sessionStorage.setItem("city", "Trenton");
+      window.sessionStorage.setItem("state", "NJ");
+      window.sessionStorage.setItem("zip", "10001");
+      window.sessionStorage.setItem("hasSameBillingMailingAddress", "false");
+      window.sessionStorage.setItem("billingStreetAddress1", "400 Ignore St");
+      window.sessionStorage.setItem("billingStreetAddress2", "Unit 4");
+      window.sessionStorage.setItem("billingCity", "New York");
+      window.sessionStorage.setItem("billingState", "NY");
+      window.sessionStorage.setItem("billingZip", "22222");
 
-      await waitFor(() => {
-        expect(mockFillAllForms).toHaveBeenCalledWith(
-          expect.objectContaining({
-            streetAddress1: "123 Main St",
-            streetAddress2: "Apt 4B",
-            city: "New York",
-            state: AddressState.NY,
-            zip: "10001",
-            hasSameBillingMailingAddress: true,
-            // Billing address should match mailing address
-            billingStreetAddress1: "123 Main St",
-            billingStreetAddress2: "Apt 4B",
-            billingCity: "New York",
-            billingState: AddressState.NY,
-            billingZip: "10001",
-          }),
-        );
+      renderWithRouter();
+
+      expect(getFormData()).toMatchObject({
+        streetAddress1: "123 Main St",
+        streetAddress2: "Apt 4B",
+        city: "Trenton",
+        state: AddressState.NJ,
+        zip: "10001",
+        hasSameBillingMailingAddress: false,
+        billingStreetAddress1: "400 Ignore St",
+        billingStreetAddress2: "Unit 4",
+        billingCity: "New York",
+        billingState: AddressState.NY,
+        billingZip: "22222",
+      });
+    });
+  });
+
+  describe("date of birth handling", () => {
+    it("creates date when all date components are present", async () => {
+      window.sessionStorage.setItem("dateOfBirthDay", "25");
+      window.sessionStorage.setItem("dateOfBirthMonth", "12");
+      window.sessionStorage.setItem("dateOfBirthYear", "1990");
+
+      renderWithRouter();
+
+      expect(getFormData()).toMatchObject({
+        dateOfBirth: new Date("1990/12/25"),
       });
     });
 
-    describe("when hasSameBillingMailingAddress is false", () => {
-      it("uses separate billing address values", async () => {
-        setupMockSessionStorage({
-          streetAddress1: "123 Main St",
-          streetAddress2: "Apt 4B",
-          city: "New York",
-          state: "NY",
-          zip: "10001",
-          hasSameBillingMailingAddress: "false",
-          billingStreetAddress1: "456 Oak Ave",
-          billingStreetAddress2: "Suite 200",
-          billingCity: "Los Angeles",
-          billingState: "CA",
-          billingZip: "90210",
+    describe("sets dateOfBirth to null when any date component is missing", () => {
+      it("when day is missing", async () => {
+        window.sessionStorage.setItem("dateOfBirthMonth", "12");
+        window.sessionStorage.setItem("dateOfBirthYear", "1990");
+
+        renderWithRouter();
+
+        expect(getFormData()).toMatchObject({
+          dateOfBirth: null,
         });
+      });
 
-        render(<FinishSection />);
+      it("when month is missing", async () => {
+        window.sessionStorage.setItem("dateOfBirthDay", "25");
+        window.sessionStorage.setItem("dateOfBirthYear", "1990");
 
-        await waitFor(() => {
-          expect(mockFillAllForms).toHaveBeenCalledWith(
-            expect.objectContaining({
-              streetAddress1: "123 Main St",
-              streetAddress2: "Apt 4B",
-              city: "New York",
-              state: AddressState.NY,
-              zip: "10001",
-              hasSameBillingMailingAddress: false,
-              billingStreetAddress1: "456 Oak Ave",
-              billingStreetAddress2: "Suite 200",
-              billingCity: "Los Angeles",
-              billingState: AddressState.CA,
-              billingZip: "90210",
-            }),
-          );
+        renderWithRouter();
+
+        expect(getFormData()).toMatchObject({
+          dateOfBirth: null,
+        });
+      });
+
+      it("when year is missing", async () => {
+        window.sessionStorage.setItem("dateOfBirthDay", "25");
+        window.sessionStorage.setItem("dateOfBirthMonth", "12");
+
+        renderWithRouter();
+
+        expect(getFormData()).toMatchObject({
+          dateOfBirth: null,
         });
       });
     });
+  });
 
-    describe("date of birth handling", () => {
-      it("creates date when all date components are present", async () => {
-        setupMockSessionStorage({
-          dateOfBirthMonth: "12",
-          dateOfBirthDay: "25",
-          dateOfBirthYear: "1990",
-        });
+  describe("disclosing entity handling", () => {
+    it("sets natureOfDisclosingEntity to SoleProprietorship when isSoleProprietorship is true", async () => {
+      window.sessionStorage.setItem("isSoleProprietorship", "true");
 
-        render(<FinishSection />);
+      renderWithRouter();
 
-        await waitFor(() => {
-          expect(mockFillAllForms).toHaveBeenCalledWith(
-            expect.objectContaining({
-              dateOfBirth: new Date("12/25/1990"),
-            }),
-          );
-        });
-      });
-
-      it("sets dateOfBirth to null when any date component is missing", async () => {
-        setupMockSessionStorage({
-          dateOfBirthMonth: "12",
-          dateOfBirthDay: null,
-          dateOfBirthYear: "1990",
-        });
-
-        render(<FinishSection />);
-
-        await waitFor(() => {
-          expect(mockFillAllForms).toHaveBeenCalledWith(
-            expect.objectContaining({
-              dateOfBirth: null,
-            }),
-          );
-        });
+      expect(getFormData()).toMatchObject({
+        natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
       });
     });
 
-    describe("disclosing entity handling", () => {
-      it("sets natureOfDisclosingEntity to SoleProprietorship when isSoleProprietorship is true", async () => {
-        setupMockSessionStorage({
-          isSoleProprietorship: "true",
-        });
+    it("sets natureOfDisclosingEntity to null when isSoleProprietorship is false", async () => {
+      window.sessionStorage.setItem("isSoleProprietorship", "false");
 
-        render(<FinishSection />);
+      renderWithRouter();
 
-        await waitFor(() => {
-          expect(mockFillAllForms).toHaveBeenCalledWith(
-            expect.objectContaining({
-              natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
-            }),
-          );
-        });
-      });
-
-      it("sets natureOfDisclosingEntity to null when isSoleProprietorship is false", async () => {
-        setupMockSessionStorage({
-          isSoleProprietorship: "false",
-        });
-
-        render(<FinishSection />);
-
-        await waitFor(() => {
-          expect(mockFillAllForms).toHaveBeenCalledWith(
-            expect.objectContaining({
-              natureOfDisclosingEntity: null,
-            }),
-          );
-        });
+      expect(getFormData()).toMatchObject({
+        natureOfDisclosingEntity: null,
       });
     });
   });

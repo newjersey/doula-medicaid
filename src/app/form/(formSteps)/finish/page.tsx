@@ -15,7 +15,7 @@ const convertToBoolean = (value: string | null): boolean | null => {
   throw new Error(`Invalid boolean value: ${value}`);
 };
 
-const getFormData = (): FormData => {
+export const getFormData = (): FormData => {
   const dateOfBirth =
     getValue("dateOfBirthMonth") === null ||
     getValue("dateOfBirthDay") === null ||
