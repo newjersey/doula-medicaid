@@ -229,20 +229,7 @@ const PersonalDetailsStep2 = () => {
                     </p>
                   </div>
                 }
-                aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
-                aria-describedby={
-                  errors.hasSameBillingMailingAddress && "hasSameBillingMailingAddressErrorMessage"
-                }
               >
-                {errors.hasSameBillingMailingAddress && (
-                  <span
-                    id="hasSameBillingMailingAddressErrorMessage"
-                    className="usa-error-message"
-                    role="alert"
-                  >
-                    {errors.hasSameBillingMailingAddress.message}
-                  </span>
-                )}
                 <Radio
                   id="sameBillingMailingAddressYes"
                   label="Yes"
@@ -252,6 +239,11 @@ const PersonalDetailsStep2 = () => {
                   {...register("hasSameBillingMailingAddress", {
                     required: `This question is required`,
                   })}
+                  aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
+                  aria-describedby={
+                    errors.hasSameBillingMailingAddress &&
+                    "hasSameBillingMailingAddressErrorMessage"
+                  }
                 />
                 <Radio
                   id="sameBillingMailingAddressNo"
@@ -262,7 +254,21 @@ const PersonalDetailsStep2 = () => {
                   {...register("hasSameBillingMailingAddress", {
                     required: `This question is required`,
                   })}
+                  aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
+                  aria-describedby={
+                    errors.hasSameBillingMailingAddress &&
+                    "hasSameBillingMailingAddressErrorMessage"
+                  }
                 />
+                {errors.hasSameBillingMailingAddress && (
+                  <span
+                    id="hasSameBillingMailingAddressErrorMessage"
+                    className="usa-error-message"
+                    role="alert"
+                  >
+                    {errors.hasSameBillingMailingAddress.message}
+                  </span>
+                )}
               </Fieldset>
 
               {hasSameBillingMailingAddress === "false" && (

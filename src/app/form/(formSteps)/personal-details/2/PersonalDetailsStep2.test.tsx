@@ -184,10 +184,14 @@ describe("<PersonalDetailsStep2 />", () => {
         new Set(["hasSameBillingMailingAddress"]),
       );
       await user.click(screen.getByRole("button", { name: "Next" }));
-      expect(group).toHaveAccessibleDescription(
+      expect(inputYes).toHaveAccessibleDescription(
         expect.stringContaining("This question is required"),
       );
-      expect(group).toHaveAttribute("aria-invalid", "true");
+      expect(inputYes).toHaveAttribute("aria-invalid", "true");
+      expect(inputNo).toHaveAccessibleDescription(
+        expect.stringContaining("This question is required"),
+      );
+      expect(inputNo).toHaveAttribute("aria-invalid", "true");
       expect(inputYes).toHaveFocus();
     });
 
