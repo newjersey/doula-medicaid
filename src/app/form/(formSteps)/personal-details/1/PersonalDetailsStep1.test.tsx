@@ -1,6 +1,7 @@
 import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
 import {
   fillAllInputsExcept,
+  getInputField,
   RouterPathnameProvider,
   type InputField,
 } from "@form/_utils/testUtils";
@@ -31,19 +32,21 @@ const textInputFields = [
 
 const allInputFields: Array<InputField> = [
   ...textInputFields,
-  { name: "Month *", role: "combobox", testValue: "07 - July" },
+  { name: "Month *", role: "combobox", key: "dateOfBirthMonth", testValue: "07 - July" },
 ];
 
-const requiredInputs = [
-  { labelWithoutAsterisk: "First name", role: "textbox" },
-  { labelWithoutAsterisk: "Last name", role: "textbox" },
-  { labelWithoutAsterisk: "Month", role: "combobox" },
-  { labelWithoutAsterisk: "Day", role: "textbox" },
-  { labelWithoutAsterisk: "Year", role: "textbox" },
-  { labelWithoutAsterisk: "Phone number", role: "textbox" },
-  { labelWithoutAsterisk: "Email address", role: "textbox" },
-  { labelWithoutAsterisk: "Social security number", role: "textbox" },
+const requiredKeys = [
+  "firstName",
+  "lastName",
+  "dateOfBirthMonth",
+  "dateOfBirthDay",
+  "dateOfBirthYear",
+  "phoneNumber",
+  "email",
+  "socialSecurityNumber",
 ];
+
+const requiredInputs = textInputFields.filter((field) => requiredKeys.includes(field.key));
 
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
@@ -94,16 +97,14 @@ describe("<PersonalDetailsStep1 />", () => {
   describe("individual input validation and error messages", () => {
     it.each(requiredInputs)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ labelWithoutAsterisk, role }) => {
+      async ({ name, key }) => {
         const user = userEvent.setup();
         renderWithRouter();
 
-        const name = `${labelWithoutAsterisk} *`;
-        const input = screen.getByRole(role, {
-          name: name,
-        });
+        const labelWithoutAsterisk = name.replace(" *", "");
+        const input = await getInputField(screen, { name, key });
         expect(input).toBeRequired();
-        await fillAllInputsExcept(screen, user, allInputFields, new Set([name]));
+        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
         await user.click(screen.getByRole("button", { name: "Next" }));
 
         expect(input).toHaveAccessibleDescription(
@@ -217,14 +218,12 @@ describe("<PersonalDetailsStep1 />", () => {
       const user = userEvent.setup();
       renderWithRouter();
       const requiredInputsToLeaveEmpty = [
-        { name: "First name *", errorMessage: "First name is required" },
-        { name: "Day *", errorMessage: "Day is required" },
-        { name: "Email address *", errorMessage: "Email address is required" },
+        { name: "First name *", key: "firstName", errorMessage: "First name is required" },
+        { name: "Day *", key: "dateOfBirthDay", errorMessage: "Day is required" },
+        { name: "Email address *", key: "email", errorMessage: "Email address is required" },
       ];
 
-      const requiredInputsToLeaveEmptyNames = new Set(
-        requiredInputsToLeaveEmpty.map((x) => x.name),
-      );
+      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
       await fillAllInputsExcept(screen, user, allInputFields, requiredInputsToLeaveEmptyNames);
       await user.click(screen.getByRole("button", { name: "Next" }));
 
@@ -242,15 +241,14 @@ describe("<PersonalDetailsStep1 />", () => {
 
     it.each(requiredInputs)(
       "clicking on the $name error focuses on the input",
-      async ({ labelWithoutAsterisk, role }) => {
+      async ({ name, key }) => {
+        const labelWithoutAsterisk = name.replace(" *", "");
         const user = userEvent.setup();
         renderWithRouter();
         await user.click(screen.getByRole("button", { name: "Next" }));
         await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
 
-        const input = screen.getByRole(role, {
-          name: `${labelWithoutAsterisk} *`,
-        });
+        const input = await getInputField(screen, { name, key });
         expect(input).toHaveFocus();
       },
     );
@@ -259,13 +257,11 @@ describe("<PersonalDetailsStep1 />", () => {
       const user = userEvent.setup();
       renderWithRouter();
       const requiredInputsToLeaveEmpty = [
-        { name: "First name *", errorMessage: "First name is required" },
-        { name: "Day *", errorMessage: "Day is required" },
+        { name: "First name *", key: "firstName", errorMessage: "First name is required" },
+        { name: "Day *", key: "dateOfBirthDay", errorMessage: "Day is required" },
       ];
 
-      const requiredInputsToLeaveEmptyNames = new Set(
-        requiredInputsToLeaveEmpty.map((x) => x.name),
-      );
+      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
       await fillAllInputsExcept(screen, user, allInputFields, requiredInputsToLeaveEmptyNames);
       await user.click(screen.getByRole("button", { name: "Next" }));
 

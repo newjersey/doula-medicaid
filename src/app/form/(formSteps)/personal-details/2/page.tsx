@@ -229,7 +229,6 @@ const PersonalDetailsStep2 = () => {
                     </p>
                   </div>
                 }
-                legendStyle="large"
                 aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
                 aria-describedby={
                   errors.hasSameBillingMailingAddress && "hasSameBillingMailingAddressErrorMessage"
@@ -273,7 +272,6 @@ const PersonalDetailsStep2 = () => {
                       What&apos;s your billing address?
                     </p>
                   }
-                  legendStyle="large"
                 >
                   <div className="grid-row grid-gap">
                     <div className="mobile-lg:grid-col-6">

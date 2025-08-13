@@ -21,28 +21,38 @@ export const RouterPathnameProvider = (props: {
 
 export interface InputField {
   name: string;
+  key: string;
   role?: "textbox" | "combobox" | "radio";
   testValue?: string;
+  within?: string;
 }
+
+export const getInputField = async (screen: Screen, input: InputField): Promise<HTMLElement> => {
+  const role = input.role ?? "textbox";
+  return input.within
+    ? within(
+        screen.getByRole("group", {
+          name: input.within,
+        }),
+      ).getByRole(role, {
+        name: input.name,
+      })
+    : screen.getByRole(role, {
+        name: input.name,
+      });
+};
 
 export const fillAllInputsExcept = async (
   screen: Screen,
   user: UserEvent,
   allInputs: Array<InputField>,
-  namesToSkip: Set<string>,
-  withinGroup?: HTMLElement,
+  keysToSkip: Set<string>,
 ) => {
   for (const input of allInputs) {
-    if (!namesToSkip.has(input.name)) {
+    if (!keysToSkip.has(input.key)) {
       const role = input.role ?? "textbox";
       const value = input.testValue ?? "test";
-      const inputField = withinGroup
-        ? within(withinGroup).getByRole(role, {
-            name: input.name,
-          })
-        : screen.getByRole(role, {
-            name: input.name,
-          });
+      const inputField = await getInputField(screen, input);
 
       switch (role) {
         case "textbox":

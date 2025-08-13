@@ -32,7 +32,7 @@ const getFormData = (): FormData => {
       ? DisclosingEntity.SoleProprietorship
       : null;
   const hasSameBillingMailingAddress =
-    convertToBoolean(getValue("hasSameBillingMailingAddress")) === true ? true : false;
+    convertToBoolean(getValue("hasSameBillingMailingAddress")) ?? false;
 
   return {
     firstName: getValue("firstName"),
