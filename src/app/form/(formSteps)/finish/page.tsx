@@ -16,14 +16,18 @@ const convertToBoolean = (value: string | null): boolean | null => {
 };
 
 export const getFormData = (): FormData => {
-  const dateOfBirth =
+  let dateOfBirth: Date;
+  if (
     getValue("dateOfBirthMonth") === null ||
     getValue("dateOfBirthDay") === null ||
     getValue("dateOfBirthYear") === null
-      ? null
-      : new Date(
-          `${getValue("dateOfBirthMonth")}/${getValue("dateOfBirthDay")}/${getValue("dateOfBirthYear")}`,
-        );
+  ) {
+    throw new Error("PDF generation failed: Incomplete date of birth provided");
+  } else {
+    dateOfBirth = new Date(
+      `${getValue("dateOfBirthMonth")}/${getValue("dateOfBirthDay")}/${getValue("dateOfBirthYear")}`,
+    );
+  }
 
   const stateString = (getValue("state") as keyof typeof AddressState) || null;
   const state = stateString ? AddressState[stateString] : null;
@@ -31,8 +35,10 @@ export const getFormData = (): FormData => {
     convertToBoolean(getValue("isSoleProprietorship")) === true
       ? DisclosingEntity.SoleProprietorship
       : null;
-  const hasSameBillingMailingAddress =
-    convertToBoolean(getValue("hasSameBillingMailingAddress")) ?? false;
+  if (convertToBoolean(getValue("hasSameBillingMailingAddress")) == null) {
+    throw new Error("PDF generation failed: hasSameBillingMailingAddress is not set");
+  }
+  const hasSameBillingMailingAddress = convertToBoolean(getValue("hasSameBillingMailingAddress"))!;
 
   return {
     firstName: getValue("firstName"),

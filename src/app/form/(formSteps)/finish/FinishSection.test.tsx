@@ -28,6 +28,11 @@ const renderWithRouter = () => {
 
 describe("<FinishSection />", () => {
   beforeEach(() => {
+    window.sessionStorage.clear();
+    window.sessionStorage.setItem("dateOfBirthDay", "25");
+    window.sessionStorage.setItem("dateOfBirthMonth", "12");
+    window.sessionStorage.setItem("dateOfBirthYear", "1990");
+    window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
     jest.clearAllMocks();
     mockCreateObjectURL.mockReturnValue("mock-blob-url");
   });
@@ -47,67 +52,70 @@ describe("<FinishSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "filled_forms.zip");
   });
 
-  describe("when hasSameBillingMailingAddress is true", () => {
-    it("overwrites all billing address values with mailing address values", () => {
-      window.sessionStorage.setItem("streetAddress1", "123 Main St");
-      window.sessionStorage.setItem("streetAddress2", "Apt 4B");
-      window.sessionStorage.setItem("city", "Trenton");
-      window.sessionStorage.setItem("state", "NJ");
-      window.sessionStorage.setItem("zip", "10001");
-      window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
-      window.sessionStorage.setItem("billingStreetAddress1", "400 Ignore St");
-      window.sessionStorage.setItem("billingStreetAddress2", "Unit 4");
-      window.sessionStorage.setItem("billingCity", "New York");
-      window.sessionStorage.setItem("billingState", "NY");
-      window.sessionStorage.setItem("billingZip", "22222");
-
-      renderWithRouter();
-
-      expect(getFormData()).toMatchObject({
-        streetAddress1: "123 Main St",
-        streetAddress2: "Apt 4B",
-        city: "Trenton",
-        state: AddressState.NJ,
-        zip: "10001",
-        hasSameBillingMailingAddress: true,
-        billingStreetAddress1: "123 Main St",
-        billingStreetAddress2: "Apt 4B",
-        billingCity: "Trenton",
-        billingState: AddressState.NJ,
-        billingZip: "10001",
+  describe("hasSameBillingMailingAddress handling", () => {
+    describe("when hasSameBillingMailingAddress is true", () => {
+      it("overwrites all billing address values with mailing address values", () => {
+        window.sessionStorage.setItem("streetAddress1", "123 Main St");
+        window.sessionStorage.setItem("streetAddress2", "Apt 4B");
+        window.sessionStorage.setItem("city", "Trenton");
+        window.sessionStorage.setItem("state", "NJ");
+        window.sessionStorage.setItem("zip", "10001");
+        window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
+        window.sessionStorage.setItem("billingStreetAddress1", "400 Ignore St");
+        window.sessionStorage.setItem("billingStreetAddress2", "Unit 4");
+        window.sessionStorage.setItem("billingCity", "New York");
+        window.sessionStorage.setItem("billingState", "NY");
+        window.sessionStorage.setItem("billingZip", "22222");
+        expect(getFormData()).toMatchObject({
+          streetAddress1: "123 Main St",
+          streetAddress2: "Apt 4B",
+          city: "Trenton",
+          state: AddressState.NJ,
+          zip: "10001",
+          hasSameBillingMailingAddress: true,
+          billingStreetAddress1: "123 Main St",
+          billingStreetAddress2: "Apt 4B",
+          billingCity: "Trenton",
+          billingState: AddressState.NJ,
+          billingZip: "10001",
+        });
       });
     });
-  });
 
-  describe("when hasSameBillingMailingAddress is false", () => {
-    it("uses separate billing address values", () => {
-      window.sessionStorage.setItem("streetAddress1", "123 Main St");
-      window.sessionStorage.setItem("streetAddress2", "Apt 4B");
-      window.sessionStorage.setItem("city", "Trenton");
-      window.sessionStorage.setItem("state", "NJ");
-      window.sessionStorage.setItem("zip", "10001");
-      window.sessionStorage.setItem("hasSameBillingMailingAddress", "false");
-      window.sessionStorage.setItem("billingStreetAddress1", "400 Ignore St");
-      window.sessionStorage.setItem("billingStreetAddress2", "Unit 4");
-      window.sessionStorage.setItem("billingCity", "New York");
-      window.sessionStorage.setItem("billingState", "NY");
-      window.sessionStorage.setItem("billingZip", "22222");
-
-      renderWithRouter();
-
-      expect(getFormData()).toMatchObject({
-        streetAddress1: "123 Main St",
-        streetAddress2: "Apt 4B",
-        city: "Trenton",
-        state: AddressState.NJ,
-        zip: "10001",
-        hasSameBillingMailingAddress: false,
-        billingStreetAddress1: "400 Ignore St",
-        billingStreetAddress2: "Unit 4",
-        billingCity: "New York",
-        billingState: AddressState.NY,
-        billingZip: "22222",
+    describe("when hasSameBillingMailingAddress is false", () => {
+      it("uses separate billing address values", () => {
+        window.sessionStorage.setItem("streetAddress1", "123 Main St");
+        window.sessionStorage.setItem("streetAddress2", "Apt 4B");
+        window.sessionStorage.setItem("city", "Trenton");
+        window.sessionStorage.setItem("state", "NJ");
+        window.sessionStorage.setItem("zip", "10001");
+        window.sessionStorage.setItem("hasSameBillingMailingAddress", "false");
+        window.sessionStorage.setItem("billingStreetAddress1", "400 Ignore St");
+        window.sessionStorage.setItem("billingStreetAddress2", "Unit 4");
+        window.sessionStorage.setItem("billingCity", "New York");
+        window.sessionStorage.setItem("billingState", "NY");
+        window.sessionStorage.setItem("billingZip", "22222");
+        expect(getFormData()).toMatchObject({
+          streetAddress1: "123 Main St",
+          streetAddress2: "Apt 4B",
+          city: "Trenton",
+          state: AddressState.NJ,
+          zip: "10001",
+          hasSameBillingMailingAddress: false,
+          billingStreetAddress1: "400 Ignore St",
+          billingStreetAddress2: "Unit 4",
+          billingCity: "New York",
+          billingState: AddressState.NY,
+          billingZip: "22222",
+        });
       });
+    });
+
+    it("throws an error if hasSameBillingMailingAddress is not set", () => {
+      window.sessionStorage.removeItem("hasSameBillingMailingAddress");
+      expect(() => getFormData()).toThrow(
+        "PDF generation failed: hasSameBillingMailingAddress is not set",
+      );
     });
   });
 
@@ -125,37 +133,33 @@ describe("<FinishSection />", () => {
     });
 
     describe("sets dateOfBirth to null when any date component is missing", () => {
+      beforeEach(() => {
+        window.sessionStorage.removeItem("dateOfBirthDay");
+        window.sessionStorage.removeItem("dateOfBirthMonth");
+        window.sessionStorage.removeItem("dateOfBirthYear");
+      });
       it("when day is missing", async () => {
         window.sessionStorage.setItem("dateOfBirthMonth", "12");
         window.sessionStorage.setItem("dateOfBirthYear", "1990");
-
-        renderWithRouter();
-
-        expect(getFormData()).toMatchObject({
-          dateOfBirth: null,
-        });
+        expect(() => getFormData()).toThrow(
+          "PDF generation failed: Incomplete date of birth provided",
+        );
       });
 
       it("when month is missing", async () => {
         window.sessionStorage.setItem("dateOfBirthDay", "25");
         window.sessionStorage.setItem("dateOfBirthYear", "1990");
-
-        renderWithRouter();
-
-        expect(getFormData()).toMatchObject({
-          dateOfBirth: null,
-        });
+        expect(() => getFormData()).toThrow(
+          "PDF generation failed: Incomplete date of birth provided",
+        );
       });
 
       it("when year is missing", async () => {
         window.sessionStorage.setItem("dateOfBirthDay", "25");
         window.sessionStorage.setItem("dateOfBirthMonth", "12");
-
-        renderWithRouter();
-
-        expect(getFormData()).toMatchObject({
-          dateOfBirth: null,
-        });
+        expect(() => getFormData()).toThrow(
+          "PDF generation failed: Incomplete date of birth provided",
+        );
       });
     });
   });
@@ -163,9 +167,6 @@ describe("<FinishSection />", () => {
   describe("disclosing entity handling", () => {
     it("sets natureOfDisclosingEntity to SoleProprietorship when isSoleProprietorship is true", async () => {
       window.sessionStorage.setItem("isSoleProprietorship", "true");
-
-      renderWithRouter();
-
       expect(getFormData()).toMatchObject({
         natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
       });
@@ -173,9 +174,6 @@ describe("<FinishSection />", () => {
 
     it("sets natureOfDisclosingEntity to null when isSoleProprietorship is false", async () => {
       window.sessionStorage.setItem("isSoleProprietorship", "false");
-
-      renderWithRouter();
-
       expect(getFormData()).toMatchObject({
         natureOfDisclosingEntity: null,
       });
