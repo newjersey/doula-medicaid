@@ -1,7 +1,3 @@
-export enum DisclosingEntity {
-  "SoleProprietorship" = "SoleProprietorship",
-}
-
 export enum AddressState {
   "AL" = "AL",
   "AK" = "AK",

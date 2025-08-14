@@ -5,7 +5,7 @@ type CompletionState = "complete" | "current" | "incomplete";
 
 // Separated this into a separate testable component because as of writing, Jest does not support testing NextJs asynchronous server components (https://nextjs.org/docs/app/guides/testing/jest)
 export const FormLayout = (props: { children?: React.ReactNode; pathname: string }) => {
-  const { section: currentSection, step: currentStep } = getCurrentFormProgress(props.pathname);
+  const { section: currentSection } = getCurrentFormProgress(props.pathname);
   const currentSectionIndex = allSections.findIndex(
     (sections) => sections.id === currentSection.id,
   );
@@ -56,25 +56,13 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
             );
           })}
         </ol>
+      </div>
 
-        <div className="usa-step-indicator__header display-flex flex-justify">
-          <h1 className="font-heading-lg">
-            {currentStep !== undefined && (
-              <span className="usa-step-indicator__heading-counter">
-                <span className="usa-sr-only" data-testid="step-text">
-                  Step
-                </span>
-                <span className="usa-step-indicator__current-step">{currentStep}</span>
-                &nbsp;
-                <span className="usa-step-indicator__total-steps">{`of ${currentSection.numSteps}`}</span>
-                &nbsp;
-              </span>
-            )}
-            <span className="usa-step-indicator__heading-text">{currentSection.heading}</span>
-          </h1>
-          <div className="text-right">
-            A red asterisk (<RequiredMarker />) indicates a required field.
-          </div>
+      <div className="display-flex flex-justify">
+        <h1 className="font-heading-lg">{currentSection.heading}</h1>
+        <div className="text-right">
+          {" "}
+          A red asterisk (<RequiredMarker />) indicates a required field.
         </div>
       </div>
       <hr className="width-full" />

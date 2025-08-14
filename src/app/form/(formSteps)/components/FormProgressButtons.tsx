@@ -3,7 +3,7 @@
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
 
-const FormProgressButtons = () => {
+const FormProgressButtons: React.FC = () => {
   const formProgressPosition = useFormProgressPosition();
 
   const buttons: Array<React.ReactNode> = [];
