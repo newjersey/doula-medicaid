@@ -50,25 +50,25 @@ const billingAddressFields = [
     name: "Street address *",
     key: "billingStreetAddress1",
     testValue: "Test address 1",
-    within: "What's your billing address?",
+    withinGroupName: "What's your billing address?",
   },
   {
     name: "Street address line 2",
     key: "billingStreetAddress2",
     testValue: "Test address 2",
-    within: "What's your billing address?",
+    withinGroupName: "What's your billing address?",
   },
   {
     name: "City *",
     key: "billingCity",
     testValue: "Test city",
-    within: "What's your billing address?",
+    withinGroupName: "What's your billing address?",
   },
   {
     name: "ZIP code *",
     key: "billingZip",
     testValue: "12345",
-    within: "What's your billing address?",
+    withinGroupName: "What's your billing address?",
   },
 ];
 
@@ -91,6 +91,14 @@ const requiredKeys = [
 
 const requiredFields: Array<InputField> = textInputFields.filter((field) =>
   requiredKeys.includes(field.key),
+);
+
+const requiredMailingFields: Array<InputField> = requiredFields.filter(
+  (field) => !field.key.startsWith("billing"),
+);
+
+const requiredBillingFields: Array<InputField> = requiredFields.filter((field) =>
+  field.key.startsWith("billing"),
 );
 
 describe("<PersonalDetailsStep2 />", () => {
@@ -139,12 +147,9 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("individual input validation and error messages", () => {
-    it.each(requiredFields)(
+    it.each(requiredMailingFields)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
       async ({ name, key }) => {
-        if (key.startsWith("billing")) {
-          return;
-        }
         const user = userEvent.setup();
         renderWithRouter();
 
@@ -241,13 +246,9 @@ describe("<PersonalDetailsStep2 />", () => {
         }
       });
 
-      it.each(requiredFields)(
-        "clicking on the $name error focuses on the input",
-        async ({ name, key, within }) => {
-          if (!key.startsWith("billing")) {
-            return;
-          }
-
+      it.each(requiredBillingFields)(
+        "clicking on the billing $name error focuses on the input",
+        async ({ name, key, withinGroupName }) => {
           const user = userEvent.setup();
           renderWithRouter();
           await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set());
@@ -259,7 +260,7 @@ describe("<PersonalDetailsStep2 />", () => {
             }),
           );
 
-          const input = await getInputField(screen, { name, key, within });
+          const input = await getInputField(screen, { name, key, withinGroupName });
           expect(input).toHaveFocus();
         },
       );
@@ -289,13 +290,9 @@ describe("<PersonalDetailsStep2 />", () => {
       }
     });
 
-    it.each(requiredFields)(
+    it.each(requiredMailingFields)(
       "clicking on the $name error focuses on the input",
-      async ({ name, key }) => {
-        if (key.startsWith("billing")) {
-          return;
-        }
-
+      async ({ name }) => {
         const labelWithoutAsterisk = name.replace(" *", "");
         const user = userEvent.setup();
         renderWithRouter();

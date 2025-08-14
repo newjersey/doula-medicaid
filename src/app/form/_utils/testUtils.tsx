@@ -24,15 +24,15 @@ export interface InputField {
   key: string;
   role?: "textbox" | "combobox" | "radio";
   testValue?: string;
-  within?: string;
+  withinGroupName?: string;
 }
 
 export const getInputField = async (screen: Screen, input: InputField): Promise<HTMLElement> => {
   const role = input.role ?? "textbox";
-  return input.within
+  return input.withinGroupName
     ? within(
         screen.getByRole("group", {
-          name: input.within,
+          name: input.withinGroupName,
         }),
       ).getByRole(role, {
         name: input.name,
