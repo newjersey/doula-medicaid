@@ -16,6 +16,12 @@ export interface PersonalDetails2Data {
   city: string | null;
   state: string | null;
   zip: string | null;
+  hasSameBillingMailingAddress: string | null;
+  billingStreetAddress1: string | null;
+  billingStreetAddress2: string | null;
+  billingCity: string | null;
+  billingState: string | null;
+  billingZip: string | null;
 }
 
 export interface PersonalDetails3Data {

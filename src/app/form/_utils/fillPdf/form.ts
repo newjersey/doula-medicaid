@@ -18,6 +18,12 @@ export interface FormData {
   city: string | null;
   state: AddressState | null;
   zip: string | null;
+  hasSameBillingMailingAddress: boolean | null;
+  billingStreetAddress1: string | null;
+  billingStreetAddress2: string | null;
+  billingCity: string | null;
+  billingState: AddressState | null;
+  billingZip: string | null;
   natureOfDisclosingEntity: DisclosingEntity | null;
   hasSameBusinessAddress: boolean | null;
   businessStreetAddress1: string | null;
