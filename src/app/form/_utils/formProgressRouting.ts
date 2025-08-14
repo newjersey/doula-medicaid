@@ -35,9 +35,5 @@ export const routeToNextStep = (
 };
 
 export const formatFormProgressUrl = (formProgress: FormProgress) => {
-  if (formProgress.step !== undefined) {
-    return `/form/${formProgress.section.id}/${formProgress.step}`;
-  } else {
-    return `/form/${formProgress.section.id}`;
-  }
+  return `/form/${formProgress.section.id}`;
 };
