@@ -458,9 +458,6 @@ const PersonalInformationStep: React.FC = () => {
                 </div>
               </Fieldset>
             </div>
-            <div className="flex-1">
-              <JuiceShopExplainer />
-            </div>
           </div>
           <FormProgressButtons />
         </Form>
