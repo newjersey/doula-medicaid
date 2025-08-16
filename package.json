@@ -58,7 +58,7 @@
     "prettier-plugin-jsdoc": "latest",
     "prettier-plugin-organize-imports": "latest",
     "ts-jest": "29.3.0",
-    "typescript": "5.8.2",
+    "typescript": "5.9.2",
     "typescript-eslint": "8.36.0"
   },
   "lint-staged": {
