@@ -4,12 +4,14 @@ import type {
   PersonalDetails2Data,
   PersonalDetails3Data,
 } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import type { TrainingDetailsData } from "@/app/form/(formSteps)/training/TrainingDetailsData";
 
 type SessionStorageKey =
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data
   | keyof PersonalDetails3Data
-  | keyof BusinessDetails1Data;
+  | keyof BusinessDetails1Data
+  | keyof TrainingDetailsData;
 
 export const setKeyValue = (key: SessionStorageKey, value: string): void => {
   window.sessionStorage.setItem(key, value);
