@@ -59,7 +59,7 @@
     "prettier-plugin-organize-imports": "latest",
     "ts-jest": "29.4.1",
     "typescript": "5.8.2",
-    "typescript-eslint": "8.36.0"
+    "typescript-eslint": "8.39.1"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
