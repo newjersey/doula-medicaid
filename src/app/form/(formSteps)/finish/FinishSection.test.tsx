@@ -78,7 +78,7 @@ describe("<FinishSection />", () => {
         });
       });
       describe("when doulaTrainingInPerson is false", () => {
-        it("overwrites all training address values with null", () => {
+        it("overwrites all training address values with empty string/null", () => {
           setRequiredFieldsInStorage();
           window.sessionStorage.setItem("doulaTrainingInPerson", "false");
           window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
@@ -88,11 +88,11 @@ describe("<FinishSection />", () => {
           window.sessionStorage.setItem("trainingZip", "10001");
           expect(getFormData()).toMatchObject({
             doulaTrainingInPerson: false,
-            trainingStreetAddress1: null,
-            trainingStreetAddress2: null,
-            trainingCity: null,
+            trainingStreetAddress1: "",
+            trainingStreetAddress2: "",
+            trainingCity: "",
             trainingState: null,
-            trainingZip: null,
+            trainingZip: "",
           });
         });
       });

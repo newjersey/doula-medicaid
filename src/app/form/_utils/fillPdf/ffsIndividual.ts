@@ -36,9 +36,9 @@ const getPage3Fields = (formData: FormData): PDFData => {
     fd427LegalName: formatName(formData),
     fd427SocialSecurityNumber: formData.socialSecurityNumber || "",
     fd427trainingsiteStreetaddress: `${formData.trainingStreetAddress1}${formData.trainingStreetAddress2 ? ` ${formData.trainingStreetAddress2}` : ""}`,
-    fd427trainingsiteCity: formData.trainingCity || "",
-    fd427trainingsiteState: formData.trainingState || "",
-    fd427trainingsiteZip: formData.trainingZip || "",
+    fd427trainingsiteCity: formData.trainingCity ?? "",
+    fd427trainingsiteState: formData.trainingState ?? "",
+    fd427trainingsiteZip: formData.trainingZip ?? "",
   };
 };
 

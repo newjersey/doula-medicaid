@@ -187,6 +187,13 @@ describe("mapFfsIndividualFields", () => {
     });
     const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
     expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
+
+    const formDataAddressNull: FormData = generateFormData({
+      trainingStreetAddress1: "",
+      trainingStreetAddress2: "",
+    });
+    const fieldsToFillAddressNull = mapFfsIndividualFields(formDataAddressNull);
+    expect(fieldsToFillAddressNull[formKey]).toEqual("");
   };
 
   const testTrainingCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {

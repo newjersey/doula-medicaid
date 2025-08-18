@@ -37,13 +37,13 @@ export const getFormData = (): FormData => {
 
   return {
     doulaTrainingInPerson: doulaTrainingInPerson,
-    trainingStreetAddress1: doulaTrainingInPerson ? getValue("trainingStreetAddress1") : null,
-    trainingStreetAddress2: doulaTrainingInPerson ? getValue("trainingStreetAddress2") : null,
-    trainingCity: doulaTrainingInPerson ? getValue("trainingCity") : null,
+    trainingStreetAddress1: doulaTrainingInPerson ? getValue("trainingStreetAddress1") : "",
+    trainingStreetAddress2: doulaTrainingInPerson ? getValue("trainingStreetAddress2") : "",
+    trainingCity: doulaTrainingInPerson ? getValue("trainingCity") : "",
     trainingState: doulaTrainingInPerson
       ? (getValue("trainingState") as AddressState | null)
       : null,
-    trainingZip: doulaTrainingInPerson ? getValue("trainingZip") : null,
+    trainingZip: doulaTrainingInPerson ? getValue("trainingZip") : "",
     firstName: getValue("firstName"),
     middleName: getValue("middleName"),
     lastName: getValue("lastName"),
