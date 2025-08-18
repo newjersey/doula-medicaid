@@ -1,10 +1,10 @@
+import type { TrainingData } from "@/app/form/(formSteps)/training/TrainingData";
 import type { BusinessDetails1Data } from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
   PersonalDetails2Data,
   PersonalDetails3Data,
 } from "@form/(formSteps)/personal-details/PersonalDetailsData";
-import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
 
 type SessionStorageKey =
   | keyof TrainingData
