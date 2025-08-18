@@ -1,5 +1,5 @@
 import TrainingSectionStep1 from "@form/(formSteps)/training/1/page";
-import { getInputField, InputField } from "@form/_utils/testUtils/fillInputs";
+import { getInputField, type InputField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
 import { render, screen, within } from "@testing-library/react";

@@ -57,6 +57,47 @@ describe("<FinishSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "filled_forms.zip");
   });
   describe("getFormData", () => {
+    describe("doulaTrainingInPerson", () => {
+      describe("when doulaTrainingInPerson is true", () => {
+        it("saves all training address values", () => {
+          setRequiredFieldsInStorage();
+          window.sessionStorage.setItem("doulaTrainingInPerson", "true");
+          window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
+          window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
+          window.sessionStorage.setItem("trainingCity", "Trenton");
+          window.sessionStorage.setItem("trainingState", "NJ");
+          window.sessionStorage.setItem("trainingZip", "10001");
+          expect(getFormData()).toMatchObject({
+            doulaTrainingInPerson: true,
+            trainingStreetAddress1: "123 Main St",
+            trainingStreetAddress2: "Apt 4B",
+            trainingCity: "Trenton",
+            trainingState: AddressState.NJ,
+            trainingZip: "10001",
+          });
+        });
+      });
+      describe("when doulaTrainingInPerson is false", () => {
+        it("overwrites all training address values with null", () => {
+          setRequiredFieldsInStorage();
+          window.sessionStorage.setItem("doulaTrainingInPerson", "false");
+          window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
+          window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
+          window.sessionStorage.setItem("trainingCity", "Trenton");
+          window.sessionStorage.setItem("trainingState", "NJ");
+          window.sessionStorage.setItem("trainingZip", "10001");
+          expect(getFormData()).toMatchObject({
+            doulaTrainingInPerson: false,
+            trainingStreetAddress1: null,
+            trainingStreetAddress2: null,
+            trainingCity: null,
+            trainingState: null,
+            trainingZip: null,
+          });
+        });
+      });
+    });
+
     describe("hasSameBillingMailingAddress handling", () => {
       describe("when hasSameBillingMailingAddress is true", () => {
         it("overwrites all billing address values with mailing address values", () => {

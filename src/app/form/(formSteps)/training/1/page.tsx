@@ -2,6 +2,7 @@
 
 import ErrorSummary from "@form/(formSteps)/components/ErrorSummary";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
 import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
@@ -18,7 +19,6 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
-import type { TrainingData } from "../TrainingData";
 
 const orderedInputNameToLabel: { [key in keyof TrainingData]: string } = {
   trainingStreetAddress1: "Street address",
