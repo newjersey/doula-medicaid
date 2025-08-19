@@ -26,10 +26,10 @@ const orderedInputNameToLabel: { [key in keyof TrainingData]: string } = {
   trainingCity: "City",
   trainingState: "State",
   trainingZip: "ZIP code",
-  doulaTrainingInPerson: "Did you attend your doula training classes in person?",
+  isDoulaTrainingInPerson: "Did you attend your doula training classes in person?",
 };
 
-const TrainingSectionStep1 = () => {
+const TrainingStep1 = () => {
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
   const {
@@ -45,12 +45,12 @@ const TrainingSectionStep1 = () => {
       trainingCity: getValue("trainingCity") || "",
       trainingState: getValue("trainingState") || "NJ",
       trainingZip: getValue("trainingZip") || "",
-      doulaTrainingInPerson: getValue("doulaTrainingInPerson") || "",
+      isDoulaTrainingInPerson: getValue("isDoulaTrainingInPerson") || "",
     },
     shouldFocusError: false,
   });
   const trainingZip = watch("trainingZip");
-  const doulaTrainingInPerson = watch("doulaTrainingInPerson");
+  const isDoulaTrainingInPerson = watch("isDoulaTrainingInPerson");
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
@@ -100,7 +100,7 @@ const TrainingSectionStep1 = () => {
             legend={
               <div>
                 <p className="font-ui-xs text-normal">
-                  {orderedInputNameToLabel["doulaTrainingInPerson"]}
+                  {orderedInputNameToLabel["isDoulaTrainingInPerson"]}
                 </p>
                 <p className="font-ui-xs text-normal">
                   Select one <RequiredMarker />
@@ -109,41 +109,45 @@ const TrainingSectionStep1 = () => {
             }
           >
             <Radio
-              id="doulaTrainingInPersonYes"
+              id="isDoulaTrainingInPersonYes"
               label="Yes, in person or hybrid"
               value="true"
-              checked={doulaTrainingInPerson === "true"}
+              checked={isDoulaTrainingInPerson === "true"}
               required
-              {...register("doulaTrainingInPerson", {
+              {...register("isDoulaTrainingInPerson", {
                 required: `This question is required`,
               })}
-              aria-invalid={errors.doulaTrainingInPerson ? "true" : "false"}
-              aria-describedby={errors.doulaTrainingInPerson && "doulaTrainingInPersonErrorMessage"}
+              aria-invalid={errors.isDoulaTrainingInPerson ? "true" : "false"}
+              aria-describedby={
+                errors.isDoulaTrainingInPerson && "isDoulaTrainingInPersonErrorMessage"
+              }
             />
             <Radio
-              id="doulaTrainingInPersonNo"
+              id="isDoulaTrainingInPersonNo"
               label="No, it was virtual"
               value="false"
-              checked={doulaTrainingInPerson === "false"}
+              checked={isDoulaTrainingInPerson === "false"}
               required
-              {...register("doulaTrainingInPerson", {
+              {...register("isDoulaTrainingInPerson", {
                 required: `This question is required`,
               })}
-              aria-invalid={errors.doulaTrainingInPerson ? "true" : "false"}
-              aria-describedby={errors.doulaTrainingInPerson && "doulaTrainingInPersonErrorMessage"}
+              aria-invalid={errors.isDoulaTrainingInPerson ? "true" : "false"}
+              aria-describedby={
+                errors.isDoulaTrainingInPerson && "isDoulaTrainingInPersonErrorMessage"
+              }
             />
-            {errors.doulaTrainingInPerson && (
+            {errors.isDoulaTrainingInPerson && (
               <span
-                id="doulaTrainingInPersonErrorMessage"
+                id="isDoulaTrainingInPersonErrorMessage"
                 className="usa-error-message"
                 role="alert"
               >
-                {errors.doulaTrainingInPerson.message}
+                {errors.isDoulaTrainingInPerson.message}
               </span>
             )}
           </Fieldset>
 
-          {doulaTrainingInPerson === "true" && (
+          {isDoulaTrainingInPerson === "true" && (
             <Fieldset
               legend={
                 <p className="font-ui-xs text-normal margin-top-5">
@@ -270,4 +274,4 @@ const TrainingSectionStep1 = () => {
   );
 };
 
-export default TrainingSectionStep1;
+export default TrainingStep1;

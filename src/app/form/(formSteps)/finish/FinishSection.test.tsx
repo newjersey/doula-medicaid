@@ -57,18 +57,18 @@ describe("<FinishSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "filled_forms.zip");
   });
   describe("getFormData", () => {
-    describe("doulaTrainingInPerson", () => {
-      describe("when doulaTrainingInPerson is true", () => {
+    describe("isDoulaTrainingInPerson", () => {
+      describe("when isDoulaTrainingInPerson is true", () => {
         it("saves all training address values", () => {
           setRequiredFieldsInStorage();
-          window.sessionStorage.setItem("doulaTrainingInPerson", "true");
+          window.sessionStorage.setItem("isDoulaTrainingInPerson", "true");
           window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
           window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
           window.sessionStorage.setItem("trainingCity", "Trenton");
           window.sessionStorage.setItem("trainingState", "NJ");
           window.sessionStorage.setItem("trainingZip", "10001");
           expect(getFormData()).toMatchObject({
-            doulaTrainingInPerson: true,
+            isDoulaTrainingInPerson: true,
             trainingStreetAddress1: "123 Main St",
             trainingStreetAddress2: "Apt 4B",
             trainingCity: "Trenton",
@@ -77,17 +77,17 @@ describe("<FinishSection />", () => {
           });
         });
       });
-      describe("when doulaTrainingInPerson is false", () => {
+      describe("when isDoulaTrainingInPerson is false", () => {
         it("overwrites all training address values with empty string/null", () => {
           setRequiredFieldsInStorage();
-          window.sessionStorage.setItem("doulaTrainingInPerson", "false");
+          window.sessionStorage.setItem("isDoulaTrainingInPerson", "false");
           window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
           window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
           window.sessionStorage.setItem("trainingCity", "Trenton");
           window.sessionStorage.setItem("trainingState", "NJ");
           window.sessionStorage.setItem("trainingZip", "10001");
           expect(getFormData()).toMatchObject({
-            doulaTrainingInPerson: false,
+            isDoulaTrainingInPerson: false,
             trainingStreetAddress1: "",
             trainingStreetAddress2: "",
             trainingCity: "",

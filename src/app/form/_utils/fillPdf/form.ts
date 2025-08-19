@@ -5,7 +5,7 @@ import type { AddressState, DisclosingEntity } from "@form/_utils/inputFields/en
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
 export interface FormData {
-  doulaTrainingInPerson: boolean | null;
+  isDoulaTrainingInPerson: boolean | null;
   trainingStreetAddress1: string | null;
   trainingStreetAddress2: string | null;
   trainingCity: string | null;

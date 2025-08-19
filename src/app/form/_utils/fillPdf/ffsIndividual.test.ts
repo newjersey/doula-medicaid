@@ -4,7 +4,7 @@ import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 
 const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
   return {
-    doulaTrainingInPerson: null,
+    isDoulaTrainingInPerson: null,
     trainingStreetAddress1: null,
     trainingStreetAddress2: null,
     trainingCity: null,
@@ -176,12 +176,14 @@ describe("mapFfsIndividualFields", () => {
     testedFormKeys.add(formKey);
 
     const formDataOnlyAddress1: FormData = generateFormData({
+      isDoulaTrainingInPerson: true,
       trainingStreetAddress1: "55 Cherry St",
     });
     const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
     expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
 
     const formDataAddress1And2: FormData = generateFormData({
+      isDoulaTrainingInPerson: true,
       trainingStreetAddress1: "55 Cherry St",
       trainingStreetAddress2: "Apt 4",
     });
@@ -189,11 +191,12 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
 
     const formDataAddressNull: FormData = generateFormData({
+      isDoulaTrainingInPerson: false,
       trainingStreetAddress1: "",
       trainingStreetAddress2: "",
     });
     const fieldsToFillAddressNull = mapFfsIndividualFields(formDataAddressNull);
-    expect(fieldsToFillAddressNull[formKey]).toEqual("");
+    expect(fieldsToFillAddressNull[formKey]).toEqual("Virtual");
   };
 
   const testTrainingCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {
@@ -204,6 +207,7 @@ describe("mapFfsIndividualFields", () => {
     }
 
     const formData: FormData = generateFormData({
+      isDoulaTrainingInPerson: true,
       trainingCity: "Newark",
       trainingState: AddressState.NJ,
       trainingZip: "08609",

@@ -33,17 +33,17 @@ export const getFormData = (): FormData => {
     throw new Error("PDF generation failed: hasSameBillingMailingAddress is not set");
   }
   const hasSameBillingMailingAddress = convertToBoolean(getValue("hasSameBillingMailingAddress"))!;
-  const doulaTrainingInPerson = convertToBoolean(getValue("doulaTrainingInPerson"))!;
+  const isDoulaTrainingInPerson = convertToBoolean(getValue("isDoulaTrainingInPerson"))!;
 
   return {
-    doulaTrainingInPerson: doulaTrainingInPerson,
-    trainingStreetAddress1: doulaTrainingInPerson ? getValue("trainingStreetAddress1") : "",
-    trainingStreetAddress2: doulaTrainingInPerson ? getValue("trainingStreetAddress2") : "",
-    trainingCity: doulaTrainingInPerson ? getValue("trainingCity") : "",
-    trainingState: doulaTrainingInPerson
+    isDoulaTrainingInPerson: isDoulaTrainingInPerson,
+    trainingStreetAddress1: isDoulaTrainingInPerson ? getValue("trainingStreetAddress1") : "",
+    trainingStreetAddress2: isDoulaTrainingInPerson ? getValue("trainingStreetAddress2") : "",
+    trainingCity: isDoulaTrainingInPerson ? getValue("trainingCity") : "",
+    trainingState: isDoulaTrainingInPerson
       ? (getValue("trainingState") as AddressState | null)
       : null,
-    trainingZip: doulaTrainingInPerson ? getValue("trainingZip") : "",
+    trainingZip: isDoulaTrainingInPerson ? getValue("trainingZip") : "",
     firstName: getValue("firstName"),
     middleName: getValue("middleName"),
     lastName: getValue("lastName"),
