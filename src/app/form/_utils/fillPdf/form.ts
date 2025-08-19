@@ -1,48 +1,37 @@
+import {
+  getBusinessDetailsData,
+  type BusinessDetailsFormData,
+} from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import {
+  getPersonalDetailsFormData,
+  type PersonalDetailsFormData,
+} from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import {
+  getTrainingFormData,
+  type TrainingFormData,
+} from "@/app/form/(formSteps)/training/TrainingData";
 import { fillAetnaForm } from "@form/_utils/fillPdf/aetna";
 import { fillFfsIndividualForm } from "@form/_utils/fillPdf/ffsIndividual";
 import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
-import type { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
-export interface FormData {
-  isDoulaTrainingInPerson: boolean | null;
-  trainingStreetAddress1: string | null;
-  trainingStreetAddress2: string | null;
-  trainingCity: string | null;
-  trainingState: AddressState | null;
-  trainingZip: string | null;
-  firstName: string | null;
-  middleName: string | null;
-  lastName: string | null;
-  dateOfBirth: Date | null;
-  phoneNumber: string | null;
-  email: string | null;
-  npiNumber: string | null;
-  socialSecurityNumber: string | null;
-  streetAddress1: string | null;
-  streetAddress2: string | null;
-  city: string | null;
-  state: AddressState | null;
-  zip: string | null;
-  hasSameBillingMailingAddress: boolean | null;
-  billingStreetAddress1: string | null;
-  billingStreetAddress2: string | null;
-  billingCity: string | null;
-  billingState: AddressState | null;
-  billingZip: string | null;
-  natureOfDisclosingEntity: DisclosingEntity | null;
-  hasSameBusinessAddress: boolean | null;
-  businessStreetAddress1: string | null;
-  businessStreetAddress2: string | null;
-  businessCity: string | null;
-  businessState: AddressState | null;
-  businessZip: string | null;
-}
+export interface FormData
+  extends TrainingFormData,
+    PersonalDetailsFormData,
+    BusinessDetailsFormData {}
 
 export interface FilledPDFData {
   filename: string;
   bytes: Uint8Array;
 }
+
+export const getFormData = (): FormData => {
+  return {
+    ...getTrainingFormData(),
+    ...getPersonalDetailsFormData(),
+    ...getBusinessDetailsData(),
+  };
+};
 
 export const fillAllForms = async (formData: FormData) => {
   return await Promise.all([

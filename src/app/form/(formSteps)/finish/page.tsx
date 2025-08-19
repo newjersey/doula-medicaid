@@ -1,10 +1,9 @@
 "use client";
 
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { fillAllForms } from "@form/_utils/fillPdf/form";
+import { fillAllForms, getFormData } from "@form/_utils/fillPdf/form";
 import { zipForms } from "@form/_utils/fillPdf/zip";
 import { useEffect, useState } from "react";
-import { getFormData } from "./getFormData";
 
 const FinishSection = () => {
   const [zipDownloadUrl, setZipDownloadUrl] = useState<string | null>(null);
