@@ -57,6 +57,47 @@ describe("<FinishSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "filled_forms.zip");
   });
   describe("getFormData", () => {
+    describe("isDoulaTrainingInPerson", () => {
+      describe("when isDoulaTrainingInPerson is true", () => {
+        it("saves all training address values", () => {
+          setRequiredFieldsInStorage();
+          window.sessionStorage.setItem("isDoulaTrainingInPerson", "true");
+          window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
+          window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
+          window.sessionStorage.setItem("trainingCity", "Trenton");
+          window.sessionStorage.setItem("trainingState", "NJ");
+          window.sessionStorage.setItem("trainingZip", "10001");
+          expect(getFormData()).toMatchObject({
+            isDoulaTrainingInPerson: true,
+            trainingStreetAddress1: "123 Main St",
+            trainingStreetAddress2: "Apt 4B",
+            trainingCity: "Trenton",
+            trainingState: AddressState.NJ,
+            trainingZip: "10001",
+          });
+        });
+      });
+      describe("when isDoulaTrainingInPerson is false", () => {
+        it("overwrites all training address values with empty string/null", () => {
+          setRequiredFieldsInStorage();
+          window.sessionStorage.setItem("isDoulaTrainingInPerson", "false");
+          window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
+          window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
+          window.sessionStorage.setItem("trainingCity", "Trenton");
+          window.sessionStorage.setItem("trainingState", "NJ");
+          window.sessionStorage.setItem("trainingZip", "10001");
+          expect(getFormData()).toMatchObject({
+            isDoulaTrainingInPerson: false,
+            trainingStreetAddress1: "",
+            trainingStreetAddress2: "",
+            trainingCity: "",
+            trainingState: null,
+            trainingZip: "",
+          });
+        });
+      });
+    });
+
     describe("hasSameBillingMailingAddress handling", () => {
       describe("when hasSameBillingMailingAddress is true", () => {
         it("overwrites all billing address values with mailing address values", () => {

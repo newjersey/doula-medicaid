@@ -237,7 +237,7 @@ const PersonalDetailsStep2 = () => {
                 legend={
                   <div>
                     <p className="font-ui-xs text-normal">
-                      Are your billing and residential addresses the same?
+                      {orderedInputNameToLabel["hasSameBillingMailingAddress"]}
                     </p>
                     <p className="font-ui-xs text-normal">
                       Select one <RequiredMarker />
