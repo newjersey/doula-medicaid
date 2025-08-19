@@ -27,9 +27,9 @@ const PersonalDetailsStep3 = () => {
     watch,
   } = useForm<PersonalDetails3Data>({
     defaultValues: {
-      npiNumber: getValue("npiNumber") || "",
-      upinNumber: getValue("upinNumber") || "",
-      medicareProviderId: getValue("medicareProviderId") || "",
+      npiNumber: getValue("npiNumber", false) || "",
+      upinNumber: getValue("upinNumber", false) || "",
+      medicareProviderId: getValue("medicareProviderId", false) || "",
     },
   });
   const npiNumber = watch("npiNumber");

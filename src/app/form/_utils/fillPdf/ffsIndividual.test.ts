@@ -1,44 +1,7 @@
+import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { mapFfsIndividualFields } from "@form/_utils/fillPdf/ffsIndividual";
 import { type FormData } from "@form/_utils/fillPdf/form";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
-
-const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
-  return {
-    isDoulaTrainingInPerson: null,
-    trainingStreetAddress1: null,
-    trainingStreetAddress2: null,
-    trainingCity: null,
-    trainingState: null,
-    trainingZip: null,
-    firstName: "First",
-    middleName: null,
-    lastName: "Last",
-    dateOfBirth: null,
-    phoneNumber: null,
-    email: null,
-    npiNumber: null,
-    socialSecurityNumber: null,
-    streetAddress1: null,
-    streetAddress2: null,
-    city: null,
-    state: null,
-    zip: null,
-    hasSameBillingMailingAddress: null,
-    billingStreetAddress1: null,
-    billingStreetAddress2: null,
-    billingCity: null,
-    billingState: null,
-    billingZip: null,
-    natureOfDisclosingEntity: null,
-    hasSameBusinessAddress: null,
-    businessStreetAddress1: null,
-    businessStreetAddress2: null,
-    businessCity: null,
-    businessState: null,
-    businessZip: null,
-    ...formDataOverrides,
-  };
-};
 
 describe("mapFfsIndividualFields", () => {
   const testedFormKeys = new Set<string>([]);
@@ -61,24 +24,6 @@ describe("mapFfsIndividualFields", () => {
     });
     const fieldsToFillWithoutMiddleName = mapFfsIndividualFields(formDataWithoutMiddleName);
     expect(fieldsToFillWithoutMiddleName[formKey]).toEqual("First Last");
-
-    const formDataWithoutFirstName: FormData = generateFormData({
-      firstName: null,
-      middleName: "Middle",
-      lastName: "Last",
-    });
-    expect(() => {
-      mapFfsIndividualFields(formDataWithoutFirstName);
-    }).toThrow("First name and last name are required to fill the name field.");
-
-    const formDataWithoutLastName: FormData = generateFormData({
-      firstName: "First",
-      middleName: "Middle",
-      lastName: null,
-    });
-    expect(() => {
-      mapFfsIndividualFields(formDataWithoutLastName);
-    }).toThrow("First name and last name are required to fill the name field.");
   };
 
   const testDateOfBirth = (formKey: string) => {

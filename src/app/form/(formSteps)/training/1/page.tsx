@@ -40,12 +40,12 @@ const TrainingStep1 = () => {
     watch,
   } = useForm<TrainingData>({
     defaultValues: {
-      trainingStreetAddress1: getValue("trainingStreetAddress1") || "",
-      trainingStreetAddress2: getValue("trainingStreetAddress2") || "",
-      trainingCity: getValue("trainingCity") || "",
-      trainingState: getValue("trainingState") || "NJ",
-      trainingZip: getValue("trainingZip") || "",
-      isDoulaTrainingInPerson: getValue("isDoulaTrainingInPerson") || "",
+      trainingStreetAddress1: getValue("trainingStreetAddress1", false) || "",
+      trainingStreetAddress2: getValue("trainingStreetAddress2", false) || "",
+      trainingCity: getValue("trainingCity", false) || "",
+      trainingState: getValue("trainingState", false) || "NJ",
+      trainingZip: getValue("trainingZip", false) || "",
+      isDoulaTrainingInPerson: getValue("isDoulaTrainingInPerson", false) || "",
     },
     shouldFocusError: false,
   });

@@ -133,13 +133,8 @@ const formatBillingAddressLine3 = (formData: FormData): string => {
 };
 
 const formatName = (formData: FormData): string => {
-  if (!formData.firstName || !formData.lastName) {
-    throw new Error("First name and last name are required to fill the name field.");
-  }
-
   if (formData.middleName) {
     return `${formData.firstName} ${formData.middleName} ${formData.lastName}`;
   }
-
   return `${formData.firstName} ${formData.lastName}`;
 };

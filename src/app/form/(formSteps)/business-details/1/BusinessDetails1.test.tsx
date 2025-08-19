@@ -87,7 +87,7 @@ describe("<BusinessDetailsStep1 />", () => {
     expect(noSoleProprietorButton).toBeChecked();
 
     await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(getValue("isSoleProprietorship")).toBe("false");
+    expect(getValue("isSoleProprietorship", true)).toBe("false");
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
     expect(mockRouter.refresh).toHaveBeenCalled();
@@ -123,8 +123,8 @@ describe("<BusinessDetailsStep1 />", () => {
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(getValue("isSoleProprietorship")).toBe("true");
-    expect(getValue("hasSameBusinessAddress")).toBe("true");
+    expect(getValue("isSoleProprietorship", true)).toBe("true");
+    expect(getValue("hasSameBusinessAddress", true)).toBe("true");
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
     expect(mockRouter.refresh).toHaveBeenCalled();
@@ -165,8 +165,8 @@ describe("<BusinessDetailsStep1 />", () => {
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(getValue("isSoleProprietorship")).toBe("true");
-    expect(getValue("hasSameBusinessAddress")).toBe("false");
+    expect(getValue("isSoleProprietorship", true)).toBe("true");
+    expect(getValue("hasSameBusinessAddress", true)).toBe("false");
 
     for (const addressTextInputField of addressTextInputFields) {
       expect(window.sessionStorage.getItem(addressTextInputField.key)).toEqual(
