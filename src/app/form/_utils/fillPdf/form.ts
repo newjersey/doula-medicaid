@@ -5,33 +5,38 @@ import type { AddressState, DisclosingEntity } from "@form/_utils/inputFields/en
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
 export interface FormData {
-  doulaTrainingInPerson: boolean | null;
+  // Training
+  doulaTrainingInPerson: boolean;
   trainingStreetAddress1: string | null;
   trainingStreetAddress2: string | null;
   trainingCity: string | null;
   trainingState: AddressState | null;
   trainingZip: string | null;
-  firstName: string | null;
+
+  // Personal details
+  firstName: string;
   middleName: string | null;
-  lastName: string | null;
-  dateOfBirth: Date | null;
-  phoneNumber: string | null;
-  email: string | null;
-  npiNumber: string | null;
-  socialSecurityNumber: string | null;
-  streetAddress1: string | null;
+  lastName: string;
+  dateOfBirth: Date;
+  phoneNumber: string;
+  email: string;
+  npiNumber: string;
+  socialSecurityNumber: string;
+  streetAddress1: string;
   streetAddress2: string | null;
-  city: string | null;
-  state: AddressState | null;
-  zip: string | null;
-  hasSameBillingMailingAddress: boolean | null;
+  city: string;
+  state: AddressState;
+  zip: string;
+
+  // Business details
+  hasSameBillingMailingAddress: boolean;
   billingStreetAddress1: string | null;
   billingStreetAddress2: string | null;
   billingCity: string | null;
   billingState: AddressState | null;
   billingZip: string | null;
   natureOfDisclosingEntity: DisclosingEntity | null;
-  hasSameBusinessAddress: boolean | null;
+  hasSameBusinessAddress: boolean;
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
   businessCity: string | null;

@@ -1,80 +1,60 @@
 import type { FormData } from "@/app/form/_utils/fillPdf/form";
-import { AddressState, DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
-import { getValue } from "@/app/form/_utils/sessionStorage";
-
-const convertToBoolean = (value: string | null): boolean | null => {
-  if (value === null) return null;
-  if (value === "true") return true;
-  if (value === "false") return false;
-  throw new Error(`Invalid boolean value: ${value}`);
-};
+import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
+import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
 
 export const getFormData = (): FormData => {
-  let dateOfBirth: Date;
-  if (
-    getValue("dateOfBirthMonth") === null ||
-    getValue("dateOfBirthDay") === null ||
-    getValue("dateOfBirthYear") === null
-  ) {
-    throw new Error("PDF generation failed: Incomplete date of birth provided");
-  } else {
-    dateOfBirth = new Date(
-      `${getValue("dateOfBirthMonth")}/${getValue("dateOfBirthDay")}/${getValue("dateOfBirthYear")}`,
-    );
-  }
+  const dateOfBirth = new Date(
+    `${getValue("dateOfBirthMonth", true)}/${getValue("dateOfBirthDay", true)}/${getValue("dateOfBirthYear", true)}`,
+  );
 
-  const stateString = (getValue("state") as keyof typeof AddressState) || null;
-  const state = stateString ? AddressState[stateString] : null;
-  const disclosingEntity =
-    convertToBoolean(getValue("isSoleProprietorship")) === true
-      ? DisclosingEntity.SoleProprietorship
-      : null;
-  if (convertToBoolean(getValue("hasSameBillingMailingAddress")) == null) {
-    throw new Error("PDF generation failed: hasSameBillingMailingAddress is not set");
-  }
-  const hasSameBillingMailingAddress = convertToBoolean(getValue("hasSameBillingMailingAddress"))!;
-  const doulaTrainingInPerson = convertToBoolean(getValue("doulaTrainingInPerson"))!;
+  const disclosingEntity = getBoolean("isSoleProprietorship", true)
+    ? DisclosingEntity.SoleProprietorship
+    : null;
+  const hasSameBillingMailingAddress = getBoolean("hasSameBillingMailingAddress", true);
+  const doulaTrainingInPerson = getBoolean("doulaTrainingInPerson", true);
 
   return {
     doulaTrainingInPerson: doulaTrainingInPerson,
-    trainingStreetAddress1: doulaTrainingInPerson ? getValue("trainingStreetAddress1") : "",
-    trainingStreetAddress2: doulaTrainingInPerson ? getValue("trainingStreetAddress2") : "",
-    trainingCity: doulaTrainingInPerson ? getValue("trainingCity") : "",
-    trainingState: doulaTrainingInPerson
-      ? (getValue("trainingState") as AddressState | null)
-      : null,
-    trainingZip: doulaTrainingInPerson ? getValue("trainingZip") : "",
-    firstName: getValue("firstName"),
-    middleName: getValue("middleName"),
-    lastName: getValue("lastName"),
+    trainingStreetAddress1: doulaTrainingInPerson ? getValue("trainingStreetAddress1", false) : "",
+    trainingStreetAddress2: doulaTrainingInPerson ? getValue("trainingStreetAddress2", false) : "",
+    trainingCity: doulaTrainingInPerson ? getValue("trainingCity", false) : "",
+    trainingState: doulaTrainingInPerson ? getAddressState("trainingState", false) : null,
+    trainingZip: doulaTrainingInPerson ? getValue("trainingZip", false) : "",
+    firstName: getValue("firstName", true),
+    middleName: getValue("middleName", false),
+    lastName: getValue("lastName", true),
     dateOfBirth: dateOfBirth,
-    phoneNumber: getValue("phoneNumber"),
-    email: getValue("email"),
-    npiNumber: getValue("npiNumber"),
-    socialSecurityNumber: getValue("socialSecurityNumber"),
-    streetAddress1: getValue("streetAddress1"),
-    streetAddress2: getValue("streetAddress2"),
-    city: getValue("city"),
-    state: state,
-    zip: getValue("zip"),
+    phoneNumber: getValue("phoneNumber", true),
+    email: getValue("email", true),
+    npiNumber: getValue("npiNumber", true),
+    socialSecurityNumber: getValue("socialSecurityNumber", true),
+    streetAddress1: getValue("streetAddress1", true),
+    streetAddress2: getValue("streetAddress2", false),
+    city: getValue("city", true),
+    state: getAddressState("state", true),
+    zip: getValue("zip", true),
     hasSameBillingMailingAddress: hasSameBillingMailingAddress,
     billingStreetAddress1: hasSameBillingMailingAddress
-      ? getValue("streetAddress1")
-      : getValue("billingStreetAddress1"),
+      ? getValue("streetAddress1", true)
+      : getValue("billingStreetAddress1", false),
     billingStreetAddress2: hasSameBillingMailingAddress
-      ? getValue("streetAddress2")
-      : getValue("billingStreetAddress2"),
-    billingCity: hasSameBillingMailingAddress ? getValue("city") : getValue("billingCity"),
+      ? getValue("streetAddress2", false)
+      : getValue("billingStreetAddress2", false),
+    billingCity: hasSameBillingMailingAddress
+      ? getValue("city", true)
+      : getValue("billingCity", false),
     billingState: hasSameBillingMailingAddress
-      ? state
-      : (getValue("billingState") as AddressState | null),
-    billingZip: hasSameBillingMailingAddress ? getValue("zip") : getValue("billingZip"),
+      ? getAddressState("state", true)
+      : getAddressState("billingState", false),
+    billingZip: hasSameBillingMailingAddress
+      ? getValue("zip", true)
+      : getValue("billingZip", false),
     natureOfDisclosingEntity: disclosingEntity,
-    hasSameBusinessAddress: convertToBoolean(getValue("hasSameBusinessAddress")),
-    businessStreetAddress1: getValue("businessStreetAddress1"),
-    businessStreetAddress2: getValue("businessStreetAddress2"),
-    businessCity: getValue("businessCity"),
-    businessState: getValue("businessState") as AddressState | null,
-    businessZip: getValue("businessZip"),
+    hasSameBusinessAddress: getBoolean("hasSameBusinessAddress", true),
+    businessStreetAddress1: getValue("businessStreetAddress1", false),
+    businessStreetAddress2: getValue("businessStreetAddress2", false),
+    businessCity: getValue("businessCity", false),
+    businessState: getAddressState("businessState", false),
+    businessZip: getValue("businessZip", false),
   };
 };
