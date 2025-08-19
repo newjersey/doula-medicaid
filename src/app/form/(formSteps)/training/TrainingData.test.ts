@@ -11,20 +11,30 @@ describe("getTrainingFormData", () => {
       it("saves all training address values", () => {
         setRequiredFieldsInSessionStorage();
         setInSessionStorage({
+          stateApprovedTraining: "Doula training org",
           isDoulaTrainingInPerson: "true",
           trainingStreetAddress1: "123 Main St",
           trainingStreetAddress2: "Apt 4B",
           trainingCity: "Trenton",
           trainingState: "NJ",
           trainingZip: "10001",
+          instructorFirstName: "John",
+          instructorLastName: "Doe",
+          instructorEmail: "john@test.com",
+          instructorPhoneNumber: "111-111-1111",
         });
         expect(getTrainingFormData()).toMatchObject({
+          stateApprovedTraining: "Doula training org",
           isDoulaTrainingInPerson: true,
           trainingStreetAddress1: "123 Main St",
           trainingStreetAddress2: "Apt 4B",
           trainingCity: "Trenton",
           trainingState: AddressState.NJ,
           trainingZip: "10001",
+          instructorFirstName: "John",
+          instructorLastName: "Doe",
+          instructorEmail: "john@test.com",
+          instructorPhoneNumber: "111-111-1111",
         });
       });
     });
@@ -32,20 +42,30 @@ describe("getTrainingFormData", () => {
       it("overwrites all training address values with empty string/null", () => {
         setRequiredFieldsInSessionStorage();
         setInSessionStorage({
+          stateApprovedTraining: "Doula training org",
           isDoulaTrainingInPerson: "false",
           trainingStreetAddress1: "123 Main St",
           trainingStreetAddress2: "Apt 4B",
           trainingCity: "Trenton",
           trainingState: "NJ",
           trainingZip: "10001",
+          instructorFirstName: "John",
+          instructorLastName: "Doe",
+          instructorEmail: "john@test.com",
+          instructorPhoneNumber: "111-111-1111",
         });
         expect(getTrainingFormData()).toMatchObject({
+          stateApprovedTraining: "Doula training org",
           isDoulaTrainingInPerson: false,
           trainingStreetAddress1: "",
           trainingStreetAddress2: "",
           trainingCity: "",
           trainingState: null,
           trainingZip: "",
+          instructorFirstName: "John",
+          instructorLastName: "Doe",
+          instructorEmail: "john@test.com",
+          instructorPhoneNumber: "111-111-1111",
         });
       });
     });

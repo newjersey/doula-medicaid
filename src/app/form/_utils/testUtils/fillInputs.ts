@@ -5,7 +5,7 @@ import type { UserEvent } from "@testing-library/user-event";
 export interface InputField {
   name: string;
   key: string;
-  role?: "textbox" | "combobox" | "radio";
+  role?: "textbox" | "combobox" | "radio" | "select";
   testValue?: string;
   withinGroupName?: string;
 }
