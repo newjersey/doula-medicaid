@@ -14,6 +14,13 @@ export type SessionStorageKey =
   | keyof PersonalDetails3Data
   | keyof BusinessDetails1Data;
 
+export class ValueNotFoundError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ValueNotFoundError";
+  }
+}
+
 export const setKeyValue = (key: SessionStorageKey, value: string): void => {
   window.sessionStorage.setItem(key, value);
 };
@@ -25,7 +32,7 @@ export function getValue(key: SessionStorageKey, required: boolean): string | nu
   if (required) {
     const value = window.sessionStorage.getItem(key);
     if (value === null) {
-      throw new Error(`${key} is unexpectedly null`);
+      throw new ValueNotFoundError(`${key} is unexpectedly null`);
     }
     return value;
   } else if (typeof window !== "undefined") {
