@@ -4,7 +4,7 @@ import NpiExplainer from "@/app/form/(formSteps)/personal-details/3/NpiExplainer
 import type { PersonalDetails3Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
 import { Form, Label, TextInput, TextInputMask } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -27,9 +27,9 @@ const PersonalDetailsStep3 = () => {
     watch,
   } = useForm<PersonalDetails3Data>({
     defaultValues: {
-      npiNumber: getValue("npiNumber", false) || "",
-      upinNumber: getValue("upinNumber", false) || "",
-      medicareProviderId: getValue("medicareProviderId", false) || "",
+      npiNumber: getDefaultValue("npiNumber") || "",
+      upinNumber: getDefaultValue("upinNumber") || "",
+      medicareProviderId: getDefaultValue("medicareProviderId") || "",
     },
   });
   const npiNumber = watch("npiNumber");

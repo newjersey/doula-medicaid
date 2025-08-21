@@ -5,7 +5,7 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
-import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
   Fieldset,
   Form,
@@ -40,12 +40,12 @@ const TrainingStep1 = () => {
     watch,
   } = useForm<TrainingData>({
     defaultValues: {
-      trainingStreetAddress1: getValue("trainingStreetAddress1", false) || "",
-      trainingStreetAddress2: getValue("trainingStreetAddress2", false) || "",
-      trainingCity: getValue("trainingCity", false) || "",
-      trainingState: getValue("trainingState", false) || "NJ",
-      trainingZip: getValue("trainingZip", false) || "",
-      isDoulaTrainingInPerson: getValue("isDoulaTrainingInPerson", false) || "",
+      trainingStreetAddress1: getDefaultValue("trainingStreetAddress1") || "",
+      trainingStreetAddress2: getDefaultValue("trainingStreetAddress2") || "",
+      trainingCity: getDefaultValue("trainingCity") || "",
+      trainingState: getDefaultValue("trainingState") || "NJ",
+      trainingZip: getDefaultValue("trainingZip") || "",
+      isDoulaTrainingInPerson: getDefaultValue("isDoulaTrainingInPerson") || "",
     },
     shouldFocusError: false,
   });

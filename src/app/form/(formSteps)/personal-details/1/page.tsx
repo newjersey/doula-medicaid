@@ -4,7 +4,7 @@ import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
   DateInputGroup,
   Fieldset,
@@ -44,15 +44,15 @@ const PersonalDetailsStep1 = () => {
     watch,
   } = useForm<PersonalDetails1Data>({
     defaultValues: {
-      firstName: getValue("firstName", false) || "",
-      middleName: getValue("middleName", false) || "",
-      lastName: getValue("lastName", false) || "",
-      dateOfBirthMonth: getValue("dateOfBirthMonth", false) || "",
-      dateOfBirthDay: getValue("dateOfBirthDay", false) || "",
-      dateOfBirthYear: getValue("dateOfBirthYear", false) || "",
-      socialSecurityNumber: getValue("socialSecurityNumber", false) || "",
-      email: getValue("email", false) || "",
-      phoneNumber: getValue("phoneNumber", false) || "",
+      firstName: getDefaultValue("firstName") || "",
+      middleName: getDefaultValue("middleName") || "",
+      lastName: getDefaultValue("lastName") || "",
+      dateOfBirthMonth: getDefaultValue("dateOfBirthMonth") || "",
+      dateOfBirthDay: getDefaultValue("dateOfBirthDay") || "",
+      dateOfBirthYear: getDefaultValue("dateOfBirthYear") || "",
+      socialSecurityNumber: getDefaultValue("socialSecurityNumber") || "",
+      email: getDefaultValue("email") || "",
+      phoneNumber: getDefaultValue("phoneNumber") || "",
     },
     shouldFocusError: false,
   });

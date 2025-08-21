@@ -18,6 +18,8 @@ export const setKeyValue = (key: SessionStorageKey, value: string): void => {
   window.sessionStorage.setItem(key, value);
 };
 
+export const getDefaultValue = (key: SessionStorageKey) => getValue(key, false);
+
 export function getValue(key: SessionStorageKey, required: true): string;
 export function getValue(key: SessionStorageKey, required: false): string | null;
 export function getValue(key: SessionStorageKey, required: boolean): string | null;
