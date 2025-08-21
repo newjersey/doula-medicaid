@@ -31,7 +31,7 @@ export interface TrainingFormData {
   instructorPhoneNumber: string | null;
 }
 
-export const getTrainingFormData = () => {
+export const getTrainingFormData = (): TrainingFormData => {
   const isDoulaTrainingInPerson = getBoolean("isDoulaTrainingInPerson", true);
   return {
     stateApprovedTraining: getValue("stateApprovedTraining", true),
