@@ -36,6 +36,6 @@ const getBusinessDetails1Data = () => {
   };
 };
 
-export const getBusinessDetailsData = () => {
+export const getBusinessDetailsData = (): BusinessDetailsFormData => {
   return { ...getBusinessDetails1Data() };
 };

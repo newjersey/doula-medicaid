@@ -19,7 +19,7 @@ export interface TrainingFormData {
   trainingZip: string | null;
 }
 
-export const getTrainingFormData = () => {
+export const getTrainingFormData = (): TrainingFormData => {
   const isDoulaTrainingInPerson = getBoolean("isDoulaTrainingInPerson", true);
   return {
     isDoulaTrainingInPerson: isDoulaTrainingInPerson,
