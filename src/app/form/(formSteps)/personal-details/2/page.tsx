@@ -7,7 +7,7 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
-import { getValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
   Fieldset,
   Form,
@@ -48,17 +48,17 @@ const PersonalDetailsStep2 = () => {
     watch,
   } = useForm<PersonalDetails2Data>({
     defaultValues: {
-      streetAddress1: getValue("streetAddress1", false) || "",
-      streetAddress2: getValue("streetAddress2", false) || "",
-      city: getValue("city", false) || "",
-      state: getValue("state", false) || "NJ",
-      zip: getValue("zip", false) || "",
-      hasSameBillingMailingAddress: getValue("hasSameBillingMailingAddress", false) || "",
-      billingStreetAddress1: getValue("billingStreetAddress1", false) || "",
-      billingStreetAddress2: getValue("billingStreetAddress2", false) || "",
-      billingCity: getValue("billingCity", false) || "",
-      billingState: getValue("billingState", false) || "NJ",
-      billingZip: getValue("billingZip", false) || "",
+      streetAddress1: getDefaultValue("streetAddress1") || "",
+      streetAddress2: getDefaultValue("streetAddress2") || "",
+      city: getDefaultValue("city") || "",
+      state: getDefaultValue("state") || "NJ",
+      zip: getDefaultValue("zip") || "",
+      hasSameBillingMailingAddress: getDefaultValue("hasSameBillingMailingAddress") || "",
+      billingStreetAddress1: getDefaultValue("billingStreetAddress1") || "",
+      billingStreetAddress2: getDefaultValue("billingStreetAddress2") || "",
+      billingCity: getDefaultValue("billingCity") || "",
+      billingState: getDefaultValue("billingState") || "NJ",
+      billingZip: getDefaultValue("billingZip") || "",
     },
     shouldFocusError: false,
   });
