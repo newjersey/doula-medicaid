@@ -12,7 +12,7 @@ export const FIDELIS_FIELD_MAP: Partial<Record<keyof FormData, string>> = {
 
 export const mapFidelisFields = (formData: FormData): { [key: string]: string } => {
   return {
-    Text3: formatDateOfBirth(formData.dateOfBirth),
+    Text3: formatDateOfBirth(formData),
     Text2: formData.firstName || "",
     Text1: formData.lastName || "",
   };

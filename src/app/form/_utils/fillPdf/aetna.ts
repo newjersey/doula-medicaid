@@ -6,7 +6,7 @@ export const AETNA_PDF_PATH = "/pdf/aetna.pdf";
 
 export const mapAetnaFields = (formData: FormData): { [key: string]: string } => {
   return {
-    Text2: formatDateOfBirth(formData.dateOfBirth),
+    Text2: formatDateOfBirth(formData),
     Text3: formData.firstName || "",
     Text1: formData.lastName || "",
   };

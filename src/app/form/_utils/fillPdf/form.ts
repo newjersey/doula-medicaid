@@ -10,8 +10,8 @@ import {
   getTrainingFormData,
   type TrainingFormData,
 } from "@/app/form/(formSteps)/training/TrainingData";
+import { fillFfsIndividualForm } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { fillAetnaForm } from "@form/_utils/fillPdf/aetna";
-import { fillFfsIndividualForm } from "@form/_utils/fillPdf/ffsIndividual";
 import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
 import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 

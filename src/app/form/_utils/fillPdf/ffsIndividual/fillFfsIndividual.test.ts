@@ -1,12 +1,15 @@
+import {
+  mapFfsIndividualFields,
+  type PdfFfsIndividual,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { mapFfsIndividualFields } from "@form/_utils/fillPdf/ffsIndividual";
 import { type FormData } from "@form/_utils/fillPdf/form";
 import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
 
 describe("mapFfsIndividualFields", () => {
   const testedFormKeys = new Set<string>([]);
 
-  const testLegalName = (formKey: string) => {
+  const testLegalName = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -26,7 +29,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFillWithoutMiddleName[formKey]).toEqual("First Last");
   };
 
-  const testDateOfBirth = (formKey: string) => {
+  const testDateOfBirth = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -37,7 +40,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("01/02/1990");
   };
 
-  const testPhoneNumber = (formKey: string) => {
+  const testPhoneNumber = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -48,7 +51,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("111-111-1111");
   };
 
-  const testNpiNumber = (formKey: string) => {
+  const testNpiNumber = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -59,7 +62,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("1111111111");
   };
 
-  const testSocialSecurityNumber = (formKey: string) => {
+  const testSocialSecurityNumber = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -70,7 +73,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("123-45-6789");
   };
 
-  const testEmail = (formKey: string) => {
+  const testEmail = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -81,7 +84,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("test@test.com");
   };
 
-  const testBillingAddressLine1 = (formKey: string) => {
+  const testBillingAddressLine1 = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -92,7 +95,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("123 Main St");
   };
 
-  const testBillingAddressLine2 = (formKey: string) => {
+  const testBillingAddressLine2 = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -103,7 +106,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("Apt 2F");
   };
 
-  const testBillingAddressLine3 = (formKey: string) => {
+  const testBillingAddressLine3 = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -116,7 +119,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[formKey]).toEqual("Trenton, NJ 11111");
   };
 
-  const testTrainingStreetAddress = (formKey: string) => {
+  const testTrainingStreetAddress = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -144,7 +147,11 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFillAddressNull[formKey]).toEqual("Virtual");
   };
 
-  const testTrainingCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {
+  const testTrainingCityStateZip = (
+    cityKey: keyof PdfFfsIndividual,
+    stateKey: keyof PdfFfsIndividual,
+    zipKey: keyof PdfFfsIndividual,
+  ) => {
     const cityStateZipKeys = [cityKey, stateKey, zipKey];
     for (const formKey of cityStateZipKeys) {
       expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
@@ -163,7 +170,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[zipKey]).toEqual("08609");
   };
 
-  const testStreetAddress = (formKey: string) => {
+  const testStreetAddress = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -181,7 +188,11 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
   };
 
-  const testCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {
+  const testCityStateZip = (
+    cityKey: keyof PdfFfsIndividual,
+    stateKey: keyof PdfFfsIndividual,
+    zipKey: keyof PdfFfsIndividual,
+  ) => {
     const cityStateZipKeys = [cityKey, stateKey, zipKey];
     for (const formKey of cityStateZipKeys) {
       expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
@@ -199,7 +210,11 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[zipKey]).toEqual("08609");
   };
 
-  const testBillingCityStateZip = (cityKey: string, stateKey: string, zipKey: string) => {
+  const testBillingCityStateZip = (
+    cityKey: keyof PdfFfsIndividual,
+    stateKey: keyof PdfFfsIndividual,
+    zipKey: keyof PdfFfsIndividual,
+  ) => {
     const cityStateZipKeys = [cityKey, stateKey, zipKey];
     for (const formKey of cityStateZipKeys) {
       expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
@@ -217,7 +232,7 @@ describe("mapFfsIndividualFields", () => {
     expect(fieldsToFill[zipKey]).toEqual("08609");
   };
 
-  const testBillingStreetAddress = (formKey: string) => {
+  const testBillingStreetAddress = (formKey: keyof PdfFfsIndividual) => {
     expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
     testedFormKeys.add(formKey);
 
@@ -347,7 +362,7 @@ describe("mapFfsIndividualFields", () => {
     });
 
     it("fills mail to address", () => {
-      const mailToAddressKeys = [
+      const mailToAddressKeys: Array<keyof PdfFfsIndividual> = [
         "fd455aREQPAPER_Mail To Address 1",
         "fd455aREQPAPER_Mail To Address 2",
         "fd455aREQPAPER_Mail To Address 3",
