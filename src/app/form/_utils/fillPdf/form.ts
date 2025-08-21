@@ -13,7 +13,7 @@ import {
 import { fillAetnaForm } from "@form/_utils/fillPdf/aetna";
 import { fillFfsIndividualForm } from "@form/_utils/fillPdf/ffsIndividual";
 import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
-import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
+import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 
 export interface FormData
   extends TrainingFormData,
@@ -69,6 +69,9 @@ export const fillForm = async (
       }
     }
   });
+
+  form.acroForm.dict.set(PDFName.of("NeedAppearances"), PDFBool.True);
+  form.updateFieldAppearances();
 
   const filledPdfBytes = await pdfDoc.save();
   return { filename, bytes: filledPdfBytes };
