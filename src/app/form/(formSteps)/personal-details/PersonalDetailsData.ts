@@ -58,6 +58,8 @@ export interface PersonalDetailsFormData {
 
   // 3
   npiNumber: string;
+  medicareProviderId: string | null;
+  upinNumber: string | null;
 }
 
 export const getPersonalDetailsFormData = (): PersonalDetailsFormData => {
@@ -113,5 +115,7 @@ const getPersonalDetails2FormData = () => {
 const getPersonalDetails3FormData = () => {
   return {
     npiNumber: getValue("npiNumber", true),
+    medicareProviderId: getValue("medicareProviderId", false),
+    upinNumber: getValue("upinNumber", false),
   };
 };

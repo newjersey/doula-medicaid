@@ -28,6 +28,8 @@ const defaultFormData = {
   phoneNumber: "111-111-1111",
   email: "test@domain.com",
   npiNumber: "1111111111",
+  medicareProviderId: null,
+  upinNumber: null,
   socialSecurityNumber: "111-11-1111",
   streetAddress1: "Test street 1",
   streetAddress2: null,
