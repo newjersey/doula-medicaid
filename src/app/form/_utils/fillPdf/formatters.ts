@@ -1,5 +1,9 @@
 import { type FormData } from "@form/_utils/fillPdf/form";
 
+export const formatNaIfBlank = (value: string | null) => {
+  return value === null || value.trim() === "" ? "N/A" : value;
+};
+
 export const formatName = (formData: FormData): string => {
   if (formData.middleName) {
     return `${formData.firstName} ${formData.middleName} ${formData.lastName}`;

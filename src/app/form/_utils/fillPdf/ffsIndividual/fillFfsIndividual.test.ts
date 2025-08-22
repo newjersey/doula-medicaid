@@ -307,6 +307,49 @@ describe("mapFfsIndividualFields", () => {
       testDateOfBirth("fd452dobfdate_af_date");
     });
 
+    it("fills Medicare provider id", () => {
+      const formKey = "fd452medicareprovnumber";
+      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+      testedFormKeys.add(formKey);
+
+      const fieldsToFill = mapFfsIndividualFields(
+        generateFormData({
+          medicareProviderId: "111111",
+        }),
+      );
+      expect(fieldsToFill[formKey]).toEqual("111111");
+
+      for (const emptyValue of [null, "", "   "]) {
+        const fieldsToFill = mapFfsIndividualFields(
+          generateFormData({
+            medicareProviderId: emptyValue,
+          }),
+        );
+        expect(fieldsToFill[formKey]).toEqual("N/A");
+      }
+    });
+
+    it("fills UPIN number", () => {
+      const formKey = "fd425upinno";
+      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
+      testedFormKeys.add(formKey);
+
+      const fieldsToFill = mapFfsIndividualFields(
+        generateFormData({
+          upinNumber: "ABC123",
+        }),
+      );
+      expect(fieldsToFill[formKey]).toEqual("ABC123");
+      for (const emptyValue of [null, "", "   "]) {
+        const fieldsToFill = mapFfsIndividualFields(
+          generateFormData({
+            upinNumber: emptyValue,
+          }),
+        );
+        expect(fieldsToFill[formKey]).toEqual("N/A");
+      }
+    });
+
     it("fills NPI number", () => {
       testNpiNumber("fd425npinumber");
     });
