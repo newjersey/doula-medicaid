@@ -1,35 +1,40 @@
 "use client";
 
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
+import { Button, ButtonGroup } from "@trussworks/react-uswds";
+import { useRouter } from "next/navigation";
 
-const FormProgressButtons = () => {
+const FormProgressButtons: React.FC = () => {
   const formProgressPosition = useFormProgressPosition();
-
-  const buttons: Array<React.ReactNode> = [];
-  if (formProgressPosition.previous !== null) {
-    buttons.push(
-      <Link
-        key="previous"
-        href={formatFormProgressUrl(formProgressPosition.previous)}
-        className="usa-button usa-button--outline margin-top-0"
-      >
-        Previous
-      </Link>,
-    );
-  }
-  if (formProgressPosition.next !== null) {
-    buttons.push(
-      <Button key="next" type="submit" className="margin-top-0">
-        Next
-      </Button>,
-    );
-  }
+  const router = useRouter();
 
   return (
     <>
-      <div className="margin-top-4 display-flex flex-column flex-align-end">
-        <ButtonGroup type="default">{buttons}</ButtonGroup>
+      <div className="display-flex flex-column flex-align-end">
+        <div className="right-align">
+          <ButtonGroup type="default">
+            {formProgressPosition.previous !== null && (
+              <Button
+                key="previous"
+                onClick={() => {
+                  if (formProgressPosition.previous !== null) {
+                    router.push(formatFormProgressUrl(formProgressPosition.previous));
+                    router.refresh();
+                  }
+                }}
+                type="button"
+                className="usa-button usa-button--outline margin-top-0"
+              >
+                Previous
+              </Button>
+            )}
+            {formProgressPosition.next !== null && (
+              <Button key="next" type="submit" className="margin-top-0">
+                Next
+              </Button>
+            )}
+          </ButtonGroup>
+        </div>
       </div>
     </>
   );

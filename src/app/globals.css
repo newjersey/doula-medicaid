@@ -1,3 +1,7 @@
+* {
+  outline: none !important;
+}
+
 svg[role="img"].nj-banner__mail-icon {
   height: 14px;
   width: 14px;
@@ -15,29 +19,20 @@ abbr[title] {
   margin-top: 0;
 }
 
-.usa-accordion .usa-accordion__button {
-  background-color: #ffbc78;
-}
-.usa-accordion .usa-accordion__button:hover {
-  background-color: #ffbc78;
-}
-.usa-accordion.usa-accordion--bordered .usa-accordion__content {
-  border-color: #ffbc78;
-}
-
 @media (min-width: 1024px) {
   .form-grid {
     display: grid;
     gap: 20px;
     grid-template-columns: 2fr 1fr;
   }
-  .form-first-question-explainer {
-    grid-column: 2;
-    grid-row: span 3;
+}
+
+@media (min-width: 482px) {
+  .margin-top-lg {
+    margin-top: 465px;
   }
 }
-@media (max-width: 1023px) {
-  .form-explainer {
-    margin-top: 20px;
-  }
+
+#input::placeholder {
+  color: inherit;
 }

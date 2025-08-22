@@ -5,7 +5,7 @@ type CompletionState = "complete" | "current" | "incomplete";
 
 // Separated this into a separate testable component because as of writing, Jest does not support testing NextJs asynchronous server components (https://nextjs.org/docs/app/guides/testing/jest)
 export const FormLayout = (props: { children?: React.ReactNode; pathname: string }) => {
-  const { section: currentSection, step: currentStep } = getCurrentFormProgress(props.pathname);
+  const { section: currentSection } = getCurrentFormProgress(props.pathname);
   const currentSectionIndex = allSections.findIndex(
     (sections) => sections.id === currentSection.id,
   );
@@ -13,7 +13,7 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
   return (
     <>
       <div className="usa-step-indicator" aria-label="progress">
-        <ol className="usa-step-indicator__segments">
+        <div className="usa-step-indicator__segments">
           {allSections.map((sections, sectionIndex) => {
             let completionState: CompletionState;
             switch (true) {
@@ -36,45 +36,27 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
               current: "current",
               incomplete: null,
             }[completionState];
-            const screenreaderStatus = {
-              complete: "completed",
-              current: null,
-              incomplete: "not completed",
-            }[completionState];
 
             return (
               <li
                 key={sections.id}
                 className={`usa-step-indicator__segment ${liSegmentClassSuffix ? `usa-step-indicator__segment--${liSegmentClassSuffix}` : ""}`}
-                {...(completionState === "current" && { "aria-current": "true" })}
+                tabIndex={sectionIndex}
               >
                 <span className="usa-step-indicator__segment-label">
                   {sections.progressBarTitle}
-                  {screenreaderStatus && <span className="usa-sr-only">{screenreaderStatus}</span>}
                 </span>
               </li>
             );
           })}
-        </ol>
+        </div>
+      </div>
 
-        <div className="usa-step-indicator__header display-flex flex-justify">
-          <h1 className="font-heading-lg">
-            {currentStep !== undefined && (
-              <span className="usa-step-indicator__heading-counter">
-                <span className="usa-sr-only" data-testid="step-text">
-                  Step
-                </span>
-                <span className="usa-step-indicator__current-step">{currentStep}</span>
-                &nbsp;
-                <span className="usa-step-indicator__total-steps">{`of ${currentSection.numSteps}`}</span>
-                &nbsp;
-              </span>
-            )}
-            <span className="usa-step-indicator__heading-text">{currentSection.heading}</span>
-          </h1>
-          <div className="text-right">
-            A red asterisk (<RequiredMarker />) indicates a required field.
-          </div>
+      <div className="display-flex flex-justify">
+        <h1 className="font-heading-lg">{currentSection.heading}</h1>
+        <div className="text-right">
+          {" "}
+          A red asterisk (<RequiredMarker />) indicates a required field.
         </div>
       </div>
       <hr className="width-full" />
