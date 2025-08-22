@@ -17,17 +17,17 @@ export interface TrainingData {
 }
 
 export interface TrainingFormData {
-  stateApprovedTraining: string | null;
+  stateApprovedTraining: string;
   nameOfTrainingOrganization: string | null;
-  isDoulaTrainingInPerson: boolean | null;
+  isDoulaTrainingInPerson: boolean;
   trainingStreetAddress1: string | null;
   trainingStreetAddress2: string | null;
   trainingCity: string | null;
   trainingState: AddressState | null;
   trainingZip: string | null;
-  instructorFirstName: string | null;
-  instructorLastName: string | null;
-  instructorEmail: string | null;
+  instructorFirstName: string;
+  instructorLastName: string;
+  instructorEmail: string;
   instructorPhoneNumber: string | null;
 }
 

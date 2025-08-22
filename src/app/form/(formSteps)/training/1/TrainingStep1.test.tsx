@@ -8,8 +8,6 @@ import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
-const trainingInstructorGroupName =
-  "Training organization point of contact Most doulas use their program instructor's information.";
 const trainingAddressFields: InputField[] = [
   {
     name: "Street address *",
@@ -42,25 +40,21 @@ const trainingInstructorFields: InputField[] = [
     name: "First name *",
     key: "instructorFirstName",
     testValue: "Jane",
-    withinGroupName: trainingInstructorGroupName,
   },
   {
     name: "Last name *",
     key: "instructorLastName",
     testValue: "Doe",
-    withinGroupName: trainingInstructorGroupName,
   },
   {
     name: "Email address *",
     key: "instructorEmail",
     testValue: "test@example.com",
-    withinGroupName: trainingInstructorGroupName,
   },
   {
-    name: "Phone number *",
+    name: "Phone number",
     key: "instructorPhoneNumber",
     testValue: "111-111-1111",
-    withinGroupName: trainingInstructorGroupName,
   },
 ];
 
@@ -71,7 +65,6 @@ const requiredKeys = [
   "instructorFirstName",
   "instructorLastName",
   "instructorEmail",
-  "instructorPhoneNumber",
 ];
 
 const requiredTrainingFields: Array<InputField> = trainingAddressFields.filter((field) =>
@@ -89,8 +82,6 @@ const selectTrainingOrganization = async (
   const field = {
     name: "Which state-approved training did you complete? Select one *",
     role: "combobox" as const,
-    testValue: "Children's Home Society of NJ (Trenton)",
-    key: "stateApprovedTraining",
   };
   const input = await getInputField(screen, field);
   await user.selectOptions(input, organization);
@@ -125,7 +116,7 @@ describe("<TrainingStep1 />", () => {
   });
 
   describe("doula training organization fields", () => {
-    it("conditionally asks the user for the name of their training organization", async () => {
+    it("asks the user for the name of their training organization if 'None of these' is selected", async () => {
       const user = userEvent.setup();
       const alertText =
         "If your training organization isn't listed, you may not be eligible to apply right now. Contact the Doula Guides at mahs.doulaguide@dhs.nj.gov to learn more.";
@@ -337,6 +328,6 @@ describe("<TrainingStep1 />", () => {
     expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("First");
     expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Last");
     expect(screen.getByRole("textbox", { name: "Email address *" })).toHaveValue("email@test.com");
-    expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("111-111-1111");
+    expect(screen.getByRole("textbox", { name: "Phone number" })).toHaveValue("111-111-1111");
   });
 });

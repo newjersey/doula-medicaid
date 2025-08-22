@@ -2,6 +2,14 @@ import { formatDateOfBirth, formatName } from "@/app/form/_utils/fillPdf/formatt
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 3 - doula qualifications form
+
+export class UnexpectedFormDataError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UnexpectedFormDataError";
+  }
+}
+
 export interface PdfFfsIndividualPage3 {
   fd427LegalName: string;
   fd427SocialSecurityNumber: string;
@@ -26,6 +34,15 @@ export interface PdfFfsIndividualPage3 {
 }
 
 export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage3> => {
+  if (
+    formData.stateApprovedTraining === "None of these" &&
+    formData.nameOfTrainingOrganization === null
+  ) {
+    throw new UnexpectedFormDataError(
+      "stateApprovedTraining had value none of these, but no training organization was provided.",
+    );
+  }
+
   return {
     fd427dateofbirthDate1_af_date: formatDateOfBirth(formData),
     fd427LegalName: formatName(formData),
@@ -33,7 +50,7 @@ export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     fd427TrainingProgramName:
       formData.stateApprovedTraining === "None of these"
         ? formData.nameOfTrainingOrganization!
-        : formData.stateApprovedTraining!,
+        : formData.stateApprovedTraining,
     fd427TrainingProgramContact: `${formData.instructorFirstName!} ${formData.instructorLastName!}`,
     "fd427trainingprogramcontanctE-mailAddress": formData.instructorEmail!,
     fd427trainingprogramcontactTelephoneNo: formData.instructorPhoneNumber!,

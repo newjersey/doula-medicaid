@@ -2,15 +2,20 @@ import type { Screen } from "@testing-library/dom";
 import { within } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 
+type Role = "textbox" | "combobox" | "radio";
+
 export interface InputField {
   name: string;
   key: string;
-  role?: "textbox" | "combobox" | "radio" | "select";
+  role?: Role;
   testValue?: string;
   withinGroupName?: string;
 }
 
-export const getInputField = async (screen: Screen, input: InputField): Promise<HTMLElement> => {
+export const getInputField = async (
+  screen: Screen,
+  input: { name: string; role?: Role; withinGroupName?: string },
+): Promise<HTMLElement> => {
   const role = input.role ?? "textbox";
   return input.withinGroupName
     ? within(

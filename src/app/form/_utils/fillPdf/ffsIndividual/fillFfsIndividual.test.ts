@@ -312,6 +312,15 @@ describe("mapFfsIndividualFields", () => {
           "fd427trainingsiteZip",
         );
       });
+
+      it("throws an UnexpectedFormDataError when formData contains None of these but no Training Organization", () => {
+        const formData: FormData = generateFormData({
+          stateApprovedTraining: "None of these",
+        });
+        expect(() => mapFfsIndividualFields(formData)).toThrow(
+          "stateApprovedTraining had value none of these, but no training organization was provided.",
+        );
+      });
     });
   });
 

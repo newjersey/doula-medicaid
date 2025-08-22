@@ -188,6 +188,7 @@ const TrainingStep1 = () => {
                   </Alert>
                 </div>
               )}
+              <hr className="margin-top-5" />
             </div>
             <div className="form-explainer">
               <DoulaTrainingExplainer />
@@ -199,7 +200,7 @@ const TrainingStep1 = () => {
                 <Fieldset
                   legend={
                     <div>
-                      <p className="font-ui-xs text-normal">
+                      <p className="font-ui-xs text-normal margin-top-4">
                         {orderedInputNameToLabel["isDoulaTrainingInPerson"]}
                       </p>
                       <p className="font-ui-xs text-normal">
@@ -372,130 +373,124 @@ const TrainingStep1 = () => {
                   </Fieldset>
                 )}
               </div>
+              <hr className="margin-top-5" />
+
               <div>
-                <Fieldset
-                  legend={
-                    <div>
-                      <h2 className="font-heading-md margin-top-5">
-                        Training organization point of contact
-                      </h2>
-                      <p className="usa-hint">
-                        Most doulas use their program instructor&apos;s information.
-                      </p>
-                    </div>
-                  }
-                >
-                  <div className="grid-row grid-gap">
-                    <div className="tablet:grid-col-6">
-                      <Label htmlFor="instructorFirstName" requiredMarker>
-                        {orderedInputNameToLabel["instructorFirstName"]}
-                      </Label>
-                      <TextInput
-                        id="instructorFirstName"
-                        type="text"
-                        required
-                        validationStatus={errors.instructorFirstName ? "error" : undefined}
-                        aria-invalid={errors.instructorFirstName ? "true" : "false"}
-                        aria-describedby={
-                          errors.instructorFirstName && "instructorFirstNameErrorMessage"
-                        }
-                        {...register("instructorFirstName", {
-                          required: `${orderedInputNameToLabel["instructorFirstName"]} is required`,
-                        })}
-                      />
-                      {errors.instructorFirstName && (
-                        <span id="instructorFirstNameErrorMessage" className="usa-error-message">
-                          {errors.instructorFirstName.message}
-                        </span>
-                      )}
-                    </div>
-                    <div className="tablet:grid-col-6">
-                      <Label htmlFor="instructorLastName" requiredMarker>
-                        {orderedInputNameToLabel["instructorLastName"]}
-                      </Label>
-                      <TextInput
-                        id="instructorLastName"
-                        type="text"
-                        required
-                        validationStatus={errors.instructorLastName ? "error" : undefined}
-                        aria-invalid={errors.instructorLastName ? "true" : "false"}
-                        aria-describedby={
-                          errors.instructorLastName && "instructorLastNameErrorMessage"
-                        }
-                        {...register("instructorLastName", {
-                          required: `${orderedInputNameToLabel["instructorLastName"]} is required`,
-                        })}
-                      />
-                      {errors.instructorLastName && (
-                        <span id="instructorLastNameErrorMessage" className="usa-error-message">
-                          {errors.instructorLastName.message}
-                        </span>
-                      )}
-                    </div>
+                <h2 className="font-heading-md margin-top-5">
+                  Training organization point of contact
+                </h2>
+                <p className="usa-hint">
+                  Most doulas use their program instructor&apos;s information.
+                </p>
+
+                <div className="grid-row grid-gap">
+                  <div className="tablet:grid-col-6">
+                    <Label htmlFor="instructorFirstName" requiredMarker>
+                      {orderedInputNameToLabel["instructorFirstName"]}
+                    </Label>
+                    <TextInput
+                      id="instructorFirstName"
+                      type="text"
+                      required
+                      validationStatus={errors.instructorFirstName ? "error" : undefined}
+                      aria-invalid={errors.instructorFirstName ? "true" : "false"}
+                      aria-describedby={
+                        errors.instructorFirstName && "instructorFirstNameErrorMessage"
+                      }
+                      {...register("instructorFirstName", {
+                        required: `${orderedInputNameToLabel["instructorFirstName"]} is required`,
+                      })}
+                    />
+                    {errors.instructorFirstName && (
+                      <span id="instructorFirstNameErrorMessage" className="usa-error-message">
+                        {errors.instructorFirstName.message}
+                      </span>
+                    )}
                   </div>
-                  <div className="grid-row grid-gap">
-                    <div className="tablet:grid-col-6">
-                      <Label htmlFor="instructorEmail" requiredMarker>
-                        {orderedInputNameToLabel["instructorEmail"]}
-                      </Label>
-                      <TextInput
-                        id="instructorEmail"
-                        autoCorrect="off"
-                        autoCapitalize="off"
-                        required
-                        validationStatus={errors.instructorEmail ? "error" : undefined}
-                        aria-invalid={errors.instructorEmail ? "true" : "false"}
-                        aria-describedby={errors.instructorEmail && "instructorEmailErrorMessage"}
-                        {...register("instructorEmail", {
-                          required: `${orderedInputNameToLabel["instructorEmail"]} is required`,
-                          pattern: {
-                            value: /\S+@\S+\.\S+/,
-                            message: "Entered value does not match email format",
-                          },
-                        })}
-                        type="email"
-                      />
-                      {errors.instructorEmail && (
-                        <span id="instructorEmailErrorMessage" className="usa-error-message">
-                          {errors.instructorEmail.message}
-                        </span>
-                      )}
-                    </div>
+                  <div className="tablet:grid-col-6">
+                    <Label htmlFor="instructorLastName" requiredMarker>
+                      {orderedInputNameToLabel["instructorLastName"]}
+                    </Label>
+                    <TextInput
+                      id="instructorLastName"
+                      type="text"
+                      required
+                      validationStatus={errors.instructorLastName ? "error" : undefined}
+                      aria-invalid={errors.instructorLastName ? "true" : "false"}
+                      aria-describedby={
+                        errors.instructorLastName && "instructorLastNameErrorMessage"
+                      }
+                      {...register("instructorLastName", {
+                        required: `${orderedInputNameToLabel["instructorLastName"]} is required`,
+                      })}
+                    />
+                    {errors.instructorLastName && (
+                      <span id="instructorLastNameErrorMessage" className="usa-error-message">
+                        {errors.instructorLastName.message}
+                      </span>
+                    )}
                   </div>
-                  <div className="grid-row grid-gap">
-                    <div className="tablet:grid-col-6">
-                      <Label htmlFor="instructorPhoneNumber" requiredMarker>
-                        {orderedInputNameToLabel["instructorPhoneNumber"]}
-                      </Label>
-                      <TextInputMask
-                        id="instructorPhoneNumber"
-                        type="tel"
-                        value={instructorPhoneNumber ?? ""}
-                        inputMode="numeric"
-                        mask="___-___-____"
-                        pattern="\d{3}-\d{3}-\d{4}"
-                        required
-                        validationStatus={errors.instructorPhoneNumber ? "error" : undefined}
-                        aria-invalid={errors.instructorPhoneNumber ? "true" : "false"}
-                        aria-describedby={
-                          errors.instructorPhoneNumber && "instructorPhoneNumberErrorMessage"
-                        }
-                        {...register("instructorPhoneNumber", {
-                          required: `${orderedInputNameToLabel["instructorPhoneNumber"]} is required`,
-                          pattern: {
-                            value: /\d{3}-\d{3}-\d{4}/,
-                            message: "Entered value does not match phone number format",
-                          },
-                        })}
-                      />
-                      {errors.instructorPhoneNumber && (
-                        <span id="instructorPhoneNumberErrorMessage" className="usa-error-message">
-                          {errors.instructorPhoneNumber.message}
-                        </span>
-                      )}
-                    </div>
+                </div>
+                <div className="grid-row grid-gap">
+                  <div className="tablet:grid-col-6">
+                    <Label htmlFor="instructorEmail" requiredMarker>
+                      {orderedInputNameToLabel["instructorEmail"]}
+                    </Label>
+                    <TextInput
+                      id="instructorEmail"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      required
+                      validationStatus={errors.instructorEmail ? "error" : undefined}
+                      aria-invalid={errors.instructorEmail ? "true" : "false"}
+                      aria-describedby={errors.instructorEmail && "instructorEmailErrorMessage"}
+                      {...register("instructorEmail", {
+                        required: `${orderedInputNameToLabel["instructorEmail"]} is required`,
+                        pattern: {
+                          value: /\S+@\S+\.\S+/,
+                          message: "Entered value does not match email format",
+                        },
+                      })}
+                      type="email"
+                    />
+                    {errors.instructorEmail && (
+                      <span id="instructorEmailErrorMessage" className="usa-error-message">
+                        {errors.instructorEmail.message}
+                      </span>
+                    )}
                   </div>
-                </Fieldset>
+                </div>
+                <div className="grid-row grid-gap">
+                  <div className="tablet:grid-col-6">
+                    <Label htmlFor="instructorPhoneNumber">
+                      {orderedInputNameToLabel["instructorPhoneNumber"]}
+                    </Label>
+                    <TextInputMask
+                      id="instructorPhoneNumber"
+                      type="tel"
+                      value={instructorPhoneNumber ?? ""}
+                      inputMode="numeric"
+                      mask="___-___-____"
+                      pattern="\d{3}-\d{3}-\d{4}"
+                      validationStatus={errors.instructorPhoneNumber ? "error" : undefined}
+                      aria-invalid={errors.instructorPhoneNumber ? "true" : "false"}
+                      aria-describedby={
+                        errors.instructorPhoneNumber && "instructorPhoneNumberErrorMessage"
+                      }
+                      {...register("instructorPhoneNumber", {
+                        pattern: {
+                          value: /\d{3}-\d{3}-\d{4}/,
+                          message: "Entered value does not match phone number format",
+                        },
+                      })}
+                    />
+                    {errors.instructorPhoneNumber && (
+                      <span id="instructorPhoneNumberErrorMessage" className="usa-error-message">
+                        {errors.instructorPhoneNumber.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

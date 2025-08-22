@@ -102,7 +102,7 @@ describe("<PersonalDetailsStep1 />", () => {
         renderWithRouter();
 
         const labelWithoutAsterisk = name.replace(" *", "");
-        const input = await getInputField(screen, { name, key });
+        const input = await getInputField(screen, { name });
         expect(input).toBeRequired();
         await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
         await user.click(screen.getByRole("button", { name: "Next" }));
@@ -241,14 +241,14 @@ describe("<PersonalDetailsStep1 />", () => {
 
     it.each(requiredInputs)(
       "clicking on the $name error focuses on the input",
-      async ({ name, key }) => {
+      async ({ name }) => {
         const labelWithoutAsterisk = name.replace(" *", "");
         const user = userEvent.setup();
         renderWithRouter();
         await user.click(screen.getByRole("button", { name: "Next" }));
         await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
 
-        const input = await getInputField(screen, { name, key });
+        const input = await getInputField(screen, { name });
         expect(input).toHaveFocus();
       },
     );
