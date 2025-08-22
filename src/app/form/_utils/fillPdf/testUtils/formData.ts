@@ -7,6 +7,12 @@ const defaultDateOfBirthMonth = "12";
 const defaultDateOfBirthYear = "1990";
 
 const defaultFormData = {
+  stateApprovedTraining: "Children's Home Society of NJ (Trenton)",
+  nameOfTrainingOrganization: null,
+  instructorFirstName: "First",
+  instructorLastName: "Last",
+  instructorEmail: "test@example.com",
+  instructorPhoneNumber: "111-111-1111",
   isDoulaTrainingInPerson: false,
   trainingStreetAddress1: null,
   trainingStreetAddress2: null,

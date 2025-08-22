@@ -159,7 +159,7 @@ describe("<PersonalDetailsStep2 />", () => {
         const user = userEvent.setup();
         renderWithRouter();
 
-        const input = await getInputField(screen, { name, key });
+        const input = await getInputField(screen, { name });
         expect(input).toBeRequired();
         await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set([key]));
         await user.click(screen.getByRole("button", { name: "Next" }));
@@ -254,7 +254,7 @@ describe("<PersonalDetailsStep2 />", () => {
 
       it.each(requiredBillingFields)(
         "clicking on the billing $name error focuses on the input",
-        async ({ name, key, withinGroupName }) => {
+        async ({ name, withinGroupName }) => {
           const user = userEvent.setup();
           renderWithRouter();
           await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set());
@@ -266,7 +266,7 @@ describe("<PersonalDetailsStep2 />", () => {
             }),
           );
 
-          const input = await getInputField(screen, { name, key, withinGroupName });
+          const input = await getInputField(screen, { name, withinGroupName });
           expect(input).toHaveFocus();
         },
       );

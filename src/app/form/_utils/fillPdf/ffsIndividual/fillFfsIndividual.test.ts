@@ -263,16 +263,64 @@ describe("mapFfsIndividualFields", () => {
       testSocialSecurityNumber("fd427SocialSecurityNumber");
     });
 
-    it("fills doula training address line 1", () => {
-      testTrainingStreetAddress("fd427trainingsiteStreetaddress");
-    });
+    describe("doula training fields", () => {
+      describe("when user selects a state approved training", () => {
+        it("fills the selected approved training", () => {
+          const formData: FormData = generateFormData({
+            stateApprovedTraining: "Children's Futures (Trenton)",
+            nameOfTrainingOrganization: null,
+          });
+          const fieldsToFill = mapFfsIndividualFields(formData);
+          expect(fieldsToFill["fd427TrainingProgramName"]).toEqual("Children's Futures (Trenton)");
+        });
+      });
 
-    it("fills doula training address city", () => {
-      testTrainingCityStateZip(
-        "fd427trainingsiteCity",
-        "fd427trainingsiteState",
-        "fd427trainingsiteZip",
-      );
+      describe("when user provides the name of a non-approved training", () => {
+        it("fills the provided training", () => {
+          const formData: FormData = generateFormData({
+            stateApprovedTraining: "None of these",
+            nameOfTrainingOrganization: "Name of training org",
+          });
+          const fieldsToFill = mapFfsIndividualFields(formData);
+          expect(fieldsToFill["fd427TrainingProgramName"]).toEqual("Name of training org");
+        });
+      });
+
+      it("fills in training instructor fields", () => {
+        const formData: FormData = generateFormData({
+          instructorFirstName: "First",
+          instructorLastName: "Last",
+          instructorEmail: "test@example.com",
+          instructorPhoneNumber: "111-111-1111",
+        });
+        const fieldsToFill = mapFfsIndividualFields(formData);
+        expect(fieldsToFill["fd427TrainingProgramContact"]).toEqual("First Last");
+        expect(fieldsToFill["fd427trainingprogramcontanctE-mailAddress"]).toEqual(
+          "test@example.com",
+        );
+        expect(fieldsToFill["fd427trainingprogramcontactTelephoneNo"]).toEqual("111-111-1111");
+      });
+
+      it("fills doula street address1", () => {
+        testTrainingStreetAddress("fd427trainingsiteStreetaddress");
+      });
+
+      it("fills doula training address city", () => {
+        testTrainingCityStateZip(
+          "fd427trainingsiteCity",
+          "fd427trainingsiteState",
+          "fd427trainingsiteZip",
+        );
+      });
+
+      it("throws an UnexpectedFormDataError when formData contains None of these but no Training Organization", () => {
+        const formData: FormData = generateFormData({
+          stateApprovedTraining: "None of these",
+        });
+        expect(() => mapFfsIndividualFields(formData)).toThrow(
+          "stateApprovedTraining had value none of these, but no training organization was provided.",
+        );
+      });
     });
   });
 
