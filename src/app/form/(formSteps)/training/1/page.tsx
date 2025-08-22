@@ -139,7 +139,7 @@ const TrainingStep1 = () => {
                 <option value="Children's Futures (Trenton)">
                   Children&apos;s Futures (Trenton)
                 </option>
-                <option value="Sister to Sister Community Doulas of Essex County (NJDLC)">
+                <option value="Sister to Sister Community Doulas of Essex County (Newark)">
                   Sister to Sister Community Doulas of Essex County (Newark)
                 </option>
                 <option value="New Jersey Doula Learning Collaborative (NJDLC)">
