@@ -24,7 +24,7 @@
     "jiti": "2.5.1",
     "jszip": "3.10.1",
     "next": "15.5.0",
-    "node-poppler": "7.2.4",
+    "node-poppler": "8.0.4",
     "pdf-lib": "1.17.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
