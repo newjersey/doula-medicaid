@@ -19,6 +19,7 @@ const clickSameBillingMailingAddressNo = async () => {
     name: "No",
   });
   await user.click(inputNo);
+  return inputNo;
 };
 
 const clickSameBillingMailingAddressYes = async () => {
@@ -30,6 +31,7 @@ const clickSameBillingMailingAddressYes = async () => {
     name: "Yes",
   });
   await user.click(inputYes);
+  return inputYes;
 };
 
 const getBillingAddressGroup = () => {
@@ -420,31 +422,33 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("Public information explainer", () => {
-    it("orders the public information explainer immediately after the address input", async () => {
+    it("orders the public information explainer immediately after the billing address question", async () => {
       const user = userEvent.setup();
       renderWithRouter();
 
-      const zipCodeInput = screen.getByRole("textbox", {
-        name: "ZIP code *",
-      });
+      const sameBillingMailingAddressYes = await clickSameBillingMailingAddressYes();
+      expect(sameBillingMailingAddressYes).toHaveFocus();
+
+      await user.tab();
       const publicInformationExplainer = screen.getByRole("button", {
         name: "Will my information be public?",
       });
-      await user.type(zipCodeInput, "1");
-      expect(zipCodeInput).toHaveFocus();
-
-      await user.tab();
       expect(publicInformationExplainer).toHaveFocus();
     });
 
     it("has a heading level one greater than the section heading level", () => {
       renderWithRouter();
       const sectionHeadingLevel = 2;
-      const addressSectionHeading = screen.getByRole("heading", {
+      const mailingAddressSectionHeading = screen.getByRole("heading", {
         name: "Mailing address",
         level: sectionHeadingLevel,
       });
-      expect(addressSectionHeading).toBeInTheDocument();
+      expect(mailingAddressSectionHeading).toBeInTheDocument();
+      const billingAddressSectionHeading = screen.getByRole("heading", {
+        name: "Billing address",
+        level: sectionHeadingLevel,
+      });
+      expect(billingAddressSectionHeading).toBeInTheDocument();
       const publicInformationExplainer = screen.getByRole("heading", {
         name: "Will my information be public?",
         level: sectionHeadingLevel + 1,
