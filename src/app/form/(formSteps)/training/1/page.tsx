@@ -4,7 +4,7 @@ import ErrorSummary from "@form/(formSteps)/components/ErrorSummary";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { AddressState } from "@form/_utils/inputFields/enums";
+import { AddressState, StateApprovedTraining } from "@form/_utils/inputFields/enums";
 import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
 import {
   Alert,
@@ -133,28 +133,13 @@ const TrainingStep1 = () => {
                   required: `This question is required`,
                 })}
               >
-                <option value="Children's Home Society of NJ (Trenton)">
-                  Children&apos;s Home Society of NJ (Trenton)
-                </option>
-                <option value="Children's Futures (Trenton)">
-                  Children&apos;s Futures (Trenton)
-                </option>
-                <option value="Sister to Sister Community Doulas of Essex County (Newark)">
-                  Sister to Sister Community Doulas of Essex County (Newark)
-                </option>
-                <option value="New Jersey Doula Learning Collaborative (NJDLC)">
-                  New Jersey Doula Learning Collaborative (NJDLC)
-                </option>
-                <option
-                  value="The Partnership for Maternal and Child Health of Northern New Jersey (Paterson,
-                    Newark)"
-                >
-                  The Partnership for Maternal and Child Health of Northern New Jersey (Paterson,
-                  Newark)
-                </option>
-                <option value="None of these">None of these</option>
+                {Object.values(StateApprovedTraining).map((trainingOrg) => (
+                  <option key={trainingOrg} value={trainingOrg}>
+                    {trainingOrg}
+                  </option>
+                ))}
               </Select>
-              {stateApprovedTraining === "None of these" && (
+              {stateApprovedTraining === StateApprovedTraining.NONE && (
                 <div>
                   <Label htmlFor="nameOfTrainingOrganization" requiredMarker>
                     {orderedInputNameToLabel["nameOfTrainingOrganization"]}
