@@ -55,3 +55,12 @@ export enum AddressState {
   "WI" = "WI",
   "WY" = "WY",
 }
+
+export enum StateApprovedTraining {
+  "CHS" = "Children's Home Society of NJ (Trenton)",
+  "CF" = "Children's Futures (Trenton)",
+  "STS" = "Sister to Sister Community Doulas of Essex County (Newark)",
+  "NJDLC" = "New Jersey Doula Learning Collaborative (NJDLC)",
+  "PMCH" = "The Partnership for Maternal and Child Health of Northern New Jersey (Paterson, Newark)",
+  "NONE" = "None of these",
+}
