@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "timezone": "US/Eastern",
-  "extends": ["config:recommended"],
+  "extends": ["config:recommended", ":maintainLockFilesWeekly"],
   "automergeSchedule": ["* * * * 0,6", "* 0-6 * * 1"],
   "ignorePaths": ["**/scripts/**"],
   "packageRules": [
