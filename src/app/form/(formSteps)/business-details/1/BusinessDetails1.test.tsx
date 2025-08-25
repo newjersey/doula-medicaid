@@ -78,7 +78,7 @@ describe("<BusinessDetailsStep1 />", () => {
     return { user, noSameAddressButton };
   };
 
-  it("saves isSoleProprietor as false when user selects no for sole proprietorship and submits", async () => {
+  it("saves isSoleProprietor as false when user selects no for sole proprietor and submits", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
     const noSoleProprietorButton = getNoSoleProprietorButton();

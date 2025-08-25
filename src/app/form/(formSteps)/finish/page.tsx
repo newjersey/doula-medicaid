@@ -28,7 +28,7 @@ const FinishSection = () => {
   }, []);
 
   return (
-    <div>
+    <div className="margin-top-5 margin-bottom-5">
       {zipDownloadUrl && (
         <a href={zipDownloadUrl} download="filled_forms.zip">
           Download your forms

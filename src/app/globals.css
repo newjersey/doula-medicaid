@@ -25,19 +25,24 @@ abbr[title] {
   border-color: #ffbc78;
 }
 
-@media (min-width: 1024px) {
-  .form-grid {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 2fr 1fr;
-  }
-  .form-first-question-explainer {
-    grid-column: 2;
-    grid-row: span 3;
-  }
+.horizontal-divider {
+  box-sizing: content-box;
+  height: 0;
+  border-style: inset;
+  border-width: 1px;
+  color: gray;
+}
+
+.h2-margin-top {
+  margin-top: 0.83em;
 }
 @media (max-width: 1023px) {
   .form-explainer {
     margin-top: 20px;
+  }
+}
+@media (min-width: 1024px) {
+  .form-explainer {
+    margin-top: 0.83em;
   }
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import NpiExplainer from "@/app/form/(formSteps)/personal-details/3/NpiExplainer";
 import type { PersonalDetails3Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -45,8 +46,8 @@ const PersonalDetailsStep3 = () => {
     <div>
       {dataHasLoaded && (
         <Form onSubmit={handleSubmit(onSubmit)} className="maxw-full" noValidate>
-          <div className="form-grid">
-            <div>
+          <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+            <div className="desktop:grid-col-8">
               <h2 className="font-heading-md">Doula provider identification</h2>
               <p>
                 To be an NJ FamilyCare doula, your NPI must be Type 1 and linked to the doula
@@ -67,7 +68,7 @@ const PersonalDetailsStep3 = () => {
                 required
                 aria-invalid={errors.npiNumber ? "true" : "false"}
                 className={errors.npiNumber ? "usa-input--error" : ""}
-                aria-describedby={`${errors.npiNumber ? "npiNumberErrorMessage" : ""} npiNumberHint`}
+                aria-describedby={`${errors.npiNumber ? "npiNumberErrorMessage npiNumberErrorAlert" : ""} npiNumberHint`}
                 {...register("npiNumber", {
                   required: true,
                   minLength: {
@@ -92,11 +93,13 @@ const PersonalDetailsStep3 = () => {
                 </span>
               )}
             </div>
-            <div className="form-explainer form-first-question-explainer">
+            <div className="form-explainer desktop:grid-col-4">
               <NpiExplainer />
             </div>
-            <div>
-              <hr className="margin-top-5 margin-bottom-5" />
+          </div>
+          <HorizontalDivider />
+          <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+            <div className="desktop:grid-col-8">
               <h2 className="font-heading-md">Other identification</h2>
               <p>Leave non-applicable items blank; it won&apos;t affect your application.</p>
               <Label htmlFor="upinNumber">{inputNameToLabel["upinNumber"]} (optional)</Label>

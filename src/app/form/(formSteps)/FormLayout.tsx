@@ -1,3 +1,4 @@
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { allSections, getCurrentFormProgress } from "@form/_utils/formProgress";
 import { RequiredMarker } from "@trussworks/react-uswds";
 
@@ -77,8 +78,8 @@ export const FormLayout = (props: { children?: React.ReactNode; pathname: string
           </div>
         </div>
       </div>
-      <hr className="width-full" />
-      <div className="margin-top-5 margin-bottom-5">{props.children}</div>
+      <HorizontalDivider />
+      {props.children}
     </>
   );
 };

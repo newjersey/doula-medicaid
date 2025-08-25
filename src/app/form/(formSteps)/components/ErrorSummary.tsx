@@ -12,7 +12,7 @@ const ErrorSummary = <T extends FieldValues>(props: ErrorSummaryProps<T>) => {
     <div tabIndex={-1} ref={props.ref}>
       {props.shouldSummarizeErrors && Object.keys(props.errors).length >= 1 && (
         <div
-          className="usa-alert usa-alert--error margin-bottom-3 border-05 border-top-105 border-secondary-dark"
+          className="usa-alert usa-alert--error h2-margin-top border-05 border-top-105 border-secondary-dark"
           aria-labelledby="error-summary-heading"
         >
           <div className="usa-alert__body">
