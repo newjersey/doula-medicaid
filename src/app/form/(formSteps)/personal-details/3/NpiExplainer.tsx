@@ -20,10 +20,11 @@ const npiExplainerItems: AccordionItemProps[] = [
     content: (
       <>
         <p>
-          Visit the National Plan and Provider Enumeration System (NPPES) site:
+          Visit the National Plan and Provider Enumeration System (NPPES) site:{" "}
           <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
             https://nppes.cms.hhs.gov/
           </a>
+          .
         </p>
         <p>You can verify its authenticity as it is an official .gov site.</p>
       </>
@@ -76,7 +77,7 @@ const npiExplainerItems: AccordionItemProps[] = [
 ];
 
 const NpiExplainer = () => {
-  return <Accordion bordered={true} items={npiExplainerItems} multiselectable={true} />;
+  return <Accordion bordered={true} items={npiExplainerItems} />;
 };
 
 export default NpiExplainer;

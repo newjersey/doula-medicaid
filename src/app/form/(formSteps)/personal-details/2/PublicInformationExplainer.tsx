@@ -8,11 +8,11 @@ const publicInformationExplainerItems: AccordionItemProps[] = [
     content: (
       <>
         <p>
-          Partially, yes. The information that you share in this website is encrypted, it stays
-          private. But some information will be public because when you receive an NPI (National
-          Provider Identifier), your contact and NPI details will be listed on the national National
-          Plan and Provider Enumeration System (NPPES) NPI Registry. If you use your home address as
-          your mailing and/or business address, it will be public.
+          Partially, yes. The information that you share in this website stays private. But some
+          information will be public because when you receive an NPI (National Provider Identifier),
+          your contact and NPI details will be listed on the national National Plan and Provider
+          Enumeration System (NPPES) NPI Registry. If you use your home address as your mailing
+          and/or business address, it will be public.
         </p>
         <p>
           NJ FamilyCare doesn&apos;t control NPPES listings. Once enrolled, you&apos;ll also appear
@@ -33,9 +33,7 @@ const publicInformationExplainerItems: AccordionItemProps[] = [
 ];
 
 const PublicInformationExplainer = () => {
-  return (
-    <Accordion bordered={true} items={publicInformationExplainerItems} multiselectable={true} />
-  );
+  return <Accordion bordered={true} items={publicInformationExplainerItems} />;
 };
 
 export default PublicInformationExplainer;

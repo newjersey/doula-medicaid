@@ -66,7 +66,9 @@ describe("<PersonalDetailsStep3 />", () => {
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       expect(input).toHaveAccessibleDescription(
-        expect.stringContaining("National Provider Identifier (NPI) is required"),
+        expect.stringContaining(
+          "To be an NJ FamilyCare doula, your need a NPI. You can get yours via https://nppes.cms.hhs.gov/",
+        ),
       );
       expect(input).toHaveAttribute("aria-invalid", "true");
 

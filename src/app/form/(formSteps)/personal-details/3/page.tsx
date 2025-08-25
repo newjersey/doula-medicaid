@@ -55,15 +55,8 @@ const PersonalDetailsStep3 = () => {
             <div>
               <h2 className="font-heading-md">Doula provider identification</h2>
               <p>
-                Note:{" "}
-                <span className="usa-hint">
-                  To be an NJ FamilyCare doula, your NPI must be Type 1 and linked to the doula
-                  taxonomy code. You can update this via{" "}
-                  <a href="https://nppes.cms.hhs.gov" target="_blank" rel="noopener">
-                    https://nppes.cms.hhs.gov
-                  </a>
-                </span>
-                .
+                To be an NJ FamilyCare doula, your NPI must be Type 1 and linked to the doula
+                taxonomy code 374J00000X.
               </p>
               <Label htmlFor="npiNumber" requiredMarker>
                 {inputNameToLabel["npiNumber"]}
@@ -82,7 +75,7 @@ const PersonalDetailsStep3 = () => {
                 className={errors.npiNumber ? "usa-input--error" : ""}
                 aria-describedby={`${errors.npiNumber ? "npiNumberErrorMessage" : ""} npiNumberHint`}
                 {...register("npiNumber", {
-                  required: `${inputNameToLabel["npiNumber"]} is required`,
+                  required: true,
                   minLength: {
                     value: 10,
                     message: `${inputNameToLabel["npiNumber"]} must have 10 digits`,
@@ -91,7 +84,17 @@ const PersonalDetailsStep3 = () => {
               />
               {errors.npiNumber && (
                 <span id="npiNumberErrorMessage" className="usa-error-message">
-                  {errors.npiNumber.message}
+                  {errors.npiNumber?.type === "required" ? (
+                    <span>
+                      To be an NJ FamilyCare doula, your need a NPI. You can get yours via{" "}
+                      <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
+                        https://nppes.cms.hhs.gov/
+                      </a>
+                      .
+                    </span>
+                  ) : (
+                    errors.npiNumber.message
+                  )}
                 </span>
               )}
             </div>
