@@ -40,7 +40,7 @@
     "@testing-library/user-event": "14.6.1",
     "@types/jest": "29.5.14",
     "@types/jest-expect-message": "1.1.0",
-    "@types/node": "22.13.14",
+    "@types/node": "22.18.0",
     "@types/nodemailer": "6.4.19",
     "@types/react": "19.1.11",
     "@types/react-dom": "19.1.7",
