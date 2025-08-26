@@ -78,7 +78,7 @@ describe("<BusinessDetailsStep1 />", () => {
     return { user, noSameAddressButton };
   };
 
-  it("saves isSoleProprietorship as false when user selects no for sole proprietorship and submits", async () => {
+  it("saves isSoleProprietor as false when user selects no for sole proprietorship and submits", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
     const noSoleProprietorButton = getNoSoleProprietorButton();
@@ -87,7 +87,7 @@ describe("<BusinessDetailsStep1 />", () => {
     expect(noSoleProprietorButton).toBeChecked();
 
     await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(getValue("isSoleProprietorship", true)).toBe("false");
+    expect(getValue("isSoleProprietor", true)).toBe("false");
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
     expect(mockRouter.refresh).toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe("<BusinessDetailsStep1 />", () => {
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(getValue("isSoleProprietorship", true)).toBe("true");
+    expect(getValue("isSoleProprietor", true)).toBe("true");
     expect(getValue("hasSameBusinessAddress", true)).toBe("true");
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
@@ -165,7 +165,7 @@ describe("<BusinessDetailsStep1 />", () => {
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(getValue("isSoleProprietorship", true)).toBe("true");
+    expect(getValue("isSoleProprietor", true)).toBe("true");
     expect(getValue("hasSameBusinessAddress", true)).toBe("false");
 
     for (const addressTextInputField of addressTextInputFields) {

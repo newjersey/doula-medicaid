@@ -31,8 +31,8 @@ export interface PdfFfsIndividualPage16 {
 }
 
 export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPage16> => {
-  if (formData.natureOfDisclosingEntity == DisclosingEntity.SoleProprietorship) {
-    const soleProprietorshipFields = {
+  if (formData.natureOfDisclosingEntity == DisclosingEntity.SoleProprietor) {
+    const soleProprietorFields = {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber ?? "",
@@ -42,14 +42,14 @@ export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPag
 
     if (formData.hasSameBusinessAddress === true) {
       return {
-        ...soleProprietorshipFields,
+        ...soleProprietorFields,
         fd452businessstreetline1: formData.streetAddress1 || "",
         fd452businessstreetline2: formData.streetAddress2 || "",
         fd452businessstreetline3: formatAddressLine3(formData),
       };
     } else if (formData.hasSameBusinessAddress === false) {
       return {
-        ...soleProprietorshipFields,
+        ...soleProprietorFields,
         fd452businessstreetline1: formData.businessStreetAddress1 || "",
         fd452businessstreetline2: formData.businessStreetAddress2 || "",
         fd452businessstreetline3: formatBusinessAddressLine3(formData),

@@ -24,7 +24,7 @@ const BusinessDetails1 = () => {
   const formProgressPosition = useFormProgressPosition();
   const { register, handleSubmit, watch } = useForm<BusinessDetails1Data>({
     defaultValues: {
-      isSoleProprietorship: "",
+      isSoleProprietor: "",
       hasSameBusinessAddress: "",
       businessStreetAddress1: "",
       businessStreetAddress2: "",
@@ -69,16 +69,16 @@ const BusinessDetails1 = () => {
               legendStyle="large"
             >
               <Radio
-                id="soleProprietorshipYes"
+                id="soleProprietorYes"
                 label="Yes"
                 value="true"
-                {...register("isSoleProprietorship")}
+                {...register("isSoleProprietor")}
               />
               <Radio
-                id="soleProprietorshipNo"
+                id="soleProprietorNo"
                 label="No"
                 value="false"
-                {...register("isSoleProprietorship")}
+                {...register("isSoleProprietor")}
               />
             </Fieldset>
 

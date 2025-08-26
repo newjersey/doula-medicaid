@@ -509,7 +509,7 @@ describe("mapFfsIndividualFields", () => {
     describe("when disclosing entity is Sole Proprietorship and business address is the same as mailing address", () => {
       it("fills the page 16 fields", () => {
         const formData: FormData = generateFormData({
-          natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
+          natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
           firstName: "First",
           middleName: "Middle",
           lastName: "Last",
@@ -543,7 +543,7 @@ describe("mapFfsIndividualFields", () => {
     describe("when disclosing entity is Sole Proprietorship and business address is different from mailing address", () => {
       it("fills the page 16 fields", () => {
         const formData: FormData = generateFormData({
-          natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
+          natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
           firstName: "First",
           middleName: "Middle",
           lastName: "Last",
