@@ -1,5 +1,5 @@
 export enum DisclosingEntity {
-  "SoleProprietorship" = "SoleProprietorship",
+  "SoleProprietor" = "SoleProprietor",
 }
 
 export enum AddressState {

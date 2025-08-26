@@ -7,17 +7,17 @@ import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
 
 describe("getBusinessDetailsData", () => {
   describe("disclosing entity handling", () => {
-    it("sets natureOfDisclosingEntity to SoleProprietorship when isSoleProprietorship is true", async () => {
+    it("sets natureOfDisclosingEntity to SoleProprietor when isSoleProprietor is true", async () => {
       setRequiredFieldsInSessionStorage();
-      setInSessionStorage({ isSoleProprietorship: "true" });
+      setInSessionStorage({ isSoleProprietor: "true" });
       expect(getBusinessDetailsData()).toMatchObject({
-        natureOfDisclosingEntity: DisclosingEntity.SoleProprietorship,
+        natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
       });
     });
 
-    it("sets natureOfDisclosingEntity to null when isSoleProprietorship is false", async () => {
+    it("sets natureOfDisclosingEntity to null when isSoleProprietor is false", async () => {
       setRequiredFieldsInSessionStorage();
-      setInSessionStorage({ isSoleProprietorship: "false" });
+      setInSessionStorage({ isSoleProprietor: "false" });
       expect(getBusinessDetailsData()).toMatchObject({
         natureOfDisclosingEntity: null,
       });

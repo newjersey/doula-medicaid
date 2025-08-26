@@ -56,7 +56,7 @@ export const generateFormData = (formDataOverrides: Partial<FormData>): FormData
 };
 
 export const setRequiredFieldsInSessionStorage = () => {
-  window.sessionStorage.setItem("isSoleProprietorship", "true");
+  window.sessionStorage.setItem("isSoleProprietor", "true");
   for (const [key, value] of Object.entries(defaultFormData)) {
     if (key === "dateOfBirth") {
       window.sessionStorage.setItem("dateOfBirthDay", defaultDateOfBirthDay);

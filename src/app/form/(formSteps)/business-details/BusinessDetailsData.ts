@@ -2,7 +2,7 @@ import { DisclosingEntity, type AddressState } from "@/app/form/_utils/inputFiel
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
 
 export interface BusinessDetails1Data {
-  isSoleProprietorship: "true" | "false" | "";
+  isSoleProprietor: "true" | "false" | "";
   hasSameBusinessAddress: "true" | "false" | "";
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
@@ -22,8 +22,8 @@ export interface BusinessDetailsFormData {
 }
 
 const getBusinessDetails1Data = () => {
-  const disclosingEntity = getBoolean("isSoleProprietorship", true)
-    ? DisclosingEntity.SoleProprietorship
+  const disclosingEntity = getBoolean("isSoleProprietor", true)
+    ? DisclosingEntity.SoleProprietor
     : null;
   return {
     natureOfDisclosingEntity: disclosingEntity,
