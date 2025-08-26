@@ -28,7 +28,7 @@ describe("<FormProgressButtons />", () => {
       refresh: mockRefresh,
     };
     render(
-      <RouterPathnameProvider pathname="/form/screening" router={router as AppRouterInstance}>
+      <RouterPathnameProvider pathname="/form/screening/1" router={router as AppRouterInstance}>
         <FormProgressButtons />
       </RouterPathnameProvider>,
     );

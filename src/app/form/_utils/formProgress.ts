@@ -14,6 +14,7 @@ export const allSections: Array<Section> = [
     id: "screening",
     progressBarTitle: "Screening",
     heading: "Screening",
+    numSteps: 3,
   },
   {
     id: "insurance",
