@@ -10,7 +10,7 @@ import {
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { usePathname } from "next/navigation";
 
-interface FormProgressPosition {
+export interface FormProgressPosition {
   previous: FormProgress | null;
   current: FormProgress;
   next: FormProgress | null;

@@ -5,9 +5,10 @@ import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/
 import { typecheckAutocomplete } from "@/app/form/_utils/types/autocomplete";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { createFormErrorHandler, createFormSubmitHandler } from "@form/_utils/formHandlers";
+import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
-import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { getDefaultValue } from "@form/_utils/sessionStorage";
 import {
   Fieldset,
   Form,
@@ -20,7 +21,7 @@ import {
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useForm, type SubmitErrorHandler, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
   streetAddress1: "Street address",
@@ -68,30 +69,13 @@ const PersonalDetailsStep2 = () => {
   const billingZip = watch("billingZip");
   const hasSameBillingMailingAddress = watch("hasSameBillingMailingAddress");
 
-  const onSubmit: SubmitHandler<PersonalDetails2Data> = (data) => {
-    let key: keyof PersonalDetails2Data;
-    for (key in data) {
-      const value = data[key] ?? "";
-      setKeyValue(key, value);
-    }
-    routeToNextStep(router, formProgressPosition);
-  };
-  const onError: SubmitErrorHandler<PersonalDetails2Data> = (errors) => {
-    if (Object.keys(errors).length >= 3) {
-      setShouldSummarizeErrors(true);
-      errorSummaryRef.current?.focus();
-    } else {
-      setShouldSummarizeErrors(false);
-      for (const inputName of Object.keys(orderedInputNameToLabel) as Array<
-        keyof PersonalDetails2Data
-      >) {
-        if (errors[inputName] !== undefined) {
-          setFocus(inputName);
-          break;
-        }
-      }
-    }
-  };
+  const onSubmit = createFormSubmitHandler<PersonalDetails2Data>(router, formProgressPosition);
+  const onError = createFormErrorHandler<PersonalDetails2Data>(
+    orderedInputNameToLabel,
+    setShouldSummarizeErrors,
+    errorSummaryRef,
+    setFocus,
+  );
 
   useEffect(() => {
     setDataHasLoaded(true);

@@ -3,12 +3,13 @@
 import NpiExplainer from "@/app/form/(formSteps)/personal-details/3/NpiExplainer";
 import type { PersonalDetails3Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { createFormSubmitHandler } from "@form/_utils/formHandlers";
+import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { getDefaultValue } from "@form/_utils/sessionStorage";
 import { Form, Label, TextInput, TextInputMask } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const inputNameToLabel: { [key in keyof PersonalDetails3Data]: string } = {
   npiNumber: "National Provider Identifier (NPI)",
@@ -34,14 +35,7 @@ const PersonalDetailsStep3 = () => {
   });
   const npiNumber = watch("npiNumber");
 
-  const onSubmit: SubmitHandler<PersonalDetails3Data> = (data) => {
-    let key: keyof PersonalDetails3Data;
-    for (key in data) {
-      const value = data[key] ?? "";
-      setKeyValue(key, value);
-    }
-    routeToNextStep(router, formProgressPosition);
-  };
+  const onSubmit = createFormSubmitHandler<PersonalDetails3Data>(router, formProgressPosition);
 
   useEffect(() => {
     setDataHasLoaded(true);
