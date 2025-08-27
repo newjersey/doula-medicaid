@@ -75,7 +75,7 @@ const requiredInstructorFields: Array<InputField> = trainingInstructorFields.fil
   requiredKeys.includes(field.key),
 );
 
-const selectTrainingOrganization = async (
+export const selectTrainingOrganization = async (
   organization: string = "Children's Home Society of NJ (Trenton)",
 ) => {
   const user = userEvent.setup();
