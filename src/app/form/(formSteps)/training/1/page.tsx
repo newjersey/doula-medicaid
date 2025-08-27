@@ -3,9 +3,10 @@
 import ErrorSummary from "@form/(formSteps)/components/ErrorSummary";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { createFormErrorHandler, createFormSubmitHandler } from "@form/_utils/formHandlers";
+import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState, StateApprovedTraining } from "@form/_utils/inputFields/enums";
-import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { getDefaultValue } from "@form/_utils/sessionStorage";
 import {
   Alert,
   Fieldset,
@@ -19,7 +20,7 @@ import {
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import DoulaTrainingExplainer from "./DoulaTrainingExplainer";
 
 const orderedInputNameToLabel: { [key in keyof TrainingData]: string } = {
@@ -71,29 +72,13 @@ const TrainingStep1 = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
 
-  const onSubmit: SubmitHandler<TrainingData> = (data) => {
-    let key: keyof TrainingData;
-    for (key in data) {
-      const value = data[key] ?? "";
-      setKeyValue(key, value);
-    }
-    routeToNextStep(router, formProgressPosition);
-  };
-
-  const onError: SubmitErrorHandler<TrainingData> = (errors) => {
-    if (Object.keys(errors).length >= 3) {
-      setShouldSummarizeErrors(true);
-      errorSummaryRef.current?.focus();
-    } else {
-      setShouldSummarizeErrors(false);
-      for (const inputName of Object.keys(orderedInputNameToLabel) as Array<keyof TrainingData>) {
-        if (errors[inputName] !== undefined) {
-          setFocus(inputName);
-          break;
-        }
-      }
-    }
-  };
+  const onSubmit = createFormSubmitHandler<TrainingData>(router, formProgressPosition);
+  const onError = createFormErrorHandler<TrainingData>(
+    orderedInputNameToLabel,
+    setShouldSummarizeErrors,
+    errorSummaryRef,
+    setFocus,
+  );
 
   useEffect(() => {
     setDataHasLoaded(true);

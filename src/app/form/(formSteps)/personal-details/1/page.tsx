@@ -3,8 +3,9 @@
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { getDefaultValue, setKeyValue } from "@form/_utils/sessionStorage";
+import { createFormErrorHandler, createFormSubmitHandler } from "@form/_utils/formHandlers";
+import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { getDefaultValue } from "@form/_utils/sessionStorage";
 import {
   DateInputGroup,
   Fieldset,
@@ -17,7 +18,7 @@ import {
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { type SubmitErrorHandler, type SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } = {
   firstName: "First name",
@@ -60,30 +61,13 @@ const PersonalDetailsStep1 = () => {
   const phoneNumber = watch("phoneNumber");
   const socialSecurityNumber = watch("socialSecurityNumber");
 
-  const onSubmit: SubmitHandler<PersonalDetails1Data> = (data) => {
-    let key: keyof PersonalDetails1Data;
-    for (key in data) {
-      const value = data[key] ?? "";
-      setKeyValue(key, value);
-    }
-    routeToNextStep(router, formProgressPosition);
-  };
-  const onError: SubmitErrorHandler<PersonalDetails1Data> = (errors) => {
-    if (Object.keys(errors).length >= 3) {
-      setShouldSummarizeErrors(true);
-      errorSummaryRef.current?.focus();
-    } else {
-      setShouldSummarizeErrors(false);
-      for (const inputName of Object.keys(orderedInputNameToLabel) as Array<
-        keyof PersonalDetails1Data
-      >) {
-        if (errors[inputName] !== undefined) {
-          setFocus(inputName);
-          break;
-        }
-      }
-    }
-  };
+  const onSubmit = createFormSubmitHandler<PersonalDetails1Data>(router, formProgressPosition);
+  const onError = createFormErrorHandler<PersonalDetails1Data>(
+    orderedInputNameToLabel,
+    setShouldSummarizeErrors,
+    errorSummaryRef,
+    setFocus,
+  );
 
   useEffect(() => {
     setDataHasLoaded(true);

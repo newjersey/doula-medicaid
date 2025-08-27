@@ -2,9 +2,9 @@
 
 import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { createFormSubmitHandler } from "@form/_utils/formHandlers";
+import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
-import { setKeyValue } from "@form/_utils/sessionStorage";
 import {
   Fieldset,
   Form,
@@ -16,7 +16,7 @@ import {
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { type SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 const BusinessDetails1 = () => {
   const [dataHasLoaded, setDataHasLoaded] = useState<boolean>(false);
@@ -36,14 +36,7 @@ const BusinessDetails1 = () => {
 
   const hasSameBusinessAddress = watch("hasSameBusinessAddress");
 
-  const onSubmit: SubmitHandler<BusinessDetails1Data> = (data) => {
-    let key: keyof BusinessDetails1Data;
-    for (key in data) {
-      const value = data[key] ?? "";
-      setKeyValue(key, value);
-    }
-    routeToNextStep(router, formProgressPosition);
-  };
+  const onSubmit = createFormSubmitHandler<BusinessDetails1Data>(router, formProgressPosition);
 
   useEffect(() => {
     setDataHasLoaded(true);
