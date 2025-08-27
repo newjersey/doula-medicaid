@@ -34,27 +34,27 @@ export interface PdfFfsIndividualPage3 {
 }
 
 export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage3> => {
-  if (
-    formData.stateApprovedTraining === "None of these" &&
-    formData.nameOfTrainingOrganization === null
-  ) {
-    throw new UnexpectedFormDataError(
-      "stateApprovedTraining had value none of these, but no training organization was provided.",
-    );
+  let trainingProgramName: string;
+  if (formData.stateApprovedTraining === "None of these") {
+    if (formData.nameOfTrainingOrganization === null) {
+      throw new UnexpectedFormDataError(
+        "stateApprovedTraining had value none of these, but no training organization was provided.",
+      );
+    }
+    trainingProgramName = formData.nameOfTrainingOrganization;
+  } else {
+    trainingProgramName = formData.stateApprovedTraining;
   }
 
   return {
     fd427dateofbirthDate1_af_date: formatDateOfBirth(formData),
     fd427LegalName: formatName(formData),
     fd427SocialSecurityNumber: formData.socialSecurityNumber || "",
-    fd427TrainingProgramName:
-      formData.stateApprovedTraining === "None of these"
-        ? formData.nameOfTrainingOrganization!
-        : formData.stateApprovedTraining,
-    fd427TrainingProgramContact: `${formData.instructorFirstName!} ${formData.instructorLastName!}`,
-    "fd427trainingprogramcontanctE-mailAddress": formData.instructorEmail!,
-    fd427trainingprogramcontactTelephoneNo: formData.instructorPhoneNumber!,
-    fd427trainingsiteStreetaddress: formData.isDoulaTrainingInPerson!
+    fd427TrainingProgramName: trainingProgramName,
+    fd427TrainingProgramContact: `${formData.instructorFirstName} ${formData.instructorLastName}`,
+    "fd427trainingprogramcontanctE-mailAddress": formData.instructorEmail,
+    fd427trainingprogramcontactTelephoneNo: formData.instructorPhoneNumber || "",
+    fd427trainingsiteStreetaddress: formData.isDoulaTrainingInPerson
       ? `${formData.trainingStreetAddress1}${formData.trainingStreetAddress2 ? ` ${formData.trainingStreetAddress2}` : ""}`
       : "Virtual",
     fd427trainingsiteCity: formData.trainingCity ?? "",

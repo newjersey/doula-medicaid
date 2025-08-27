@@ -49,6 +49,6 @@ export const getTrainingFormData = (): TrainingFormData => {
     instructorFirstName: getValue("instructorFirstName", true),
     instructorLastName: getValue("instructorLastName", true),
     instructorEmail: getValue("instructorEmail", true),
-    instructorPhoneNumber: getValue("instructorPhoneNumber", true),
+    instructorPhoneNumber: getValue("instructorPhoneNumber", false),
   };
 };

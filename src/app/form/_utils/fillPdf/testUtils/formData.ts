@@ -12,7 +12,7 @@ const defaultFormData = {
   instructorFirstName: "First",
   instructorLastName: "Last",
   instructorEmail: "test@example.com",
-  instructorPhoneNumber: "111-111-1111",
+  instructorPhoneNumber: null,
   isDoulaTrainingInPerson: false,
   trainingStreetAddress1: null,
   trainingStreetAddress2: null,
