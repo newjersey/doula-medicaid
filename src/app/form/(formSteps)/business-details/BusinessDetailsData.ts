@@ -1,8 +1,7 @@
-import { DisclosingEntity, type AddressState } from "@/app/form/_utils/inputFields/enums";
+import { type AddressState } from "@/app/form/_utils/inputFields/enums";
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
 
 export interface BusinessDetails1Data {
-  isSoleProprietor: "true" | "false" | "";
   hasSameBusinessAddress: "true" | "false" | "";
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
@@ -12,7 +11,6 @@ export interface BusinessDetails1Data {
 }
 
 export interface BusinessDetailsFormData {
-  natureOfDisclosingEntity: DisclosingEntity | null;
   hasSameBusinessAddress: boolean;
   businessStreetAddress1: string | null;
   businessStreetAddress2: string | null;
@@ -22,11 +20,7 @@ export interface BusinessDetailsFormData {
 }
 
 const getBusinessDetails1Data = () => {
-  const disclosingEntity = getBoolean("isSoleProprietor", true)
-    ? DisclosingEntity.SoleProprietor
-    : null;
   return {
-    natureOfDisclosingEntity: disclosingEntity,
     hasSameBusinessAddress: getBoolean("hasSameBusinessAddress", true),
     businessStreetAddress1: getValue("businessStreetAddress1", false),
     businessStreetAddress2: getValue("businessStreetAddress2", false),

@@ -24,26 +24,6 @@ describe("<BusinessDetailsStep1 />", () => {
     return mockRouter;
   };
 
-  const getYesSoleProprietorButton = () => {
-    const soleProprietorGroup = screen.getByRole("group", {
-      name: "Are you the sole proprietor of your business? Select one *",
-    });
-    const yesSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
-      name: "Yes",
-    });
-    return yesSoleProprietorButton;
-  };
-
-  const getNoSoleProprietorButton = () => {
-    const soleProprietorGroup = screen.getByRole("group", {
-      name: "Are you the sole proprietor of your business? Select one *",
-    });
-    const noSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
-      name: "No",
-    });
-    return noSoleProprietorButton;
-  };
-
   const getYesSameAddressButton = () => {
     const separateAddressGroup = screen.getByRole("group", {
       name: "Is your business address the same as your residential and billing address? Select one *",
@@ -64,13 +44,6 @@ describe("<BusinessDetailsStep1 />", () => {
     return getNoSeparateAddressButton;
   };
 
-  const clickYesSoleProprietorButton = async () => {
-    const user = userEvent.setup();
-    const yesSPButton = getYesSoleProprietorButton();
-    await user.click(yesSPButton);
-    return { user, yesSPButton };
-  };
-
   const clickNoSameAddressButton = async () => {
     const user = userEvent.setup();
     const noSameAddressButton = getNoSameAddressButton();
@@ -78,30 +51,8 @@ describe("<BusinessDetailsStep1 />", () => {
     return { user, noSameAddressButton };
   };
 
-  it("saves isSoleProprietor as false when user selects no for sole proprietor and submits", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-    const noSoleProprietorButton = getNoSoleProprietorButton();
-    expect(noSoleProprietorButton).not.toBeChecked();
-    await user.click(noSoleProprietorButton);
-    expect(noSoleProprietorButton).toBeChecked();
-
-    await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(getValue("isSoleProprietor", true)).toBe("false");
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
-    expect(mockRouter.refresh).toHaveBeenCalled();
-  });
-
   it("prompts to fill in the separate business address when user selects yes for separate business address", async () => {
-    const user = userEvent.setup();
     renderWithRouter();
-
-    const yesSoleProprietorButton = getYesSoleProprietorButton();
-    expect(yesSoleProprietorButton).not.toBeChecked();
-    await user.click(yesSoleProprietorButton);
-    expect(yesSoleProprietorButton).toBeChecked();
-
     const businessAddressInput = screen.getByRole("heading", {
       name: "Business address",
     });
@@ -112,10 +63,6 @@ describe("<BusinessDetailsStep1 />", () => {
   it("saves hasSameBusinessAddress as true when user selects yes for same business address and submits", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    const yesSoleProprietorButton = getYesSoleProprietorButton();
-    expect(yesSoleProprietorButton).not.toBeChecked();
-    await user.click(yesSoleProprietorButton);
-    expect(yesSoleProprietorButton).toBeChecked();
 
     const yesSameAddressButton = getYesSameAddressButton();
     await user.click(yesSameAddressButton);
@@ -123,7 +70,6 @@ describe("<BusinessDetailsStep1 />", () => {
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(getValue("isSoleProprietor", true)).toBe("true");
     expect(getValue("hasSameBusinessAddress", true)).toBe("true");
 
     expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
@@ -134,7 +80,6 @@ describe("<BusinessDetailsStep1 />", () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
 
-    await clickYesSoleProprietorButton();
     await clickNoSameAddressButton();
 
     const addressTextInputFields = [
@@ -165,7 +110,6 @@ describe("<BusinessDetailsStep1 />", () => {
 
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(getValue("isSoleProprietor", true)).toBe("true");
     expect(getValue("hasSameBusinessAddress", true)).toBe("false");
 
     for (const addressTextInputField of addressTextInputFields) {
@@ -186,7 +130,6 @@ describe("<BusinessDetailsStep1 />", () => {
   ])("input is marked as required", async ({ label, role }) => {
     renderWithRouter();
 
-    await clickYesSoleProprietorButton();
     await clickNoSameAddressButton();
 
     const field = screen.getByRole(role, {

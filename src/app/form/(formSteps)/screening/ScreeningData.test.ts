@@ -1,26 +1,26 @@
-import { getBusinessDetailsData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import { getScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
 import {
   setInSessionStorage,
   setRequiredFieldsInSessionStorage,
 } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
 
-describe("getBusinessDetailsData", () => {
+describe("getScreeningFormData", () => {
   describe("disclosing entity handling", () => {
     it("sets natureOfDisclosingEntity to SoleProprietor when isSoleProprietor is true", async () => {
       setRequiredFieldsInSessionStorage();
       setInSessionStorage({ isSoleProprietor: "true" });
-      expect(getBusinessDetailsData()).toMatchObject({
+      expect(getScreeningFormData()).toMatchObject({
         natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
       });
     });
 
-    it("sets natureOfDisclosingEntity to null when isSoleProprietor is false", async () => {
+    it("throws an error when isSoleProprietor is false", async () => {
       setRequiredFieldsInSessionStorage();
       setInSessionStorage({ isSoleProprietor: "false" });
-      expect(getBusinessDetailsData()).toMatchObject({
-        natureOfDisclosingEntity: null,
-      });
+      expect(() => getScreeningFormData()).toThrow(
+        "Expected isSoleProprietor to be true, was false",
+      );
     });
   });
 });
