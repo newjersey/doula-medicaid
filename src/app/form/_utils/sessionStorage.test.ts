@@ -1,5 +1,10 @@
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
-import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
+import {
+  getAddressState,
+  getBoolean,
+  getDefaultBoolean,
+  getValue,
+} from "@/app/form/_utils/sessionStorage";
 
 describe("getValue", () => {
   it("returns the value in session storage", () => {
@@ -14,6 +19,27 @@ describe("getValue", () => {
 
   it("returns null if required is false and the key is not present", () => {
     expect(getValue("firstName", false)).toEqual(null);
+  });
+});
+
+describe("getDefaultBooleanString", () => {
+  it("returns an empty string if the value is not in session storage", () => {
+    expect(getDefaultBoolean("isSoleProprietor")).toEqual("");
+  });
+
+  it("returns the value in session storage as a true or false string", () => {
+    window.sessionStorage.setItem("isSoleProprietor", "true");
+    expect(getDefaultBoolean("isSoleProprietor")).toEqual("true");
+
+    window.sessionStorage.setItem("isSoleProprietor", "false");
+    expect(getDefaultBoolean("isSoleProprietor")).toEqual("false");
+  });
+
+  it("throws an error if the value is not a valid string boolean", () => {
+    window.sessionStorage.setItem("isSoleProprietor", "invalid");
+    expect(() => getDefaultBoolean("isSoleProprietor")).toThrow(
+      "Invalid boolean string value: isSoleProprietor, invalid",
+    );
   });
 });
 

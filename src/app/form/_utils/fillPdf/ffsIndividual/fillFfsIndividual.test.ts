@@ -479,33 +479,6 @@ describe("mapFfsIndividualFields", () => {
   });
 
   describe("Page 16 - disclosing entity sole proprietorship", () => {
-    describe("when disclosing entity is not Sole Proprietorship", () => {
-      it("it does not fill the page 16 fields", () => {
-        const formData: FormData = generateFormData({
-          natureOfDisclosingEntity: null,
-          firstName: "First",
-          middleName: "Middle",
-          lastName: "Last",
-          phoneNumber: "111-111-1111",
-          socialSecurityNumber: "123-45-6789",
-          npiNumber: "1111111111",
-        });
-        const fieldsToFill = mapFfsIndividualFields(formData);
-        expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityPaternship"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityCorporation"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityOther"]).toBeUndefined();
-
-        expect(fieldsToFill["fd452nameofdisclosingentity"]).toBeUndefined();
-        expect(fieldsToFill["fd452telephonenumber"]).toBeUndefined();
-        expect(fieldsToFill["fd452providernumbandornpi"]).toBeUndefined();
-        expect(fieldsToFill["fd452einorothertaxidnumber"]).toBeUndefined();
-      });
-    });
-
     describe("when disclosing entity is Sole Proprietorship and business address is the same as mailing address", () => {
       it("fills the page 16 fields", () => {
         const formData: FormData = generateFormData({

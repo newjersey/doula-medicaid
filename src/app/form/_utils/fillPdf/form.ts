@@ -7,6 +7,10 @@ import {
   type PersonalDetailsFormData,
 } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import {
+  getScreeningFormData,
+  type ScreeningFormData,
+} from "@/app/form/(formSteps)/screening/ScreeningData";
+import {
   getTrainingFormData,
   type TrainingFormData,
 } from "@/app/form/(formSteps)/training/TrainingData";
@@ -16,7 +20,8 @@ import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
 import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 
 export interface FormData
-  extends TrainingFormData,
+  extends ScreeningFormData,
+    TrainingFormData,
     PersonalDetailsFormData,
     BusinessDetailsFormData {}
 
@@ -27,6 +32,7 @@ export interface FilledPDFData {
 
 export const getFormData = (): FormData => {
   return {
+    ...getScreeningFormData(),
     ...getTrainingFormData(),
     ...getPersonalDetailsFormData(),
     ...getBusinessDetailsData(),

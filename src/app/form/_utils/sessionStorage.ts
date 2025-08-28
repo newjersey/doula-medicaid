@@ -1,3 +1,4 @@
+import type { Screening1Data } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingData } from "@/app/form/(formSteps)/training/TrainingData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type { BusinessDetails1Data } from "@form/(formSteps)/business-details/BusinessDetailsData";
@@ -8,6 +9,7 @@ import type {
 } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 
 export type SessionStorageKey =
+  | keyof Screening1Data
   | keyof TrainingData
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data
@@ -26,6 +28,15 @@ export const setKeyValue = (key: SessionStorageKey, value: string): void => {
 };
 
 export const getDefaultValue = (key: SessionStorageKey) => getValue(key, false);
+/**
+  getDefaultBoolean returns a string because it's used to populate the `defaultValues` in useForm. Even though our two options are yes/no, radio button values require a string.
+ */
+export const getDefaultBoolean = (key: SessionStorageKey): "" | "true" | "false" => {
+  const value = getValue(key, false);
+  if (value === null) return "";
+  if (value === "true" || value === "false") return value;
+  throw new Error(`Invalid boolean string value: ${key}, ${value}`);
+};
 
 export function getValue(key: SessionStorageKey, required: true): string;
 export function getValue(key: SessionStorageKey, required: false): string | null;
