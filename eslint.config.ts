@@ -38,6 +38,7 @@ const eslintConfig = [
         },
       ],
       "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/strict-boolean-expressions": [
         "error",
         { allowNullableString: true, allowNumber: false },
