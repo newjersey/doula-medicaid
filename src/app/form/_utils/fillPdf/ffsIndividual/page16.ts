@@ -43,15 +43,15 @@ export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPag
     if (formData.hasSameBusinessAddress === true) {
       return {
         ...soleProprietorFields,
-        fd452businessstreetline1: formData.streetAddress1 || "",
-        fd452businessstreetline2: formData.streetAddress2 || "",
+        fd452businessstreetline1: formData.streetAddress1,
+        fd452businessstreetline2: formData.streetAddress2 ?? "",
         fd452businessstreetline3: formatAddressLine3(formData),
       };
     } else if (formData.hasSameBusinessAddress === false) {
       return {
         ...soleProprietorFields,
-        fd452businessstreetline1: formData.businessStreetAddress1 || "",
-        fd452businessstreetline2: formData.businessStreetAddress2 || "",
+        fd452businessstreetline1: formData.businessStreetAddress1 ?? "",
+        fd452businessstreetline2: formData.businessStreetAddress2 ?? "",
         fd452businessstreetline3: formatBusinessAddressLine3(formData),
       };
     }

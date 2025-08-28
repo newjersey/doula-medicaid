@@ -49,11 +49,11 @@ export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage
   return {
     fd427dateofbirthDate1_af_date: formatDateOfBirth(formData),
     fd427LegalName: formatName(formData),
-    fd427SocialSecurityNumber: formData.socialSecurityNumber || "",
+    fd427SocialSecurityNumber: formData.socialSecurityNumber,
     fd427TrainingProgramName: trainingProgramName,
     fd427TrainingProgramContact: `${formData.instructorFirstName} ${formData.instructorLastName}`,
     "fd427trainingprogramcontanctE-mailAddress": formData.instructorEmail,
-    fd427trainingprogramcontactTelephoneNo: formData.instructorPhoneNumber || "",
+    fd427trainingprogramcontactTelephoneNo: formData.instructorPhoneNumber ?? "",
     fd427trainingsiteStreetaddress: formData.isDoulaTrainingInPerson
       ? `${formData.trainingStreetAddress1}${formData.trainingStreetAddress2 ? ` ${formData.trainingStreetAddress2}` : ""}`
       : "Virtual",
