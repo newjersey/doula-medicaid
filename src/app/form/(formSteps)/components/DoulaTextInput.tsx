@@ -25,8 +25,8 @@ interface DoulaTextInputProps<T extends FieldValues>
   hint?: string;
   type?: TextInputProps["type"];
   required?: boolean;
-  errors?: FieldErrors<T>;
   hideErrorMessage?: boolean;
+  errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
   registerOptions?: RegisterOptions<T>;
 }

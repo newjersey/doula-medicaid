@@ -7,7 +7,7 @@ import type {
   RegisterOptions,
 } from "react-hook-form";
 
-type CustomErrorMessage = {
+export type CustomErrorMessage = {
   type: LiteralUnion<keyof RegisterOptions, string>;
   message: React.ReactNode;
 };

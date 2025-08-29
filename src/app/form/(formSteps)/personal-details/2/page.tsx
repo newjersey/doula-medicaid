@@ -1,5 +1,6 @@
 "use client";
 
+import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
 import { typecheckAutocomplete } from "@/app/form/_utils/types/autocomplete";
@@ -9,16 +10,7 @@ import { createFormErrorHandler, createFormSubmitHandler } from "@form/_utils/fo
 import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { AddressState } from "@form/_utils/inputFields/enums";
 import { getDefaultValue } from "@form/_utils/sessionStorage";
-import {
-  Fieldset,
-  Form,
-  Label,
-  Radio,
-  RequiredMarker,
-  Select,
-  TextInput,
-  TextInputMask,
-} from "@trussworks/react-uswds";
+import { Fieldset, Form, Label, Select, TextInput, TextInputMask } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -215,66 +207,18 @@ const PersonalDetailsStep2 = () => {
                 <p className="usa-hint">
                   This is the location where you want to receive your payments.
                 </p>
-                <Fieldset
-                  legend={
-                    <div className="usa-label">
-                      <p className="font-ui-xs text-normal">
-                        {orderedInputNameToLabel["hasSameBillingMailingAddress"]}
-                      </p>
-                      <p className="font-ui-xs text-normal">
-                        Select one <RequiredMarker />
-                      </p>
-                    </div>
-                  }
-                >
-                  <Radio
-                    id="sameBillingMailingAddressYes"
-                    label="Yes"
-                    value="true"
-                    checked={hasSameBillingMailingAddress === "true"}
-                    required
-                    {...register("hasSameBillingMailingAddress", {
-                      required: `This question is required`,
-                    })}
-                    aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
-                    aria-describedby={
-                      errors.hasSameBillingMailingAddress &&
-                      "hasSameBillingMailingAddressErrorMessage"
-                    }
-                  />
-                  <Radio
-                    id="sameBillingMailingAddressNo"
-                    label="No"
-                    value="false"
-                    checked={hasSameBillingMailingAddress === "false"}
-                    required
-                    {...register("hasSameBillingMailingAddress", {
-                      required: `This question is required`,
-                    })}
-                    aria-invalid={errors.hasSameBillingMailingAddress ? "true" : "false"}
-                    aria-describedby={
-                      errors.hasSameBillingMailingAddress &&
-                      "hasSameBillingMailingAddressErrorMessage"
-                    }
-                  />
-                  {errors.hasSameBillingMailingAddress && (
-                    <span
-                      id="hasSameBillingMailingAddressErrorMessage"
-                      className="usa-error-message"
-                      role="alert"
-                    >
-                      {errors.hasSameBillingMailingAddress.message}
-                    </span>
-                  )}
-                </Fieldset>
+                <DoulaYesNoRadio
+                  name="hasSameBillingMailingAddress"
+                  value={hasSameBillingMailingAddress}
+                  label={orderedInputNameToLabel["hasSameBillingMailingAddress"]}
+                  required
+                  register={register}
+                  errors={errors}
+                />
 
                 {hasSameBillingMailingAddress === "false" && (
                   <Fieldset
-                    legend={
-                      <p className="font-ui-xs text-normal margin-top-5">
-                        What&apos;s your billing address?
-                      </p>
-                    }
+                    legend={<p className="margin-top-5">What&apos;s your billing address?</p>}
                   >
                     <div className="grid-row grid-gap">
                       <div className="mobile-lg:grid-col-6">

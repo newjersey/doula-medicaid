@@ -1,6 +1,7 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import DoulaRadio from "@/app/form/(formSteps)/components/DoulaRadio";
 import ErrorSummary from "@form/(formSteps)/components/ErrorSummary";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
@@ -13,7 +14,6 @@ import {
   Fieldset,
   Form,
   Label,
-  Radio,
   RequiredMarker,
   Select,
   TextInput,
@@ -99,10 +99,8 @@ const TrainingStep1 = () => {
               />
               <h2 className="font-heading-md">Doula training organization</h2>
               <Label htmlFor="stateApprovedTraining">
-                <p className="font-ui-xs text-normal">
-                  {orderedInputNameToLabel["stateApprovedTraining"]}
-                </p>
-                <p className="font-ui-xs text-normal">
+                <p>{orderedInputNameToLabel["stateApprovedTraining"]}</p>
+                <p>
                   Select one <RequiredMarker />
                 </p>
               </Label>
@@ -169,61 +167,29 @@ const TrainingStep1 = () => {
             <div className="desktop:grid-col-8">
               <h2 className="font-heading-md">Training organization address</h2>
               <p className="usa-hint">This is where you completed your doula training.</p>
-              <Fieldset
-                legend={
-                  <div className="usa-label">
-                    <p className="font-ui-xs text-normal">
-                      {orderedInputNameToLabel["isDoulaTrainingInPerson"]}
-                    </p>
-                    <p className="font-ui-xs text-normal">
-                      Select one <RequiredMarker />
-                    </p>
-                  </div>
-                }
-              >
-                <Radio
-                  id="isDoulaTrainingInPersonYes"
-                  label="Yes, in person or hybrid"
-                  value="true"
-                  checked={isDoulaTrainingInPerson === "true"}
-                  required
-                  {...register("isDoulaTrainingInPerson", {
-                    required: `This question is required`,
-                  })}
-                  aria-invalid={errors.isDoulaTrainingInPerson ? "true" : "false"}
-                  aria-describedby={
-                    errors.isDoulaTrainingInPerson && "isDoulaTrainingInPersonErrorMessage"
-                  }
-                />
-                <Radio
-                  id="isDoulaTrainingInPersonNo"
-                  label="No, it was virtual"
-                  value="false"
-                  checked={isDoulaTrainingInPerson === "false"}
-                  required
-                  {...register("isDoulaTrainingInPerson", {
-                    required: `This question is required`,
-                  })}
-                  aria-invalid={errors.isDoulaTrainingInPerson ? "true" : "false"}
-                  aria-describedby={
-                    errors.isDoulaTrainingInPerson && "isDoulaTrainingInPersonErrorMessage"
-                  }
-                />
-                {errors.isDoulaTrainingInPerson && (
-                  <span
-                    id="isDoulaTrainingInPersonErrorMessage"
-                    className="usa-error-message"
-                    role="alert"
-                  >
-                    {errors.isDoulaTrainingInPerson.message}
-                  </span>
-                )}
-              </Fieldset>
+              <DoulaRadio
+                name="isDoulaTrainingInPerson"
+                value={isDoulaTrainingInPerson}
+                label={orderedInputNameToLabel["isDoulaTrainingInPerson"]}
+                required
+                options={[
+                  {
+                    label: "Yes, in person or hybrid",
+                    value: "true",
+                  },
+                  {
+                    label: "No, it was virtual",
+                    value: "false",
+                  },
+                ]}
+                register={register}
+                errors={errors}
+              />
 
               {isDoulaTrainingInPerson === "true" && (
                 <Fieldset
                   legend={
-                    <p className="font-ui-xs text-normal margin-top-3">
+                    <p className="margin-top-3">
                       What is the address of your training organization? <RequiredMarker />
                     </p>
                   }
