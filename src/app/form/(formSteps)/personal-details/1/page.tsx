@@ -1,22 +1,16 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
+import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
+import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { createFormErrorHandler, createFormSubmitHandler } from "@form/_utils/formHandlers";
 import { useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { getDefaultValue } from "@form/_utils/sessionStorage";
-import {
-  DateInputGroup,
-  Fieldset,
-  Form,
-  FormGroup,
-  Label,
-  Select,
-  TextInput,
-  TextInputMask,
-} from "@trussworks/react-uswds";
+import { DateInputGroup, Fieldset, Form, FormGroup, Label, Select } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -89,50 +83,35 @@ const PersonalDetailsStep1 = () => {
               <h2 className="font-heading-md">Personal identification</h2>
               <Fieldset legend="Name" legendStyle="srOnly" className="grid-row grid-gap">
                 <div className="tablet:grid-col-4">
-                  <Label htmlFor="firstName" requiredMarker>
-                    {orderedInputNameToLabel["firstName"]}
-                  </Label>
-                  <TextInput
-                    id="firstName"
-                    type="text"
+                  <DoulaTextInput
+                    name="firstName"
+                    label={orderedInputNameToLabel["firstName"]}
                     required
-                    validationStatus={errors.firstName ? "error" : undefined}
-                    aria-invalid={errors.firstName ? "true" : "false"}
-                    aria-describedby={errors.firstName && "firstNameErrorMessage"}
-                    {...register("firstName", {
+                    errors={errors}
+                    register={register}
+                    registerOptions={{
                       required: `${orderedInputNameToLabel["firstName"]} is required`,
-                    })}
+                    }}
                   />
-                  {errors.firstName && (
-                    <span id="firstNameErrorMessage" className="usa-error-message">
-                      {errors.firstName.message}
-                    </span>
-                  )}
                 </div>
                 <div className="tablet:grid-col-4">
-                  <Label htmlFor="middleName">{orderedInputNameToLabel["middleName"]}</Label>
-                  <TextInput id="middleName" type="text" {...register("middleName")} />
+                  <DoulaTextInput
+                    name="middleName"
+                    label={orderedInputNameToLabel["middleName"]}
+                    register={register}
+                  />
                 </div>
                 <div className="tablet:grid-col-4">
-                  <Label htmlFor="lastName" requiredMarker>
-                    {orderedInputNameToLabel["lastName"]}
-                  </Label>
-                  <TextInput
-                    id="lastName"
-                    type="text"
+                  <DoulaTextInput
+                    name="lastName"
+                    label={orderedInputNameToLabel["lastName"]}
                     required
-                    validationStatus={errors.lastName ? "error" : undefined}
-                    aria-invalid={errors.lastName ? "true" : "false"}
-                    aria-describedby={errors.lastName && "lastNameErrorMessage"}
-                    {...register("lastName", {
+                    errors={errors}
+                    register={register}
+                    registerOptions={{
                       required: `${orderedInputNameToLabel["lastName"]} is required`,
-                    })}
+                    }}
                   />
-                  {errors.lastName && (
-                    <span id="lastNameErrorMessage" className="usa-error-message">
-                      {errors.lastName.message}
-                    </span>
-                  )}
                 </div>
               </Fieldset>
 
@@ -170,21 +149,18 @@ const PersonalDetailsStep1 = () => {
                     </Select>
                   </FormGroup>
                   <FormGroup className="usa-form-group--day">
-                    <Label htmlFor={"dateOfBirthDay"} requiredMarker>
-                      {orderedInputNameToLabel["dateOfBirthDay"]}
-                    </Label>
-                    <TextInput
-                      id={"dateOfBirthDay"}
-                      type="text"
+                    <DoulaTextInput
+                      name="dateOfBirthDay"
+                      label={orderedInputNameToLabel["dateOfBirthDay"]}
                       pattern="[0-9]*"
                       inputMode="numeric"
                       maxLength={2}
                       minLength={2}
                       required
-                      validationStatus={errors.dateOfBirthDay ? "error" : undefined}
-                      aria-invalid={errors.dateOfBirthDay ? "true" : "false"}
-                      aria-describedby="dateOfBirthDayErrorMessage"
-                      {...register("dateOfBirthDay", {
+                      hideErrorMessage
+                      errors={errors}
+                      register={register}
+                      registerOptions={{
                         required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
                         valueAsNumber: true,
                         min: {
@@ -204,25 +180,22 @@ const PersonalDetailsStep1 = () => {
                           }
                           return true;
                         },
-                      })}
+                      }}
                     />
                   </FormGroup>
                   <FormGroup className="usa-form-group--year">
-                    <Label htmlFor="dateOfBirthYear" requiredMarker>
-                      {orderedInputNameToLabel["dateOfBirthYear"]}
-                    </Label>
-                    <TextInput
-                      id="dateOfBirthYear"
-                      type="text"
+                    <DoulaTextInput
+                      name="dateOfBirthYear"
+                      label={orderedInputNameToLabel["dateOfBirthYear"]}
                       maxLength={4}
                       minLength={4}
                       pattern="[0-9]*"
                       inputMode="numeric"
                       required
-                      validationStatus={errors.dateOfBirthYear ? "error" : undefined}
-                      aria-invalid={errors.dateOfBirthYear ? "true" : "false"}
-                      aria-describedby="dateOfBirthYearErrorMessage"
-                      {...register("dateOfBirthYear", {
+                      hideErrorMessage
+                      errors={errors}
+                      register={register}
+                      registerOptions={{
                         required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
                         valueAsNumber: true,
                         validate: (value) => {
@@ -237,56 +210,33 @@ const PersonalDetailsStep1 = () => {
                           }
                           return true;
                         },
-                      })}
+                      }}
                     />
                   </FormGroup>
                 </DateInputGroup>
-                {errors.dateOfBirthMonth && (
-                  <div id="dateOfBirthMonthErrorMessage" className="usa-error-message">
-                    {errors.dateOfBirthMonth.message}
-                  </div>
-                )}
-                {errors.dateOfBirthDay && (
-                  <div id="dateOfBirthDayErrorMessage" className="usa-error-message">
-                    {errors.dateOfBirthDay.message}
-                  </div>
-                )}
-                {errors.dateOfBirthYear && (
-                  <div id="dateOfBirthYearErrorMessage" className="usa-error-message">
-                    {errors.dateOfBirthYear.message}
-                  </div>
-                )}
+                <ErrorMessage name="dateOfBirthMonth" errors={errors} />
+                <ErrorMessage name="dateOfBirthDay" errors={errors} />
+                <ErrorMessage name="dateOfBirthYear" errors={errors} />
               </Fieldset>
-              <Label htmlFor="socialSecurityNumber" requiredMarker>
-                {orderedInputNameToLabel["socialSecurityNumber"]}
-              </Label>
-              <p id="socialSecurityNumberHint" className="usa-hint">
-                Format XXX-XX-XXXX
-              </p>
-              <TextInputMask
-                id="socialSecurityNumber"
-                type="text"
+              <DoulaTextInputMask
+                name="socialSecurityNumber"
+                label={orderedInputNameToLabel["socialSecurityNumber"]}
+                hint="Format XXX-XX-XXXX"
                 inputMode="numeric"
                 value={socialSecurityNumber ?? ""}
                 mask="___-__-____"
                 pattern="\d{3}-\d{2}-\d{4}"
                 required
-                validationStatus={errors.socialSecurityNumber ? "error" : undefined}
-                aria-invalid={errors.socialSecurityNumber ? "true" : "false"}
-                aria-describedby={`${errors.socialSecurityNumber ? "socialSecurityNumberErrorMessage" : ""} socialSecurityNumberHint`}
-                {...register("socialSecurityNumber", {
+                errors={errors}
+                register={register}
+                registerOptions={{
                   required: `${orderedInputNameToLabel["socialSecurityNumber"]} is required`,
                   pattern: {
                     value: /\d{3}-\d{2}-\d{4}/,
                     message: "Entered value does not match social security number format",
                   },
-                })}
+                }}
               />
-              {errors.socialSecurityNumber && (
-                <span id="socialSecurityNumberErrorMessage" className="usa-error-message">
-                  {errors.socialSecurityNumber.message}
-                </span>
-              )}
             </div>
           </div>
           <HorizontalDivider />
@@ -294,59 +244,42 @@ const PersonalDetailsStep1 = () => {
             <div className="desktop:grid-col-8">
               <h2 className="font-heading-md">Contact information</h2>
               <p>We&apos;ll send official updates here.</p>
-              <Label htmlFor="email" requiredMarker>
-                {orderedInputNameToLabel["email"]}
-              </Label>
-              <TextInput
-                id="email"
+              <DoulaTextInput
+                name="email"
+                label={orderedInputNameToLabel["email"]}
+                type="email"
                 autoCorrect="off"
                 autoCapitalize="off"
                 required
-                validationStatus={errors.email ? "error" : undefined}
-                aria-invalid={errors.email ? "true" : "false"}
-                aria-describedby={errors.email && "emailErrorMessage"}
-                {...register("email", {
+                errors={errors}
+                register={register}
+                registerOptions={{
                   required: `${orderedInputNameToLabel["email"]} is required`,
                   pattern: {
                     value: /\S+@\S+\.\S+/,
                     message: "Entered value does not match email format",
                   },
-                })}
-                type="email"
+                }}
               />
-              {errors.email && (
-                <span id="emailErrorMessage" className="usa-error-message">
-                  {errors.email.message}
-                </span>
-              )}
-
-              <Label htmlFor="phoneNumber" requiredMarker>
-                {orderedInputNameToLabel["phoneNumber"]}
-              </Label>
-              <TextInputMask
-                id="phoneNumber"
+              <DoulaTextInputMask
+                name="phoneNumber"
+                label={orderedInputNameToLabel["phoneNumber"]}
                 type="tel"
                 value={phoneNumber ?? ""}
                 inputMode="numeric"
                 mask="___-___-____"
                 pattern="\d{3}-\d{3}-\d{4}"
                 required
-                validationStatus={errors.phoneNumber ? "error" : undefined}
-                aria-invalid={errors.phoneNumber ? "true" : "false"}
-                aria-describedby={errors.phoneNumber && "phoneNumberErrorMessage"}
-                {...register("phoneNumber", {
+                errors={errors}
+                register={register}
+                registerOptions={{
                   required: `${orderedInputNameToLabel["phoneNumber"]} is required`,
                   pattern: {
                     value: /\d{3}-\d{3}-\d{4}/,
                     message: "Entered value does not match phone number format",
                   },
-                })}
+                }}
               />
-              {errors.phoneNumber && (
-                <span id="phoneNumberErrorMessage" className="usa-error-message">
-                  {errors.phoneNumber.message}
-                </span>
-              )}
             </div>
           </div>
           <FormProgressButtons />
