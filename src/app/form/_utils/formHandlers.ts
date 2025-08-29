@@ -25,7 +25,7 @@ export const createFormSubmitHandler = <T extends FieldValues>(
 };
 
 export const createFormErrorHandler = <T extends FieldValues>(
-  orderedInputNameToLabel: { [key in keyof T]: string },
+  orderedInputNameToLabel: { [key in FieldPath<T>]: string },
   setShouldSummarizeErrors: (value: boolean) => void,
   errorSummaryRef: RefObject<HTMLDivElement | null>,
   setFocus: UseFormSetFocus<T>,
@@ -36,7 +36,7 @@ export const createFormErrorHandler = <T extends FieldValues>(
       errorSummaryRef.current?.focus();
     } else {
       setShouldSummarizeErrors(false);
-      for (const inputName of Object.keys(orderedInputNameToLabel) as Array<keyof T>) {
+      for (const inputName of Object.keys(orderedInputNameToLabel) as Array<FieldPath<T>>) {
         const fieldPath = inputName as FieldPath<T>;
         if (errors[fieldPath] !== undefined) {
           setFocus(fieldPath);

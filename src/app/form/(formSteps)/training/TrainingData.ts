@@ -2,18 +2,18 @@ import type { AddressState } from "@/app/form/_utils/inputFields/enums";
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
 
 export interface TrainingData {
-  stateApprovedTraining: string | null;
-  nameOfTrainingOrganization: string | null;
-  isDoulaTrainingInPerson: string | null;
-  trainingStreetAddress1: string | null;
-  trainingStreetAddress2: string | null;
-  trainingCity: string | null;
-  trainingState: string | null;
-  trainingZip: string | null;
-  instructorFirstName: string | null;
-  instructorLastName: string | null;
-  instructorEmail: string | null;
-  instructorPhoneNumber: string | null;
+  stateApprovedTraining: string;
+  nameOfTrainingOrganization: string;
+  isDoulaTrainingInPerson: string;
+  trainingStreetAddress1: string;
+  trainingStreetAddress2: string;
+  trainingCity: string;
+  trainingState: string;
+  trainingZip: string;
+  instructorFirstName: string;
+  instructorLastName: string;
+  instructorEmail: string;
+  instructorPhoneNumber: string;
 }
 
 export interface TrainingFormData {

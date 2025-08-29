@@ -2,35 +2,35 @@ import type { AddressState } from "@/app/form/_utils/inputFields/enums";
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
 
 export interface PersonalDetails1Data {
-  firstName: string | null;
-  middleName: string | null;
-  lastName: string | null;
-  dateOfBirthMonth: string | null;
-  dateOfBirthDay: string | null;
-  dateOfBirthYear: string | null;
-  socialSecurityNumber: string | null;
-  email: string | null;
-  phoneNumber: string | null;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  dateOfBirthMonth: string;
+  dateOfBirthDay: string;
+  dateOfBirthYear: string;
+  socialSecurityNumber: string;
+  email: string;
+  phoneNumber: string;
 }
 
 export interface PersonalDetails2Data {
-  streetAddress1: string | null;
-  streetAddress2: string | null;
-  city: string | null;
-  state: string | null;
-  zip: string | null;
-  hasSameBillingMailingAddress: string | null;
-  billingStreetAddress1: string | null;
-  billingStreetAddress2: string | null;
-  billingCity: string | null;
-  billingState: string | null;
-  billingZip: string | null;
+  streetAddress1: string;
+  streetAddress2: string;
+  city: string;
+  state: string;
+  zip: string;
+  hasSameBillingMailingAddress: string;
+  billingStreetAddress1: string;
+  billingStreetAddress2: string;
+  billingCity: string;
+  billingState: string;
+  billingZip: string;
 }
 
 export interface PersonalDetails3Data {
-  npiNumber: string | null;
-  medicareProviderId: string | null;
-  upinNumber: string | null;
+  npiNumber: string;
+  medicareProviderId: string;
+  upinNumber: string;
 }
 
 export interface PersonalDetailsFormData {

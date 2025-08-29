@@ -3,11 +3,11 @@ import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/session
 
 export interface BusinessDetails1Data {
   hasSameBusinessAddress: "true" | "false" | "";
-  businessStreetAddress1: string | null;
-  businessStreetAddress2: string | null;
-  businessCity: string | null;
-  businessState: string | null;
-  businessZip: string | null;
+  businessStreetAddress1: string;
+  businessStreetAddress2: string;
+  businessCity: string;
+  businessState: string;
+  businessZip: string;
 }
 
 export interface BusinessDetailsFormData {
