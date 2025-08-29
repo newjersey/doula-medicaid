@@ -21,10 +21,10 @@ import {
 } from "@trussworks/react-uswds";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldPath } from "react-hook-form";
 import DoulaTrainingExplainer from "./DoulaTrainingExplainer";
 
-const orderedInputNameToLabel: { [key in keyof TrainingData]: string } = {
+const orderedInputNameToLabel: { [key in FieldPath<TrainingData>]: string } = {
   stateApprovedTraining: "Which state-approved training did you complete?",
   nameOfTrainingOrganization: "What is the name of your training organization?",
   trainingStreetAddress1: "Street address",
