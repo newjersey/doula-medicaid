@@ -48,7 +48,7 @@ export const fillAllForms = async (formData: FormData) => {
 };
 
 export const fillForm = async (
-  fieldsToFill: { [key: string]: string | boolean },
+  pdfFields: { [key: string]: string | boolean },
   pdfPath: string,
   filename: string,
 ): Promise<FilledPDFData> => {
@@ -57,7 +57,7 @@ export const fillForm = async (
   const pdfDoc = await PDFDocument.load(unfilledPdfBytes);
   const form = pdfDoc.getForm();
 
-  Object.entries(fieldsToFill).forEach(([fieldName, value]) => {
+  Object.entries(pdfFields).forEach(([fieldName, value]) => {
     const field = form.getField(fieldName);
     if (field instanceof PDFTextField) {
       if (typeof value !== "string") {

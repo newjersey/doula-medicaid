@@ -39,13 +39,13 @@ export const getTrainingFormData = (): TrainingFormData => {
     isDoulaTrainingInPerson: isDoulaTrainingInPerson,
     trainingStreetAddress1: isDoulaTrainingInPerson
       ? getValue("trainingStreetAddress1", false)
-      : "",
+      : null,
     trainingStreetAddress2: isDoulaTrainingInPerson
       ? getValue("trainingStreetAddress2", false)
-      : "",
-    trainingCity: isDoulaTrainingInPerson ? getValue("trainingCity", false) : "",
+      : null,
+    trainingCity: isDoulaTrainingInPerson ? getValue("trainingCity", false) : null,
     trainingState: isDoulaTrainingInPerson ? getAddressState("trainingState", false) : null,
-    trainingZip: isDoulaTrainingInPerson ? getValue("trainingZip", false) : "",
+    trainingZip: isDoulaTrainingInPerson ? getValue("trainingZip", false) : null,
     instructorFirstName: getValue("instructorFirstName", true),
     instructorLastName: getValue("instructorLastName", true),
     instructorEmail: getValue("instructorEmail", true),

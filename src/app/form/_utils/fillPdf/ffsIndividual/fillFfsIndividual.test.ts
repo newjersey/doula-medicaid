@@ -7,11 +7,11 @@ import { type FormData } from "@form/_utils/fillPdf/form";
 import { AddressState } from "@form/_utils/inputFields/enums";
 
 describe("mapFfsIndividualFields", () => {
-  const testedFormKeys = new Set<string>([]);
+  const testedPdfKeys = new Set<string>([]);
 
-  const testLegalName = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testLegalName = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formDataWithMiddleName: FormData = generateFormData({
       firstName: "First",
@@ -19,173 +19,122 @@ describe("mapFfsIndividualFields", () => {
       lastName: "Last",
     });
     const fieldsToFillWithMiddleName = mapFfsIndividualFields(formDataWithMiddleName);
-    expect(fieldsToFillWithMiddleName[formKey]).toEqual("First Middle Last");
+    expect(fieldsToFillWithMiddleName[pdfKey]).toEqual("First Middle Last");
 
     const formDataWithoutMiddleName: FormData = generateFormData({
       firstName: "First",
       lastName: "Last",
     });
     const fieldsToFillWithoutMiddleName = mapFfsIndividualFields(formDataWithoutMiddleName);
-    expect(fieldsToFillWithoutMiddleName[formKey]).toEqual("First Last");
+    expect(fieldsToFillWithoutMiddleName[pdfKey]).toEqual("First Last");
   };
 
-  const testDateOfBirth = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testDateOfBirth = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       dateOfBirth: new Date("1/2/1990"),
     });
     const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("01/02/1990");
+    expect(fieldsToFill[pdfKey]).toEqual("01/02/1990");
   };
 
-  const testPhoneNumber = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testPhoneNumber = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       phoneNumber: "111-111-1111",
     });
     const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("111-111-1111");
+    expect(fieldsToFill[pdfKey]).toEqual("111-111-1111");
   };
 
-  const testNpiNumber = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testNpiNumber = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       npiNumber: "1111111111",
     });
     const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("1111111111");
+    expect(fieldsToFill[pdfKey]).toEqual("1111111111");
   };
 
-  const testSocialSecurityNumber = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testSocialSecurityNumber = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       socialSecurityNumber: "123-45-6789",
     });
     const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("123-45-6789");
+    expect(fieldsToFill[pdfKey]).toEqual("123-45-6789");
   };
 
-  const testEmail = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testEmail = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       email: "test@test.com",
     });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("test@test.com");
+    const pdfFields = mapFfsIndividualFields(formData);
+    expect(pdfFields[pdfKey]).toEqual("test@test.com");
   };
 
-  const testBillingAddressLine1 = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testBillingAddressLine1 = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       billingStreetAddress1: "123 Main St",
     });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("123 Main St");
+    const pdfFields = mapFfsIndividualFields(formData);
+    expect(pdfFields[pdfKey]).toEqual("123 Main St");
   };
 
-  const testBillingAddressLine2 = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testBillingAddressLine2 = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       billingStreetAddress2: "Apt 2F",
     });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("Apt 2F");
+    const pdfFields = mapFfsIndividualFields(formData);
+    expect(pdfFields[pdfKey]).toEqual("Apt 2F");
   };
 
-  const testBillingAddressLine3 = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testBillingAddressLine3 = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formData: FormData = generateFormData({
       billingCity: "Trenton",
       billingState: AddressState.NJ,
       billingZip: "11111",
     });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[formKey]).toEqual("Trenton, NJ 11111");
+    const pdfFields = mapFfsIndividualFields(formData);
+    expect(pdfFields[pdfKey]).toEqual("Trenton, NJ 11111");
   };
 
-  const testTrainingStreetAddress = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
-
-    const formDataOnlyAddress1: FormData = generateFormData({
-      isDoulaTrainingInPerson: true,
-      trainingStreetAddress1: "55 Cherry St",
-    });
-    const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
-    expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
-
-    const formDataAddress1And2: FormData = generateFormData({
-      isDoulaTrainingInPerson: true,
-      trainingStreetAddress1: "55 Cherry St",
-      trainingStreetAddress2: "Apt 4",
-    });
-    const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
-    expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
-
-    const formDataAddressNull: FormData = generateFormData({
-      isDoulaTrainingInPerson: false,
-      trainingStreetAddress1: "",
-      trainingStreetAddress2: "",
-    });
-    const fieldsToFillAddressNull = mapFfsIndividualFields(formDataAddressNull);
-    expect(fieldsToFillAddressNull[formKey]).toEqual("Virtual");
-  };
-
-  const testTrainingCityStateZip = (
-    cityKey: keyof PdfFfsIndividual,
-    stateKey: keyof PdfFfsIndividual,
-    zipKey: keyof PdfFfsIndividual,
-  ) => {
-    const cityStateZipKeys = [cityKey, stateKey, zipKey];
-    for (const formKey of cityStateZipKeys) {
-      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-      testedFormKeys.add(formKey);
-    }
-
-    const formData: FormData = generateFormData({
-      isDoulaTrainingInPerson: true,
-      trainingCity: "Newark",
-      trainingState: AddressState.NJ,
-      trainingZip: "08609",
-    });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[cityKey]).toEqual("Newark");
-    expect(fieldsToFill[stateKey]).toEqual("NJ");
-    expect(fieldsToFill[zipKey]).toEqual("08609");
-  };
-
-  const testStreetAddress = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testStreetAddress = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formDataOnlyAddress1: FormData = generateFormData({
       streetAddress1: "55 Cherry St",
     });
-    const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
-    expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
+    const pdfFieldsOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
+    expect(pdfFieldsOnlyAddress1[pdfKey]).toEqual("55 Cherry St");
 
     const formDataAddress1And2: FormData = generateFormData({
       streetAddress1: "55 Cherry St",
       streetAddress2: "Apt 4",
     });
-    const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
-    expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
+    const pdfFieldsAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
+    expect(pdfFieldsAddress1And2[pdfKey]).toEqual("55 Cherry St Apt 4");
   };
 
   const testCityStateZip = (
@@ -194,9 +143,9 @@ describe("mapFfsIndividualFields", () => {
     zipKey: keyof PdfFfsIndividual,
   ) => {
     const cityStateZipKeys = [cityKey, stateKey, zipKey];
-    for (const formKey of cityStateZipKeys) {
-      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-      testedFormKeys.add(formKey);
+    for (const pdfKey of cityStateZipKeys) {
+      expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+      testedPdfKeys.add(pdfKey);
     }
 
     const formData: FormData = generateFormData({
@@ -204,10 +153,10 @@ describe("mapFfsIndividualFields", () => {
       state: AddressState.NJ,
       zip: "08609",
     });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[cityKey]).toEqual("Newark");
-    expect(fieldsToFill[stateKey]).toEqual("NJ");
-    expect(fieldsToFill[zipKey]).toEqual("08609");
+    const pdfFields = mapFfsIndividualFields(formData);
+    expect(pdfFields[cityKey]).toEqual("Newark");
+    expect(pdfFields[stateKey]).toEqual("NJ");
+    expect(pdfFields[zipKey]).toEqual("08609");
   };
 
   const testBillingCityStateZip = (
@@ -216,9 +165,9 @@ describe("mapFfsIndividualFields", () => {
     zipKey: keyof PdfFfsIndividual,
   ) => {
     const cityStateZipKeys = [cityKey, stateKey, zipKey];
-    for (const formKey of cityStateZipKeys) {
-      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-      testedFormKeys.add(formKey);
+    for (const pdfKey of cityStateZipKeys) {
+      expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+      testedPdfKeys.add(pdfKey);
     }
 
     const formData: FormData = generateFormData({
@@ -226,103 +175,29 @@ describe("mapFfsIndividualFields", () => {
       billingState: AddressState.NJ,
       billingZip: "08609",
     });
-    const fieldsToFill = mapFfsIndividualFields(formData);
-    expect(fieldsToFill[cityKey]).toEqual("Newark");
-    expect(fieldsToFill[stateKey]).toEqual("NJ");
-    expect(fieldsToFill[zipKey]).toEqual("08609");
+    const pdfFields = mapFfsIndividualFields(formData);
+    expect(pdfFields[cityKey]).toEqual("Newark");
+    expect(pdfFields[stateKey]).toEqual("NJ");
+    expect(pdfFields[zipKey]).toEqual("08609");
   };
 
-  const testBillingStreetAddress = (formKey: keyof PdfFfsIndividual) => {
-    expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-    testedFormKeys.add(formKey);
+  const testBillingStreetAddress = (pdfKey: keyof PdfFfsIndividual) => {
+    expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+    testedPdfKeys.add(pdfKey);
 
     const formDataOnlyAddress1: FormData = generateFormData({
       billingStreetAddress1: "55 Cherry St",
     });
-    const fieldsToFillOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
-    expect(fieldsToFillOnlyAddress1[formKey]).toEqual("55 Cherry St");
+    const pdfFieldsOnlyAddress1 = mapFfsIndividualFields(formDataOnlyAddress1);
+    expect(pdfFieldsOnlyAddress1[pdfKey]).toEqual("55 Cherry St");
 
     const formDataAddress1And2: FormData = generateFormData({
       billingStreetAddress1: "55 Cherry St",
       billingStreetAddress2: "Apt 4",
     });
-    const fieldsToFillAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
-    expect(fieldsToFillAddress1And2[formKey]).toEqual("55 Cherry St Apt 4");
+    const pdfFieldsAddress1And2 = mapFfsIndividualFields(formDataAddress1And2);
+    expect(pdfFieldsAddress1And2[pdfKey]).toEqual("55 Cherry St Apt 4");
   };
-
-  describe("Page 3 - doula qualifications form", () => {
-    it("fills legal name", () => {
-      testLegalName("fd427LegalName");
-    });
-
-    it("fills date of birth", () => {
-      testDateOfBirth("fd427dateofbirthDate1_af_date");
-    });
-
-    it("fills social security number", () => {
-      testSocialSecurityNumber("fd427SocialSecurityNumber");
-    });
-
-    describe("doula training fields", () => {
-      describe("when user selects a state approved training", () => {
-        it("fills the selected approved training", () => {
-          const formData: FormData = generateFormData({
-            stateApprovedTraining: "Children's Futures (Trenton)",
-            nameOfTrainingOrganization: null,
-          });
-          const fieldsToFill = mapFfsIndividualFields(formData);
-          expect(fieldsToFill["fd427TrainingProgramName"]).toEqual("Children's Futures (Trenton)");
-        });
-      });
-
-      describe("when user provides the name of a non-approved training", () => {
-        it("fills the provided training", () => {
-          const formData: FormData = generateFormData({
-            stateApprovedTraining: "None of these",
-            nameOfTrainingOrganization: "Name of training org",
-          });
-          const fieldsToFill = mapFfsIndividualFields(formData);
-          expect(fieldsToFill["fd427TrainingProgramName"]).toEqual("Name of training org");
-        });
-      });
-
-      it("fills in training instructor fields", () => {
-        const formData: FormData = generateFormData({
-          instructorFirstName: "First",
-          instructorLastName: "Last",
-          instructorEmail: "test@example.com",
-          instructorPhoneNumber: "111-111-1111",
-        });
-        const fieldsToFill = mapFfsIndividualFields(formData);
-        expect(fieldsToFill["fd427TrainingProgramContact"]).toEqual("First Last");
-        expect(fieldsToFill["fd427trainingprogramcontanctE-mailAddress"]).toEqual(
-          "test@example.com",
-        );
-        expect(fieldsToFill["fd427trainingprogramcontactTelephoneNo"]).toEqual("111-111-1111");
-      });
-
-      it("fills doula street address1", () => {
-        testTrainingStreetAddress("fd427trainingsiteStreetaddress");
-      });
-
-      it("fills doula training address city", () => {
-        testTrainingCityStateZip(
-          "fd427trainingsiteCity",
-          "fd427trainingsiteState",
-          "fd427trainingsiteZip",
-        );
-      });
-
-      it("throws an UnexpectedFormDataError when formData contains None of these but no Training Organization", () => {
-        const formData: FormData = generateFormData({
-          stateApprovedTraining: "None of these",
-        });
-        expect(() => mapFfsIndividualFields(formData)).toThrow(
-          "stateApprovedTraining had value none of these, but no training organization was provided.",
-        );
-      });
-    });
-  });
 
   describe("Page 5 - authorization agreement for automated deposits of state payments", () => {
     it("fills phone number", () => {
@@ -356,45 +231,45 @@ describe("mapFfsIndividualFields", () => {
     });
 
     it("fills Medicare provider id", () => {
-      const formKey = "fd452medicareprovnumber";
-      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-      testedFormKeys.add(formKey);
+      const pdfKey = "fd452medicareprovnumber";
+      expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+      testedPdfKeys.add(pdfKey);
 
-      const fieldsToFill = mapFfsIndividualFields(
+      const pdfFields = mapFfsIndividualFields(
         generateFormData({
           medicareProviderId: "111111",
         }),
       );
-      expect(fieldsToFill[formKey]).toEqual("111111");
+      expect(pdfFields[pdfKey]).toEqual("111111");
 
       for (const emptyValue of [null, "", "   "]) {
-        const fieldsToFill = mapFfsIndividualFields(
+        const pdfFields = mapFfsIndividualFields(
           generateFormData({
             medicareProviderId: emptyValue,
           }),
         );
-        expect(fieldsToFill[formKey]).toEqual("N/A");
+        expect(pdfFields[pdfKey]).toEqual("N/A");
       }
     });
 
     it("fills UPIN number", () => {
-      const formKey = "fd425upinno";
-      expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-      testedFormKeys.add(formKey);
+      const pdfKey = "fd425upinno";
+      expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+      testedPdfKeys.add(pdfKey);
 
-      const fieldsToFill = mapFfsIndividualFields(
+      const pdfFields = mapFfsIndividualFields(
         generateFormData({
           upinNumber: "ABC123",
         }),
       );
-      expect(fieldsToFill[formKey]).toEqual("ABC123");
+      expect(pdfFields[pdfKey]).toEqual("ABC123");
       for (const emptyValue of [null, "", "   "]) {
-        const fieldsToFill = mapFfsIndividualFields(
+        const pdfFields = mapFfsIndividualFields(
           generateFormData({
             upinNumber: emptyValue,
           }),
         );
-        expect(fieldsToFill[formKey]).toEqual("N/A");
+        expect(pdfFields[pdfKey]).toEqual("N/A");
       }
     });
 
@@ -458,9 +333,9 @@ describe("mapFfsIndividualFields", () => {
         "fd455aREQPAPER_Mail To Address 2",
         "fd455aREQPAPER_Mail To Address 3",
       ];
-      for (const formKey of mailToAddressKeys) {
-        expect(testedFormKeys.has(formKey), `Duplicate test for ${formKey}`).toEqual(false);
-        testedFormKeys.add(formKey);
+      for (const pdfKey of mailToAddressKeys) {
+        expect(testedPdfKeys.has(pdfKey), `Duplicate test for ${pdfKey}`).toEqual(false);
+        testedPdfKeys.add(pdfKey);
       }
       const [address1Key, address2Key, address3Key] = mailToAddressKeys;
 
@@ -471,10 +346,10 @@ describe("mapFfsIndividualFields", () => {
         state: AddressState.NJ,
         zip: "08609",
       });
-      const fieldsToFill = mapFfsIndividualFields(formData);
-      expect(fieldsToFill[address1Key]).toEqual("55 Cherry St");
-      expect(fieldsToFill[address2Key]).toEqual("Apt 4");
-      expect(fieldsToFill[address3Key]).toEqual("Newark, NJ 08609");
+      const pdfFields = mapFfsIndividualFields(formData);
+      expect(pdfFields[address1Key]).toEqual("55 Cherry St");
+      expect(pdfFields[address2Key]).toEqual("Apt 4");
+      expect(pdfFields[address3Key]).toEqual("Newark, NJ 08609");
     });
   });
 
@@ -496,20 +371,20 @@ describe("mapFfsIndividualFields", () => {
           zip: "11111",
           hasSameBusinessAddress: true,
         });
-        const fieldsToFill = mapFfsIndividualFields(formData);
-        expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toEqual(true);
-        expect(fieldsToFill["fd452disclosingentityPaternship"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityCorporation"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityOther"]).toBeUndefined();
-        expect(fieldsToFill["fd452nameofdisclosingentity"]).toEqual("First Middle Last");
-        expect(fieldsToFill["fd452telephonenumber"]).toEqual("111-111-1111");
-        expect(fieldsToFill["fd452providernumbandornpi"]).toEqual("1111111111");
-        expect(fieldsToFill["fd452businessstreetline1"]).toEqual("123 Main St");
-        expect(fieldsToFill["fd452businessstreetline2"]).toEqual("Apt 4B");
-        expect(fieldsToFill["fd452businessstreetline3"]).toEqual("Trenton, NJ 11111");
+        const pdfFields = mapFfsIndividualFields(formData);
+        expect(pdfFields["fd452disclosingentitySole Proprietorship"]).toEqual(true);
+        expect(pdfFields["fd452disclosingentityPaternship"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityCorporation"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityOther"]).toBeUndefined();
+        expect(pdfFields["fd452nameofdisclosingentity"]).toEqual("First Middle Last");
+        expect(pdfFields["fd452telephonenumber"]).toEqual("111-111-1111");
+        expect(pdfFields["fd452providernumbandornpi"]).toEqual("1111111111");
+        expect(pdfFields["fd452businessstreetline1"]).toEqual("123 Main St");
+        expect(pdfFields["fd452businessstreetline2"]).toEqual("Apt 4B");
+        expect(pdfFields["fd452businessstreetline3"]).toEqual("Trenton, NJ 11111");
       });
     });
 
@@ -535,21 +410,21 @@ describe("mapFfsIndividualFields", () => {
           businessState: AddressState.NJ,
           businessZip: "22222",
         });
-        const fieldsToFill = mapFfsIndividualFields(formData);
-        expect(fieldsToFill["fd452disclosingentitySole Proprietorship"]).toEqual(true);
-        expect(fieldsToFill["fd452disclosingentityPaternship"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityCorporation"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
-        expect(fieldsToFill["fd452disclosingentityOther"]).toBeUndefined();
-        expect(fieldsToFill["fd452nameofdisclosingentity"]).toEqual("First Middle Last");
-        expect(fieldsToFill["fd452telephonenumber"]).toEqual("111-111-1111");
-        expect(fieldsToFill["fd452providernumbandornpi"]).toEqual("1111111111");
-        expect(fieldsToFill["fd452businessstreetline1"]).toEqual("456 Test St");
-        expect(fieldsToFill["fd452businessstreetline2"]).toEqual("Suite Test");
-        expect(fieldsToFill["fd452businessstreetline3"]).toEqual("Trenton, NJ 22222");
-        expect(fieldsToFill["fd452einorothertaxidnumber"]).toEqual("123-45-6789");
+        const pdfFields = mapFfsIndividualFields(formData);
+        expect(pdfFields["fd452disclosingentitySole Proprietorship"]).toEqual(true);
+        expect(pdfFields["fd452disclosingentityPaternship"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityCorporation"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentitylimitedliabilitycompany"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityNonprofitorganization"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityUnincorporatedAssociation"]).toBeUndefined();
+        expect(pdfFields["fd452disclosingentityOther"]).toBeUndefined();
+        expect(pdfFields["fd452nameofdisclosingentity"]).toEqual("First Middle Last");
+        expect(pdfFields["fd452telephonenumber"]).toEqual("111-111-1111");
+        expect(pdfFields["fd452providernumbandornpi"]).toEqual("1111111111");
+        expect(pdfFields["fd452businessstreetline1"]).toEqual("456 Test St");
+        expect(pdfFields["fd452businessstreetline2"]).toEqual("Suite Test");
+        expect(pdfFields["fd452businessstreetline3"]).toEqual("Trenton, NJ 22222");
+        expect(pdfFields["fd452einorothertaxidnumber"]).toEqual("123-45-6789");
       });
     });
   });
