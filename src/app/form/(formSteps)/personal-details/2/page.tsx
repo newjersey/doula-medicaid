@@ -32,6 +32,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } =
   billingZip: "ZIP code",
 };
 
+const hasErrorSummary = true;
 const PersonalDetailsStep2 = () => {
   const {
     register,
@@ -53,7 +54,7 @@ const PersonalDetailsStep2 = () => {
       billingState: getDefaultValue("billingState") ?? "NJ",
       billingZip: getDefaultValue("billingZip") ?? "",
     },
-    shouldFocusError: false,
+    shouldFocusError: !hasErrorSummary,
   });
 
   const zip = watch("zip");
@@ -66,6 +67,7 @@ const PersonalDetailsStep2 = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
+      hasErrorSummary={hasErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

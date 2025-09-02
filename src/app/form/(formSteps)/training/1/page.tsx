@@ -34,6 +34,7 @@ const orderedInputNameToLabel: { [key in FieldPath<TrainingData>]: string } = {
   instructorPhoneNumber: "Phone number",
 };
 
+const hasErrorSummary = true;
 const TrainingStep1 = () => {
   const {
     register,
@@ -56,7 +57,7 @@ const TrainingStep1 = () => {
       instructorEmail: getDefaultValue("instructorEmail") ?? "",
       instructorPhoneNumber: getDefaultValue("instructorPhoneNumber") ?? "",
     },
-    shouldFocusError: false,
+    shouldFocusError: !hasErrorSummary,
   });
   const stateApprovedTraining = watch("stateApprovedTraining");
   const trainingZip = watch("trainingZip");
@@ -69,6 +70,7 @@ const TrainingStep1 = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
+      hasErrorSummary={hasErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

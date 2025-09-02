@@ -20,6 +20,7 @@ export const DoulaForm = <T extends FieldValues>(props: {
   setFocus: UseFormSetFocus<T>;
   handleSubmit: UseFormHandleSubmit<T, T>;
   children?: React.ReactNode;
+  hasErrorSummary: boolean;
 }) => {
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
@@ -60,16 +61,18 @@ export const DoulaForm = <T extends FieldValues>(props: {
     <div>
       {isDataLoaded && (
         <Form onSubmit={props.handleSubmit(onSubmit, onError)} className="maxw-full" noValidate>
-          <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
-            <div className="desktop:grid-col-8">
-              <ErrorSummary<T>
-                shouldSummarizeErrors={shouldSummarizeErrors}
-                errors={props.errors}
-                ref={errorSummaryRef}
-                setFocus={props.setFocus}
-              />
+          {props.hasErrorSummary && (
+            <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+              <div className="desktop:grid-col-8">
+                <ErrorSummary<T>
+                  shouldSummarizeErrors={shouldSummarizeErrors}
+                  errors={props.errors}
+                  ref={errorSummaryRef}
+                  setFocus={props.setFocus}
+                />
+              </div>
             </div>
-          </div>
+          )}
           {props.children}
         </Form>
       )}

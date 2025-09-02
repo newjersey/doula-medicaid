@@ -19,7 +19,7 @@ const orderedInputNameToLabel = {
   field3: "Label 3",
 };
 
-const DoulaFormTestPage = () => {
+const DoulaFormTestPage = (props: { hasErrorSummary: boolean }) => {
   const {
     register,
     handleSubmit,
@@ -31,7 +31,7 @@ const DoulaFormTestPage = () => {
       field2: "",
       field3: "",
     },
-    shouldFocusError: false,
+    shouldFocusError: !props.hasErrorSummary,
   });
 
   return (
@@ -40,6 +40,7 @@ const DoulaFormTestPage = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
+      hasErrorSummary={props.hasErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
@@ -117,7 +118,7 @@ const DoulaFormTestPage = () => {
   );
 };
 
-const renderWithRouter = () => {
+const renderWithRouter = (hasErrorSummary: boolean) => {
   const mockPush = jest.fn();
   const mockRefresh = jest.fn();
   const mockRouter: Partial<AppRouterInstance> = {
@@ -130,55 +131,76 @@ const renderWithRouter = () => {
       pathname="/form/personal-details/2"
       router={mockRouter as AppRouterInstance}
     >
-      <DoulaFormTestPage />
+      <DoulaFormTestPage hasErrorSummary={hasErrorSummary} />
     </RouterPathnameProvider>,
   );
   return mockRouter;
 };
 
 describe("error summary", () => {
-  it("shows an error summary if there are 3 or more errors", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    await user.click(screen.getByRole("button", { name: "Next" }));
+  describe("when hasErrorSummary is true", () => {
+    it("shows an error summary if there are 3 or more errors", async () => {
+      const user = userEvent.setup();
+      renderWithRouter(true);
+      await user.click(screen.getByRole("button", { name: "Next" }));
 
-    const focusedElement = document.activeElement as HTMLElement;
-    expect(
-      screen.getByRole("heading", {
-        name: "There is a problem",
-      }),
-    ).toBeInTheDocument();
+      const focusedElement = document.activeElement as HTMLElement;
+      expect(
+        screen.getByRole("heading", {
+          name: "There is a problem",
+        }),
+      ).toBeInTheDocument();
 
-    const expectedErrorMessages = [
-      "Label 1 is required",
-      "Label 2 is required",
-      "Label 3 is required",
-    ];
-    for (const errorMessage of expectedErrorMessages) {
-      expect(focusedElement).toHaveTextContent(errorMessage);
-    }
+      const expectedErrorMessages = [
+        "Label 1 is required",
+        "Label 2 is required",
+        "Label 3 is required",
+      ];
+      for (const errorMessage of expectedErrorMessages) {
+        expect(focusedElement).toHaveTextContent(errorMessage);
+      }
+    });
+
+    it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
+      const user = userEvent.setup();
+      renderWithRouter(true);
+      await user.type(
+        screen.getByRole("textbox", {
+          name: "Label 1 *",
+        }),
+        "Value 1",
+      );
+
+      await user.click(screen.getByRole("button", { name: "Next" }));
+
+      expect(
+        screen.queryByRole("heading", {
+          name: "There is a problem",
+        }),
+      ).not.toBeInTheDocument();
+
+      const errorMessage = "Label 2 is required";
+      const focusedElement = document.activeElement as HTMLElement;
+      expect(focusedElement).toHaveAccessibleDescription(errorMessage);
+    });
   });
 
-  it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    await user.type(
-      screen.getByRole("textbox", {
-        name: "Label 1 *",
-      }),
-      "Value 1",
-    );
+  describe("when hasErrorSummary is false", () => {
+    it("does not show an error summary if there are 3 errors, instead it focuses on the first error", async () => {
+      const user = userEvent.setup();
+      renderWithRouter(false);
 
-    await user.click(screen.getByRole("button", { name: "Next" }));
+      await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(
-      screen.queryByRole("heading", {
-        name: "There is a problem",
-      }),
-    ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("heading", {
+          name: "There is a problem",
+        }),
+      ).not.toBeInTheDocument();
 
-    const errorMessage = "Label 2 is required";
-    const focusedElement = document.activeElement as HTMLElement;
-    expect(focusedElement).toHaveAccessibleDescription(errorMessage);
+      const errorMessage = "Label 1 is required";
+      const focusedElement = document.activeElement as HTMLElement;
+      expect(focusedElement).toHaveAccessibleDescription(errorMessage);
+    });
   });
 });

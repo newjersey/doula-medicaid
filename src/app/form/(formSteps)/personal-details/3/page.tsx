@@ -15,6 +15,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails3Data]: string } =
   medicareProviderId: "Medicare provider ID",
 };
 
+const hasErrorSummary = false;
 const PersonalDetailsStep3 = () => {
   const {
     register,
@@ -28,16 +29,17 @@ const PersonalDetailsStep3 = () => {
       upinNumber: getDefaultValue("upinNumber") ?? "",
       medicareProviderId: getDefaultValue("medicareProviderId") ?? "",
     },
+    shouldFocusError: !hasErrorSummary,
   });
 
   const npiNumber = watch("npiNumber");
-
   return (
     <DoulaForm<PersonalDetails3Data>
       orderedInputNameToLabel={orderedInputNameToLabel}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
+      hasErrorSummary={hasErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
