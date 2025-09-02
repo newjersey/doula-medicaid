@@ -1,3 +1,4 @@
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import { FormLayout } from "@form/(formSteps)/FormLayout";
 import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
@@ -5,9 +6,11 @@ import { render, screen } from "@testing-library/react";
 describe("<FormLayout />", () => {
   it("shows the section progress bar", () => {
     render(
-      <FormLayout pathname="/form/business-details/1">
-        <div>Test content</div>
-      </FormLayout>,
+      <RouterPathnameProvider pathname="/form/business-details/1">
+        <FormLayout>
+          <div>Test content</div>
+        </FormLayout>
+      </RouterPathnameProvider>,
     );
     const progressSection = screen.getByRole("generic", { name: /progress/i });
     const sections = within(progressSection).getAllByRole("listitem");
@@ -28,9 +31,12 @@ describe("<FormLayout />", () => {
 
   it("shows heading 1 with the step indicator and section title when the title is different from the section name", () => {
     render(
-      <FormLayout pathname="/form/finish">
-        <div>Test content</div>
-      </FormLayout>,
+      <RouterPathnameProvider pathname="/form/finish">
+        <FormLayout>
+          <div>Test content</div>
+        </FormLayout>
+        ,
+      </RouterPathnameProvider>,
     );
     const progressBarTitle = "Finish";
     const sectionTitle = "Download forms";
@@ -47,9 +53,12 @@ describe("<FormLayout />", () => {
 
   it("shows heading 1 with only section title when the section has multiple steps", () => {
     render(
-      <FormLayout pathname="/form/personal-details/2">
-        <div>Test content</div>
-      </FormLayout>,
+      <RouterPathnameProvider pathname="/form/personal-details/2">
+        <FormLayout>
+          <div>Test content</div>
+        </FormLayout>
+        ,
+      </RouterPathnameProvider>,
     );
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("2 of 3 Personal details");
@@ -57,9 +66,12 @@ describe("<FormLayout />", () => {
 
   it("shows heading 1 with the step indicator and section title when the section does not have steps", () => {
     render(
-      <FormLayout pathname="/form/finish">
-        <div>Test content</div>
-      </FormLayout>,
+      <RouterPathnameProvider pathname="/form/finish">
+        <FormLayout>
+          <div>Test content</div>
+        </FormLayout>
+        ,
+      </RouterPathnameProvider>,
     );
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("Download forms");
@@ -67,9 +79,12 @@ describe("<FormLayout />", () => {
 
   it("shows required field indicator text with an asterisk", () => {
     render(
-      <FormLayout pathname="/form/business-details/1">
-        <div>Test content</div>
-      </FormLayout>,
+      <RouterPathnameProvider pathname="/form/business-details/1">
+        <FormLayout>
+          <div>Test content</div>
+        </FormLayout>
+        ,
+      </RouterPathnameProvider>,
     );
 
     expect(screen.getByText(/A red asterisk.*indicates a required field/)).toBeInTheDocument();
