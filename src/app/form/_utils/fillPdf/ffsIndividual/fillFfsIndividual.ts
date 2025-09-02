@@ -31,14 +31,14 @@ export interface PdfFfsIndividual
     PdfFfsIndividualPage16 {}
 
 export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndividual> => {
-  const fieldsToFill = {
+  const pdfFields = {
     ...getPage3Fields(formData),
     ...getPage5Fields(formData),
     ...getPage7Fields(formData),
     ...getPage12Fields(formData),
     ...getPage16Fields(formData),
   };
-  return fieldsToFill;
+  return pdfFields;
 };
 
 export const fillFfsIndividualForm = (formData: FormData) => {

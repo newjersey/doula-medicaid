@@ -7,7 +7,7 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 
 jest.mock("@form/_utils/fillPdf/form", () => ({
   ...(jest.requireActual("@form/_utils/fillPdf/form") as object),
-  fillForm: jest.fn((_fieldsToFill, _pdfPath, filename: string) => {
+  fillForm: jest.fn((_pdfFields, _pdfPath, filename: string) => {
     return { filename, bytes: new Uint8Array(0) };
   }),
 }));
