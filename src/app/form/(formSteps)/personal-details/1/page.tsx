@@ -28,7 +28,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } =
   phoneNumber: "Phone number",
 };
 
-const hasErrorSummary = true;
+const mayHaveThreeOrMoreErrors = true;
 const PersonalDetailsStep1 = () => {
   const {
     register,
@@ -48,7 +48,7 @@ const PersonalDetailsStep1 = () => {
       email: getDefaultValue("email") ?? "",
       phoneNumber: getDefaultValue("phoneNumber") ?? "",
     },
-    shouldFocusError: !hasErrorSummary,
+    shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
 
   const phoneNumber = watch("phoneNumber");
@@ -60,7 +60,7 @@ const PersonalDetailsStep1 = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
-      hasErrorSummary={hasErrorSummary}
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div>

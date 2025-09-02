@@ -19,7 +19,7 @@ const orderedInputNameToLabel = {
   field3: "Label 3",
 };
 
-const DoulaFormTestPage = (props: { hasErrorSummary: boolean }) => {
+const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
   const {
     register,
     handleSubmit,
@@ -31,7 +31,7 @@ const DoulaFormTestPage = (props: { hasErrorSummary: boolean }) => {
       field2: "",
       field3: "",
     },
-    shouldFocusError: !props.hasErrorSummary,
+    shouldFocusError: !props.mayHaveThreeOrMoreErrors,
   });
 
   return (
@@ -40,7 +40,7 @@ const DoulaFormTestPage = (props: { hasErrorSummary: boolean }) => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
-      hasErrorSummary={props.hasErrorSummary}
+      mayHaveThreeOrMoreErrors={props.mayHaveThreeOrMoreErrors}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
@@ -118,7 +118,7 @@ const DoulaFormTestPage = (props: { hasErrorSummary: boolean }) => {
   );
 };
 
-const renderWithRouter = (hasErrorSummary: boolean) => {
+const renderWithRouter = (mayHaveThreeOrMoreErrors: boolean) => {
   const mockPush = jest.fn();
   const mockRefresh = jest.fn();
   const mockRouter: Partial<AppRouterInstance> = {
@@ -131,14 +131,14 @@ const renderWithRouter = (hasErrorSummary: boolean) => {
       pathname="/form/personal-details/2"
       router={mockRouter as AppRouterInstance}
     >
-      <DoulaFormTestPage hasErrorSummary={hasErrorSummary} />
+      <DoulaFormTestPage mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors} />
     </RouterPathnameProvider>,
   );
   return mockRouter;
 };
 
 describe("error summary", () => {
-  describe("when hasErrorSummary is true", () => {
+  describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
       const user = userEvent.setup();
       renderWithRouter(true);
@@ -185,7 +185,7 @@ describe("error summary", () => {
     });
   });
 
-  describe("when hasErrorSummary is false", () => {
+  describe("when mayHaveThreeOrMoreErrors is false", () => {
     it("does not show an error summary if there are 3 errors, instead it focuses on the first error", async () => {
       const user = userEvent.setup();
       renderWithRouter(false);

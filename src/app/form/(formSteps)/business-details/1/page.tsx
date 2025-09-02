@@ -17,7 +17,7 @@ const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } =
   businessZip: "ZIP code",
 };
 
-const hasErrorSummary = false;
+const mayHaveThreeOrMoreErrors = false;
 const BusinessDetails1 = () => {
   const {
     register,
@@ -34,7 +34,7 @@ const BusinessDetails1 = () => {
       businessState: "NJ",
       businessZip: "",
     },
-    shouldFocusError: !hasErrorSummary,
+    shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
 
   const hasSameBusinessAddress = watch("hasSameBusinessAddress");
@@ -45,7 +45,7 @@ const BusinessDetails1 = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
-      hasErrorSummary={hasErrorSummary}
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

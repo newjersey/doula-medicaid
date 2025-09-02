@@ -15,7 +15,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails3Data]: string } =
   medicareProviderId: "Medicare provider ID",
 };
 
-const hasErrorSummary = false;
+const mayHaveThreeOrMoreErrors = false;
 const PersonalDetailsStep3 = () => {
   const {
     register,
@@ -29,7 +29,7 @@ const PersonalDetailsStep3 = () => {
       upinNumber: getDefaultValue("upinNumber") ?? "",
       medicareProviderId: getDefaultValue("medicareProviderId") ?? "",
     },
-    shouldFocusError: !hasErrorSummary,
+    shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
 
   const npiNumber = watch("npiNumber");
@@ -39,7 +39,7 @@ const PersonalDetailsStep3 = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
-      hasErrorSummary={hasErrorSummary}
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

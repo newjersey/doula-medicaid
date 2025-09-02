@@ -13,7 +13,7 @@ const orderedInputNameToLabel = {
     "Do you manage your business as an individual doula operating as a Sole Proprietor?",
 };
 
-const hasErrorSummary = false;
+const mayHaveThreeOrMoreErrors = false;
 const ScreeningStep1 = () => {
   const {
     register,
@@ -31,7 +31,7 @@ const ScreeningStep1 = () => {
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
-      hasErrorSummary={hasErrorSummary}
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
