@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import SoleProprietorExplainer from "@/app/form/(formSteps)/screening/1/SoleProprietorExplainer";
 import type { Screening1Data } from "@/app/form/(formSteps)/screening/ScreeningData";
@@ -71,6 +72,7 @@ const ScreeningStep1 = () => {
           <SoleProprietorExplainer />
         </div>
       </div>
+      <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>
   );

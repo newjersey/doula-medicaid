@@ -261,6 +261,7 @@ const PersonalDetailsStep1 = () => {
           />
         </div>
       </div>
+      <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>
   );

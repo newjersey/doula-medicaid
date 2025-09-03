@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
@@ -121,6 +122,7 @@ const BusinessDetails1 = () => {
           </Fieldset>
         )}
       </div>
+      <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>
   );

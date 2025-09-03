@@ -120,6 +120,7 @@ const PersonalDetailsStep3 = () => {
           />
         </div>
       </div>
+      <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>
   );
