@@ -43,6 +43,22 @@ describe("DoulaTextInput", () => {
     expect(input).toHaveAccessibleDescription("Test hint");
   });
 
+  it("it describes the input with the provided describedby", () => {
+    render(
+      <>
+        <DoulaTextInput
+          name="testInput"
+          label="Test label"
+          aria-describedby="anotherDescriptonID"
+          register={jest.fn()}
+        />
+        <span id="anotherDescriptonID">Additional description</span>
+      </>,
+    );
+    const input = screen.getByRole("textbox", { name: "Test label" });
+    expect(input).toHaveAccessibleDescription("Additional description");
+  });
+
   it("shows an error message and sets appropriate attributes when there is an error for the input", () => {
     render(
       <DoulaTextInput
@@ -66,6 +82,40 @@ describe("DoulaTextInput", () => {
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
 
+  it("shows a custom error message if provided", async () => {
+    render(
+      <DoulaTextInput
+        name="testInput"
+        label="Test label"
+        required
+        errors={{
+          testInput: {
+            type: "required",
+            message: "This field is required",
+          },
+        }}
+        register={jest.fn()}
+        registerOptions={{
+          required: "This field is required",
+        }}
+        customErrorMessages={[
+          {
+            type: "required",
+            message: (
+              <div>
+                Fancy error <span>message</span>
+              </div>
+            ),
+          },
+        ]}
+      />,
+    );
+
+    const input = screen.getByRole("textbox", { name: "Test label *" });
+    expect(input).toHaveAccessibleDescription("Fancy error message");
+    expect(input).toHaveAttribute("aria-invalid", "true");
+  });
+
   it("does not show an error message if there is no error for the input", () => {
     render(
       <DoulaTextInput<{ testInput: string; otherInput: string }>
@@ -85,26 +135,33 @@ describe("DoulaTextInput", () => {
     expect(input).not.toHaveAttribute("aria-describedby");
   });
 
-  it("describes the input with both the hint and the error message when both are present", () => {
+  it("describes the input with the hint, the error message, and the aria-describedby when all are present", () => {
     render(
-      <DoulaTextInput
-        name="testInput"
-        label="Test label"
-        hint="Test hint"
-        required
-        errors={{
-          testInput: {
-            type: "required",
-            message: "This field is required",
-          },
-        }}
-        register={jest.fn()}
-        registerOptions={{
-          required: "This field is required",
-        }}
-      />,
+      <>
+        <DoulaTextInput
+          name="testInput"
+          label="Test label"
+          hint="Test hint"
+          aria-describedby="anotherDescriptonID"
+          required
+          errors={{
+            testInput: {
+              type: "required",
+              message: "This field is required",
+            },
+          }}
+          register={jest.fn()}
+          registerOptions={{
+            required: "This field is required",
+          }}
+        />
+        <span id="anotherDescriptonID">Additional description</span>
+      </>,
     );
     const input = screen.getByRole("textbox", { name: "Test label *" });
-    expect(input).toHaveAccessibleDescription("This field is required Test hint");
+    expect(input).toHaveAccessibleDescription(
+      "This field is required Test hint Additional description",
+    );
+    expect(input).toHaveAttribute("aria-invalid", "true");
   });
 });

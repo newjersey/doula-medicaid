@@ -1,4 +1,7 @@
-import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
+import {
+  ErrorMessage,
+  type CustomErrorMessage,
+} from "@/app/form/(formSteps)/components/ErrorMessage";
 import { Hint } from "@/app/form/(formSteps)/components/Hint";
 import { formatDescribedBy } from "@/app/form/(formSteps)/components/utils/doulaInput";
 import {
@@ -16,7 +19,7 @@ import type {
 } from "react-hook-form";
 
 type wrappedAttributes = "type" | "name" | "required";
-type internallySetAttributes = "id" | "validationStatus" | "aria-invalid" | "aria-describedby";
+type internallySetAttributes = "id" | "validationStatus" | "aria-invalid";
 
 interface DoulaTextInputMaskProps<T extends FieldValues>
   extends Omit<TextInputMaskProps, wrappedAttributes | internallySetAttributes> {
@@ -28,15 +31,27 @@ interface DoulaTextInputMaskProps<T extends FieldValues>
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
   registerOptions?: RegisterOptions<T>;
+  customErrorMessages?: Array<CustomErrorMessage>;
 }
 
 const DoulaTextInputMask = <T extends FieldValues>(props: DoulaTextInputMaskProps<T>) => {
-  const { name, label, hint, type, required, errors, register, registerOptions, ...otherProps } =
-    props;
+  const {
+    name,
+    label,
+    hint,
+    type,
+    "aria-describedby": ariaDescribedby,
+    required,
+    errors,
+    register,
+    registerOptions,
+    customErrorMessages,
+    ...otherProps
+  } = props;
   const hasError = errors !== undefined && errors[name] !== undefined;
   const internallySetProps: Partial<TextInputMaskProps> = {};
 
-  const describedby = formatDescribedBy(name, errors, hint);
+  const describedby = formatDescribedBy(name, errors, hint, ariaDescribedby);
   if (describedby !== "") {
     internallySetProps["aria-describedby"] = describedby;
   }
@@ -61,7 +76,9 @@ const DoulaTextInputMask = <T extends FieldValues>(props: DoulaTextInputMaskProp
         {...otherProps}
         {...register(name, registerOptions)}
       />
-      {hasError && <ErrorMessage name={name} errors={errors} />}
+      {hasError && (
+        <ErrorMessage name={name} errors={errors} customErrorMessages={customErrorMessages} />
+      )}
     </>
   );
 };

@@ -1,4 +1,7 @@
-import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
+import {
+  ErrorMessage,
+  type CustomErrorMessage,
+} from "@/app/form/(formSteps)/components/ErrorMessage";
 import { Hint } from "@/app/form/(formSteps)/components/Hint";
 import { formatDescribedBy } from "@/app/form/(formSteps)/components/utils/doulaInput";
 import {
@@ -16,7 +19,7 @@ import type {
 } from "react-hook-form";
 
 type wrappedAttributes = "type" | "name" | "required";
-type internallySetAttributes = "id" | "validationStatus" | "aria-invalid" | "aria-describedby";
+type internallySetAttributes = "id" | "validationStatus" | "aria-invalid";
 
 interface DoulaTextInputProps<T extends FieldValues>
   extends Omit<TextInputProps, wrappedAttributes | internallySetAttributes> {
@@ -29,6 +32,7 @@ interface DoulaTextInputProps<T extends FieldValues>
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
   registerOptions?: RegisterOptions<T>;
+  customErrorMessages?: Array<CustomErrorMessage>;
 }
 
 const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) => {
@@ -37,18 +41,20 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
     label,
     hint,
     type,
+    "aria-describedby": ariaDescribedby,
     required,
     errors,
     hideErrorMessage,
     register,
     registerOptions,
+    customErrorMessages,
     ...otherProps
   } = props;
 
   const hasError = errors !== undefined && errors[name] !== undefined;
   const internallySetProps: Partial<TextInputProps> = {};
 
-  const describedby = formatDescribedBy(name, errors, hint);
+  const describedby = formatDescribedBy(name, errors, hint, ariaDescribedby);
   if (describedby !== "") {
     internallySetProps["aria-describedby"] = describedby;
   }
@@ -73,7 +79,9 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
         {...otherProps}
         {...register(name, registerOptions)}
       />
-      {hasError && hideErrorMessage !== true && <ErrorMessage name={name} errors={errors} />}
+      {hasError && hideErrorMessage !== true && (
+        <ErrorMessage name={name} errors={errors} customErrorMessages={customErrorMessages} />
+      )}
     </>
   );
 };

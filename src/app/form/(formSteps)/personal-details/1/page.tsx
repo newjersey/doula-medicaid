@@ -108,7 +108,7 @@ const PersonalDetailsStep1 = () => {
                   required
                   validationStatus={errors.dateOfBirthMonth ? "error" : undefined}
                   aria-invalid={errors.dateOfBirthMonth ? "true" : "false"}
-                  aria-describedby="dateOfBirthMonthErrorMessage"
+                  aria-describedby={errors.dateOfBirthMonth ? "dateOfBirthMonthErrorMessage" : ""}
                   {...register("dateOfBirthMonth", {
                     required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
                   })}
