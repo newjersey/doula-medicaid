@@ -394,6 +394,7 @@ const TrainingStep1 = () => {
           </div>
         </div>
       </div>
+      <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
@@ -316,6 +317,7 @@ const PersonalDetailsStep2 = () => {
           <PublicInformationExplainer />
         </div>
       </div>
+      <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>
   );

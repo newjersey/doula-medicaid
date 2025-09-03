@@ -1,5 +1,6 @@
 "use client";
 
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
@@ -20,6 +21,7 @@ const FormSection = () => {
         })}
         className="maxw-full"
       >
+        <HorizontalDivider />
         <FormProgressButtons />
       </Form>
     </div>
