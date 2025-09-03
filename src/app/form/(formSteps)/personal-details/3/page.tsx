@@ -21,7 +21,6 @@ const PersonalDetailsStep3 = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setFocus,
     watch,
   } = useForm<PersonalDetails3Data>({
     defaultValues: {
@@ -35,9 +34,7 @@ const PersonalDetailsStep3 = () => {
   const npiNumber = watch("npiNumber");
   return (
     <DoulaForm<PersonalDetails3Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
       errors={errors}
-      setFocus={setFocus}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >

@@ -7,16 +7,6 @@ import { AddressState } from "@form/_utils/inputFields/enums";
 import { Fieldset, Label, Radio, RequiredMarker, Select, TextInput } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } = {
-  hasSameBusinessAddress:
-    "Is your business address the same as your residential and billing address?",
-  businessStreetAddress1: "Street address",
-  businessStreetAddress2: "Street address line 2",
-  businessCity: "City",
-  businessState: "State",
-  businessZip: "ZIP code",
-};
-
 const mayHaveThreeOrMoreErrors = false;
 const BusinessDetails1 = () => {
   const {
@@ -24,7 +14,6 @@ const BusinessDetails1 = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    setFocus,
   } = useForm<BusinessDetails1Data>({
     defaultValues: {
       hasSameBusinessAddress: "",
@@ -41,9 +30,7 @@ const BusinessDetails1 = () => {
 
   return (
     <DoulaForm<BusinessDetails1Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
       errors={errors}
-      setFocus={setFocus}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
@@ -84,7 +71,7 @@ const BusinessDetails1 = () => {
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-6">
                 <Label requiredMarker htmlFor="businessStreetAddress1">
-                  {orderedInputNameToLabel["businessStreetAddress1"]}
+                  Street address
                 </Label>
                 <TextInput
                   id="businessStreetAddress1"
@@ -94,10 +81,7 @@ const BusinessDetails1 = () => {
                 />
               </div>
               <div className="mobile-lg:grid-col-6">
-                <Label htmlFor="businessStreetAddress2">
-                  {" "}
-                  {orderedInputNameToLabel["businessStreetAddress2"]}
-                </Label>
+                <Label htmlFor="businessStreetAddress2">Street address line 2</Label>
                 <TextInput
                   id="businessStreetAddress2"
                   type="text"
@@ -108,7 +92,7 @@ const BusinessDetails1 = () => {
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-6">
                 <Label requiredMarker htmlFor="businessCity">
-                  {orderedInputNameToLabel["businessCity"]}
+                  City
                 </Label>
                 <TextInput
                   className="usa-input"
@@ -122,7 +106,7 @@ const BusinessDetails1 = () => {
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-6">
                 <Label requiredMarker htmlFor="businessState">
-                  {orderedInputNameToLabel["businessState"]}
+                  State
                 </Label>
                 <Select
                   className="usa-select"
@@ -140,7 +124,7 @@ const BusinessDetails1 = () => {
 
               <div className="mobile-lg:grid-col-4">
                 <Label requiredMarker htmlFor="businessZip">
-                  {orderedInputNameToLabel["businessZip"]}
+                  ZIP code
                 </Label>
                 <TextInput
                   className="usa-input usa-input--medium"

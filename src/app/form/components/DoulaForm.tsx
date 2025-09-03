@@ -12,16 +12,26 @@ import type {
   UseFormSetFocus,
 } from "react-hook-form";
 
-export const DoulaForm = <T extends FieldValues>(props: {
-  orderedInputNameToLabel: {
-    [key in FieldPath<T>]: string;
-  };
-  errors: FieldErrors<T>;
-  setFocus: UseFormSetFocus<T>;
-  handleSubmit: UseFormHandleSubmit<T, T>;
-  children: React.ReactNode;
-  mayHaveThreeOrMoreErrors: boolean;
-}) => {
+type DoulaFormProps<T extends FieldValues> =
+  | {
+      orderedInputNameToLabel: {
+        [key in FieldPath<T>]: string;
+      };
+      errors: FieldErrors<T>;
+      setFocus: UseFormSetFocus<T>;
+      handleSubmit: UseFormHandleSubmit<T, T>;
+      children: React.ReactNode;
+      mayHaveThreeOrMoreErrors: true;
+    }
+  | {
+      errors: FieldErrors<T>;
+      handleSubmit: UseFormHandleSubmit<T, T>;
+      children: React.ReactNode;
+      mayHaveThreeOrMoreErrors: false;
+    };
+
+export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
+  let onSubmitHandler;
   const router = useRouter();
   const formProgressPosition = useFormProgressPosition();
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
@@ -41,26 +51,32 @@ export const DoulaForm = <T extends FieldValues>(props: {
     routeToNextStep(router, formProgressPosition);
   };
 
-  const onError = (errors: FieldErrors<T>) => {
-    if (Object.keys(errors).length >= 3) {
-      setShouldSummarizeErrors(true);
-      errorSummaryRef.current?.focus();
-    } else {
-      setShouldSummarizeErrors(false);
-      for (const inputName of Object.keys(props.orderedInputNameToLabel) as Array<FieldPath<T>>) {
-        const fieldPath = inputName as FieldPath<T>;
-        if (errors[fieldPath] !== undefined) {
-          props.setFocus(fieldPath);
-          break;
+  if (props.mayHaveThreeOrMoreErrors) {
+    const onError = (errors: FieldErrors<T>) => {
+      if (Object.keys(errors).length >= 3) {
+        setShouldSummarizeErrors(true);
+        errorSummaryRef.current?.focus();
+      } else {
+        setShouldSummarizeErrors(false);
+        for (const inputName of Object.keys(props.orderedInputNameToLabel) as Array<FieldPath<T>>) {
+          const fieldPath = inputName as FieldPath<T>;
+          if (errors[fieldPath] !== undefined) {
+            props.setFocus(fieldPath);
+            break;
+          }
         }
       }
-    }
-  };
+    };
+
+    onSubmitHandler = props.handleSubmit(onSubmit, onError);
+  } else {
+    onSubmitHandler = props.handleSubmit(onSubmit);
+  }
 
   return (
     <div>
       {isDataLoaded && (
-        <Form onSubmit={props.handleSubmit(onSubmit, onError)} className="maxw-full" noValidate>
+        <Form onSubmit={onSubmitHandler} className="maxw-full" noValidate>
           {props.mayHaveThreeOrMoreErrors && (
             <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
               <div className="desktop:grid-col-8">

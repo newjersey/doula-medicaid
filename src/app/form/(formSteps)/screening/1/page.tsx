@@ -20,16 +20,13 @@ const ScreeningStep1 = () => {
     handleSubmit,
     formState: { errors },
     watch,
-    setFocus,
   } = useForm<Screening1Data>({
     defaultValues: { isSoleProprietor: getDefaultBoolean("isSoleProprietor") },
   });
   const isSoleProprietor = watch("isSoleProprietor");
   return (
     <DoulaForm<Screening1Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
       errors={errors}
-      setFocus={setFocus}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
