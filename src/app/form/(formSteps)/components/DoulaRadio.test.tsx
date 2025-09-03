@@ -85,6 +85,28 @@ describe("DoulaRadio", () => {
     }
   });
 
+  it("it describes the input with the provided describedby", () => {
+    render(
+      <>
+        <DoulaRadio
+          name="testRadio"
+          value=""
+          label="What option do you choose?"
+          aria-describedby="anotherDescriptonID"
+          required
+          options={threeOptions}
+          errors={{}}
+          register={jest.fn()}
+        />
+        <span id="anotherDescriptonID">Additional description</span>
+      </>,
+    );
+    for (const option of threeOptions) {
+      const radio = screen.getByRole("radio", { name: option.label });
+      expect(radio).toHaveAccessibleDescription("Additional description");
+    }
+  });
+
   it("accepts additional register options", () => {
     const mockRegister = jest.fn();
     const validationFunction = (value: string) => value === "true";
@@ -156,6 +178,7 @@ describe("DoulaRadio", () => {
             type: "required",
           },
         }}
+        register={jest.fn()}
         customErrorMessages={[
           {
             type: "required",
@@ -166,7 +189,6 @@ describe("DoulaRadio", () => {
             ),
           },
         ]}
-        register={jest.fn()}
       />,
     );
 
@@ -226,5 +248,33 @@ describe("DoulaRadio", () => {
     ).toThrow(
       "The option value is used in the HTML id, and should not have white space: test value",
     );
+  });
+
+  it("describes the radio with both the error message and the aria-describedby when both are present", () => {
+    render(
+      <>
+        <DoulaRadio
+          name="testRadio"
+          value=""
+          label="What option do you choose?"
+          aria-describedby="anotherDescriptonID"
+          required
+          options={threeOptions}
+          errors={{
+            testRadio: {
+              type: "required",
+              message: "This question is required",
+            },
+          }}
+          register={jest.fn()}
+        />
+        <span id="anotherDescriptonID">Additional description</span>
+      </>,
+    );
+
+    for (const option of threeOptions) {
+      const radio = screen.getByRole("radio", { name: option.label });
+      expect(radio).toHaveAccessibleDescription("This question is required Additional description");
+    }
   });
 });

@@ -20,7 +20,7 @@ export interface DoulaRadioOption<T extends FieldValues> {
 }
 
 type wrappedAttributes = "type" | "name" | "required";
-type internallySetAttributes = "id" | "aria-invalid" | "aria-describedby";
+type internallySetAttributes = "id" | "aria-invalid";
 
 export interface DoulaRadioProps<T extends FieldValues>
   extends Omit<RadioProps, wrappedAttributes | internallySetAttributes> {
@@ -29,9 +29,9 @@ export interface DoulaRadioProps<T extends FieldValues>
   label: React.ReactNode;
   required?: boolean;
   options: Array<DoulaRadioOption<T>>;
-  customErrorMessages?: Array<CustomErrorMessage>;
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
+  customErrorMessages?: Array<CustomErrorMessage>;
 }
 
 const getLegend = (label: React.ReactNode, isRequired: boolean | undefined) => {
@@ -53,17 +53,18 @@ const DoulaRadio = <T extends FieldValues>(props: DoulaRadioProps<T>) => {
     name,
     value,
     label,
+    "aria-describedby": ariaDescribedby,
     required,
     options,
-    customErrorMessages,
     errors,
     register,
+    customErrorMessages,
     ...otherProps
   } = props;
 
   const hasError = errors !== undefined && errors[name] !== undefined;
   const internallySetProps: Partial<RadioProps> = {};
-  const describedby = formatDescribedBy(name, errors, undefined);
+  const describedby = formatDescribedBy(name, errors, undefined, ariaDescribedby);
   if (describedby !== "") {
     internallySetProps["aria-describedby"] = describedby;
   }

@@ -1,6 +1,8 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
+import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
@@ -9,7 +11,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 import { AddressState } from "@form/_utils/inputFields/enums";
 import { getDefaultValue } from "@form/_utils/sessionStorage";
-import { Fieldset, Label, Select, TextInput, TextInputMask } from "@trussworks/react-uswds";
+import { Fieldset, Label, Select } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
@@ -73,61 +75,40 @@ const PersonalDetailsStep2 = () => {
             <Fieldset legend="Mailing address" legendStyle="srOnly">
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="streetAddress1" requiredMarker>
-                    {orderedInputNameToLabel["streetAddress1"]}
-                  </Label>
-                  <TextInput
-                    id="streetAddress1"
-                    type="text"
+                  <DoulaTextInput
+                    name="streetAddress1"
+                    label={orderedInputNameToLabel["streetAddress1"]}
                     autoComplete={typecheckAutocomplete("shipping address-line1")}
                     required
-                    validationStatus={errors.streetAddress1 ? "error" : undefined}
-                    aria-invalid={errors.streetAddress1 ? "true" : "false"}
-                    aria-describedby={errors.streetAddress1 && "streetAddress1ErrorMessage"}
-                    {...register("streetAddress1", {
+                    errors={errors}
+                    register={register}
+                    registerOptions={{
                       required: `${orderedInputNameToLabel["streetAddress1"]} is required`,
-                    })}
+                    }}
                   />
-                  {errors.streetAddress1 && (
-                    <span id="streetAddress1ErrorMessage" className="usa-error-message">
-                      {errors.streetAddress1.message}
-                    </span>
-                  )}
                 </div>
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="streetAddress2">
-                    {orderedInputNameToLabel["streetAddress2"]}
-                  </Label>
-                  <TextInput
-                    id="streetAddress2"
-                    type="text"
+                  <DoulaTextInput
+                    name="streetAddress2"
+                    label={orderedInputNameToLabel["streetAddress2"]}
                     autoComplete={typecheckAutocomplete("shipping address-line2")}
-                    {...register("streetAddress2")}
+                    register={register}
                   />
                 </div>
               </div>
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="city" requiredMarker>
-                    {orderedInputNameToLabel["city"]}
-                  </Label>
-                  <TextInput
-                    id="city"
-                    type="text"
+                  <DoulaTextInput
+                    name="city"
+                    label={orderedInputNameToLabel["city"]}
                     autoComplete={typecheckAutocomplete("shipping address-level2")}
                     required
-                    validationStatus={errors.city ? "error" : undefined}
-                    aria-invalid={errors.city ? "true" : "false"}
-                    aria-describedby={errors.city && "cityErrorMessage"}
-                    {...register("city", {
+                    errors={errors}
+                    register={register}
+                    registerOptions={{
                       required: `${orderedInputNameToLabel["city"]} is required`,
-                    })}
+                    }}
                   />
-                  {errors.city && (
-                    <span id="cityErrorMessage" className="usa-error-message">
-                      {errors.city.message}
-                    </span>
-                  )}
                 </div>
               </div>
               <div className="grid-row grid-gap">
@@ -150,34 +131,25 @@ const PersonalDetailsStep2 = () => {
                   </Select>
                 </div>
                 <div className="mobile-lg:grid-col-4">
-                  <Label htmlFor="zip" requiredMarker>
-                    {orderedInputNameToLabel["zip"]}
-                  </Label>
-                  <TextInputMask
+                  <DoulaTextInputMask
                     className="usa-input--medium"
-                    id="zip"
-                    type="text"
+                    name="zip"
+                    label={orderedInputNameToLabel["zip"]}
                     autoComplete={typecheckAutocomplete("shipping postal-code")}
                     value={zip ?? ""}
                     mask="#####"
                     pattern="\d{5}"
                     required
-                    validationStatus={errors.zip ? "error" : undefined}
-                    aria-invalid={errors.zip ? "true" : "false"}
-                    aria-describedby={errors.zip && "zipErrorMessage"}
-                    {...register("zip", {
+                    errors={errors}
+                    register={register}
+                    registerOptions={{
                       required: `${orderedInputNameToLabel["zip"]} is required`,
                       minLength: {
                         value: 5,
                         message: `${orderedInputNameToLabel["zip"]} must have five digits`,
                       },
-                    })}
+                    }}
                   />
-                  {errors.zip && (
-                    <span id="zipErrorMessage" className="usa-error-message">
-                      {errors.zip.message}
-                    </span>
-                  )}
                 </div>
               </div>
             </Fieldset>
@@ -200,64 +172,37 @@ const PersonalDetailsStep2 = () => {
               <Fieldset legend={<p className="margin-top-5">What&apos;s your billing address?</p>}>
                 <div className="grid-row grid-gap">
                   <div className="mobile-lg:grid-col-6">
-                    <Label htmlFor="billingStreetAddress1" requiredMarker>
-                      {orderedInputNameToLabel["billingStreetAddress1"]}
-                    </Label>
-                    <TextInput
-                      id="billingStreetAddress1"
-                      type="text"
+                    <DoulaTextInput
+                      name="billingStreetAddress1"
+                      label={orderedInputNameToLabel["billingStreetAddress1"]}
                       required
-                      validationStatus={errors.billingStreetAddress1 ? "error" : undefined}
-                      aria-invalid={errors.billingStreetAddress1 ? "true" : "false"}
-                      aria-describedby={
-                        errors.billingStreetAddress1 && "billingStreetAddress1ErrorMessage"
-                      }
-                      {...register("billingStreetAddress1", {
+                      errors={errors}
+                      register={register}
+                      registerOptions={{
                         required: `Billing ${orderedInputNameToLabel["billingStreetAddress1"].toLowerCase()} is required`,
-                      })}
+                      }}
                     />
-                    {errors.billingStreetAddress1 && (
-                      <span
-                        id="billingStreetAddress1ErrorMessage"
-                        className="usa-error-message"
-                        role="alert"
-                      >
-                        {errors.billingStreetAddress1.message}
-                      </span>
-                    )}
                   </div>
                   <div className="mobile-lg:grid-col-6">
-                    <Label htmlFor="billingStreetAddress2">
-                      {orderedInputNameToLabel["billingStreetAddress2"]}
-                    </Label>
-                    <TextInput
-                      id="billingStreetAddress2"
-                      type="text"
-                      {...register("billingStreetAddress2")}
+                    <DoulaTextInput
+                      name="billingStreetAddress2"
+                      label={orderedInputNameToLabel["billingStreetAddress2"]}
+                      register={register}
                     />
                   </div>
                 </div>
                 <div className="grid-row grid-gap">
                   <div className="mobile-lg:grid-col-6">
-                    <Label htmlFor="billingCity" requiredMarker>
-                      {orderedInputNameToLabel["billingCity"]}
-                    </Label>
-                    <TextInput
-                      id="billingCity"
-                      type="text"
+                    <DoulaTextInput
+                      name="billingCity"
+                      label={orderedInputNameToLabel["billingCity"]}
                       required
-                      validationStatus={errors.billingCity ? "error" : undefined}
-                      aria-invalid={errors.billingCity ? "true" : "false"}
-                      aria-describedby={errors.billingCity && "billingCityErrorMessage"}
-                      {...register("billingCity", {
+                      errors={errors}
+                      register={register}
+                      registerOptions={{
                         required: `Billing ${orderedInputNameToLabel["billingCity"].toLowerCase()} is required`,
-                      })}
+                      }}
                     />
-                    {errors.billingCity && (
-                      <span id="billingCityErrorMessage" className="usa-error-message" role="alert">
-                        {errors.billingCity.message}
-                      </span>
-                    )}
                   </div>
                 </div>
                 <div className="grid-row grid-gap">
@@ -279,33 +224,24 @@ const PersonalDetailsStep2 = () => {
                     </Select>
                   </div>
                   <div className="mobile-lg:grid-col-4">
-                    <Label htmlFor="billingZip" requiredMarker>
-                      {orderedInputNameToLabel["billingZip"]}
-                    </Label>
-                    <TextInputMask
+                    <DoulaTextInputMask
                       className="usa-input--medium"
-                      id="billingZip"
-                      type="text"
+                      name="billingZip"
+                      label={orderedInputNameToLabel["billingZip"]}
                       value={billingZip ?? ""}
                       mask="#####"
                       pattern="\d{5}"
                       required
-                      validationStatus={errors.billingZip ? "error" : undefined}
-                      aria-invalid={errors.billingZip ? "true" : "false"}
-                      aria-describedby={errors.billingZip && "billingZipErrorMessage"}
-                      {...register("billingZip", {
+                      errors={errors}
+                      register={register}
+                      registerOptions={{
                         required: `Billing ${orderedInputNameToLabel["billingZip"].toLowerCase()} is required`,
                         minLength: {
                           value: 5,
                           message: `Billing ${orderedInputNameToLabel["billingZip"].toLowerCase()} must have five digits`,
                         },
-                      })}
+                      }}
                     />
-                    {errors.billingZip && (
-                      <span id="billingZipErrorMessage" className="usa-error-message">
-                        {errors.billingZip.message}
-                      </span>
-                    )}
                   </div>
                 </div>
               </Fieldset>

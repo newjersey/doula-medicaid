@@ -2,11 +2,12 @@
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { AddressState } from "@form/_utils/inputFields/enums";
-import { Fieldset, Label, Select, TextInput } from "@trussworks/react-uswds";
+import { Fieldset, Label, Select } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
@@ -53,37 +54,24 @@ const BusinessDetails1 = () => {
           <Fieldset legend="Business address" legendStyle="srOnly">
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-6">
-                <Label requiredMarker htmlFor="businessStreetAddress1">
-                  Street address
-                </Label>
-                <TextInput
-                  id="businessStreetAddress1"
-                  type="text"
+                <DoulaTextInput
+                  name="businessStreetAddress1"
+                  label="Street address"
                   required
-                  {...register("businessStreetAddress1")}
+                  register={register}
                 />
               </div>
               <div className="mobile-lg:grid-col-6">
-                <Label htmlFor="businessStreetAddress2">Street address line 2</Label>
-                <TextInput
-                  id="businessStreetAddress2"
-                  type="text"
-                  {...register("businessStreetAddress2")}
+                <DoulaTextInput
+                  name="businessStreetAddress2"
+                  label="Street address line 2"
+                  register={register}
                 />
               </div>
             </div>
             <div className="grid-row grid-gap">
               <div className="mobile-lg:grid-col-6">
-                <Label requiredMarker htmlFor="businessCity">
-                  City
-                </Label>
-                <TextInput
-                  className="usa-input"
-                  id="businessCity"
-                  type="text"
-                  required
-                  {...register("businessCity")}
-                />
+                <DoulaTextInput name="businessCity" label="City" required register={register} />
               </div>
             </div>
             <div className="grid-row grid-gap">
@@ -106,16 +94,12 @@ const BusinessDetails1 = () => {
               </div>
 
               <div className="mobile-lg:grid-col-4">
-                <Label requiredMarker htmlFor="businessZip">
-                  ZIP code
-                </Label>
-                <TextInput
-                  className="usa-input usa-input--medium"
-                  id="businessZip"
-                  type="text"
+                <DoulaTextInput
+                  name="businessZip"
+                  label="ZIP code"
                   pattern="[\d]{5}(-[\d]{4})?"
                   required
-                  {...register("businessZip")}
+                  register={register}
                 />
               </div>
             </div>

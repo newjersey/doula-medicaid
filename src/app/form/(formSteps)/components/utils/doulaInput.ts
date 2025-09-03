@@ -12,6 +12,7 @@ export const formatDescribedBy = <T extends FieldValues>(
   name: FieldPath<T>,
   errors: FieldErrors<T> | undefined,
   hint: React.ReactNode | undefined,
+  additionalDescriptionIds: string | undefined,
 ) => {
   const describedbys = [];
   if (errors !== undefined && errors[name]) {
@@ -19,6 +20,9 @@ export const formatDescribedBy = <T extends FieldValues>(
   }
   if (hint !== undefined) {
     describedbys.push(formatHintId(name));
+  }
+  if (additionalDescriptionIds !== undefined) {
+    describedbys.push(additionalDescriptionIds);
   }
   return describedbys.join(" ");
 };
