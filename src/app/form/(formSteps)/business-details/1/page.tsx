@@ -37,7 +37,7 @@ const BusinessDetails1 = () => {
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
-          <h2 className="font-heading-md margin-top-5">Business address</h2>
+          <h2 className="font-heading-md">Business address</h2>
           <p className="usa-hint">This is the physical location where your business operates.</p>
           <DoulaYesNoRadio
             name="hasSameBusinessAddress"
