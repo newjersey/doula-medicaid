@@ -4,7 +4,7 @@ import {
 } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { type FormData } from "@form/_utils/fillPdf/form";
-import { AddressState, DisclosingEntity } from "@form/_utils/inputFields/enums";
+import { AddressState } from "@form/_utils/inputFields/enums";
 
 describe("mapFfsIndividualFields", () => {
   const testedFormKeys = new Set<string>([]);
@@ -482,7 +482,7 @@ describe("mapFfsIndividualFields", () => {
     describe("when disclosing entity is Sole Proprietorship and business address is the same as mailing address", () => {
       it("fills the page 16 fields", () => {
         const formData: FormData = generateFormData({
-          natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
+          isSupportedSoleProprietor: true,
           firstName: "First",
           middleName: "Middle",
           lastName: "Last",
@@ -516,7 +516,7 @@ describe("mapFfsIndividualFields", () => {
     describe("when disclosing entity is Sole Proprietorship and business address is different from mailing address", () => {
       it("fills the page 16 fields", () => {
         const formData: FormData = generateFormData({
-          natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
+          isSupportedSoleProprietor: true,
           firstName: "First",
           middleName: "Middle",
           lastName: "Last",

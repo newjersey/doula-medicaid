@@ -3,15 +3,14 @@ import {
   setInSessionStorage,
   setRequiredFieldsInSessionStorage,
 } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
 
 describe("getScreeningFormData", () => {
   describe("disclosing entity handling", () => {
-    it("sets natureOfDisclosingEntity to SoleProprietor when isSoleProprietor is true", async () => {
+    it("sets isSupportedSoleProprietor to true when isSoleProprietor is true", async () => {
       setRequiredFieldsInSessionStorage();
       setInSessionStorage({ isSoleProprietor: "true" });
       expect(getScreeningFormData()).toMatchObject({
-        natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
+        isSupportedSoleProprietor: true,
       });
     });
 
