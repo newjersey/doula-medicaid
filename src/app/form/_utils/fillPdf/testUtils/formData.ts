@@ -7,6 +7,9 @@ const defaultDateOfBirthMonth = "12";
 const defaultDateOfBirthYear = "1990";
 
 const defaultFormData = {
+  isSupportedSoleProprietor: true,
+  everHadEmployees: false,
+  everHadOtherBusinessOwner: false,
   stateApprovedTraining: "Children's Home Society of NJ (Trenton)",
   nameOfTrainingOrganization: null,
   instructorFirstName: "First",
@@ -42,7 +45,6 @@ const defaultFormData = {
   billingCity: null,
   billingState: null,
   billingZip: null,
-  isSupportedSoleProprietor: true,
   hasSameBusinessAddress: true,
   businessStreetAddress1: null,
   businessStreetAddress2: null,
