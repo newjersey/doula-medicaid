@@ -1,4 +1,4 @@
-import { AddressState, DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type { SessionStorageKey } from "@/app/form/_utils/sessionStorage";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
@@ -42,7 +42,7 @@ const defaultFormData = {
   billingCity: null,
   billingState: null,
   billingZip: null,
-  natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
+  isSupportedSoleProprietor: true,
   hasSameBusinessAddress: true,
   businessStreetAddress1: null,
   businessStreetAddress2: null,

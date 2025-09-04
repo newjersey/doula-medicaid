@@ -3,7 +3,6 @@ import {
   formatBusinessAddressLine3,
   formatName,
 } from "@/app/form/_utils/fillPdf/formatters";
-import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 16 - disclosure of ownership and control interest statement
@@ -31,7 +30,7 @@ export interface PdfFfsIndividualPage16 {
 }
 
 export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPage16> => {
-  if (formData.natureOfDisclosingEntity == DisclosingEntity.SoleProprietor) {
+  if (formData.isSupportedSoleProprietor === true) {
     const soleProprietorFields = {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),

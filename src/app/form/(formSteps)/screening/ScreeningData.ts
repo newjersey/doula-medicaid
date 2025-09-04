@@ -1,4 +1,3 @@
-import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
 import { getBoolean, ValueNotFoundError } from "@/app/form/_utils/sessionStorage";
 
 export interface Screening1Data {
@@ -6,7 +5,7 @@ export interface Screening1Data {
 }
 
 export interface ScreeningFormData {
-  natureOfDisclosingEntity: DisclosingEntity.SoleProprietor;
+  isSupportedSoleProprietor: boolean;
 }
 
 export const getScreeningFormData = (): ScreeningFormData => {
@@ -15,6 +14,6 @@ export const getScreeningFormData = (): ScreeningFormData => {
     throw new ValueNotFoundError(`Expected isSoleProprietor to be true, was ${isSoleProprietor}`);
   }
   return {
-    natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
+    isSupportedSoleProprietor: true,
   };
 };
