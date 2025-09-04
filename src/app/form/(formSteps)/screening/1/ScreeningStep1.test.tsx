@@ -5,26 +5,6 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const getYesSoleProprietorButton = () => {
-  const soleProprietorGroup = screen.getByRole("group", {
-    name: "Do you manage your business as an individual doula operating as a Sole Proprietor? Most NJ FamilyCare doulas operate as Sole Proprietor. Select one *",
-  });
-  const yesSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
-    name: "Yes",
-  });
-  return yesSoleProprietorButton;
-};
-
-const getNoSoleProprietorButton = () => {
-  const soleProprietorGroup = screen.getByRole("group", {
-    name: "Do you manage your business as an individual doula operating as a Sole Proprietor? Most NJ FamilyCare doulas operate as Sole Proprietor. Select one *",
-  });
-  const noSoleProprietorButton = within(soleProprietorGroup).getByRole("radio", {
-    name: "No",
-  });
-  return noSoleProprietorButton;
-};
-
 describe("<ScreeningStep1 />", () => {
   const renderWithRouter = () => {
     const mockRouter: Partial<AppRouterInstance> = {
@@ -42,11 +22,15 @@ describe("<ScreeningStep1 />", () => {
   it("saves isSoleProprietor as true when user selects yes for sole proprietor and clicks Next", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    const yesSoleProprietorButton = getYesSoleProprietorButton();
-    expect(yesSoleProprietorButton).not.toBeChecked();
-    await user.click(yesSoleProprietorButton);
-    expect(yesSoleProprietorButton).toBeChecked();
-
+    const questionGroup = screen.getByRole("group", {
+      name: "Do you manage your business as an individual doula operating as a Sole Proprietor? Most NJ FamilyCare doulas operate as Sole Proprietor. Select one *",
+    });
+    const yesButton = within(questionGroup).getByRole("radio", {
+      name: "Yes",
+    });
+    expect(yesButton).not.toBeChecked();
+    await user.click(yesButton);
+    expect(yesButton).toBeChecked();
     await user.click(screen.getByRole("button", { name: "Next" }));
 
     expect(getValue("isSoleProprietor", true)).toBe("true");
@@ -57,16 +41,23 @@ describe("<ScreeningStep1 />", () => {
   it("shows an error message when user selects no for sole proprietor and clicks Next", async () => {
     const user = userEvent.setup();
     const mockRouter = renderWithRouter();
-    const noSoleProprietorButton = getNoSoleProprietorButton();
-    expect(noSoleProprietorButton).not.toBeChecked();
-    await user.click(noSoleProprietorButton);
-    expect(noSoleProprietorButton).toBeChecked();
 
+    const questionGroup = screen.getByRole("group", {
+      name: "Do you manage your business as an individual doula operating as a Sole Proprietor? Most NJ FamilyCare doulas operate as Sole Proprietor. Select one *",
+    });
+    const noButton = within(questionGroup).getByRole("radio", {
+      name: "No",
+    });
+    expect(noButton).not.toBeChecked();
+    await user.click(noButton);
+    expect(noButton).toBeChecked();
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    const yesSoleProprietorButton = getYesSoleProprietorButton();
-    expect(yesSoleProprietorButton).toHaveFocus();
-    expect(yesSoleProprietorButton).toHaveAccessibleDescription(
+    const yesButton = within(questionGroup).getByRole("radio", {
+      name: "Yes",
+    });
+    expect(yesButton).toHaveFocus();
+    expect(yesButton).toHaveAccessibleDescription(
       expect.stringContaining(
         "Currently this site is only for Sole Proprietors. Please use the standard FFS application",
       ),
