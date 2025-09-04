@@ -14,7 +14,7 @@ describe("DoulaYesNoRadio", () => {
     { invalidLabel: "Yes" as const, trueIsValid: false, falseIsValid: true },
     { invalidLabel: "No" as const, trueIsValid: true, falseIsValid: false },
   ])(
-    "considers $invalidLabel invalid and shows the error message if not when errorOn is set to $invalidLabel",
+    "when $invalidLabel is set as InvalidOption, it shows the error messsage and fails validation",
     ({ invalidLabel, trueIsValid, falseIsValid }) => {
       const mockRegister = jest.fn();
       render(
