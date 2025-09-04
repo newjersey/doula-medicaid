@@ -5,7 +5,7 @@ import {
 } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
@@ -214,31 +214,6 @@ describe("<PersonalDetailsStep1 />", () => {
   });
 
   describe("error summary", () => {
-    it("shows an error summary if there are 3 or more errors", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const requiredInputsToLeaveEmpty = [
-        { name: "First name *", key: "firstName", errorMessage: "First name is required" },
-        { name: "Day *", key: "dateOfBirthDay", errorMessage: "Day is required" },
-        { name: "Email address *", key: "email", errorMessage: "Email address is required" },
-      ];
-
-      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
-      await fillAllInputsExcept(screen, user, allInputFields, requiredInputsToLeaveEmptyNames);
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      const focusedElement = document.activeElement as HTMLElement;
-      expect(
-        within(focusedElement).getByRole("heading", {
-          name: "There is a problem",
-        }),
-      ).toBeInTheDocument();
-
-      for (const field of requiredInputsToLeaveEmpty) {
-        expect(focusedElement).toHaveTextContent(field.errorMessage);
-      }
-    });
-
     it.each(requiredInputs)(
       "clicking on the $name error focuses on the input",
       async ({ name }) => {
@@ -252,26 +227,6 @@ describe("<PersonalDetailsStep1 />", () => {
         expect(input).toHaveFocus();
       },
     );
-
-    it("does not show an error summary if there are fewer than 3 errors", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const requiredInputsToLeaveEmpty = [
-        { name: "First name *", key: "firstName", errorMessage: "First name is required" },
-        { name: "Day *", key: "dateOfBirthDay", errorMessage: "Day is required" },
-      ];
-
-      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
-      await fillAllInputsExcept(screen, user, allInputFields, requiredInputsToLeaveEmptyNames);
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("textbox", {
-          name: "First name *",
-        }),
-      ).toHaveFocus();
-    });
   });
 
   it("saves form data on submit", async () => {

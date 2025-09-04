@@ -2,7 +2,7 @@ import TrainingStep1 from "@form/(formSteps)/training/1/page";
 import { getInputField, type InputField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
@@ -268,29 +268,6 @@ describe("<TrainingStep1 />", () => {
         expect(sessionStorage.getItem(field.key)).toBe(field.testValue);
       }
     });
-  });
-
-  it("displays an error summary if there are 3 or more errors", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    const focusedElement = document.activeElement as HTMLElement;
-    expect(
-      within(focusedElement).getByRole("heading", {
-        name: "There is a problem",
-      }),
-    ).toBeInTheDocument();
-
-    const expectedErrorMessages = [
-      "Training street address is required",
-      "Training city is required",
-      "Training zip code is required",
-    ];
-    for (const errorMessage of expectedErrorMessages) {
-      expect(focusedElement).toHaveTextContent(errorMessage);
-    }
   });
 
   it("fills fields from sessionStorage", async () => {

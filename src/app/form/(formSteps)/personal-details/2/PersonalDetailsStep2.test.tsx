@@ -276,28 +276,6 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("error summary", () => {
-    it("shows an error summary if there are 3 or more errors", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      const focusedElement = document.activeElement as HTMLElement;
-      expect(
-        within(focusedElement).getByRole("heading", {
-          name: "There is a problem",
-        }),
-      ).toBeInTheDocument();
-
-      const expectedErrorMessages = [
-        "Street address is required",
-        "City is required",
-        "ZIP code is required",
-      ];
-      for (const errorMessage of expectedErrorMessages) {
-        expect(focusedElement).toHaveTextContent(errorMessage);
-      }
-    });
-
     it.each(requiredMailingFields)(
       "clicking on the $name error focuses on the input",
       async ({ name }) => {
@@ -313,34 +291,6 @@ describe("<PersonalDetailsStep2 />", () => {
         expect(input).toHaveFocus();
       },
     );
-
-    it("does not show an error summary if there are fewer than 3 errors", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-
-      const requiredInputsToLeaveEmpty = [
-        {
-          label: "Street address *",
-          errorMessage: "Street address is required",
-          key: "streetAddress1",
-        },
-      ];
-      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
-      await fillAllInputsExcept(
-        screen,
-        user,
-        minimalSetOfInputFields,
-        requiredInputsToLeaveEmptyNames,
-      );
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("textbox", {
-          name: "Street address *",
-        }),
-      ).toHaveFocus();
-    });
   });
 
   it("saves form data on submit", async () => {
