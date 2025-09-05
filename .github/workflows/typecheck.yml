@@ -1,4 +1,4 @@
-name: Typecheck
+name: typecheck
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - "main"
 
 jobs:
-  test-and-build:
+  typecheck:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

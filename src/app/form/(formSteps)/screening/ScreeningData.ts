@@ -1,20 +1,33 @@
-import { DisclosingEntity } from "@/app/form/_utils/inputFields/enums";
 import { getBoolean, ValueNotFoundError } from "@/app/form/_utils/sessionStorage";
 
 export interface Screening1Data {
   isSoleProprietor: "true" | "false" | "";
 }
 
+export interface Screening2Data {
+  everHadEmployees: "true" | "false" | "";
+  everHadOtherBusinessOwner: "true" | "false" | "";
+}
+
 export interface ScreeningFormData {
-  natureOfDisclosingEntity: DisclosingEntity.SoleProprietor;
+  isSupportedSoleProprietor: boolean;
 }
 
 export const getScreeningFormData = (): ScreeningFormData => {
   const isSoleProprietor = getBoolean("isSoleProprietor", true);
-  if (isSoleProprietor !== true) {
-    throw new ValueNotFoundError(`Expected isSoleProprietor to be true, was ${isSoleProprietor}`);
+  const everHadEmployees = getBoolean("everHadEmployees", true);
+  const everHadOtherBusinessOwner = getBoolean("everHadOtherBusinessOwner", true);
+  if (
+    isSoleProprietor === true &&
+    everHadEmployees === false &&
+    everHadOtherBusinessOwner === false
+  ) {
+    return {
+      isSupportedSoleProprietor: true,
+    };
   }
-  return {
-    natureOfDisclosingEntity: DisclosingEntity.SoleProprietor,
-  };
+
+  throw new ValueNotFoundError(
+    `Invalid screening answers: isSoleProprietor: ${isSoleProprietor}, everHadEmployees: ${everHadEmployees}, everHadOtherBusinessOwner ${everHadOtherBusinessOwner}`,
+  );
 };

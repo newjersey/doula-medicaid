@@ -78,7 +78,7 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
       {isDataLoaded && (
         <Form onSubmit={onSubmitHandler} className="maxw-full" noValidate>
           {props.mayHaveThreeOrMoreErrors && (
-            <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+            <div className={`grid-row grid-gap-3 ${shouldSummarizeErrors && "margin-top-3"}`}>
               <div className="desktop:grid-col-8">
                 <ErrorSummary<T>
                   shouldSummarizeErrors={shouldSummarizeErrors}

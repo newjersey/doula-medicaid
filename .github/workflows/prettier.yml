@@ -1,4 +1,4 @@
-name: Prettier
+name: prettier
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - "main"
 
 jobs:
-  test-and-build:
+  prettier:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
