@@ -2,19 +2,19 @@ import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type { SessionStorageKey } from "@/app/form/_utils/sessionStorage";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
-const defaultDateOfBirthDay = "25";
-const defaultDateOfBirthMonth = "12";
-const defaultDateOfBirthYear = "1990";
+const testDateOfBirthDay = "25";
+const testDateOfBirthMonth = "12";
+const testDateOfBirthYear = "1990";
 
-const defaultFormData = {
+const testFormData = {
   isSupportedSoleProprietor: true,
   everHadEmployees: false,
   everHadOtherBusinessOwner: false,
-  stateApprovedTraining: "Children's Home Society of NJ (Trenton)",
+  stateApprovedTraining: "New Jersey Doula Learning Collaborative (NJDLC)",
   nameOfTrainingOrganization: null,
-  instructorFirstName: "First",
-  instructorLastName: "Last",
-  instructorEmail: "test@example.com",
+  instructorFirstName: "Default instructor first",
+  instructorLastName: "Default instructor last",
+  instructorEmail: "defaultInstructor@test.com",
   instructorPhoneNumber: null,
   isDoulaTrainingInPerson: false,
   trainingStreetAddress1: null,
@@ -22,23 +22,21 @@ const defaultFormData = {
   trainingCity: null,
   trainingState: null,
   trainingZip: null,
-  firstName: "First",
+  firstName: "Default first",
   middleName: null,
-  lastName: "Last",
-  dateOfBirth: new Date(
-    `${defaultDateOfBirthYear}-${defaultDateOfBirthMonth}-${defaultDateOfBirthDay}`,
-  ),
-  phoneNumber: "111-111-1111",
-  email: "test@domain.com",
-  npiNumber: "1111111111",
+  lastName: "Default last",
+  dateOfBirth: new Date(`${testDateOfBirthYear}-${testDateOfBirthMonth}-${testDateOfBirthDay}`),
+  phoneNumber: "333-333-3333",
+  email: "default@test.com",
+  npiNumber: "3333333333",
   medicareProviderId: null,
   upinNumber: null,
-  socialSecurityNumber: "111-11-1111",
-  streetAddress1: "Test street 1",
+  socialSecurityNumber: "333-33-3333",
+  streetAddress1: "Default street 1",
   streetAddress2: null,
-  city: "Trenton",
+  city: "Default city",
   state: AddressState.NJ,
-  zip: "08601",
+  zip: "08000",
   hasSameBillingMailingAddress: true,
   billingStreetAddress1: null,
   billingStreetAddress2: null,
@@ -54,16 +52,16 @@ const defaultFormData = {
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
-  return { ...defaultFormData, ...formDataOverrides };
+  return { ...testFormData, ...formDataOverrides };
 };
 
 export const setRequiredFieldsInSessionStorage = () => {
   window.sessionStorage.setItem("isSoleProprietor", "true");
-  for (const [key, value] of Object.entries(defaultFormData)) {
+  for (const [key, value] of Object.entries(testFormData)) {
     if (key === "dateOfBirth") {
-      window.sessionStorage.setItem("dateOfBirthDay", defaultDateOfBirthDay);
-      window.sessionStorage.setItem("dateOfBirthMonth", defaultDateOfBirthMonth);
-      window.sessionStorage.setItem("dateOfBirthYear", defaultDateOfBirthYear);
+      window.sessionStorage.setItem("dateOfBirthDay", testDateOfBirthDay);
+      window.sessionStorage.setItem("dateOfBirthMonth", testDateOfBirthMonth);
+      window.sessionStorage.setItem("dateOfBirthYear", testDateOfBirthYear);
     } else if (value !== null) {
       window.sessionStorage.setItem(key as SessionStorageKey, value.toString());
     }
