@@ -7,7 +7,6 @@ on:
 
 jobs:
   typecheck:
-    name: typecheck
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
