@@ -9,19 +9,22 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const textInputFields = [
+const personalIdentificationFields = [
   { name: "First name *", key: "firstName", testValue: "Test first name" },
   { name: "Middle name", key: "middleName", testValue: "Test middle name" },
   { name: "Last name *", key: "lastName", testValue: "Test last name" },
   { name: "Day *", key: "dateOfBirthDay", testValue: "6" },
   { name: "Year *", key: "dateOfBirthYear", testValue: "1988" },
-  { name: "Email address *", key: "email", testValue: "test@test.com" },
   {
     name: "Social security number *",
     key: "socialSecurityNumber",
     testValue: "123456789",
     expectedValue: "123-45-6789",
   },
+];
+
+const contactInformationFields = [
+  { name: "Email address *", key: "email", testValue: "test@test.com" },
   {
     name: "Phone number *",
     key: "phoneNumber",
@@ -29,6 +32,7 @@ const textInputFields = [
     expectedValue: "321-123-4567",
   },
 ];
+const textInputFields = [...personalIdentificationFields, ...contactInformationFields];
 
 const allInputFields: Array<InputField> = [
   ...textInputFields,
@@ -46,7 +50,13 @@ const requiredKeys = [
   "socialSecurityNumber",
 ];
 
-const requiredInputs = textInputFields.filter((field) => requiredKeys.includes(field.key));
+const requiredPersonalIdentificationFields: Array<InputField> = personalIdentificationFields.filter(
+  (field) => requiredKeys.includes(field.key),
+);
+
+const requiredContactInformationFields: Array<InputField> = contactInformationFields.filter(
+  (field) => requiredKeys.includes(field.key),
+);
 
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
@@ -67,8 +77,8 @@ describe("<PersonalDetailsStep1 />", () => {
     return mockRouter;
   };
 
-  describe("input updates", () => {
-    it.each(textInputFields)(
+  describe("personal identification fields", () => {
+    it.each(personalIdentificationFields)(
       "updates the $name text input",
       async ({ name, testValue, expectedValue }) => {
         const user = userEvent.setup();
@@ -92,28 +102,22 @@ describe("<PersonalDetailsStep1 />", () => {
       await user.selectOptions(combobox, "07 - July");
       expect(combobox).toHaveValue("7");
     });
-  });
 
-  describe("individual input validation and error messages", () => {
-    it.each(requiredInputs)(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, key }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
+    it("saves form data on submit", async () => {
+      const user = userEvent.setup();
+      const mockRouter = renderWithRouter();
+      await fillAllInputsExcept(screen, user, allInputFields, new Set());
+      await user.click(screen.getByRole("button", { name: "Next" }));
 
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const input = await getInputField(screen, { name });
-        expect(input).toBeRequired();
-        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-
-        expect(input).toHaveAccessibleDescription(
-          expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      for (const field of personalIdentificationFields) {
+        expect(window.sessionStorage.getItem(field.key)).toEqual(
+          field.expectedValue ?? field.testValue,
         );
-        expect(input).toHaveAttribute("aria-invalid", "true");
-        expect(input).toHaveFocus();
-      },
-    );
+      }
+
+      expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
+      expect(mockRouter.refresh).toHaveBeenCalled();
+    });
 
     it("validates date of birth day", async () => {
       const user = userEvent.setup();
@@ -164,6 +168,73 @@ describe("<PersonalDetailsStep1 />", () => {
       expect(input).toHaveAttribute("aria-invalid", "true");
     });
 
+    it.each(requiredPersonalIdentificationFields)(
+      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+      async ({ name, key }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+
+        const labelWithoutAsterisk = name.replace(" *", "");
+        const input = await getInputField(screen, { name });
+        expect(input).toBeRequired();
+        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        expect(input).toHaveAccessibleDescription(
+          expect.stringContaining(`${labelWithoutAsterisk} is required`),
+        );
+        expect(input).toHaveAttribute("aria-invalid", "true");
+        expect(input).toHaveFocus();
+      },
+    );
+
+    it.each(requiredPersonalIdentificationFields)(
+      "clicking on the $name error focuses on the input",
+      async ({ name }) => {
+        const labelWithoutAsterisk = name.replace(" *", "");
+        const user = userEvent.setup();
+        renderWithRouter();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
+
+        const input = await getInputField(screen, { name });
+        expect(input).toHaveFocus();
+      },
+    );
+  });
+
+  describe("contact info fields", () => {
+    it.each(contactInformationFields)(
+      "updates the $name text input",
+      async ({ name, testValue, expectedValue }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+        const input = screen.getByRole("textbox", {
+          name: name,
+        });
+        expect(input).toHaveValue("");
+
+        await user.type(input, testValue);
+        expect(input).toHaveValue(expectedValue ?? testValue);
+      },
+    );
+
+    it("saves form data on submit", async () => {
+      const user = userEvent.setup();
+      const mockRouter = renderWithRouter();
+      await fillAllInputsExcept(screen, user, allInputFields, new Set());
+      await user.click(screen.getByRole("button", { name: "Next" }));
+
+      for (const field of contactInformationFields) {
+        expect(window.sessionStorage.getItem(field.key)).toEqual(
+          field.expectedValue ?? field.testValue,
+        );
+      }
+
+      expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
+      expect(mockRouter.refresh).toHaveBeenCalled();
+    });
+
     it.each([
       {
         name: "Social security number *",
@@ -211,10 +282,28 @@ describe("<PersonalDetailsStep1 />", () => {
         expect(input).toHaveAttribute("aria-invalid", "true");
       },
     );
-  });
 
-  describe("error summary", () => {
-    it.each(requiredInputs)(
+    it.each(requiredContactInformationFields)(
+      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+      async ({ name, key }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+
+        const labelWithoutAsterisk = name.replace(" *", "");
+        const input = await getInputField(screen, { name });
+        expect(input).toBeRequired();
+        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        expect(input).toHaveAccessibleDescription(
+          expect.stringContaining(`${labelWithoutAsterisk} is required`),
+        );
+        expect(input).toHaveAttribute("aria-invalid", "true");
+        expect(input).toHaveFocus();
+      },
+    );
+
+    it.each(requiredContactInformationFields)(
       "clicking on the $name error focuses on the input",
       async ({ name }) => {
         const labelWithoutAsterisk = name.replace(" *", "");
@@ -227,22 +316,6 @@ describe("<PersonalDetailsStep1 />", () => {
         expect(input).toHaveFocus();
       },
     );
-  });
-
-  it("saves form data on submit", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-    await fillAllInputsExcept(screen, user, allInputFields, new Set());
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    for (const textInputField of textInputFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(
-        textInputField.expectedValue ?? textInputField.testValue,
-      );
-    }
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
-    expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
   it("fills fields from session storage when page is loaded", () => {
