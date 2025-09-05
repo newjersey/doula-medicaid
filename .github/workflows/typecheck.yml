@@ -6,8 +6,8 @@ on:
       - "main"
 
 jobs:
-  name: Typecheck
-  test-and-build:
+  typecheck:
+    name: typecheck
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

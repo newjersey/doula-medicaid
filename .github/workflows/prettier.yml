@@ -6,8 +6,8 @@ on:
       - "main"
 
 jobs:
-  test-and-build:
-    name: Prettier
+  prettier:
+    name: prettier
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository

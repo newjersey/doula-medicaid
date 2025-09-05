@@ -6,8 +6,8 @@ on:
       - "main"
 
 jobs:
-  test-and-build:
-    name: End to End Tests
+  end-to-end-tests:
+    name: end-to-end-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
