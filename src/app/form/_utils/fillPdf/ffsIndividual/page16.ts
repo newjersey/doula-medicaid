@@ -1,3 +1,4 @@
+import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import {
   formatAddressLine3,
   formatBusinessAddressLine3,
@@ -31,30 +32,33 @@ export interface PdfFfsIndividualPage16 {
 
 export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPage16> => {
   if (formData.isSupportedSoleProprietor === true) {
-    const soleProprietorFields = {
+    const commonFields = {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber ?? "",
       fd452providernumbandornpi: formData.npiNumber ?? "",
       fd452einorothertaxidnumber: formData.socialSecurityNumber ?? "",
+      fd452ownershipoffivepercentormoreno: true,
+      fd452convictedofcrimeno: true,
     };
 
     if (formData.hasSameBusinessAddress === true) {
       return {
-        ...soleProprietorFields,
+        ...commonFields,
         fd452businessstreetline1: formData.streetAddress1,
         fd452businessstreetline2: formData.streetAddress2 ?? "",
         fd452businessstreetline3: formatAddressLine3(formData),
       };
     } else if (formData.hasSameBusinessAddress === false) {
       return {
-        ...soleProprietorFields,
+        ...commonFields,
         fd452businessstreetline1: formData.businessStreetAddress1 ?? "",
         fd452businessstreetline2: formData.businessStreetAddress2 ?? "",
         fd452businessstreetline3: formatBusinessAddressLine3(formData),
       };
     }
   }
-
-  return {};
+  throw new UnexpectedFormDataError(
+    `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
+  );
 };

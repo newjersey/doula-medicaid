@@ -1,3 +1,4 @@
+import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import type { PdfFfsIndividualPage3 } from "@/app/form/_utils/fillPdf/ffsIndividual/page3";
 import {
@@ -64,13 +65,14 @@ describe("Page 3 - doula qualifications form", () => {
       });
 
       it("throws an UnexpectedFormDataError when formData contains None of these but no Training Organization", () => {
-        expect(() =>
+        const testFunction = () =>
           mapFfsIndividualFields(
             generateFormData({
               stateApprovedTraining: "None of these",
             }),
-          ),
-        ).toThrow(
+          );
+        expect(testFunction).toThrow(UnexpectedFormDataError);
+        expect(testFunction).toThrow(
           "stateApprovedTraining had value none of these, but no training organization was provided.",
         );
       });
