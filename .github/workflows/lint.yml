@@ -7,7 +7,6 @@ on:
 
 jobs:
   lint:
-    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
