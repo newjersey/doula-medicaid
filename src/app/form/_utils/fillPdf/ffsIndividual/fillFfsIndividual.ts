@@ -7,6 +7,34 @@ import {
   type PdfFfsIndividualPage16,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page16";
 import {
+  getPage17Fields,
+  type PdfFfsIndividualPage17,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page17";
+import {
+  getPage18Fields,
+  type PdfFfsIndividualPage18,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page18";
+import {
+  getPage19Fields,
+  type PdfFfsIndividualPage19,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page19";
+import {
+  getPage20Fields,
+  type PdfFfsIndividualPage20,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page20";
+import {
+  getPage21Fields,
+  type PdfFfsIndividualPage21,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page21";
+import {
+  getPage22Fields,
+  type PdfFfsIndividualPage22,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page22";
+import {
+  getPage25Fields,
+  type PdfFfsIndividualPage25,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page25";
+import {
   getPage3Fields,
   type PdfFfsIndividualPage3,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page3";
@@ -28,7 +56,14 @@ export interface PdfFfsIndividual
     PdfFfsIndividualPage5,
     PdfFfsIndividualPage7,
     PdfFfsIndividualPage12,
-    PdfFfsIndividualPage16 {}
+    PdfFfsIndividualPage16,
+    PdfFfsIndividualPage17,
+    PdfFfsIndividualPage18,
+    PdfFfsIndividualPage19,
+    PdfFfsIndividualPage20,
+    PdfFfsIndividualPage21,
+    PdfFfsIndividualPage22,
+    PdfFfsIndividualPage25 {}
 
 export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndividual> => {
   const pdfFields = {
@@ -37,6 +72,13 @@ export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndivi
     ...getPage7Fields(formData),
     ...getPage12Fields(formData),
     ...getPage16Fields(formData),
+    ...getPage17Fields(formData),
+    ...getPage18Fields(formData),
+    ...getPage19Fields(formData),
+    ...getPage20Fields(formData),
+    ...getPage21Fields(formData),
+    ...getPage22Fields(formData),
+    ...getPage25Fields(formData),
   };
   return pdfFields;
 };

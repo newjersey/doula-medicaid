@@ -1,0 +1,171 @@
+import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
+import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
+import type { PdfFfsIndividualPage16 } from "@/app/form/_utils/fillPdf/ffsIndividual/page16";
+import {
+  expectNoDuplicateTest,
+  testLegalName,
+  testNpiNumber,
+  testPhoneNumber,
+  testSocialSecurityNumber,
+} from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
+import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { AddressState } from "@/app/form/_utils/inputFields/enums";
+
+describe("Page 16 - disclosure of ownership and control interest statement", () => {
+  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage16>([]);
+  it("throws an UnexpectedFormDataError when isSupportedSoleProprietor is not true", () => {
+    const testFunction = () =>
+      mapFfsIndividualFields(
+        generateFormData({
+          isSupportedSoleProprietor: false,
+        }),
+      );
+    expect(testFunction).toThrow(UnexpectedFormDataError);
+    expect(testFunction).toThrow("Expected isSupportedSoleProprietor to be true, is instead false");
+  });
+
+  describe("Part I", () => {
+    it("checks nature of disclosing entity sole proprietorship", () => {
+      const pdfKey = "fd452disclosingentitySole Proprietorship";
+      expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          isSupportedSoleProprietor: true,
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual(true);
+    });
+
+    it("fills in name of disclosing entity", () => {
+      const pdfKey = "fd452nameofdisclosingentity";
+      expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      testLegalName(pdfKey);
+    });
+
+    it("fills in business address", () => {
+      const line1Key = "fd452businessstreetline1" as const;
+      const line2Key = "fd452businessstreetline2" as const;
+      const line3Key = "fd452businessstreetline3" as const;
+      const pdfKeys = [line1Key, line2Key, line3Key];
+      for (const pdfKey of pdfKeys) {
+        expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      }
+
+      const testCases = [
+        {
+          description:
+            "business address is the same as mailing address and there is streetAddress2",
+          formData: {
+            streetAddress1: "123 Main St",
+            streetAddress2: "Apt 4B",
+            city: "Trenton",
+            state: AddressState.NJ,
+            zip: "11111",
+            hasSameBusinessAddress: true,
+          },
+          expectedLine1Key: "123 Main St",
+          expectedLine2Key: "Apt 4B",
+          expectedLine3Key: "Trenton, NJ 11111",
+        },
+        {
+          description:
+            "business address is the same as mailing address and there is no streetAddress2",
+          formData: {
+            streetAddress1: "123 Main St",
+            city: "Trenton",
+            state: AddressState.NJ,
+            zip: "11111",
+            hasSameBusinessAddress: true,
+          },
+          expectedLine1Key: "123 Main St",
+          expectedLine2Key: "",
+          expectedLine3Key: "Trenton, NJ 11111",
+        },
+        {
+          description:
+            "business address different from mailing address and there is streetAddress2",
+          formData: {
+            streetAddress1: "123 Main St",
+            streetAddress2: "Apt 4B",
+            city: "Trenton",
+            state: AddressState.NJ,
+            zip: "11111",
+            hasSameBusinessAddress: false,
+            businessStreetAddress1: "456 Test St",
+            businessStreetAddress2: "Suite Test",
+            businessCity: "Newark",
+            businessState: AddressState.NJ,
+            businessZip: "22222",
+          },
+          expectedLine1Key: "456 Test St",
+          expectedLine2Key: "Suite Test",
+          expectedLine3Key: "Newark, NJ 22222",
+        },
+        {
+          description:
+            "business address different from mailing address and there is no streetAddress2",
+          formData: {
+            streetAddress1: "123 Main St",
+            streetAddress2: "Apt 4B",
+            city: "Trenton",
+            state: AddressState.NJ,
+            zip: "11111",
+            hasSameBusinessAddress: false,
+            businessStreetAddress1: "456 Test St",
+            businessCity: "Newark",
+            businessState: AddressState.NJ,
+            businessZip: "22222",
+          },
+          expectedLine1Key: "456 Test St",
+          expectedLine2Key: "",
+          expectedLine3Key: "Newark, NJ 22222",
+        },
+      ];
+      for (const testCase of testCases) {
+        const pdfFields = mapFfsIndividualFields(generateFormData(testCase.formData));
+        expect(pdfFields[line1Key]).toEqual(testCase.expectedLine1Key);
+        expect(pdfFields[line2Key]).toEqual(testCase.expectedLine2Key);
+        expect(pdfFields[line3Key]).toEqual(testCase.expectedLine3Key);
+      }
+    });
+
+    it("fills telephone number", () => {
+      const pdfKey = "fd452telephonenumber";
+      expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      testPhoneNumber(pdfKey);
+    });
+
+    it("fills provider number and/or NPI", () => {
+      const pdfKey = "fd452providernumbandornpi";
+      expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      testNpiNumber(pdfKey);
+    });
+
+    it("fills EIN or other tax ID number", () => {
+      const pdfKey = "fd452einorothertaxidnumber";
+      expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      testSocialSecurityNumber(pdfKey);
+    });
+  });
+
+  describe("Part II", () => {
+    it.each([
+      {
+        description: "no ownership or 5 percent or more",
+        pdfKey: "fd452ownershipoffivepercentormoreno" as const,
+      },
+      {
+        description: "fills in not convicted of a crime",
+        pdfKey: "fd452convictedofcrimeno" as const,
+      },
+    ])("checks $description", ({ pdfKey }) => {
+      expectNoDuplicateTest<PdfFfsIndividualPage16>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          isSupportedSoleProprietor: true,
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual(true);
+    });
+  });
+});

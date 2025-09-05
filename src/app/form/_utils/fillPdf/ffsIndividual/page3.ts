@@ -1,15 +1,8 @@
+import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import { formatDateOfBirth, formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 3 - doula qualifications form
-
-export class UnexpectedFormDataError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.name = "UnexpectedFormDataError";
-  }
-}
-
 export interface PdfFfsIndividualPage3 {
   fd427LegalName: string;
   fd427SocialSecurityNumber: string;
