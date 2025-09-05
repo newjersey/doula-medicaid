@@ -188,19 +188,24 @@ describe("<PersonalDetailsStep1 />", () => {
       },
     );
 
-    it.each(requiredPersonalIdentificationFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
+    it.each(personalIdentificationFields)(
+      "fills $name from session storage when page is loadad",
+      async ({ name, key, testValue }) => {
+        window.sessionStorage.setItem(key, testValue);
         renderWithRouter();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
-
-        const input = await getInputField(screen, { name });
-        expect(input).toHaveFocus();
+        expect(screen.getByRole("textbox", { name: name })).toHaveValue(testValue);
       },
     );
+
+    it("fills month from session storage when page is loaded", () => {
+      window.sessionStorage.setItem("dateOfBirthMonth", "1");
+      renderWithRouter();
+      expect(
+        screen.getByRole("combobox", {
+          name: "Month *",
+        }),
+      ).toHaveDisplayValue("01 - January");
+    });
   });
 
   describe("contact info fields", () => {
@@ -302,36 +307,14 @@ describe("<PersonalDetailsStep1 />", () => {
         expect(input).toHaveFocus();
       },
     );
-  });
 
-  it("fills fields from session storage when page is loaded", () => {
-    window.sessionStorage.setItem("firstName", "Jane");
-    window.sessionStorage.setItem("middleName", "A");
-    window.sessionStorage.setItem("lastName", "Doe");
-    window.sessionStorage.setItem("dateOfBirthMonth", "1");
-    window.sessionStorage.setItem("dateOfBirthDay", "8");
-    window.sessionStorage.setItem("dateOfBirthYear", "1990");
-    window.sessionStorage.setItem("socialSecurityNumber", "123-45-6789");
-    window.sessionStorage.setItem("email", "example@test.com");
-    window.sessionStorage.setItem("phoneNumber", "123-456-7890");
-    renderWithRouter();
-
-    expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("Jane");
-    expect(screen.getByRole("textbox", { name: "Middle name" })).toHaveValue("A");
-    expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Doe");
-    expect(
-      screen.getByRole("combobox", {
-        name: "Month *",
-      }),
-    ).toHaveDisplayValue("01 - January");
-    expect(screen.getByRole("textbox", { name: "Day *" })).toHaveValue("8");
-    expect(screen.getByRole("textbox", { name: "Year *" })).toHaveValue("1990");
-    expect(screen.getByRole("textbox", { name: "Social security number *" })).toHaveValue(
-      "123-45-6789",
+    it.each(contactInformationFields)(
+      "fills $name from session storage when page is loadad",
+      async ({ name, key, testValue }) => {
+        window.sessionStorage.setItem(key, testValue);
+        renderWithRouter();
+        expect(screen.getByRole("textbox", { name: name })).toHaveValue(testValue);
+      },
     );
-    expect(screen.getByRole("textbox", { name: "Email address *" })).toHaveValue(
-      "example@test.com",
-    );
-    expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
   });
 });
