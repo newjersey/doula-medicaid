@@ -58,23 +58,6 @@ const trainingInstructorFields: InputField[] = [
   },
 ];
 
-const requiredKeys = [
-  "trainingStreetAddress1",
-  "trainingCity",
-  "trainingZip",
-  "instructorFirstName",
-  "instructorLastName",
-  "instructorEmail",
-];
-
-const requiredTrainingFields: Array<InputField> = trainingAddressFields.filter((field) =>
-  requiredKeys.includes(field.key),
-);
-
-const requiredInstructorFields: Array<InputField> = trainingInstructorFields.filter((field) =>
-  requiredKeys.includes(field.key),
-);
-
 const selectTrainingOrganization = async (
   organization: string = "Children's Home Society of NJ (Trenton)",
 ) => {
@@ -210,53 +193,9 @@ describe("<TrainingStep1 />", () => {
         expect.stringContaining("This question is required"),
       );
     });
-
-    it.each(requiredTrainingFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-
-        await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(
-          screen.getByRole("link", {
-            name: `Training ${labelWithoutAsterisk.toLowerCase()} is required`,
-          }),
-        );
-
-        const input = screen.getByRole("textbox", {
-          name: `${labelWithoutAsterisk} *`,
-        });
-        expect(input).toHaveFocus();
-      },
-    );
   });
 
   describe("doula training instructor fields", () => {
-    it.each(requiredInstructorFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-
-        await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(
-          screen.getByRole("link", {
-            name: `${labelWithoutAsterisk} is required`,
-          }),
-        );
-
-        const input = screen.getByRole("textbox", {
-          name: `${labelWithoutAsterisk} *`,
-        });
-        expect(input).toHaveFocus();
-      },
-    );
-
     it("saves values to session storage when user clicks Next", async () => {
       const user = userEvent.setup();
       renderWithRouter();

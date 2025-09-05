@@ -302,20 +302,6 @@ describe("<PersonalDetailsStep1 />", () => {
         expect(input).toHaveFocus();
       },
     );
-
-    it.each(requiredContactInformationFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
-
-        const input = await getInputField(screen, { name });
-        expect(input).toHaveFocus();
-      },
-    );
   });
 
   it("fills fields from session storage when page is loaded", () => {

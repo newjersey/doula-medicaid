@@ -123,8 +123,13 @@ describe("<PersonalDetailsStep2 />", () => {
     return mockRouter;
   };
 
-  describe("input updates", () => {
-    it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
+  describe("mailing address fields", () => {
+    it("enables autocompleting the mailing address", () => {
+      renderWithRouter();
+      expectAddressHasAutocomplete("Mailing address", "shipping");
+    });
+
+    it.each(mailingAddressFields)("updates the $name text input", async ({ name, testValue }) => {
       const user = userEvent.setup();
       renderWithRouter();
       const input = screen.getByRole("textbox", {
@@ -136,25 +141,6 @@ describe("<PersonalDetailsStep2 />", () => {
       expect(input).toHaveValue(testValue);
     });
 
-    it("defaults address state to NJ and updates it", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const combobox = screen.getByRole("combobox", {
-        name: "State *",
-      });
-      expect(combobox).toHaveValue("NJ");
-
-      await user.selectOptions(combobox, "PA");
-      expect(combobox).toHaveValue("PA");
-    });
-
-    it("enables autocompleting the mailing address", () => {
-      renderWithRouter();
-      expectAddressHasAutocomplete("Mailing address", "shipping");
-    });
-  });
-
-  describe("individual input validation and error messages", () => {
     it.each(requiredMailingFields)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
       async ({ name, key }) => {
@@ -168,6 +154,77 @@ describe("<PersonalDetailsStep2 />", () => {
 
         expect(input).toHaveAccessibleDescription(
           expect.stringContaining(`${name.replace(" *", "")} is required`),
+        );
+        expect(input).toHaveAttribute("aria-invalid", "true");
+        expect(input).toHaveFocus();
+      },
+    );
+
+    it("defaults address state to NJ and updates it", async () => {
+      const user = userEvent.setup();
+      renderWithRouter();
+      const combobox = screen.getByRole("combobox", {
+        name: "State *",
+      });
+      expect(combobox).toHaveValue("NJ");
+
+      await user.selectOptions(combobox, "PA");
+      expect(combobox).toHaveValue("PA");
+    });
+
+    it("validates ZIP code", async () => {
+      const user = userEvent.setup();
+      renderWithRouter();
+
+      const input = screen.getByRole("textbox", {
+        name: "ZIP code *",
+      });
+
+      await user.type(input, "aaa");
+      expect(input).toHaveValue("");
+      await user.type(input, "!!");
+      expect(input).toHaveValue("");
+
+      await user.type(input, "1");
+      await user.click(screen.getByRole("button", { name: "Next" }));
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining("ZIP code must have five digits"),
+      );
+      expect(input).toHaveAttribute("aria-invalid", "true");
+    });
+  });
+
+  describe("billing address fields", () => {
+    it.each(billingAddressFields)("updates the $name text input", async ({ name, testValue }) => {
+      const user = userEvent.setup();
+      renderWithRouter();
+      const input = screen.getByRole("textbox", {
+        name: name,
+      });
+      expect(input).toHaveValue("");
+
+      await user.type(input, testValue);
+      expect(input).toHaveValue(testValue);
+    });
+
+    it.each(requiredBillingFields)(
+      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+      async ({ name, key }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+
+        await fillAllInputsExcept(screen, user, requiredMailingFields, new Set([]));
+        await clickSameBillingMailingAddressNo();
+        await fillAllInputsExcept(screen, user, requiredBillingFields, new Set([key]));
+        const input = await getInputField(screen, {
+          name,
+          withinGroupName: "What's your billing address?",
+        });
+        expect(input).toBeRequired();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        expect(input).toHaveAccessibleDescription(
+          expect.stringContaining(`Billing ${name.replace(" *", "").toLowerCase()} is required`),
         );
         expect(input).toHaveAttribute("aria-invalid", "true");
         expect(input).toHaveFocus();
@@ -207,27 +264,6 @@ describe("<PersonalDetailsStep2 />", () => {
       expect(inputYes).toHaveFocus();
     });
 
-    it("validates ZIP code", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-
-      const input = screen.getByRole("textbox", {
-        name: "ZIP code *",
-      });
-
-      await user.type(input, "aaa");
-      expect(input).toHaveValue("");
-      await user.type(input, "!!");
-      expect(input).toHaveValue("");
-
-      await user.type(input, "1");
-      await user.click(screen.getByRole("button", { name: "Next" }));
-      expect(input).toHaveAccessibleDescription(
-        expect.stringContaining("ZIP code must have five digits"),
-      );
-      expect(input).toHaveAttribute("aria-invalid", "true");
-    });
-
     describe("when user answers no to sameMailingBilling", () => {
       it("errors if billing address fields are unfilled", async () => {
         const user = userEvent.setup();
@@ -253,71 +289,8 @@ describe("<PersonalDetailsStep2 />", () => {
           expect(focusedElement).toHaveTextContent(errorMessage);
         }
       });
-
-      it.each(requiredBillingFields)(
-        "clicking on the billing $name error focuses on the input",
-        async ({ name, withinGroupName }) => {
-          const user = userEvent.setup();
-          renderWithRouter();
-          await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set());
-          await clickSameBillingMailingAddressNo();
-          await user.click(screen.getByRole("button", { name: "Next" }));
-          await user.click(
-            screen.getByRole("link", {
-              name: `Billing ${name.replace(" *", "").toLowerCase()} is required`,
-            }),
-          );
-
-          const input = await getInputField(screen, { name, withinGroupName });
-          expect(input).toHaveFocus();
-        },
-      );
     });
-  });
 
-  describe("error summary", () => {
-    it.each(requiredMailingFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
-
-        const input = screen.getByRole("textbox", {
-          name: `${labelWithoutAsterisk} *`,
-        });
-        expect(input).toHaveFocus();
-      },
-    );
-  });
-
-  it("saves form data on submit", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-    await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set());
-    await user.click(screen.getByRole("button", { name: "Next" }));
-    await clickSameBillingMailingAddressNo();
-
-    await fillAllInputsExcept(screen, user, billingAddressFields, new Set());
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    for (const textInputField of textInputFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
-    }
-
-    for (const textInputField of billingAddressFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
-    }
-    expect(window.sessionStorage.getItem("billingState")).toEqual("NJ");
-    expect(window.sessionStorage.getItem("state")).toEqual("PA");
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/3");
-    expect(mockRouter.refresh).toHaveBeenCalled();
-  });
-
-  describe("billing address fields", () => {
     it("shows/hides billing address fields based on user response", async () => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -354,23 +327,6 @@ describe("<PersonalDetailsStep2 />", () => {
     });
   });
 
-  it("fills fields from session storage when page is loaded", () => {
-    window.sessionStorage.setItem("streetAddress1", "123 Main St");
-    window.sessionStorage.setItem("streetAddress2", "Apt 4B");
-    window.sessionStorage.setItem("city", "Newark");
-    window.sessionStorage.setItem("state", "NJ");
-    window.sessionStorage.setItem("zip", "12345");
-    window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
-    renderWithRouter();
-
-    expect(screen.getByRole("textbox", { name: "Street address *" })).toHaveValue("123 Main St");
-    expect(screen.getByRole("textbox", { name: "Street address line 2" })).toHaveValue("Apt 4B");
-    expect(screen.getByRole("textbox", { name: "City *" })).toHaveValue("Newark");
-    expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
-    expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
-    expect(screen.getByRole("radio", { name: "Yes" })).toBeChecked();
-  });
-
   describe("Public information explainer", () => {
     it("orders the public information explainer immediately after the billing address question", async () => {
       const user = userEvent.setup();
@@ -405,5 +361,46 @@ describe("<PersonalDetailsStep2 />", () => {
       });
       expect(publicInformationExplainer).toBeInTheDocument();
     });
+  });
+
+  it("saves form data on submit", async () => {
+    const user = userEvent.setup();
+    const mockRouter = renderWithRouter();
+    await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set());
+    await user.click(screen.getByRole("button", { name: "Next" }));
+    await clickSameBillingMailingAddressNo();
+
+    await fillAllInputsExcept(screen, user, billingAddressFields, new Set());
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    for (const textInputField of textInputFields) {
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+    }
+
+    for (const textInputField of billingAddressFields) {
+      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+    }
+    expect(window.sessionStorage.getItem("billingState")).toEqual("NJ");
+    expect(window.sessionStorage.getItem("state")).toEqual("PA");
+
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/3");
+    expect(mockRouter.refresh).toHaveBeenCalled();
+  });
+
+  it("fills fields from session storage when page is loaded", () => {
+    window.sessionStorage.setItem("streetAddress1", "123 Main St");
+    window.sessionStorage.setItem("streetAddress2", "Apt 4B");
+    window.sessionStorage.setItem("city", "Newark");
+    window.sessionStorage.setItem("state", "NJ");
+    window.sessionStorage.setItem("zip", "12345");
+    window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
+    renderWithRouter();
+
+    expect(screen.getByRole("textbox", { name: "Street address *" })).toHaveValue("123 Main St");
+    expect(screen.getByRole("textbox", { name: "Street address line 2" })).toHaveValue("Apt 4B");
+    expect(screen.getByRole("textbox", { name: "City *" })).toHaveValue("Newark");
+    expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
+    expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
+    expect(screen.getByRole("radio", { name: "Yes" })).toBeChecked();
   });
 });

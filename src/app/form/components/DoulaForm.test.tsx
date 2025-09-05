@@ -1,4 +1,5 @@
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
+import { getInputField, type InputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
@@ -138,6 +139,24 @@ const renderWithRouter = (mayHaveThreeOrMoreErrors: boolean) => {
 };
 
 describe("error summary", () => {
+  const doulaTestFormFields: InputField[] = [
+    {
+      name: "Label 1 *",
+      key: "field1",
+      testValue: "Foo",
+    },
+    {
+      name: "Label 2 *",
+      key: "field2",
+      testValue: "Bar",
+    },
+    {
+      name: "Label 3 *",
+      key: "field 3",
+      testValue: "Zoink",
+    },
+  ];
+
   describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
       const user = userEvent.setup();
@@ -203,4 +222,18 @@ describe("error summary", () => {
       expect(focusedElement).toHaveAccessibleDescription(errorMessage);
     });
   });
+
+  it.each(doulaTestFormFields)(
+    "clicking on the $name error focuses on the input",
+    async ({ name }) => {
+      const labelWithoutAsterisk = name.replace(" *", "");
+      const user = userEvent.setup();
+      renderWithRouter(true);
+      await user.click(screen.getByRole("button", { name: "Next" }));
+      await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
+
+      const input = await getInputField(screen, { name });
+      expect(input).toHaveFocus();
+    },
+  );
 });
