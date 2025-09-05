@@ -5,8 +5,10 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const textInputFields = [
+const doulaProviderIdentificationFields = [
   { name: "National Provider Identifier (NPI) *", key: "npiNumber", testValue: "1111111111" },
+];
+const otherIdentificationFields = [
   { name: "UPIN number (optional)", key: "upinNumber", testValue: "12345" },
   {
     name: "Medicare provider ID (optional)",
@@ -14,6 +16,8 @@ const textInputFields = [
     testValue: "ABC12345",
   },
 ];
+
+const textInputFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
 
 describe("<PersonalDetailsStep3 />", () => {
   const renderWithRouter = () => {
@@ -34,21 +38,22 @@ describe("<PersonalDetailsStep3 />", () => {
     return mockRouter;
   };
 
-  describe("input updates", () => {
-    it.each(textInputFields)("updates the $name text input", async ({ name, testValue }) => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const input = screen.getByRole("textbox", {
-        name: name,
-      });
-      expect(input).toHaveValue("");
+  describe("Doula provider identification fields", () => {
+    it.each(doulaProviderIdentificationFields)(
+      "updates the $name text input",
+      async ({ name, testValue }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+        const input = screen.getByRole("textbox", {
+          name: name,
+        });
+        expect(input).toHaveValue("");
 
-      await user.type(input, testValue);
-      expect(input).toHaveValue(testValue);
-    });
-  });
+        await user.type(input, testValue);
+        expect(input).toHaveValue(testValue);
+      },
+    );
 
-  describe("validation and error messages", () => {
     it("validates National Provider Identifier (NPI)", async () => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -79,6 +84,23 @@ describe("<PersonalDetailsStep3 />", () => {
       );
       expect(input).toHaveAttribute("aria-invalid", "true");
     });
+  });
+
+  describe("Other identification fields", () => {
+    it.each(otherIdentificationFields)(
+      "updates the $name text input",
+      async ({ name, testValue }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+        const input = screen.getByRole("textbox", {
+          name: name,
+        });
+        expect(input).toHaveValue("");
+
+        await user.type(input, testValue);
+        expect(input).toHaveValue(testValue);
+      },
+    );
   });
 
   it("saves form data on submit", async () => {
