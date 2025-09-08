@@ -1,4 +1,4 @@
-import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/page";
+import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/page";
 import { getValue } from "@/app/form/_utils/sessionStorage";
 import { fillAllInputsExcept, type InputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
@@ -10,27 +10,28 @@ const allInputFields: Array<InputField> = [
   {
     name: "No",
     role: "radio",
-    key: "everHadEmployeesNo",
-    withinGroupName: "Have you ever had employees in your doula business? Select one *",
+    key: "haveOtherBusinessOwnerNextYearNo",
+    withinGroupName:
+      "Do you anticipate anyone else having a percentage of your business in the next year? Select one *",
   },
   {
     name: "No",
     role: "radio",
-    key: "everHadOtherBusinessOwnerNo",
+    key: "hadDhmasBusinessNo",
     withinGroupName:
-      "Did anyone other than you ever own a percentage of your business? Select one *",
+      "In the last 5 years, have you owned any percentage of companies that do business with the Division of Medical Assistance and Health Services? Select one *",
   },
 ];
 
-describe("<ScreeningStep2 />", () => {
+describe("<ScreeningStep3 />", () => {
   const renderWithRouter = () => {
     const mockRouter: Partial<AppRouterInstance> = {
       push: jest.fn(),
       refresh: jest.fn(),
     };
     render(
-      <RouterPathnameProvider pathname="/form/screening/2" router={mockRouter as AppRouterInstance}>
-        <ScreeningStep2 />
+      <RouterPathnameProvider pathname="/form/screening/3" router={mockRouter as AppRouterInstance}>
+        <ScreeningStep3 />
       </RouterPathnameProvider>,
     );
     return mockRouter;
@@ -38,12 +39,14 @@ describe("<ScreeningStep2 />", () => {
 
   describe.each([
     {
-      question: "Have you ever had employees in your doula business?",
-      sessionStorageKey: "everHadEmployees" as const,
+      question:
+        "Do you anticipate anyone else having a percentage of your business in the next year?",
+      sessionStorageKey: "haveOtherBusinessOwnerNextYear" as const,
     },
     {
-      question: "Did anyone other than you ever own a percentage of your business?",
-      sessionStorageKey: "everHadOtherBusinessOwner" as const,
+      question:
+        "In the last 5 years, have you owned any percentage of companies that do business with the Division of Medical Assistance and Health Services?",
+      sessionStorageKey: "hadDhmasBusiness" as const,
     },
   ])("$question", ({ question, sessionStorageKey }) => {
     it(`saves ${sessionStorageKey} as false when user selects no and clicks Next`, async () => {
@@ -63,7 +66,7 @@ describe("<ScreeningStep2 />", () => {
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       expect(getValue(sessionStorageKey, true)).toBe("false");
-      expect(mockRouter.push).toHaveBeenCalledWith("/form/screening/3");
+      expect(mockRouter.push).toHaveBeenCalledWith("/form/insurance");
       expect(mockRouter.refresh).toHaveBeenCalled();
     });
 

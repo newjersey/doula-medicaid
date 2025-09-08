@@ -1,31 +1,77 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
+import type { Screening3Data } from "@/app/form/(formSteps)/screening/ScreeningData";
+import { unsupportedErrorMessage } from "@/app/form/(formSteps)/screening/_utils/unsupportedErrorMessage";
+import { getDefaultBoolean } from "@/app/form/_utils/sessionStorage";
+import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { Form } from "@trussworks/react-uswds";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-const FormSection = () => {
-  const router = useRouter();
-  const formProgressPosition = useFormProgressPosition();
-  const { handleSubmit } = useForm<object>({
-    defaultValues: {},
+const mayHaveThreeOrMoreErrors = false;
+const ScreeningStep3 = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<Screening3Data>({
+    defaultValues: {
+      haveOtherBusinessOwnerNextYear: getDefaultBoolean("haveOtherBusinessOwnerNextYear"),
+      hadDhmasBusiness: getDefaultBoolean("hadDhmasBusiness"),
+    },
   });
+  const haveOtherBusinessOwnerNextYear = watch("haveOtherBusinessOwnerNextYear");
+  const hadDhmasBusiness = watch("hadDhmasBusiness");
   return (
-    <div>
-      <Form
-        onSubmit={handleSubmit(() => {
-          routeToNextStep(router, formProgressPosition);
-        })}
-        className="maxw-full"
-      >
-        <HorizontalDivider />
-        <FormProgressButtons />
-      </Form>
-    </div>
+    <DoulaForm<Screening3Data>
+      errors={errors}
+      handleSubmit={handleSubmit}
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+    >
+      <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+        <div className="desktop:grid-col-8">
+          <div>
+            <h2 className="font-heading-md">About your business</h2>
+            <p className="usa-hint">
+              Most individual doulas with a Sole Proprietorship business answer “No” to these
+              questions.
+            </p>
+            <DoulaYesNoRadio
+              name="haveOtherBusinessOwnerNextYear"
+              value={haveOtherBusinessOwnerNextYear}
+              label="Do you anticipate anyone else having a percentage of your business in the next year?"
+              required
+              invalidOption={{
+                label: "Yes",
+                message: unsupportedErrorMessage,
+              }}
+              register={register}
+              errors={errors}
+            />
+          </div>
+
+          <div className="margin-top-5">
+            <DoulaYesNoRadio
+              name="hadDhmasBusiness"
+              value={hadDhmasBusiness}
+              label="In the last 5 years, have you owned any percentage of companies that do business with the Division of Medical Assistance and Health Services?"
+              required
+              invalidOption={{
+                label: "Yes",
+                message: unsupportedErrorMessage,
+              }}
+              register={register}
+              errors={errors}
+            />
+          </div>
+        </div>
+      </div>
+      <HorizontalDivider />
+      <FormProgressButtons />
+    </DoulaForm>
   );
 };
 
-export default FormSection;
+export default ScreeningStep3;
