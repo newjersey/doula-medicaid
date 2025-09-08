@@ -1,6 +1,7 @@
 import type {
   Screening1Data,
   Screening2Data,
+  Screening3Data,
 } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingData } from "@/app/form/(formSteps)/training/TrainingData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
@@ -14,6 +15,7 @@ import type {
 export type SessionStorageKey =
   | keyof Screening1Data
   | keyof Screening2Data
+  | keyof Screening3Data
   | keyof TrainingData
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data

@@ -6,10 +6,8 @@ const testDateOfBirthDay = "25";
 const testDateOfBirthMonth = "12";
 const testDateOfBirthYear = "1990";
 
-const testFormData = {
+const testFormData: FormData = {
   isSupportedSoleProprietor: true,
-  everHadEmployees: false,
-  everHadOtherBusinessOwner: false,
   stateApprovedTraining: "New Jersey Doula Learning Collaborative (NJDLC)",
   nameOfTrainingOrganization: null,
   instructorFirstName: "Default instructor first",
@@ -57,6 +55,11 @@ export const generateFormData = (formDataOverrides: Partial<FormData>): FormData
 
 export const setRequiredFieldsInSessionStorage = () => {
   window.sessionStorage.setItem("isSoleProprietor", "true");
+  window.sessionStorage.setItem("everHadEmployees", "false");
+  window.sessionStorage.setItem("everHadOtherBusinessOwner", "false");
+  window.sessionStorage.setItem("haveOtherBusinessOwnerNextYear", "false");
+  window.sessionStorage.setItem("hadDhmasBusiness", "false");
+
   for (const [key, value] of Object.entries(testFormData)) {
     if (key === "dateOfBirth") {
       window.sessionStorage.setItem("dateOfBirthDay", testDateOfBirthDay);
