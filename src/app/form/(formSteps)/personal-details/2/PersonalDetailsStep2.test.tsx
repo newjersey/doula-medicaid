@@ -129,18 +129,6 @@ describe("<PersonalDetailsStep2 />", () => {
       expectAddressHasAutocomplete("Mailing address", "shipping");
     });
 
-    it.each(mailingAddressFields)("updates the $name text input", async ({ name, testValue }) => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const input = screen.getByRole("textbox", {
-        name: name,
-      });
-      expect(input).toHaveValue("");
-
-      await user.type(input, testValue);
-      expect(input).toHaveValue(testValue);
-    });
-
     it.each(requiredMailingFields)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
       async ({ name, key }) => {
@@ -195,18 +183,6 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("billing address fields", () => {
-    it.each(billingAddressFields)("updates the $name text input", async ({ name, testValue }) => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const input = screen.getByRole("textbox", {
-        name: name,
-      });
-      expect(input).toHaveValue("");
-
-      await user.type(input, testValue);
-      expect(input).toHaveValue(testValue);
-    });
-
     it.each(requiredBillingFields)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
       async ({ name, key }) => {

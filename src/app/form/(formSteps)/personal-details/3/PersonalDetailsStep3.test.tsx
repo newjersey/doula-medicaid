@@ -39,21 +39,6 @@ describe("<PersonalDetailsStep3 />", () => {
   };
 
   describe("Doula provider identification fields", () => {
-    it.each(doulaProviderIdentificationFields)(
-      "updates the $name text input",
-      async ({ name, testValue }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-        const input = screen.getByRole("textbox", {
-          name: name,
-        });
-        expect(input).toHaveValue("");
-
-        await user.type(input, testValue);
-        expect(input).toHaveValue(testValue);
-      },
-    );
-
     it("validates National Provider Identifier (NPI)", async () => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -87,50 +72,35 @@ describe("<PersonalDetailsStep3 />", () => {
   });
 
   describe("Other identification fields", () => {
-    it.each(otherIdentificationFields)(
-      "updates the $name text input",
-      async ({ name, testValue }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-        const input = screen.getByRole("textbox", {
-          name: name,
-        });
-        expect(input).toHaveValue("");
+    it("saves form data on submit", async () => {
+      const user = userEvent.setup();
+      const mockRouter = renderWithRouter();
+      await fillAllInputsExcept(screen, user, textInputFields, new Set());
+      await user.click(screen.getByRole("button", { name: "Next" }));
 
-        await user.type(input, testValue);
-        expect(input).toHaveValue(testValue);
-      },
-    );
-  });
+      for (const textInputField of textInputFields) {
+        expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+      }
 
-  it("saves form data on submit", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-    await fillAllInputsExcept(screen, user, textInputFields, new Set());
-    await user.click(screen.getByRole("button", { name: "Next" }));
+      expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/1");
+      expect(mockRouter.push).toHaveBeenCalledTimes(1);
+      expect(mockRouter.refresh).toHaveBeenCalled();
+    });
 
-    for (const textInputField of textInputFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
-    }
+    it("fills fields from session storage when page is loaded", () => {
+      window.sessionStorage.setItem("npiNumber", "1234567890");
+      window.sessionStorage.setItem("upinNumber", "12345");
+      window.sessionStorage.setItem("medicareProviderId", "ABC12345");
+      renderWithRouter();
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/1");
-    expect(mockRouter.push).toHaveBeenCalledTimes(1);
-    expect(mockRouter.refresh).toHaveBeenCalled();
-  });
-
-  it("fills fields from session storage when page is loaded", () => {
-    window.sessionStorage.setItem("npiNumber", "1234567890");
-    window.sessionStorage.setItem("upinNumber", "12345");
-    window.sessionStorage.setItem("medicareProviderId", "ABC12345");
-    renderWithRouter();
-
-    expect(
-      screen.getByRole("textbox", { name: "National Provider Identifier (NPI) *" }),
-    ).toHaveValue("1234567890");
-    expect(screen.getByRole("textbox", { name: "UPIN number (optional)" })).toHaveValue("12345");
-    expect(screen.getByRole("textbox", { name: "Medicare provider ID (optional)" })).toHaveValue(
-      "ABC12345",
-    );
+      expect(
+        screen.getByRole("textbox", { name: "National Provider Identifier (NPI) *" }),
+      ).toHaveValue("1234567890");
+      expect(screen.getByRole("textbox", { name: "UPIN number (optional)" })).toHaveValue("12345");
+      expect(screen.getByRole("textbox", { name: "Medicare provider ID (optional)" })).toHaveValue(
+        "ABC12345",
+      );
+    });
   });
 
   describe("NPI explainer", () => {

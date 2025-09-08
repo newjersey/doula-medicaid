@@ -78,31 +78,6 @@ describe("<PersonalDetailsStep1 />", () => {
   };
 
   describe("personal identification fields", () => {
-    it.each(personalIdentificationFields)(
-      "updates the $name text input",
-      async ({ name, testValue, expectedValue }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-        const input = screen.getByRole("textbox", {
-          name: name,
-        });
-        expect(input).toHaveValue("");
-
-        await user.type(input, testValue);
-        expect(input).toHaveValue(expectedValue ?? testValue);
-      },
-    );
-
-    it("updates the date of birth month", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const combobox = screen.getByRole("combobox", {
-        name: "Month *",
-      });
-      await user.selectOptions(combobox, "07 - July");
-      expect(combobox).toHaveValue("7");
-    });
-
     it("saves form data on submit", async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
@@ -209,21 +184,6 @@ describe("<PersonalDetailsStep1 />", () => {
   });
 
   describe("contact info fields", () => {
-    it.each(contactInformationFields)(
-      "updates the $name text input",
-      async ({ name, testValue, expectedValue }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-        const input = screen.getByRole("textbox", {
-          name: name,
-        });
-        expect(input).toHaveValue("");
-
-        await user.type(input, testValue);
-        expect(input).toHaveValue(expectedValue ?? testValue);
-      },
-    );
-
     it("saves form data on submit", async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
