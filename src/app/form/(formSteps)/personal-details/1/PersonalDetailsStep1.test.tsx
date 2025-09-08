@@ -4,6 +4,7 @@ import {
   type InputField,
 } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { TestField, testSaveFieldsToSessionStorage } from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -21,6 +22,44 @@ const personalIdentificationFields = [
     testValue: "123456789",
     expectedValue: "123-45-6789",
   },
+];
+
+const personalIdentificationFields2 = [
+  new TestField({
+    name: "First name *",
+    key: "firstName",
+    required: true,
+    testValue: "Test first name",
+  }),
+  new TestField({
+    name: "Middle name",
+    key: "middleName",
+    required: false,
+    testValue: "Test middle name",
+  }),
+  new TestField({
+    name: "Last name *",
+    key: "lastName",
+    required: true,
+    testValue: "Test last name",
+  }),
+  new TestField({ name: "Day *", key: "dateOfBirthDay", required: true, testValue: "6" }),
+  new TestField({
+    name: "Month *",
+    key: "dateOfBirthMonth",
+    required: true,
+    testValue: "07 - July",
+    role: "combobox",
+  }),
+  new TestField({ name: "Year *", key: "dateOfBirthYear", required: true, testValue: "1988" }),
+  new TestField({
+    name: "Social security number *",
+    key: "socialSecurityNumber",
+    required: true,
+    testValue: "123456789",
+    expectedValue: "123-45-6789",
+    role: "textbox",
+  }),
 ];
 
 const contactInformationFields = [
@@ -78,21 +117,45 @@ describe("<PersonalDetailsStep1 />", () => {
   };
 
   describe("personal identification fields", () => {
-    it("saves form data on submit", async () => {
+    it("saves fields to session storage on submit", async () => {
       const user = userEvent.setup();
-      const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allInputFields, new Set());
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      for (const field of personalIdentificationFields) {
-        expect(window.sessionStorage.getItem(field.key)).toEqual(
-          field.expectedValue ?? field.testValue,
-        );
-      }
-
-      expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
-      expect(mockRouter.refresh).toHaveBeenCalled();
+      await testSaveFieldsToSessionStorage(
+        user,
+        personalIdentificationFields2,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/2",
+      );
     });
+
+    it.each(requiredPersonalIdentificationFields)(
+      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
+      async ({ name, key }) => {
+        const user = userEvent.setup();
+        renderWithRouter();
+
+        const labelWithoutAsterisk = name.replace(" *", "");
+        const input = await getInputField(screen, { name });
+        expect(input).toBeRequired();
+        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        expect(input).toHaveAccessibleDescription(
+          expect.stringContaining(`${labelWithoutAsterisk} is required`),
+        );
+        expect(input).toHaveAttribute("aria-invalid", "true");
+        expect(input).toHaveFocus();
+      },
+    );
+
+    it.each(personalIdentificationFields)(
+      "fills $name from session storage when page is loaded",
+      async ({ name, key, testValue }) => {
+        window.sessionStorage.setItem(key, testValue);
+        renderWithRouter();
+        expect(screen.getByRole("textbox", { name: name })).toHaveValue(testValue);
+      },
+    );
 
     it("validates date of birth day", async () => {
       const user = userEvent.setup();
@@ -143,35 +206,6 @@ describe("<PersonalDetailsStep1 />", () => {
       expect(input).toHaveAttribute("aria-invalid", "true");
     });
 
-    it.each(requiredPersonalIdentificationFields)(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, key }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const input = await getInputField(screen, { name });
-        expect(input).toBeRequired();
-        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-
-        expect(input).toHaveAccessibleDescription(
-          expect.stringContaining(`${labelWithoutAsterisk} is required`),
-        );
-        expect(input).toHaveAttribute("aria-invalid", "true");
-        expect(input).toHaveFocus();
-      },
-    );
-
-    it.each(personalIdentificationFields)(
-      "fills $name from session storage when page is loadad",
-      async ({ name, key, testValue }) => {
-        window.sessionStorage.setItem(key, testValue);
-        renderWithRouter();
-        expect(screen.getByRole("textbox", { name: name })).toHaveValue(testValue);
-      },
-    );
-
     it("fills month from session storage when page is loaded", () => {
       window.sessionStorage.setItem("dateOfBirthMonth", "1");
       renderWithRouter();
@@ -184,7 +218,7 @@ describe("<PersonalDetailsStep1 />", () => {
   });
 
   describe("contact info fields", () => {
-    it("saves form data on submit", async () => {
+    it("saves fields to session storage on submit", async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
       await fillAllInputsExcept(screen, user, allInputFields, new Set());

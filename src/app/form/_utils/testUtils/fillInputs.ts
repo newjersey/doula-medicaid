@@ -2,7 +2,7 @@ import type { Screen } from "@testing-library/dom";
 import { within } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 
-type Role = "textbox" | "combobox" | "radio";
+export type Role = "textbox" | "combobox" | "radio";
 
 export interface InputField {
   name: string;
