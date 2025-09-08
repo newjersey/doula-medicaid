@@ -30,6 +30,14 @@ export const getInputField = async (
       });
 };
 
+export const fillAllInputs = async (
+  screen: Screen,
+  user: UserEvent,
+  allInputs: Array<InputField>,
+) => {
+  await fillAllInputsExcept(screen, user, allInputs, new Set());
+};
+
 export const fillAllInputsExcept = async (
   screen: Screen,
   user: UserEvent,

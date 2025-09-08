@@ -1,6 +1,12 @@
-import { fillAllInputsExcept, InputField, Role } from "@/app/form/_utils/testUtils/fillInputs";
+import {
+  fillAllInputs,
+  fillAllInputsExcept,
+  getInputField,
+  type InputField,
+  type Role,
+} from "@/app/form/_utils/testUtils/fillInputs";
 import type { Screen } from "@testing-library/dom";
-import { UserEvent } from "@testing-library/user-event";
+import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface TestFieldParameters {
@@ -13,7 +19,7 @@ interface TestFieldParameters {
   withinGroupName?: string;
 }
 
-export class TestField implements InputField {
+export interface TestField extends InputField {
   name: string;
   key: string;
   required: boolean;
@@ -21,38 +27,31 @@ export class TestField implements InputField {
   expectedValue: string;
   role: Role;
   withinGroupName?: string;
-
-  public constructor({
-    name,
-    key,
-    required,
-    testValue,
-    expectedValue = testValue,
-    role = "textbox",
-    withinGroupName,
-  }: TestFieldParameters) {
-    this.name = name;
-    this.key = key;
-    this.required = required;
-    this.testValue = testValue;
-    this.expectedValue = expectedValue;
-    this.role = role;
-    this.withinGroupName = withinGroupName;
-  }
 }
 
+export const createTestField = (params: TestFieldParameters): TestField => {
+  return {
+    name: params.name,
+    key: params.key,
+    required: params.required,
+    testValue: params.testValue,
+    expectedValue: params.expectedValue ?? params.testValue,
+    role: params.role ?? "textbox",
+    withinGroupName: params.withinGroupName ?? undefined,
+  };
+};
+
 export const testSaveFieldsToSessionStorage = async (
-  user: UserEvent,
   fieldsToTest: Array<TestField>,
+  allFields: Array<TestField>,
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
   pathToNextPage: string,
 ) => {
+  const user = userEvent.setup();
   const mockRouter = renderFunction();
-  await fillAllInputsExcept(screen, user, fieldsToTest, new Set());
-  expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("Test first name");
+  await fillAllInputs(screen, user, allFields);
   await user.click(screen.getByRole("button", { name: "Next" }));
-  console.log(Object.keys(window.sessionStorage));
 
   for (const field of fieldsToTest) {
     expect(window.sessionStorage.getItem(field.key)).toEqual(field.expectedValue);
@@ -60,4 +59,35 @@ export const testSaveFieldsToSessionStorage = async (
 
   expect(mockRouter.push).toHaveBeenCalledWith(pathToNextPage);
   expect(mockRouter.refresh).toHaveBeenCalled();
+};
+
+export const testRequiredFields = async (
+  field: TestField,
+  allFields: Array<TestField>,
+  renderFunction: () => Partial<AppRouterInstance>,
+  screen: Screen,
+) => {
+  const user = userEvent.setup();
+  renderFunction();
+  const labelWithoutAsterisk = field.name.replace(" *", "");
+  const input = await getInputField(screen, { name: field.name, role: field.role });
+  expect(input).toBeRequired();
+  await fillAllInputsExcept(screen, user, allFields, new Set([field.key]));
+  await user.click(screen.getByRole("button", { name: "Next" }));
+
+  expect(input).toHaveAccessibleDescription(
+    expect.stringContaining(`${labelWithoutAsterisk} is required`),
+  );
+  expect(input).toHaveAttribute("aria-invalid", "true");
+  expect(input).toHaveFocus();
+};
+
+export const testFillFromSessionStorage = async (
+  field: TestField,
+  renderFunction: () => Partial<AppRouterInstance>,
+  screen: Screen,
+) => {
+  window.sessionStorage.setItem(field.key, field.expectedValue);
+  renderFunction();
+  expect(screen.getByRole(field.role, { name: field.name })).toHaveValue(field.expectedValue);
 };
