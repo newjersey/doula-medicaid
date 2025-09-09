@@ -101,19 +101,13 @@ describe("<PersonalDetailsStep1 />", () => {
       );
     });
 
-    it.each(personalIdentificationFields.filter((field) => field.required))(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async (field: TestField) => {
-        await testRequiredFields(field, allTestFields, renderWithRouter, screen);
-      },
-    );
+    describe("marks required fields as required and displays an error message if it is not filled in", () => {
+      testRequiredFields(personalIdentificationFields, allTestFields, renderWithRouter, screen);
+    });
 
-    it.each(personalIdentificationFields)(
-      "fills $name from session storage when page is loaded",
-      async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
-      },
-    );
+    describe("fills fields from session storage when page is loaded", () => {
+      testFillFromSessionStorage(personalIdentificationFields, renderWithRouter, screen);
+    });
 
     it("validates date of birth day", async () => {
       const user = userEvent.setup();
@@ -176,19 +170,13 @@ describe("<PersonalDetailsStep1 />", () => {
       );
     });
 
-    it.each(contactInformationFields.filter((field) => field.required))(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async (field: TestField) => {
-        await testRequiredFields(field, allTestFields, renderWithRouter, screen);
-      },
-    );
+    describe("marks required fields as required and displays an error message if it is not filled in", () => {
+      testRequiredFields(contactInformationFields, allTestFields, renderWithRouter, screen);
+    });
 
-    it.each(contactInformationFields)(
-      "fills $name from session storage when page is loaded",
-      async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
-      },
-    );
+    describe("fills fields from session storage when page is loaded", () => {
+      testFillFromSessionStorage(contactInformationFields, renderWithRouter, screen);
+    });
 
     it.each([
       {

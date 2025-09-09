@@ -61,33 +61,40 @@ export const testSaveFieldsToSessionStorage = async (
   expect(mockRouter.refresh).toHaveBeenCalled();
 };
 
-export const testRequiredFields = async (
-  field: TestField,
+export const testRequiredFields = (
+  fieldsToTest: Array<TestField>,
   allFields: Array<TestField>,
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
 ) => {
-  const user = userEvent.setup();
-  renderFunction();
-  const labelWithoutAsterisk = field.name.replace(" *", "");
-  const input = await getInputField(screen, { name: field.name, role: field.role });
-  expect(input).toBeRequired();
-  await fillAllInputsExcept(screen, user, allFields, new Set([field.key]));
-  await user.click(screen.getByRole("button", { name: "Next" }));
+  it.each(fieldsToTest.filter((field) => field.required))(
+    "$key",
+    async ({ name, role, key }: TestField) => {
+      const user = userEvent.setup();
+      renderFunction();
+      const labelWithoutAsterisk = name.replace(" *", "");
+      const input = await getInputField(screen, { name: name, role: role });
+      expect(input).toBeRequired();
+      await fillAllInputsExcept(screen, user, allFields, new Set([key]));
+      await user.click(screen.getByRole("button", { name: "Next" }));
 
-  expect(input).toHaveAccessibleDescription(
-    expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      expect(input).toHaveAccessibleDescription(
+        expect.stringContaining(`${labelWithoutAsterisk} is required`),
+      );
+      expect(input).toHaveAttribute("aria-invalid", "true");
+      expect(input).toHaveFocus();
+    },
   );
-  expect(input).toHaveAttribute("aria-invalid", "true");
-  expect(input).toHaveFocus();
 };
 
-export const testFillFromSessionStorage = async (
-  field: TestField,
+export const testFillFromSessionStorage = (
+  fieldsToTest: Array<TestField>,
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
 ) => {
-  window.sessionStorage.setItem(field.key, field.expectedValue);
-  renderFunction();
-  expect(screen.getByRole(field.role, { name: field.name })).toHaveValue(field.expectedValue);
+  it.each(fieldsToTest)("$key", async ({ key, expectedValue, role, name }: TestField) => {
+    window.sessionStorage.setItem(key, expectedValue);
+    renderFunction();
+    expect(screen.getByRole(role, { name: name })).toHaveValue(expectedValue);
+  });
 };
