@@ -29,16 +29,20 @@ export interface TestField extends InputField {
   withinGroupName?: string;
 }
 
-export const createTestField = (params: TestFieldParameters): TestField => {
-  return {
-    name: params.name,
-    sessionStorageKey: params.sessionStorageKey,
-    required: params.required,
-    testValue: params.testValue,
-    expectedValue: params.expectedValue ?? params.testValue,
-    role: params.role ?? "textbox",
-    withinGroupName: params.withinGroupName ?? undefined,
-  };
+export const createTestFields = (fields: Array<TestFieldParameters>): Array<TestField> => {
+  const testFields: Array<TestField> = [];
+  for (const field of fields) {
+    testFields.push({
+      name: field.name,
+      sessionStorageKey: field.sessionStorageKey,
+      required: field.required,
+      testValue: field.testValue,
+      expectedValue: field.expectedValue ?? field.testValue,
+      role: field.role ?? "textbox",
+      withinGroupName: field.withinGroupName ?? undefined,
+    });
+  }
+  return testFields;
 };
 
 export const testSaveFieldsToSessionStorage = async (
@@ -61,43 +65,41 @@ export const testSaveFieldsToSessionStorage = async (
   expect(mockRouter.refresh).toHaveBeenCalled();
 };
 
-export const testRequiredFields = (
-  fieldsToTest: Array<TestField>,
+export const testRequiredField = async (
+  name: string,
+  role: Role,
+  sessionStorageKey: string,
   allFields: Array<TestField>,
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
 ) => {
-  it.each(fieldsToTest.filter((field) => field.required))(
-    "$sessionStorageKey",
-    async ({ name, role, sessionStorageKey }: TestField) => {
-      const user = userEvent.setup();
-      renderFunction();
-      const labelWithoutAsterisk = name.replace(" *", "");
-      const input = await getInputField(screen, { name: name, role: role });
-      expect(input).toBeRequired();
-      await fillAllInputsExcept(screen, user, allFields, new Set([sessionStorageKey]));
-      await user.click(screen.getByRole("button", { name: "Next" }));
+  const user = userEvent.setup();
+  const mockRouter = renderFunction();
+  const labelWithoutAsterisk = name.replace(" *", "");
+  const input = await getInputField(screen, { name: name, role: role });
+  expect(input).toBeRequired();
+  await fillAllInputsExcept(screen, user, allFields, new Set([sessionStorageKey]));
+  await user.click(screen.getByRole("button", { name: "Next" }));
 
-      expect(input).toHaveAccessibleDescription(
-        expect.stringContaining(`${labelWithoutAsterisk} is required`),
-      );
-      expect(input).toHaveAttribute("aria-invalid", "true");
-      expect(input).toHaveFocus();
-    },
+  expect(input).toHaveAccessibleDescription(
+    expect.stringContaining(`${labelWithoutAsterisk} is required`),
   );
+  expect(input).toHaveAttribute("aria-invalid", "true");
+  expect(input).toHaveFocus();
+  expect(window.sessionStorage.getItem(sessionStorageKey)).toBe(null);
+  expect(mockRouter.push).not.toHaveBeenCalled();
+  expect(mockRouter.refresh).not.toHaveBeenCalled();
 };
 
-export const testFillFromSessionStorage = (
-  fieldsToTest: Array<TestField>,
+export const testFillFromSessionStorage = async (
+  name: string,
+  role: Role,
+  sessionStorageKey: string,
+  expectedValue: string,
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
 ) => {
-  it.each(fieldsToTest)(
-    "$sessionStorageKey",
-    async ({ sessionStorageKey, expectedValue, role, name }: TestField) => {
-      window.sessionStorage.setItem(sessionStorageKey, expectedValue);
-      renderFunction();
-      expect(screen.getByRole(role, { name: name })).toHaveValue(expectedValue);
-    },
-  );
+  window.sessionStorage.setItem(sessionStorageKey, expectedValue);
+  renderFunction();
+  expect(screen.getByRole(role, { name: name })).toHaveValue(expectedValue);
 };

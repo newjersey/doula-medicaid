@@ -1,9 +1,9 @@
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
-  createTestField,
+  createTestFields,
   type TestField,
   testFillFromSessionStorage,
-  testRequiredFields,
+  testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
@@ -11,70 +11,70 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const personalIdentificationFields = [
-  createTestField({
+const personalIdentificationFields: Array<TestField> = createTestFields([
+  {
     name: "First name *",
     sessionStorageKey: "firstName",
     required: true,
     testValue: "Test first name",
-  }),
-  createTestField({
+  },
+  {
     name: "Middle name",
     sessionStorageKey: "middleName",
     required: false,
     testValue: "Test middle name",
-  }),
-  createTestField({
+  },
+  {
     name: "Last name *",
     sessionStorageKey: "lastName",
     required: true,
     testValue: "Test last name",
-  }),
-  createTestField({
+  },
+  {
     name: "Day *",
     sessionStorageKey: "dateOfBirthDay",
     required: true,
     testValue: "6",
-  }),
-  createTestField({
+  },
+  {
     name: "Month *",
     sessionStorageKey: "dateOfBirthMonth",
     required: true,
     testValue: "07 - July",
     expectedValue: "7",
     role: "combobox",
-  }),
-  createTestField({
+  },
+  {
     name: "Year *",
     sessionStorageKey: "dateOfBirthYear",
     required: true,
     testValue: "1988",
-  }),
-  createTestField({
+  },
+  {
     name: "Social security number *",
     sessionStorageKey: "socialSecurityNumber",
     required: true,
     testValue: "123456789",
     expectedValue: "123-45-6789",
     role: "textbox",
-  }),
-];
+  },
+]);
 
-const contactInformationFields: Array<TestField> = [
-  createTestField({
+const contactInformationFields: Array<TestField> = createTestFields([
+  {
     name: "Email address *",
     sessionStorageKey: "email",
     testValue: "test@test.com",
     required: true,
-  }),
-  createTestField({
+  },
+  {
     name: "Phone number *",
     sessionStorageKey: "phoneNumber",
     testValue: "3211234567",
     expectedValue: "321-123-4567",
     required: true,
-  }),
-];
+  },
+]);
 
 const allTestFields: Array<TestField> = [
   ...personalIdentificationFields,
@@ -111,13 +111,33 @@ describe("<PersonalDetailsStep1 />", () => {
       );
     });
 
-    describe("marks required fields as required and displays an error message if it is not filled in", () => {
-      testRequiredFields(personalIdentificationFields, allTestFields, renderWithRouter, screen);
-    });
+    it.each(personalIdentificationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async ({ name, role, sessionStorageKey }: TestField) => {
+        await testRequiredField(
+          name,
+          role,
+          sessionStorageKey,
+          allTestFields,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
 
-    describe("fills fields from session storage when page is loaded", () => {
-      testFillFromSessionStorage(personalIdentificationFields, renderWithRouter, screen);
-    });
+    it.each(personalIdentificationFields.filter((field) => field.required))(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async ({ name, role, sessionStorageKey, expectedValue }: TestField) => {
+        await testFillFromSessionStorage(
+          name,
+          role,
+          sessionStorageKey,
+          expectedValue,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
 
     it("validates date of birth day", async () => {
       const user = userEvent.setup();
@@ -180,13 +200,33 @@ describe("<PersonalDetailsStep1 />", () => {
       );
     });
 
-    describe("marks required fields as required and displays an error message if it is not filled in", () => {
-      testRequiredFields(contactInformationFields, allTestFields, renderWithRouter, screen);
-    });
+    it.each(contactInformationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async ({ name, role, sessionStorageKey }: TestField) => {
+        await testRequiredField(
+          name,
+          role,
+          sessionStorageKey,
+          allTestFields,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
 
-    describe("fills fields from session storage when page is loaded", () => {
-      testFillFromSessionStorage(contactInformationFields, renderWithRouter, screen);
-    });
+    it.each(contactInformationFields.filter((field) => field.required))(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async ({ name, role, sessionStorageKey, expectedValue }: TestField) => {
+        await testFillFromSessionStorage(
+          name,
+          role,
+          sessionStorageKey,
+          expectedValue,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
 
     it.each([
       {
