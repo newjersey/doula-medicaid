@@ -1,10 +1,13 @@
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
-import {
-  fillAllInputsExcept,
-  getInputField,
-  type InputField,
-} from "@/app/form/_utils/testUtils/fillInputs";
+import { fillAllInputs, fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import {
+  createTestFields,
+  type TestField,
+  testFillFromSessionStorage,
+  testRequiredField,
+  testSaveFieldsToSessionStorage,
+} from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -41,77 +44,90 @@ const getBillingAddressGroup = () => {
   return billingAddressGroup;
 };
 
-const mailingAddressFields = [
-  { name: "Street address *", sessionStorageKey: "streetAddress1", testValue: "Test address 1" },
+const mailingAddressFields = createTestFields([
+  {
+    name: "Street address *",
+    sessionStorageKey: "streetAddress1",
+    required: true,
+    testValue: "Test address 1",
+  },
   {
     name: "Street address line 2",
     sessionStorageKey: "streetAddress2",
+    required: false,
     testValue: "Test address 2",
   },
-  { name: "City *", sessionStorageKey: "city", testValue: "Test city" },
-  { name: "ZIP code *", sessionStorageKey: "zip", testValue: "12345" },
+  { name: "City *", sessionStorageKey: "city", required: true, testValue: "Test city" },
+  {
+    name: "State *",
+    sessionStorageKey: "state",
+    required: false,
+    role: "combobox",
+    testValue: "PA",
+  },
+  { name: "ZIP code *", sessionStorageKey: "zip", required: true, testValue: "12345" },
+]);
+
+const minimalFields = [
+  ...mailingAddressFields,
+  ...createTestFields([
+    {
+      name: "Yes",
+      sessionStorageKey: "hasSameBillingMailingAddress",
+      required: true,
+      role: "radio",
+      testValue: "true",
+    },
+  ]),
 ];
 
-const billingAddressFields = [
+const billingAddressFields = createTestFields([
+  {
+    name: "No",
+    sessionStorageKey: "hasSameBillingMailingAddress",
+    required: true,
+    role: "radio",
+    testValue: "false",
+  },
   {
     name: "Street address *",
     sessionStorageKey: "billingStreetAddress1",
+    required: true,
     testValue: "Test address 1",
     withinGroupName: "What's your billing address?",
   },
   {
     name: "Street address line 2",
     sessionStorageKey: "billingStreetAddress2",
+    required: false,
     testValue: "Test address 2",
     withinGroupName: "What's your billing address?",
   },
   {
     name: "City *",
     sessionStorageKey: "billingCity",
-    testValue: "Test city",
+    required: true,
+    testValue: "Houston",
+    withinGroupName: "What's your billing address?",
+  },
+  {
+    name: "State *",
+    sessionStorageKey: "state",
+    required: false,
+    role: "combobox",
+    testValue: "TX",
     withinGroupName: "What's your billing address?",
   },
   {
     name: "ZIP code *",
     sessionStorageKey: "billingZip",
+    required: true,
     testValue: "12345",
     withinGroupName: "What's your billing address?",
   },
-];
+]);
 
-const textInputFields = [...mailingAddressFields, ...billingAddressFields];
-
-const minimalSetOfInputFields: Array<InputField> = [
-  ...mailingAddressFields,
-  { name: "State *", sessionStorageKey: "state", role: "combobox", testValue: "PA" },
-  {
-    name: "Yes",
-    sessionStorageKey: "hasSameBillingMailingAddress",
-    role: "radio",
-    testValue: "true",
-  },
-];
-
-const requiredKeys = [
-  "streetAddress1",
-  "city",
-  "zip",
-  "billingStreetAddress1",
-  "billingCity",
-  "billingZip",
-];
-
-const requiredFields: Array<InputField> = textInputFields.filter((field) =>
-  requiredKeys.includes(field.sessionStorageKey),
-);
-
-const requiredMailingFields: Array<InputField> = requiredFields.filter(
-  (field) => !field.sessionStorageKey.startsWith("billing"),
-);
-
-const requiredBillingFields: Array<InputField> = requiredFields.filter((field) =>
-  field.sessionStorageKey.startsWith("billing"),
-);
+const allTestFields = [...mailingAddressFields, ...billingAddressFields];
 
 describe("<PersonalDetailsStep2 />", () => {
   const renderWithRouter = () => {
@@ -138,27 +154,41 @@ describe("<PersonalDetailsStep2 />", () => {
       expectAddressHasAutocomplete("Mailing address", "shipping");
     });
 
-    it.each(requiredMailingFields)(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, sessionStorageKey }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        mailingAddressFields,
+        minimalFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/3",
+      );
+    });
 
-        const input = await getInputField(screen, { name });
-        expect(input).toBeRequired();
-        await fillAllInputsExcept(
+    it.each(mailingAddressFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async ({ name, role, sessionStorageKey }: TestField) => {
+        await testRequiredField(
+          name,
+          role,
+          sessionStorageKey,
+          minimalFields,
+          renderWithRouter,
           screen,
-          user,
-          minimalSetOfInputFields,
-          new Set([sessionStorageKey]),
         );
-        await user.click(screen.getByRole("button", { name: "Next" }));
+      },
+    );
 
-        expect(input).toHaveAccessibleDescription(
-          expect.stringContaining(`${name.replace(" *", "")} is required`),
+    it.each(mailingAddressFields.filter((field) => field.required))(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async ({ name, role, sessionStorageKey, expectedValue }: TestField) => {
+        await testFillFromSessionStorage(
+          name,
+          role,
+          sessionStorageKey,
+          expectedValue,
+          renderWithRouter,
+          screen,
         );
-        expect(input).toHaveAttribute("aria-invalid", "true");
-        expect(input).toHaveFocus();
       },
     );
 
@@ -197,32 +227,41 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("billing address fields", () => {
-    it.each(requiredBillingFields)(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, sessionStorageKey }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        billingAddressFields,
+        allTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/3",
+      );
+    });
 
-        await fillAllInputsExcept(screen, user, requiredMailingFields, new Set([]));
-        await clickSameBillingMailingAddressNo();
-        await fillAllInputsExcept(
-          screen,
-          user,
-          requiredBillingFields,
-          new Set([sessionStorageKey]),
-        );
-        const input = await getInputField(screen, {
+    it.each(billingAddressFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async ({ name, role, sessionStorageKey }: TestField) => {
+        await testRequiredField(
           name,
-          withinGroupName: "What's your billing address?",
-        });
-        expect(input).toBeRequired();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-
-        expect(input).toHaveAccessibleDescription(
-          expect.stringContaining(`Billing ${name.replace(" *", "").toLowerCase()} is required`),
+          role,
+          sessionStorageKey,
+          allTestFields,
+          renderWithRouter,
+          screen,
         );
-        expect(input).toHaveAttribute("aria-invalid", "true");
-        expect(input).toHaveFocus();
+      },
+    );
+
+    it.each(billingAddressFields.filter((field) => field.required))(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async ({ name, role, sessionStorageKey, expectedValue }: TestField) => {
+        await testFillFromSessionStorage(
+          name,
+          role,
+          sessionStorageKey,
+          expectedValue,
+          renderWithRouter,
+          screen,
+        );
       },
     );
 
@@ -244,7 +283,7 @@ describe("<PersonalDetailsStep2 />", () => {
       await fillAllInputsExcept(
         screen,
         user,
-        minimalSetOfInputFields,
+        allTestFields,
         new Set(["hasSameBillingMailingAddress"]),
       );
       await user.click(screen.getByRole("button", { name: "Next" }));
@@ -264,7 +303,7 @@ describe("<PersonalDetailsStep2 />", () => {
         const user = userEvent.setup();
 
         renderWithRouter();
-        await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set());
+        await fillAllInputs(screen, user, allTestFields);
         await clickSameBillingMailingAddressNo();
         await user.click(screen.getByRole("button", { name: "Next" }));
 
