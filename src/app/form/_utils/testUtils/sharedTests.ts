@@ -11,7 +11,7 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 
 interface TestFieldParameters {
   name: string;
-  key: string;
+  sessionStorageKey: string;
   required: boolean;
   testValue: string;
   expectedValue?: string;
@@ -21,7 +21,7 @@ interface TestFieldParameters {
 
 export interface TestField extends InputField {
   name: string;
-  key: string;
+  sessionStorageKey: string;
   required: boolean;
   testValue: string;
   expectedValue: string;
@@ -32,7 +32,7 @@ export interface TestField extends InputField {
 export const createTestField = (params: TestFieldParameters): TestField => {
   return {
     name: params.name,
-    key: params.key,
+    sessionStorageKey: params.sessionStorageKey,
     required: params.required,
     testValue: params.testValue,
     expectedValue: params.expectedValue ?? params.testValue,
@@ -54,7 +54,7 @@ export const testSaveFieldsToSessionStorage = async (
   await user.click(screen.getByRole("button", { name: "Next" }));
 
   for (const field of fieldsToTest) {
-    expect(window.sessionStorage.getItem(field.key)).toEqual(field.expectedValue);
+    expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
   }
 
   expect(mockRouter.push).toHaveBeenCalledWith(pathToNextPage);
@@ -68,14 +68,14 @@ export const testRequiredFields = (
   screen: Screen,
 ) => {
   it.each(fieldsToTest.filter((field) => field.required))(
-    "$key",
-    async ({ name, role, key }: TestField) => {
+    "$sessionStorageKey",
+    async ({ name, role, sessionStorageKey }: TestField) => {
       const user = userEvent.setup();
       renderFunction();
       const labelWithoutAsterisk = name.replace(" *", "");
       const input = await getInputField(screen, { name: name, role: role });
       expect(input).toBeRequired();
-      await fillAllInputsExcept(screen, user, allFields, new Set([key]));
+      await fillAllInputsExcept(screen, user, allFields, new Set([sessionStorageKey]));
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       expect(input).toHaveAccessibleDescription(
@@ -92,9 +92,12 @@ export const testFillFromSessionStorage = (
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
 ) => {
-  it.each(fieldsToTest)("$key", async ({ key, expectedValue, role, name }: TestField) => {
-    window.sessionStorage.setItem(key, expectedValue);
-    renderFunction();
-    expect(screen.getByRole(role, { name: name })).toHaveValue(expectedValue);
-  });
+  it.each(fieldsToTest)(
+    "$sessionStorageKey",
+    async ({ sessionStorageKey, expectedValue, role, name }: TestField) => {
+      window.sessionStorage.setItem(sessionStorageKey, expectedValue);
+      renderFunction();
+      expect(screen.getByRole(role, { name: name })).toHaveValue(expectedValue);
+    },
+  );
 };

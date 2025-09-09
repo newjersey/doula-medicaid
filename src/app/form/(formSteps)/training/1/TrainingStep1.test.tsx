@@ -11,25 +11,25 @@ const trainingAddressGroupName = "What is the address of your training organizat
 const trainingAddressFields: InputField[] = [
   {
     name: "Street address *",
-    key: "trainingStreetAddress1",
+    sessionStorageKey: "trainingStreetAddress1",
     testValue: "Test address 1",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "Street address line 2",
-    key: "trainingStreetAddress2",
+    sessionStorageKey: "trainingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "City *",
-    key: "trainingCity",
+    sessionStorageKey: "trainingCity",
     testValue: "Test city",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "ZIP code *",
-    key: "trainingZip",
+    sessionStorageKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,
   },
@@ -38,22 +38,22 @@ const trainingAddressFields: InputField[] = [
 const trainingInstructorFields: InputField[] = [
   {
     name: "First name *",
-    key: "instructorFirstName",
+    sessionStorageKey: "instructorFirstName",
     testValue: "Jane",
   },
   {
     name: "Last name *",
-    key: "instructorLastName",
+    sessionStorageKey: "instructorLastName",
     testValue: "Doe",
   },
   {
     name: "Email address *",
-    key: "instructorEmail",
+    sessionStorageKey: "instructorEmail",
     testValue: "test@example.com",
   },
   {
     name: "Phone number",
-    key: "instructorPhoneNumber",
+    sessionStorageKey: "instructorPhoneNumber",
     testValue: "111-111-1111",
   },
 ];
@@ -204,7 +204,7 @@ describe("<TrainingStep1 />", () => {
       await fillTrainingInstructorFields();
       await user.click(screen.getByRole("button", { name: "Next" }));
       for (const field of trainingInstructorFields) {
-        expect(sessionStorage.getItem(field.key)).toBe(field.testValue);
+        expect(sessionStorage.getItem(field.sessionStorageKey)).toBe(field.testValue);
       }
     });
   });

@@ -14,35 +14,45 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 const personalIdentificationFields = [
   createTestField({
     name: "First name *",
-    key: "firstName",
+    sessionStorageKey: "firstName",
     required: true,
     testValue: "Test first name",
   }),
   createTestField({
     name: "Middle name",
-    key: "middleName",
+    sessionStorageKey: "middleName",
     required: false,
     testValue: "Test middle name",
   }),
   createTestField({
     name: "Last name *",
-    key: "lastName",
+    sessionStorageKey: "lastName",
     required: true,
     testValue: "Test last name",
   }),
-  createTestField({ name: "Day *", key: "dateOfBirthDay", required: true, testValue: "6" }),
+  createTestField({
+    name: "Day *",
+    sessionStorageKey: "dateOfBirthDay",
+    required: true,
+    testValue: "6",
+  }),
   createTestField({
     name: "Month *",
-    key: "dateOfBirthMonth",
+    sessionStorageKey: "dateOfBirthMonth",
     required: true,
     testValue: "07 - July",
     expectedValue: "7",
     role: "combobox",
   }),
-  createTestField({ name: "Year *", key: "dateOfBirthYear", required: true, testValue: "1988" }),
+  createTestField({
+    name: "Year *",
+    sessionStorageKey: "dateOfBirthYear",
+    required: true,
+    testValue: "1988",
+  }),
   createTestField({
     name: "Social security number *",
-    key: "socialSecurityNumber",
+    sessionStorageKey: "socialSecurityNumber",
     required: true,
     testValue: "123456789",
     expectedValue: "123-45-6789",
@@ -53,13 +63,13 @@ const personalIdentificationFields = [
 const contactInformationFields: Array<TestField> = [
   createTestField({
     name: "Email address *",
-    key: "email",
+    sessionStorageKey: "email",
     testValue: "test@test.com",
     required: true,
   }),
   createTestField({
     name: "Phone number *",
-    key: "phoneNumber",
+    sessionStorageKey: "phoneNumber",
     testValue: "3211234567",
     expectedValue: "321-123-4567",
     required: true,

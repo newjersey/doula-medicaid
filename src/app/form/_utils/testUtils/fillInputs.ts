@@ -6,7 +6,7 @@ export type Role = "textbox" | "combobox" | "radio";
 
 export interface InputField {
   name: string;
-  key: string;
+  sessionStorageKey: string;
   role?: Role;
   testValue?: string;
   withinGroupName?: string;
@@ -45,7 +45,7 @@ export const fillAllInputsExcept = async (
   keysToSkip: Set<string>,
 ) => {
   for (const input of allInputs) {
-    if (!keysToSkip.has(input.key)) {
+    if (!keysToSkip.has(input.sessionStorageKey)) {
       const role = input.role ?? "textbox";
       const value = input.testValue ?? "test";
       const inputField = await getInputField(screen, input);

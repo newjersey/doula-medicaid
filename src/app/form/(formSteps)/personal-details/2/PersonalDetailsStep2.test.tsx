@@ -42,34 +42,38 @@ const getBillingAddressGroup = () => {
 };
 
 const mailingAddressFields = [
-  { name: "Street address *", key: "streetAddress1", testValue: "Test address 1" },
-  { name: "Street address line 2", key: "streetAddress2", testValue: "Test address 2" },
-  { name: "City *", key: "city", testValue: "Test city" },
-  { name: "ZIP code *", key: "zip", testValue: "12345" },
+  { name: "Street address *", sessionStorageKey: "streetAddress1", testValue: "Test address 1" },
+  {
+    name: "Street address line 2",
+    sessionStorageKey: "streetAddress2",
+    testValue: "Test address 2",
+  },
+  { name: "City *", sessionStorageKey: "city", testValue: "Test city" },
+  { name: "ZIP code *", sessionStorageKey: "zip", testValue: "12345" },
 ];
 
 const billingAddressFields = [
   {
     name: "Street address *",
-    key: "billingStreetAddress1",
+    sessionStorageKey: "billingStreetAddress1",
     testValue: "Test address 1",
     withinGroupName: "What's your billing address?",
   },
   {
     name: "Street address line 2",
-    key: "billingStreetAddress2",
+    sessionStorageKey: "billingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: "What's your billing address?",
   },
   {
     name: "City *",
-    key: "billingCity",
+    sessionStorageKey: "billingCity",
     testValue: "Test city",
     withinGroupName: "What's your billing address?",
   },
   {
     name: "ZIP code *",
-    key: "billingZip",
+    sessionStorageKey: "billingZip",
     testValue: "12345",
     withinGroupName: "What's your billing address?",
   },
@@ -79,8 +83,13 @@ const textInputFields = [...mailingAddressFields, ...billingAddressFields];
 
 const minimalSetOfInputFields: Array<InputField> = [
   ...mailingAddressFields,
-  { name: "State *", key: "state", role: "combobox", testValue: "PA" },
-  { name: "Yes", key: "hasSameBillingMailingAddress", role: "radio", testValue: "true" },
+  { name: "State *", sessionStorageKey: "state", role: "combobox", testValue: "PA" },
+  {
+    name: "Yes",
+    sessionStorageKey: "hasSameBillingMailingAddress",
+    role: "radio",
+    testValue: "true",
+  },
 ];
 
 const requiredKeys = [
@@ -93,15 +102,15 @@ const requiredKeys = [
 ];
 
 const requiredFields: Array<InputField> = textInputFields.filter((field) =>
-  requiredKeys.includes(field.key),
+  requiredKeys.includes(field.sessionStorageKey),
 );
 
 const requiredMailingFields: Array<InputField> = requiredFields.filter(
-  (field) => !field.key.startsWith("billing"),
+  (field) => !field.sessionStorageKey.startsWith("billing"),
 );
 
 const requiredBillingFields: Array<InputField> = requiredFields.filter((field) =>
-  field.key.startsWith("billing"),
+  field.sessionStorageKey.startsWith("billing"),
 );
 
 describe("<PersonalDetailsStep2 />", () => {
@@ -131,13 +140,18 @@ describe("<PersonalDetailsStep2 />", () => {
 
     it.each(requiredMailingFields)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, key }) => {
+      async ({ name, sessionStorageKey }) => {
         const user = userEvent.setup();
         renderWithRouter();
 
         const input = await getInputField(screen, { name });
         expect(input).toBeRequired();
-        await fillAllInputsExcept(screen, user, minimalSetOfInputFields, new Set([key]));
+        await fillAllInputsExcept(
+          screen,
+          user,
+          minimalSetOfInputFields,
+          new Set([sessionStorageKey]),
+        );
         await user.click(screen.getByRole("button", { name: "Next" }));
 
         expect(input).toHaveAccessibleDescription(
@@ -185,13 +199,18 @@ describe("<PersonalDetailsStep2 />", () => {
   describe("billing address fields", () => {
     it.each(requiredBillingFields)(
       "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, key }) => {
+      async ({ name, sessionStorageKey }) => {
         const user = userEvent.setup();
         renderWithRouter();
 
         await fillAllInputsExcept(screen, user, requiredMailingFields, new Set([]));
         await clickSameBillingMailingAddressNo();
-        await fillAllInputsExcept(screen, user, requiredBillingFields, new Set([key]));
+        await fillAllInputsExcept(
+          screen,
+          user,
+          requiredBillingFields,
+          new Set([sessionStorageKey]),
+        );
         const input = await getInputField(screen, {
           name,
           withinGroupName: "What's your billing address?",
@@ -350,11 +369,15 @@ describe("<PersonalDetailsStep2 />", () => {
     await user.click(screen.getByRole("button", { name: "Next" }));
 
     for (const textInputField of textInputFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+      expect(window.sessionStorage.getItem(textInputField.sessionStorageKey)).toEqual(
+        textInputField.testValue,
+      );
     }
 
     for (const textInputField of billingAddressFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+      expect(window.sessionStorage.getItem(textInputField.sessionStorageKey)).toEqual(
+        textInputField.testValue,
+      );
     }
     expect(window.sessionStorage.getItem("billingState")).toEqual("NJ");
     expect(window.sessionStorage.getItem("state")).toEqual("PA");

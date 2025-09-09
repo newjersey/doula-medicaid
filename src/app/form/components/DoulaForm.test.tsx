@@ -142,17 +142,17 @@ describe("error summary", () => {
   const doulaTestFormFields: InputField[] = [
     {
       name: "Label 1 *",
-      key: "field1",
+      sessionStorageKey: "field1",
       testValue: "Foo",
     },
     {
       name: "Label 2 *",
-      key: "field2",
+      sessionStorageKey: "field2",
       testValue: "Bar",
     },
     {
       name: "Label 3 *",
-      key: "field 3",
+      sessionStorageKey: "field 3",
       testValue: "Zoink",
     },
   ];

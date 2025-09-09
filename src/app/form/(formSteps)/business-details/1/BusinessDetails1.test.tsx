@@ -83,14 +83,18 @@ describe("<BusinessDetailsStep1 />", () => {
     await clickNoSameAddressButton();
 
     const addressTextInputFields = [
-      { name: "Street address *", key: "businessStreetAddress1", testValue: "123 Business Rd" },
+      {
+        name: "Street address *",
+        sessionStorageKey: "businessStreetAddress1",
+        testValue: "123 Business Rd",
+      },
       {
         name: "Street address line 2",
-        key: "businessStreetAddress2",
+        sessionStorageKey: "businessStreetAddress2",
         testValue: "Suite 100",
       },
-      { name: "City *", key: "businessCity", testValue: "Seattle" },
-      { name: "ZIP code *", key: "businessZip", testValue: "98101" },
+      { name: "City *", sessionStorageKey: "businessCity", testValue: "Seattle" },
+      { name: "ZIP code *", sessionStorageKey: "businessZip", testValue: "98101" },
     ];
 
     for (const addressTextInputField of addressTextInputFields) {
@@ -113,7 +117,7 @@ describe("<BusinessDetailsStep1 />", () => {
     expect(getValue("hasSameBusinessAddress", true)).toBe("false");
 
     for (const addressTextInputField of addressTextInputFields) {
-      expect(window.sessionStorage.getItem(addressTextInputField.key)).toEqual(
+      expect(window.sessionStorage.getItem(addressTextInputField.sessionStorageKey)).toEqual(
         addressTextInputField.testValue,
       );
     }

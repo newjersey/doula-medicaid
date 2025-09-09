@@ -10,13 +10,13 @@ const allInputFields: Array<InputField> = [
   {
     name: "No",
     role: "radio",
-    key: "everHadEmployeesNo",
+    sessionStorageKey: "everHadEmployeesNo",
     withinGroupName: "Have you ever had employees in your doula business? Select one *",
   },
   {
     name: "No",
     role: "radio",
-    key: "everHadOtherBusinessOwnerNo",
+    sessionStorageKey: "everHadOtherBusinessOwnerNo",
     withinGroupName:
       "Did anyone other than you ever own a percentage of your business? Select one *",
   },

@@ -6,13 +6,17 @@ import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const doulaProviderIdentificationFields = [
-  { name: "National Provider Identifier (NPI) *", key: "npiNumber", testValue: "1111111111" },
+  {
+    name: "National Provider Identifier (NPI) *",
+    sessionStorageKey: "npiNumber",
+    testValue: "1111111111",
+  },
 ];
 const otherIdentificationFields = [
-  { name: "UPIN number (optional)", key: "upinNumber", testValue: "12345" },
+  { name: "UPIN number (optional)", sessionStorageKey: "upinNumber", testValue: "12345" },
   {
     name: "Medicare provider ID (optional)",
-    key: "medicareProviderId",
+    sessionStorageKey: "medicareProviderId",
     testValue: "ABC12345",
   },
 ];
@@ -79,7 +83,9 @@ describe("<PersonalDetailsStep3 />", () => {
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       for (const textInputField of textInputFields) {
-        expect(window.sessionStorage.getItem(textInputField.key)).toEqual(textInputField.testValue);
+        expect(window.sessionStorage.getItem(textInputField.sessionStorageKey)).toEqual(
+          textInputField.testValue,
+        );
       }
 
       expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/1");
