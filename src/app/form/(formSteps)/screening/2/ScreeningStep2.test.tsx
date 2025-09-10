@@ -1,26 +1,31 @@
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/page";
 import { getValue } from "@/app/form/_utils/sessionStorage";
-import { fillAllInputsExcept, type InputField } from "@/app/form/_utils/testUtils/fillInputs";
+import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const allInputFields: Array<InputField> = [
+const allInputFields: Array<TestField> = createTestFields([
   {
     name: "No",
     role: "radio",
+    required: true,
     sessionStorageKey: "everHadEmployeesNo",
+    testValue: "false",
     withinGroupName: "Have you ever had employees in your doula business? Select one *",
   },
   {
     name: "No",
     role: "radio",
+    required: true,
     sessionStorageKey: "everHadOtherBusinessOwnerNo",
+    testValue: "false",
     withinGroupName:
       "Did anyone other than you ever own a percentage of your business? Select one *",
   },
-];
+]);
 
 describe("<ScreeningStep2 />", () => {
   const renderWithRouter = () => {

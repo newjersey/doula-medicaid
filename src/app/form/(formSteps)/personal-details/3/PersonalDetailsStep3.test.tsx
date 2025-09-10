@@ -1,25 +1,33 @@
 import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { createTestFields } from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const doulaProviderIdentificationFields = [
+const doulaProviderIdentificationFields = createTestFields([
   {
     name: "National Provider Identifier (NPI) *",
+    required: true,
     sessionStorageKey: "npiNumber",
     testValue: "1111111111",
   },
-];
-const otherIdentificationFields = [
-  { name: "UPIN number (optional)", sessionStorageKey: "upinNumber", testValue: "12345" },
+]);
+const otherIdentificationFields = createTestFields([
+  {
+    name: "UPIN number (optional)",
+    required: false,
+    sessionStorageKey: "upinNumber",
+    testValue: "12345",
+  },
   {
     name: "Medicare provider ID (optional)",
+    required: false,
     sessionStorageKey: "medicareProviderId",
     testValue: "ABC12345",
   },
-];
+]);
 
 const textInputFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
 

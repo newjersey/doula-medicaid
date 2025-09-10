@@ -113,29 +113,17 @@ describe("<PersonalDetailsStep1 />", () => {
 
     it.each(personalIdentificationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
-      async ({ name, role, sessionStorageKey }: TestField) => {
-        await testRequiredField(
-          name,
-          role,
-          sessionStorageKey,
-          allTestFields,
-          renderWithRouter,
-          screen,
-        );
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
       },
     );
 
     it.each(personalIdentificationFields.filter((field) => field.required))(
       "fills $sessionStorageKey from session storage when page is loaded",
-      async ({ name, role, sessionStorageKey, expectedValue }: TestField) => {
-        await testFillFromSessionStorage(
-          name,
-          role,
-          sessionStorageKey,
-          expectedValue,
-          renderWithRouter,
-          screen,
-        );
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
 
@@ -202,29 +190,17 @@ describe("<PersonalDetailsStep1 />", () => {
 
     it.each(contactInformationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
-      async ({ name, role, sessionStorageKey }: TestField) => {
-        await testRequiredField(
-          name,
-          role,
-          sessionStorageKey,
-          allTestFields,
-          renderWithRouter,
-          screen,
-        );
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
       },
     );
 
     it.each(contactInformationFields.filter((field) => field.required))(
       "fills $sessionStorageKey from session storage when page is loaded",
-      async ({ name, role, sessionStorageKey, expectedValue }: TestField) => {
-        await testFillFromSessionStorage(
-          name,
-          role,
-          sessionStorageKey,
-          expectedValue,
-          renderWithRouter,
-          screen,
-        );
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
 

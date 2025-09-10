@@ -68,11 +68,16 @@ const PersonalDetailsStep2 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <div>
-            <h2 className="font-heading-md">Mailing address</h2>
-            <p className="usa-hint">
-              We will send official mail here. It can be your home address.
-            </p>
-            <Fieldset legend="Mailing address" legendStyle="srOnly">
+            <Fieldset
+              legend={
+                <div>
+                  <h2 className="font-heading-md">Mailing address</h2>
+                  <p className="usa-hint">
+                    We will send official mail here. It can be your home address.
+                  </p>
+                </div>
+              }
+            >
               <div className="grid-row grid-gap">
                 <div className="mobile-lg:grid-col-6">
                   <DoulaTextInput
