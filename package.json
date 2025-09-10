@@ -43,7 +43,7 @@
     "@types/nodemailer": "7.0.1",
     "@types/react": "19.1.12",
     "@types/react-dom": "19.1.9",
-    "cypress": "15.1.0",
+    "cypress": "15.2.0",
     "eslint": "9.35.0",
     "eslint-config-next": "15.5.2",
     "eslint-import-resolver-typescript": "4.4.4",
