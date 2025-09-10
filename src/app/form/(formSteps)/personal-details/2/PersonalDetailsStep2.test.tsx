@@ -207,7 +207,7 @@ describe("<PersonalDetailsStep2 />", () => {
       },
     );
 
-    it.each(mailingAddressFields.filter((field) => field.required))(
+    it.each(mailingAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -268,7 +268,7 @@ describe("<PersonalDetailsStep2 />", () => {
       },
     );
 
-    it.each(billingAddressFields.filter((field) => field.required))(
+    it.each(billingAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars

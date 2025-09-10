@@ -119,7 +119,7 @@ describe("<PersonalDetailsStep1 />", () => {
       },
     );
 
-    it.each(personalIdentificationFields.filter((field) => field.required))(
+    it.each(personalIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -196,7 +196,7 @@ describe("<PersonalDetailsStep1 />", () => {
       },
     );
 
-    it.each(contactInformationFields.filter((field) => field.required))(
+    it.each(contactInformationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars

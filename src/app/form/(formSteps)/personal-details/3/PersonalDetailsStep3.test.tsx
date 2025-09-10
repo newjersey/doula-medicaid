@@ -1,6 +1,11 @@
-import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
-import { createTestFields } from "@/app/form/_utils/testUtils/sharedTests";
+import {
+  createTestFields,
+  type TestField,
+  testFillFromSessionStorage,
+  testRequiredField,
+  testSaveFieldsToSessionStorage,
+} from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -10,6 +15,8 @@ const doulaProviderIdentificationFields = createTestFields([
   {
     name: "National Provider Identifier (NPI) *",
     required: true,
+    alternateRequiredFieldError:
+      "To be an NJ FamilyCare doula, your need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
     sessionStorageKey: "npiNumber",
     testValue: "1111111111",
   },
@@ -29,7 +36,7 @@ const otherIdentificationFields = createTestFields([
   },
 ]);
 
-const textInputFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
+const allTestFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
 
 describe("<PersonalDetailsStep3 />", () => {
   const renderWithRouter = () => {
@@ -51,6 +58,32 @@ describe("<PersonalDetailsStep3 />", () => {
   };
 
   describe("Doula provider identification fields", () => {
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        doulaProviderIdentificationFields,
+        allTestFields,
+        renderWithRouter,
+        screen,
+        "/form/business-details/1",
+      );
+    });
+
+    it.each(doulaProviderIdentificationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+      },
+    );
+
+    it.each(doulaProviderIdentificationFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
+
     it("validates National Provider Identifier (NPI)", async () => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -84,37 +117,31 @@ describe("<PersonalDetailsStep3 />", () => {
   });
 
   describe("Other identification fields", () => {
-    it("saves form data on submit", async () => {
-      const user = userEvent.setup();
-      const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, textInputFields, new Set());
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      for (const textInputField of textInputFields) {
-        expect(window.sessionStorage.getItem(textInputField.sessionStorageKey)).toEqual(
-          textInputField.testValue,
-        );
-      }
-
-      expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/1");
-      expect(mockRouter.push).toHaveBeenCalledTimes(1);
-      expect(mockRouter.refresh).toHaveBeenCalled();
-    });
-
-    it("fills fields from session storage when page is loaded", () => {
-      window.sessionStorage.setItem("npiNumber", "1234567890");
-      window.sessionStorage.setItem("upinNumber", "12345");
-      window.sessionStorage.setItem("medicareProviderId", "ABC12345");
-      renderWithRouter();
-
-      expect(
-        screen.getByRole("textbox", { name: "National Provider Identifier (NPI) *" }),
-      ).toHaveValue("1234567890");
-      expect(screen.getByRole("textbox", { name: "UPIN number (optional)" })).toHaveValue("12345");
-      expect(screen.getByRole("textbox", { name: "Medicare provider ID (optional)" })).toHaveValue(
-        "ABC12345",
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        otherIdentificationFields,
+        allTestFields,
+        renderWithRouter,
+        screen,
+        "/form/business-details/1",
       );
     });
+
+    it.each(otherIdentificationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+      },
+    );
+
+    it.each(otherIdentificationFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
   });
 
   describe("NPI explainer", () => {
