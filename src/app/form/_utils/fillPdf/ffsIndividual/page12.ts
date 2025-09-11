@@ -1,4 +1,5 @@
-import { formatAddressLine3, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 12 - request for paper updates
@@ -22,6 +23,10 @@ export const getPage12Fields = (formData: FormData): Partial<PdfFfsIndividualPag
     "fd455aREQPAPER_Telephone Number": formData.phoneNumber ?? "",
     "fd455aREQPAPER_Mail To Address 1": formData.streetAddress1 ?? "",
     "fd455aREQPAPER_Mail To Address 2": formData.streetAddress2 ?? "",
-    "fd455aREQPAPER_Mail To Address 3": formatAddressLine3(formData),
+    "fd455aREQPAPER_Mail To Address 3": formatAddressLine3(
+      formData.city,
+      formData.state,
+      formData.zip,
+    ),
   };
 };

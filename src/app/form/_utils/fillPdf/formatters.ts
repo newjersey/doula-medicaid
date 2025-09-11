@@ -18,15 +18,3 @@ export const formatDateOfBirth = (formData: FormData): string => {
     day: "2-digit",
   });
 };
-
-export const formatAddressLine3 = (formData: FormData): string => {
-  return `${formData.city}, ${formData.state} ${formData.zip}`;
-};
-
-export const formatBusinessAddressLine3 = (formData: FormData): string => {
-  return `${formData.businessCity}, ${formData.businessState} ${formData.businessZip}`;
-};
-
-export const formatBillingAddressLine3 = (formData: FormData): string => {
-  return `${formData.billingCity}, ${formData.billingState} ${formData.billingZip}`;
-};

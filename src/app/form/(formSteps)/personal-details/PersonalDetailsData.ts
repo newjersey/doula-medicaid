@@ -49,12 +49,11 @@ export interface PersonalDetailsFormData {
   zip: string;
 
   // 2
-  hasSameBillingMailingAddress: boolean;
-  billingStreetAddress1: string | null;
+  billingStreetAddress1: string;
   billingStreetAddress2: string | null;
-  billingCity: string | null;
-  billingState: AddressState | null;
-  billingZip: string | null;
+  billingCity: string;
+  billingState: AddressState;
+  billingZip: string;
 
   // 3
   npiNumber: string;
@@ -93,22 +92,19 @@ const getPersonalDetails2FormData = () => {
     city: getValue("city", true),
     state: getAddressState("state", true),
     zip: getValue("zip", true),
-    hasSameBillingMailingAddress: hasSameBillingMailingAddress,
     billingStreetAddress1: hasSameBillingMailingAddress
       ? getValue("streetAddress1", true)
-      : getValue("billingStreetAddress1", false),
+      : getValue("billingStreetAddress1", true),
     billingStreetAddress2: hasSameBillingMailingAddress
       ? getValue("streetAddress2", false)
       : getValue("billingStreetAddress2", false),
     billingCity: hasSameBillingMailingAddress
       ? getValue("city", true)
-      : getValue("billingCity", false),
+      : getValue("billingCity", true),
     billingState: hasSameBillingMailingAddress
       ? getAddressState("state", true)
-      : getAddressState("billingState", false),
-    billingZip: hasSameBillingMailingAddress
-      ? getValue("zip", true)
-      : getValue("billingZip", false),
+      : getAddressState("billingState", true),
+    billingZip: hasSameBillingMailingAddress ? getValue("zip", true) : getValue("billingZip", true),
   };
 };
 

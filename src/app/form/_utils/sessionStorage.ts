@@ -5,7 +5,10 @@ import type {
 } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingData } from "@/app/form/(formSteps)/training/TrainingData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
-import type { BusinessDetails1Data } from "@form/(formSteps)/business-details/BusinessDetailsData";
+import type {
+  BusinessAddressSameAsOtherAddressOptions,
+  BusinessDetails1Data,
+} from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
   PersonalDetails2Data,
@@ -81,4 +84,22 @@ export function getAddressState(key: SessionStorageKey, required: boolean): Addr
     return AddressState[value as keyof typeof AddressState];
   }
   throw new Error(`Invalid AddressState value: ${key}, ${value}`);
+}
+
+export function getBusinessAddressSameAsOtherAddress(
+  required: true,
+): BusinessAddressSameAsOtherAddressOptions;
+export function getBusinessAddressSameAsOtherAddress(
+  required: false,
+): BusinessAddressSameAsOtherAddressOptions | null;
+export function getBusinessAddressSameAsOtherAddress(
+  required: boolean,
+): BusinessAddressSameAsOtherAddressOptions | null;
+export function getBusinessAddressSameAsOtherAddress(
+  required: boolean,
+): BusinessAddressSameAsOtherAddressOptions | null {
+  const value = getValue("businessAddressSameAsOtherAddress", required);
+  if (value === null) return "";
+  if (value === "mailing" || value === "billing" || value === "different") return value;
+  throw new Error(`Invalid value for businessAddressSameAsOtherAddress: ${value}`);
 }

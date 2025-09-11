@@ -230,7 +230,7 @@ describe("error summary", () => {
   it.each(doulaTestFormFields)(
     "clicking on the $name error focuses on the input",
     async ({ name }) => {
-      const labelWithoutAsterisk = name.replace(" *", "");
+      const labelWithoutAsterisk = name.toString().replace(" *", "");
       const user = userEvent.setup();
       renderWithRouter(true);
       await user.click(screen.getByRole("button", { name: "Next" }));

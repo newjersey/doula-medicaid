@@ -35,18 +35,16 @@ const testFormData: FormData = {
   city: "Default city",
   state: AddressState.NJ,
   zip: "08000",
-  hasSameBillingMailingAddress: true,
-  billingStreetAddress1: null,
+  billingStreetAddress1: "Default billing street 1",
   billingStreetAddress2: null,
-  billingCity: null,
-  billingState: null,
-  billingZip: null,
-  hasSameBusinessAddress: true,
-  businessStreetAddress1: null,
+  billingCity: "Default billing city",
+  billingState: AddressState.NJ,
+  billingZip: "08000",
+  businessStreetAddress1: "Default business street 1",
   businessStreetAddress2: null,
-  businessCity: null,
-  businessState: null,
-  businessZip: null,
+  businessCity: "Default business city",
+  businessState: AddressState.NJ,
+  businessZip: "08000",
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
@@ -54,12 +52,14 @@ export const generateFormData = (formDataOverrides: Partial<FormData>): FormData
 };
 
 export const setRequiredFieldsInSessionStorage = () => {
+  // Screening
   window.sessionStorage.setItem("isSoleProprietor", "true");
   window.sessionStorage.setItem("everHadEmployees", "false");
   window.sessionStorage.setItem("everHadOtherBusinessOwner", "false");
   window.sessionStorage.setItem("haveOtherBusinessOwnerNextYear", "false");
   window.sessionStorage.setItem("hadDhmasBusiness", "false");
 
+  // Personal details
   for (const [key, value] of Object.entries(testFormData)) {
     if (key === "dateOfBirth") {
       window.sessionStorage.setItem("dateOfBirthDay", testDateOfBirthDay);
@@ -69,6 +69,10 @@ export const setRequiredFieldsInSessionStorage = () => {
       window.sessionStorage.setItem(key as SessionStorageKey, value.toString());
     }
   }
+  window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
+
+  // Business details
+  window.sessionStorage.setItem("businessAddressSameAsOtherAddress", "different");
 };
 
 export const setInSessionStorage = (

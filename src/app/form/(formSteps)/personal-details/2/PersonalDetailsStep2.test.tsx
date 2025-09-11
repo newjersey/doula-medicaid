@@ -291,7 +291,7 @@ describe("<PersonalDetailsStep2 />", () => {
       },
     );
 
-    it("shows/hides billing address fields based on user response", async () => {
+    it("shows/hides billing address fields based on hasSameBillingMailingAddress question and persists when toggled", async () => {
       const user = userEvent.setup();
       renderWithRouter();
       await clickSameBillingMailingAddressNo();
