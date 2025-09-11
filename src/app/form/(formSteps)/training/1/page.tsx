@@ -138,8 +138,8 @@ const TrainingStep1 = () => {
                 value: "false",
               },
             ]}
-            register={register}
             errors={errors}
+            register={register}
           />
 
           {isDoulaTrainingInPerson === "true" && (

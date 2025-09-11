@@ -43,7 +43,38 @@ describe("DoulaRadio", () => {
     }
   });
 
-  it("check the appropriate radio option if one is selected", () => {
+  it("renders a group with element radio options", () => {
+    render(
+      <DoulaRadio
+        name="testRadio"
+        value=""
+        label="What option do you choose?"
+        options={[
+          {
+            label: (
+              <div>
+                <div>Mailing address</div>
+                <div>55 Cherry St</div>
+              </div>
+            ),
+            value: "option1",
+          },
+          {
+            label: "Option 2",
+            value: "option2",
+          },
+        ]}
+        register={jest.fn()}
+      />,
+    );
+    const group = screen.getByRole("group", { name: "What option do you choose? Select one" });
+    expect(
+      within(group).getByRole("radio", { name: "Mailing address 55 Cherry St" }),
+    ).toBeInTheDocument();
+    expect(within(group).getByRole("radio", { name: "Option 2" })).toBeInTheDocument();
+  });
+
+  it("checks the appropriate radio option if one is selected", () => {
     render(
       <DoulaRadio
         name="testRadio"

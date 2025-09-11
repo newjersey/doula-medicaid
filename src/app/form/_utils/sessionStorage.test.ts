@@ -2,6 +2,7 @@ import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import {
   getAddressState,
   getBoolean,
+  getBusinessAddressSameAsOtherAddress,
   getDefaultBoolean,
   getValue,
 } from "@/app/form/_utils/sessionStorage";
@@ -89,6 +90,31 @@ describe("getAddressState", () => {
     );
     expect(() => getAddressState("state", false)).toThrow(
       "Invalid AddressState value: state, not a state",
+    );
+  });
+});
+
+describe("getBusinessAddressSameAsOtherAddress", () => {
+  it.each([["mailing"], ["billing"], ["different"]])(
+    "returns the value in session storage if the value is $1",
+    (value) => {
+      window.sessionStorage.setItem("businessAddressSameAsOtherAddress", value);
+      expect(getBusinessAddressSameAsOtherAddress(true)).toEqual(value);
+      expect(getBusinessAddressSameAsOtherAddress(false)).toEqual(value);
+    },
+  );
+
+  it("returns an empty string if required is false and the key is not present", () => {
+    expect(getBusinessAddressSameAsOtherAddress(false)).toEqual("");
+  });
+
+  it("throws an error if the value is not valid", () => {
+    window.sessionStorage.setItem("businessAddressSameAsOtherAddress", "invalid");
+    expect(() => getBusinessAddressSameAsOtherAddress(true)).toThrow(
+      "Invalid value for businessAddressSameAsOtherAddress: invalid",
+    );
+    expect(() => getBusinessAddressSameAsOtherAddress(false)).toThrow(
+      "Invalid value for businessAddressSameAsOtherAddress: invalid",
     );
   });
 });

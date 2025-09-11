@@ -53,44 +53,8 @@ describe("Page 16 - disclosure of ownership and control interest statement", () 
 
       const testCases = [
         {
-          description:
-            "business address is the same as mailing address and there is streetAddress2",
+          description: "has streetAddress2",
           formData: {
-            streetAddress1: "123 Main St",
-            streetAddress2: "Apt 4B",
-            city: "Trenton",
-            state: AddressState.NJ,
-            zip: "11111",
-            hasSameBusinessAddress: true,
-          },
-          expectedLine1Key: "123 Main St",
-          expectedLine2Key: "Apt 4B",
-          expectedLine3Key: "Trenton, NJ 11111",
-        },
-        {
-          description:
-            "business address is the same as mailing address and there is no streetAddress2",
-          formData: {
-            streetAddress1: "123 Main St",
-            city: "Trenton",
-            state: AddressState.NJ,
-            zip: "11111",
-            hasSameBusinessAddress: true,
-          },
-          expectedLine1Key: "123 Main St",
-          expectedLine2Key: "",
-          expectedLine3Key: "Trenton, NJ 11111",
-        },
-        {
-          description:
-            "business address different from mailing address and there is streetAddress2",
-          formData: {
-            streetAddress1: "123 Main St",
-            streetAddress2: "Apt 4B",
-            city: "Trenton",
-            state: AddressState.NJ,
-            zip: "11111",
-            hasSameBusinessAddress: false,
             businessStreetAddress1: "456 Test St",
             businessStreetAddress2: "Suite Test",
             businessCity: "Newark",
@@ -102,15 +66,8 @@ describe("Page 16 - disclosure of ownership and control interest statement", () 
           expectedLine3Key: "Newark, NJ 22222",
         },
         {
-          description:
-            "business address different from mailing address and there is no streetAddress2",
+          description: "no streetAddress2",
           formData: {
-            streetAddress1: "123 Main St",
-            streetAddress2: "Apt 4B",
-            city: "Trenton",
-            state: AddressState.NJ,
-            zip: "11111",
-            hasSameBusinessAddress: false,
             businessStreetAddress1: "456 Test St",
             businessCity: "Newark",
             businessState: AddressState.NJ,

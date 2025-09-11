@@ -14,7 +14,7 @@ import type {
 } from "react-hook-form";
 
 export interface DoulaRadioOption<T extends FieldValues> {
-  label: string;
+  label: React.ReactNode;
   value: string;
   additionalRegisterOptions?: RegisterOptions<T>;
 }

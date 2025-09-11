@@ -1,17 +1,120 @@
+import { setInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import {
+  createTestFields,
+  testFillFromSessionStorage,
+  testRequiredField,
+  testSaveFieldsToSessionStorage,
+  type TestField,
+} from "@/app/form/_utils/testUtils/sharedTests";
 import BusinessDetails1 from "@form/(formSteps)/business-details/1/page";
-import { getValue } from "@form/_utils/sessionStorage";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
+const businessAddressQuestion = "What is your business address?";
+
+const mailingBusinessAddressSameAsOtherAddress: TestField = {
+  name: /Mailing address/i,
+  sessionStorageKey: "businessAddressSameAsOtherAddress",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "mailing",
+  expectedValue: "mailing",
+};
+const billingBusinessAddressSameAsOtherAddress: TestField = {
+  name: /Billing address/i,
+  sessionStorageKey: "businessAddressSameAsOtherAddress",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "billing",
+  expectedValue: "billing",
+};
+const differentBusinessAddressSameAsOtherAddress: TestField = {
+  name: "I wish to enter a new address",
+  sessionStorageKey: "businessAddressSameAsOtherAddress",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "different",
+  expectedValue: "different",
+};
+
+const businessAddressFields = createTestFields([
+  {
+    name: "Street address *",
+    sessionStorageKey: "businessStreetAddress1",
+    required: true,
+    testValue: "Test address 1",
+    withinGroupName: businessAddressQuestion,
+    prerequisiteField: differentBusinessAddressSameAsOtherAddress,
+  },
+  {
+    name: "Street address line 2",
+    sessionStorageKey: "businessStreetAddress2",
+    required: false,
+    testValue: "Test address 2",
+    withinGroupName: businessAddressQuestion,
+    prerequisiteField: differentBusinessAddressSameAsOtherAddress,
+  },
+  {
+    name: "City *",
+    sessionStorageKey: "businessCity",
+    required: true,
+    testValue: "Test city",
+    withinGroupName: businessAddressQuestion,
+    prerequisiteField: differentBusinessAddressSameAsOtherAddress,
+  },
+  {
+    name: "State *",
+    sessionStorageKey: "businessState",
+    required: false,
+    role: "combobox",
+    testValue: "PA",
+    withinGroupName: businessAddressQuestion,
+    prerequisiteField: differentBusinessAddressSameAsOtherAddress,
+  },
+  {
+    name: "ZIP code *",
+    sessionStorageKey: "businessZip",
+    required: true,
+    testValue: "12345",
+    withinGroupName: businessAddressQuestion,
+    prerequisiteField: differentBusinessAddressSameAsOtherAddress,
+  },
+]);
+
+const minimalTestFields = [mailingBusinessAddressSameAsOtherAddress];
+const allTestFields = [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields];
+
+const setMailingAddressInSessionStorage = () => {
+  setInSessionStorage({
+    streetAddress1: "123 Main St",
+    streetAddress2: "Apt 4B",
+    city: "Trenton",
+    state: "NJ",
+    zip: "10001",
+  });
+};
+const setBillingAddressInSessionStorage = () => {
+  setInSessionStorage({
+    hasSameBillingMailingAddress: "false",
+    billingStreetAddress1: "400 Billing St",
+    billingStreetAddress2: "Unit 4",
+    billingCity: "New York",
+    billingState: "NY",
+    billingZip: "22222",
+  });
+};
+
 describe("<BusinessDetailsStep1 />", () => {
   const renderWithRouter = () => {
-    const mockPush = jest.fn();
-    const mockRefresh = jest.fn();
     const mockRouter: Partial<AppRouterInstance> = {
-      push: mockPush,
-      refresh: mockRefresh,
+      push: jest.fn(),
+      refresh: jest.fn(),
     };
     render(
       <RouterPathnameProvider
@@ -24,122 +127,216 @@ describe("<BusinessDetailsStep1 />", () => {
     return mockRouter;
   };
 
-  const getYesSameAddressButton = () => {
-    const separateAddressGroup = screen.getByRole("group", {
-      name: "Is your business address the same as your residential and billing address? Select one *",
-    });
-    const getYesSeparateAddressButton = within(separateAddressGroup).getByRole("radio", {
-      name: "Yes",
-    });
-    return getYesSeparateAddressButton;
-  };
+  describe("Sole proprietor explainer", () => {
+    it("orders the sole proprietor explainer immediately after the sole proprietor content", async () => {
+      const user = userEvent.setup();
+      setMailingAddressInSessionStorage();
+      renderWithRouter();
 
-  const getNoSameAddressButton = () => {
-    const separateAddressGroup = screen.getByRole("group", {
-      name: "Is your business address the same as your residential and billing address? Select one *",
-    });
-    const getNoSeparateAddressButton = within(separateAddressGroup).getByRole("radio", {
-      name: "No",
-    });
-    return getNoSeparateAddressButton;
-  };
-
-  const clickNoSameAddressButton = async () => {
-    const user = userEvent.setup();
-    const noSameAddressButton = getNoSameAddressButton();
-    await user.click(noSameAddressButton);
-    return { user, noSameAddressButton };
-  };
-
-  it("prompts to fill in the separate business address when user selects yes for separate business address", async () => {
-    renderWithRouter();
-    const businessAddressInput = screen.getByRole("heading", {
-      name: "Business address",
-    });
-    // TODO: JOHN ADD the business address input fields
-    expect(businessAddressInput).toBeInTheDocument();
-  });
-
-  it("saves hasSameBusinessAddress as true when user selects yes for same business address and submits", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-
-    const yesSameAddressButton = getYesSameAddressButton();
-    await user.click(yesSameAddressButton);
-    expect(yesSameAddressButton).toBeChecked();
-
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    expect(getValue("hasSameBusinessAddress", true)).toBe("true");
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/2");
-    expect(mockRouter.refresh).toHaveBeenCalled();
-  });
-
-  it("updates business address fields when user clicks the next button", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-
-    await clickNoSameAddressButton();
-
-    const addressTextInputFields = [
-      {
-        name: "Street address *",
-        sessionStorageKey: "businessStreetAddress1",
-        testValue: "123 Business Rd",
-      },
-      {
-        name: "Street address line 2",
-        sessionStorageKey: "businessStreetAddress2",
-        testValue: "Suite 100",
-      },
-      { name: "City *", sessionStorageKey: "businessCity", testValue: "Seattle" },
-      { name: "ZIP code *", sessionStorageKey: "businessZip", testValue: "98101" },
-    ];
-
-    for (const addressTextInputField of addressTextInputFields) {
-      const input = screen.getByRole("textbox", {
-        name: addressTextInputField.name,
+      const soleProprietorHeading = screen.getByRole("heading", {
+        name: "You verified that you manage your business as an individual doula operating as a Sole Proprietor.",
+        level: 2,
       });
-      await user.type(input, addressTextInputField.testValue);
-      expect(input).toHaveValue(addressTextInputField.testValue);
-    }
+      await user.click(soleProprietorHeading);
+      await user.tab();
+      expect(
+        screen.getByRole("link", { name: "Medicaid Fee-for-Service application" }),
+      ).toHaveFocus();
 
-    const combobox = screen.getByRole("combobox", {
-      name: "State *",
+      await user.tab();
+      const soleProprietorExplainer = screen.getByRole("button", {
+        name: "What is a Sole Proprietorship business type?",
+      });
+      expect(soleProprietorExplainer).toHaveFocus();
     });
-    expect(combobox).toHaveValue("NJ");
-    await user.selectOptions(combobox, "PA");
-    expect(combobox).toHaveValue("PA");
 
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    expect(getValue("hasSameBusinessAddress", true)).toBe("false");
-
-    for (const addressTextInputField of addressTextInputFields) {
-      expect(window.sessionStorage.getItem(addressTextInputField.sessionStorageKey)).toEqual(
-        addressTextInputField.testValue,
-      );
-    }
-    expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/2");
-    expect(mockRouter.refresh).toHaveBeenCalled();
+    it("has a heading level one greater than the section heading level", () => {
+      setMailingAddressInSessionStorage();
+      renderWithRouter();
+      const sectionHeadingLevel = 2;
+      const soleProprietorHeading = screen.getByRole("heading", {
+        name: "You verified that you manage your business as an individual doula operating as a Sole Proprietor.",
+        level: sectionHeadingLevel,
+      });
+      expect(soleProprietorHeading).toBeInTheDocument();
+      const soleProprietorExplainer = screen.getByRole("heading", {
+        name: "What is a Sole Proprietorship business type?",
+        level: sectionHeadingLevel + 1,
+      });
+      expect(soleProprietorExplainer).toBeInTheDocument();
+    });
   });
 
-  it.each([
-    { label: "Street address *", role: "textbox" },
-    { label: "City *", role: "textbox" },
-    { label: "ZIP code *", role: "textbox" },
-    { label: "State *", role: "combobox" },
-  ])("input is marked as required", async ({ label, role }) => {
-    renderWithRouter();
+  describe("business address fields", () => {
+    describe("saves fields to session storage on submit", () => {
+      it("when the business address is the same as mailing address", async () => {
+        setMailingAddressInSessionStorage();
+        await testSaveFieldsToSessionStorage(
+          [mailingBusinessAddressSameAsOtherAddress],
+          minimalTestFields,
+          renderWithRouter,
+          screen,
+          "/form/business-details/2",
+        );
+      });
 
-    await clickNoSameAddressButton();
+      it("when the business address is the same as billing address", async () => {
+        setMailingAddressInSessionStorage();
+        setBillingAddressInSessionStorage();
+        await testSaveFieldsToSessionStorage(
+          [billingBusinessAddressSameAsOtherAddress],
+          [billingBusinessAddressSameAsOtherAddress],
+          renderWithRouter,
+          screen,
+          "/form/business-details/2",
+        );
+      });
 
-    const field = screen.getByRole(role, {
-      name: label,
+      it("when the business address is different", async () => {
+        setMailingAddressInSessionStorage();
+        await testSaveFieldsToSessionStorage(
+          [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields],
+          allTestFields,
+          renderWithRouter,
+          screen,
+          "/form/business-details/2",
+        );
+      });
     });
 
-    expect(field).toBeRequired();
+    describe("marks fields as required and displays an error message", () => {
+      it("when businessAddressSameAsOtherAddress it is not filled in", async () => {
+        setMailingAddressInSessionStorage();
+        await testRequiredField(
+          mailingBusinessAddressSameAsOtherAddress,
+          minimalTestFields,
+          renderWithRouter,
+          screen,
+        );
+      });
+
+      it.each(businessAddressFields.filter((field) => field.required === true))(
+        "when business address is different and $sessionStorageKey is not filled in",
+        async (field) => {
+          setMailingAddressInSessionStorage();
+          await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        },
+      );
+    });
+
+    it.each([mailingBusinessAddressSameAsOtherAddress, ...businessAddressFields])(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field) => {
+        setMailingAddressInSessionStorage();
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
+
+    describe("address options", () => {
+      it("shows mailing and different address options when hasSameBillingMailingAddress is true", () => {
+        setInSessionStorage({
+          streetAddress1: "123 Main St",
+          streetAddress2: "Apt 4B",
+          city: "Trenton",
+          state: "NJ",
+          zip: "10001",
+          hasSameBillingMailingAddress: "true",
+        });
+        renderWithRouter();
+        const questionGroup = screen.getByRole("group", {
+          name: "Is your business address the same as a previous address? Select one *",
+        });
+        expect(within(questionGroup).getAllByRole("radio").length).toEqual(2);
+        expect(
+          within(questionGroup).getByRole("radio", {
+            name: "Mailing address: 123 Main St Apt 4B Trenton, NJ 10001",
+          }),
+        ).toBeInTheDocument();
+        expect(
+          within(questionGroup).queryByRole("radio", {
+            name: /Billing address/i,
+          }),
+        ).not.toBeInTheDocument();
+        expect(
+          within(questionGroup).getByRole("radio", {
+            name: "I wish to enter a new address",
+          }),
+        ).toBeInTheDocument();
+      });
+
+      it("shows billing address option when hasSameBillingMailingAddress is false", () => {
+        setMailingAddressInSessionStorage();
+        setBillingAddressInSessionStorage();
+        renderWithRouter();
+        const questionGroup = screen.getByRole("group", {
+          name: "Is your business address the same as a previous address? Select one *",
+        });
+        expect(within(questionGroup).getAllByRole("radio").length).toEqual(3);
+        expect(
+          within(questionGroup).getByRole("radio", {
+            name: /Mailing address/i,
+          }),
+        ).toBeInTheDocument();
+        expect(
+          within(questionGroup).getByRole("radio", {
+            name: "Billing address: 400 Billing St Unit 4 New York, NY 22222",
+          }),
+        ).toBeInTheDocument();
+        expect(
+          within(questionGroup).getByRole("radio", {
+            name: "I wish to enter a new address",
+          }),
+        ).toBeInTheDocument();
+      });
+    });
+
+    it("shows/hides business address fields based on businessAddressSameAsOtherAddress question and persists when toggled", async () => {
+      const user = userEvent.setup();
+      setMailingAddressInSessionStorage();
+      renderWithRouter();
+
+      const questionGroup = screen.getByRole("group", {
+        name: "Is your business address the same as a previous address? Select one *",
+      });
+      await user.click(
+        within(questionGroup).getByRole("radio", {
+          name: "I wish to enter a new address",
+        }),
+      );
+      expect(screen.getByText("What is your business address?")).toBeInTheDocument();
+
+      const addressTextInputFields = [
+        { name: "Street address *", testValue: "123 Business Rd" },
+        {
+          name: "Street address line 2",
+          testValue: "Suite 100",
+        },
+        { name: "City *", testValue: "Newark" },
+        { name: "ZIP code *", testValue: "22222" },
+      ];
+      for (const addressTextInputField of addressTextInputFields) {
+        const input = screen.getByRole("textbox", {
+          name: addressTextInputField.name,
+        });
+        await user.type(input, addressTextInputField.testValue);
+      }
+
+      await user.click(
+        within(questionGroup).getByRole("radio", {
+          name: /Mailing address/i,
+        }),
+      );
+      expect(screen.queryByText("What is your business address?")).not.toBeInTheDocument();
+
+      await user.click(
+        within(questionGroup).getByRole("radio", {
+          name: "I wish to enter a new address",
+        }),
+      );
+      for (const field of addressTextInputFields) {
+        const input = await getInputField(screen, field);
+        expect(input).toHaveValue(field.testValue);
+      }
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { formatBillingAddressLine3 } from "@/app/form/_utils/fillPdf/formatters";
+import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 5 - authorization agreement for automated deposits of state payments
@@ -32,6 +32,10 @@ export const getPage5Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     fd443npino: formData.npiNumber ?? "",
     fd443paytoaddressline1: formData.billingStreetAddress1 ?? "",
     fd443paytoaddressline2: formData.billingStreetAddress2 ?? "",
-    fd443paytoaddressline3: formatBillingAddressLine3(formData),
+    fd443paytoaddressline3: formatAddressLine3(
+      formData.billingCity,
+      formData.billingState,
+      formData.billingZip,
+    ),
   };
 };

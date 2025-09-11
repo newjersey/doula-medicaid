@@ -2,7 +2,7 @@
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import SoleProprietorExplainer from "@/app/form/(formSteps)/screening/1/SoleProprietorExplainer";
+import SoleProprietorExplainer from "@/app/form/(formSteps)/components/SoleProprietorExplainer";
 import type { Screening1Data } from "@/app/form/(formSteps)/screening/ScreeningData";
 import { getDefaultBoolean } from "@/app/form/_utils/sessionStorage";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
@@ -35,8 +35,11 @@ const ScreeningStep1 = () => {
         <div className="desktop:grid-col-8">
           <h2 className="font-heading-md">This beta site is currently for Sole Proprietors</h2>
           <p className="usa-hint">
-            If you have an LLC or another business type, use the standard Medicaid Fee-for-Service
-            application.
+            If you have an LLC or another business type, use the standard{" "}
+            <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+              Medicaid Fee-for-Service application
+            </a>
+            .
           </p>
           <DoulaYesNoRadio
             name="isSoleProprietor"

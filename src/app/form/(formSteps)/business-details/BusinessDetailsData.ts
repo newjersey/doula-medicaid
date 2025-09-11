@@ -1,8 +1,14 @@
 import { type AddressState } from "@/app/form/_utils/inputFields/enums";
-import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/sessionStorage";
+import {
+  getAddressState,
+  getBusinessAddressSameAsOtherAddress,
+  getValue,
+} from "@/app/form/_utils/sessionStorage";
+
+export type BusinessAddressSameAsOtherAddressOptions = "mailing" | "billing" | "different" | "";
 
 export interface BusinessDetails1Data {
-  hasSameBusinessAddress: "true" | "false" | "";
+  businessAddressSameAsOtherAddress: BusinessAddressSameAsOtherAddressOptions;
   businessStreetAddress1: string;
   businessStreetAddress2: string;
   businessCity: string;
@@ -11,25 +17,47 @@ export interface BusinessDetails1Data {
 }
 
 export interface BusinessDetailsFormData {
-  hasSameBusinessAddress: boolean;
-  businessStreetAddress1: string | null;
+  businessStreetAddress1: string;
   businessStreetAddress2: string | null;
-  businessCity: string | null;
-  businessState: AddressState | null;
-  businessZip: string | null;
+  businessCity: string;
+  businessState: AddressState;
+  businessZip: string;
 }
 
 const getBusinessDetails1Data = () => {
-  return {
-    hasSameBusinessAddress: getBoolean("hasSameBusinessAddress", true),
-    businessStreetAddress1: getValue("businessStreetAddress1", false),
-    businessStreetAddress2: getValue("businessStreetAddress2", false),
-    businessCity: getValue("businessCity", false),
-    businessState: getAddressState("businessState", false),
-    businessZip: getValue("businessZip", false),
-  };
+  const businessAddressSameAsOtherAddress = getBusinessAddressSameAsOtherAddress(true);
+  switch (businessAddressSameAsOtherAddress) {
+    case "mailing":
+      return {
+        businessStreetAddress1: getValue("streetAddress1", true),
+        businessStreetAddress2: getValue("streetAddress2", false),
+        businessCity: getValue("city", true),
+        businessState: getAddressState("state", true),
+        businessZip: getValue("zip", true),
+      };
+    case "billing":
+      return {
+        businessStreetAddress1: getValue("billingStreetAddress1", true),
+        businessStreetAddress2: getValue("billingStreetAddress2", false),
+        businessCity: getValue("billingCity", true),
+        businessState: getAddressState("billingState", true),
+        businessZip: getValue("billingZip", true),
+      };
+    case "different":
+      return {
+        businessStreetAddress1: getValue("businessStreetAddress1", true),
+        businessStreetAddress2: getValue("businessStreetAddress2", false),
+        businessCity: getValue("businessCity", true),
+        businessState: getAddressState("businessState", true),
+        businessZip: getValue("businessZip", true),
+      };
+    default:
+      throw new Error(
+        `Unexpected logic path, businessAddressSameAsOtherAddress: ${businessAddressSameAsOtherAddress}`,
+      );
+  }
 };
 
-export const getBusinessDetailsData = (): BusinessDetailsFormData => {
+export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
   return { ...getBusinessDetails1Data() };
 };

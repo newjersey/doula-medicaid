@@ -1,5 +1,5 @@
 import {
-  getBusinessDetailsData,
+  getBusinessDetailsFormData,
   type BusinessDetailsFormData,
 } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import {
@@ -35,7 +35,7 @@ export const getFormData = (): FormData => {
     ...getScreeningFormData(),
     ...getTrainingFormData(),
     ...getPersonalDetailsFormData(),
-    ...getBusinessDetailsData(),
+    ...getBusinessDetailsFormData(),
   };
 };
 

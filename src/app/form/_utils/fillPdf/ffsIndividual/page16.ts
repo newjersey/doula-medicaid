@@ -1,9 +1,6 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
-import {
-  formatAddressLine3,
-  formatBusinessAddressLine3,
-  formatName,
-} from "@/app/form/_utils/fillPdf/formatters";
+import { formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 16 - disclosure of ownership and control interest statement
@@ -32,7 +29,7 @@ export interface PdfFfsIndividualPage16 {
 
 export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPage16> => {
   if (formData.isSupportedSoleProprietor === true) {
-    const commonFields = {
+    return {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber ?? "",
@@ -40,23 +37,14 @@ export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPag
       fd452einorothertaxidnumber: formData.socialSecurityNumber ?? "",
       fd452ownershipoffivepercentormoreno: true,
       fd452convictedofcrimeno: true,
+      fd452businessstreetline1: formData.businessStreetAddress1,
+      fd452businessstreetline2: formData.businessStreetAddress2 ?? "",
+      fd452businessstreetline3: formatAddressLine3(
+        formData.businessCity,
+        formData.businessState,
+        formData.businessZip,
+      ),
     };
-
-    if (formData.hasSameBusinessAddress === true) {
-      return {
-        ...commonFields,
-        fd452businessstreetline1: formData.streetAddress1,
-        fd452businessstreetline2: formData.streetAddress2 ?? "",
-        fd452businessstreetline3: formatAddressLine3(formData),
-      };
-    } else if (formData.hasSameBusinessAddress === false) {
-      return {
-        ...commonFields,
-        fd452businessstreetline1: formData.businessStreetAddress1 ?? "",
-        fd452businessstreetline2: formData.businessStreetAddress2 ?? "",
-        fd452businessstreetline3: formatBusinessAddressLine3(formData),
-      };
-    }
   }
   throw new UnexpectedFormDataError(
     `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,

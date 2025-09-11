@@ -10,7 +10,7 @@ import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface TestFieldParameters {
-  name: string;
+  name: string | RegExp;
   sessionStorageKey: string;
   required: boolean;
   testValue: string;
@@ -22,7 +22,7 @@ interface TestFieldParameters {
 }
 
 export interface TestField {
-  name: string;
+  name: string | RegExp;
   sessionStorageKey: string;
   required: boolean;
   testValue: string;
@@ -44,7 +44,8 @@ export const createTestFields = (fields: Array<TestFieldParameters>): Array<Test
       expectedValue: field.expectedValue ?? field.testValue,
       role: field.role ?? "textbox",
       requiredErrorMessage:
-        field.alternateRequiredFieldError ?? `${field.name.replace(" *", "")} is required`,
+        field.alternateRequiredFieldError ??
+        `${field.name.toString().replace(" *", "")} is required`,
       withinGroupName: field.withinGroupName ?? undefined,
       prerequisiteField: field.prerequisiteField ?? undefined,
     });
