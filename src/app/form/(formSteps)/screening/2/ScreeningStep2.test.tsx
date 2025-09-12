@@ -1,26 +1,31 @@
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/page";
 import { getValue } from "@/app/form/_utils/sessionStorage";
-import { fillAllInputsExcept, type InputField } from "@/app/form/_utils/testUtils/fillInputs";
+import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const allInputFields: Array<InputField> = [
+const allTestFields: Array<TestField> = createTestFields([
   {
     name: "No",
     role: "radio",
-    key: "everHadEmployeesNo",
+    required: true,
+    sessionStorageKey: "everHadEmployeesNo",
+    testValue: "false",
     withinGroupName: "Have you ever had employees in your doula business? Select one *",
   },
   {
     name: "No",
     role: "radio",
-    key: "everHadOtherBusinessOwnerNo",
+    required: true,
+    sessionStorageKey: "everHadOtherBusinessOwnerNo",
+    testValue: "false",
     withinGroupName:
       "Did anyone other than you ever own a percentage of your business? Select one *",
   },
-];
+]);
 
 describe("<ScreeningStep2 />", () => {
   const renderWithRouter = () => {
@@ -49,7 +54,7 @@ describe("<ScreeningStep2 />", () => {
     it(`saves ${sessionStorageKey} as false when user selects no and clicks Next`, async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allInputFields, new Set([`${sessionStorageKey}No`]));
+      await fillAllInputsExcept(screen, user, allTestFields, new Set([`${sessionStorageKey}No`]));
 
       const questionGroup = screen.getByRole("group", {
         name: `${question} Select one *`,
@@ -70,7 +75,7 @@ describe("<ScreeningStep2 />", () => {
     it("shows an error message when user selects yes and clicks Next", async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allInputFields, new Set([`${sessionStorageKey}No`]));
+      await fillAllInputsExcept(screen, user, allTestFields, new Set([`${sessionStorageKey}No`]));
 
       const questionGroup = screen.getByRole("group", {
         name: `${question} Select one *`,

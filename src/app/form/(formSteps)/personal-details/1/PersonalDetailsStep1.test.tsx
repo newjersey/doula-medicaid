@@ -1,52 +1,85 @@
-import {
-  fillAllInputsExcept,
-  getInputField,
-  type InputField,
-} from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import {
+  createTestFields,
+  type TestField,
+  testFillFromSessionStorage,
+  testRequiredField,
+  testSaveFieldsToSessionStorage,
+} from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const textInputFields = [
-  { name: "First name *", key: "firstName", testValue: "Test first name" },
-  { name: "Middle name", key: "middleName", testValue: "Test middle name" },
-  { name: "Last name *", key: "lastName", testValue: "Test last name" },
-  { name: "Day *", key: "dateOfBirthDay", testValue: "6" },
-  { name: "Year *", key: "dateOfBirthYear", testValue: "1988" },
-  { name: "Email address *", key: "email", testValue: "test@test.com" },
+const personalIdentificationFields: Array<TestField> = createTestFields([
+  {
+    name: "First name *",
+    sessionStorageKey: "firstName",
+    required: true,
+    testValue: "Test first name",
+  },
+  {
+    name: "Middle name",
+    sessionStorageKey: "middleName",
+    required: false,
+    testValue: "Test middle name",
+  },
+  {
+    name: "Last name *",
+    sessionStorageKey: "lastName",
+    required: true,
+    testValue: "Test last name",
+  },
+  {
+    name: "Day *",
+    sessionStorageKey: "dateOfBirthDay",
+    required: true,
+    testValue: "6",
+  },
+  {
+    name: "Month *",
+    sessionStorageKey: "dateOfBirthMonth",
+    required: true,
+    testValue: "07 - July",
+    expectedValue: "7",
+    role: "combobox",
+  },
+  {
+    name: "Year *",
+    sessionStorageKey: "dateOfBirthYear",
+    required: true,
+    testValue: "1988",
+  },
   {
     name: "Social security number *",
-    key: "socialSecurityNumber",
+    sessionStorageKey: "socialSecurityNumber",
+    required: true,
     testValue: "123456789",
     expectedValue: "123-45-6789",
+    role: "textbox",
+  },
+]);
+
+const contactInformationFields: Array<TestField> = createTestFields([
+  {
+    name: "Email address *",
+    sessionStorageKey: "email",
+    testValue: "test@test.com",
+    required: true,
   },
   {
     name: "Phone number *",
-    key: "phoneNumber",
+    sessionStorageKey: "phoneNumber",
     testValue: "3211234567",
     expectedValue: "321-123-4567",
+    required: true,
   },
-];
+]);
 
-const allInputFields: Array<InputField> = [
-  ...textInputFields,
-  { name: "Month *", role: "combobox", key: "dateOfBirthMonth", testValue: "07 - July" },
+const allTestFields: Array<TestField> = [
+  ...personalIdentificationFields,
+  ...contactInformationFields,
 ];
-
-const requiredKeys = [
-  "firstName",
-  "lastName",
-  "dateOfBirthMonth",
-  "dateOfBirthDay",
-  "dateOfBirthYear",
-  "phoneNumber",
-  "email",
-  "socialSecurityNumber",
-];
-
-const requiredInputs = textInputFields.filter((field) => requiredKeys.includes(field.key));
 
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
@@ -67,51 +100,28 @@ describe("<PersonalDetailsStep1 />", () => {
     return mockRouter;
   };
 
-  describe("input updates", () => {
-    it.each(textInputFields)(
-      "updates the $name text input",
-      async ({ name, testValue, expectedValue }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-        const input = screen.getByRole("textbox", {
-          name: name,
-        });
-        expect(input).toHaveValue("");
+  describe("personal identification fields", () => {
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        personalIdentificationFields,
+        allTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/2",
+      );
+    });
 
-        await user.type(input, testValue);
-        expect(input).toHaveValue(expectedValue ?? testValue);
+    it.each(personalIdentificationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
       },
     );
 
-    it("updates the date of birth month", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const combobox = screen.getByRole("combobox", {
-        name: "Month *",
-      });
-      await user.selectOptions(combobox, "07 - July");
-      expect(combobox).toHaveValue("7");
-    });
-  });
-
-  describe("individual input validation and error messages", () => {
-    it.each(requiredInputs)(
-      "marks $labelWithoutAsterisk as required and displays an error message if it is not filled in",
-      async ({ name, key }) => {
-        const user = userEvent.setup();
-        renderWithRouter();
-
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const input = await getInputField(screen, { name });
-        expect(input).toBeRequired();
-        await fillAllInputsExcept(screen, user, allInputFields, new Set([key]));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-
-        expect(input).toHaveAccessibleDescription(
-          expect.stringContaining(`${labelWithoutAsterisk} is required`),
-        );
-        expect(input).toHaveAttribute("aria-invalid", "true");
-        expect(input).toHaveFocus();
+    it.each(personalIdentificationFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
 
@@ -163,6 +173,32 @@ describe("<PersonalDetailsStep1 />", () => {
       );
       expect(input).toHaveAttribute("aria-invalid", "true");
     });
+  });
+
+  describe("contact info fields", () => {
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        contactInformationFields,
+        allTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/2",
+      );
+    });
+
+    it.each(contactInformationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+      },
+    );
+
+    it.each(contactInformationFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
 
     it.each([
       {
@@ -211,113 +247,5 @@ describe("<PersonalDetailsStep1 />", () => {
         expect(input).toHaveAttribute("aria-invalid", "true");
       },
     );
-  });
-
-  describe("error summary", () => {
-    it("shows an error summary if there are 3 or more errors", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const requiredInputsToLeaveEmpty = [
-        { name: "First name *", key: "firstName", errorMessage: "First name is required" },
-        { name: "Day *", key: "dateOfBirthDay", errorMessage: "Day is required" },
-        { name: "Email address *", key: "email", errorMessage: "Email address is required" },
-      ];
-
-      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
-      await fillAllInputsExcept(screen, user, allInputFields, requiredInputsToLeaveEmptyNames);
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      const focusedElement = document.activeElement as HTMLElement;
-      expect(
-        within(focusedElement).getByRole("heading", {
-          name: "There is a problem",
-        }),
-      ).toBeInTheDocument();
-
-      for (const field of requiredInputsToLeaveEmpty) {
-        expect(focusedElement).toHaveTextContent(field.errorMessage);
-      }
-    });
-
-    it.each(requiredInputs)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
-
-        const input = await getInputField(screen, { name });
-        expect(input).toHaveFocus();
-      },
-    );
-
-    it("does not show an error summary if there are fewer than 3 errors", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      const requiredInputsToLeaveEmpty = [
-        { name: "First name *", key: "firstName", errorMessage: "First name is required" },
-        { name: "Day *", key: "dateOfBirthDay", errorMessage: "Day is required" },
-      ];
-
-      const requiredInputsToLeaveEmptyNames = new Set(requiredInputsToLeaveEmpty.map((x) => x.key));
-      await fillAllInputsExcept(screen, user, allInputFields, requiredInputsToLeaveEmptyNames);
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      expect(screen.queryByRole("alert", { name: "There is a problem" })).not.toBeInTheDocument();
-      expect(
-        screen.getByRole("textbox", {
-          name: "First name *",
-        }),
-      ).toHaveFocus();
-    });
-  });
-
-  it("saves form data on submit", async () => {
-    const user = userEvent.setup();
-    const mockRouter = renderWithRouter();
-    await fillAllInputsExcept(screen, user, allInputFields, new Set());
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    for (const textInputField of textInputFields) {
-      expect(window.sessionStorage.getItem(textInputField.key)).toEqual(
-        textInputField.expectedValue ?? textInputField.testValue,
-      );
-    }
-
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/personal-details/2");
-    expect(mockRouter.refresh).toHaveBeenCalled();
-  });
-
-  it("fills fields from session storage when page is loaded", () => {
-    window.sessionStorage.setItem("firstName", "Jane");
-    window.sessionStorage.setItem("middleName", "A");
-    window.sessionStorage.setItem("lastName", "Doe");
-    window.sessionStorage.setItem("dateOfBirthMonth", "1");
-    window.sessionStorage.setItem("dateOfBirthDay", "8");
-    window.sessionStorage.setItem("dateOfBirthYear", "1990");
-    window.sessionStorage.setItem("socialSecurityNumber", "123-45-6789");
-    window.sessionStorage.setItem("email", "example@test.com");
-    window.sessionStorage.setItem("phoneNumber", "123-456-7890");
-    renderWithRouter();
-
-    expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("Jane");
-    expect(screen.getByRole("textbox", { name: "Middle name" })).toHaveValue("A");
-    expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Doe");
-    expect(
-      screen.getByRole("combobox", {
-        name: "Month *",
-      }),
-    ).toHaveDisplayValue("01 - January");
-    expect(screen.getByRole("textbox", { name: "Day *" })).toHaveValue("8");
-    expect(screen.getByRole("textbox", { name: "Year *" })).toHaveValue("1990");
-    expect(screen.getByRole("textbox", { name: "Social security number *" })).toHaveValue(
-      "123-45-6789",
-    );
-    expect(screen.getByRole("textbox", { name: "Email address *" })).toHaveValue(
-      "example@test.com",
-    );
-    expect(screen.getByRole("textbox", { name: "Phone number *" })).toHaveValue("123-456-7890");
   });
 });

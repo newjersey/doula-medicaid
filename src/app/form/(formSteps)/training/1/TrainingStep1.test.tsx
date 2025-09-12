@@ -1,79 +1,71 @@
+import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import TrainingStep1 from "@form/(formSteps)/training/1/page";
-import { getInputField, type InputField } from "@form/_utils/testUtils/fillInputs";
+import { getInputField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
-const trainingAddressFields: InputField[] = [
+const trainingAddressFields: TestField[] = createTestFields([
   {
     name: "Street address *",
-    key: "trainingStreetAddress1",
+    required: true,
+    sessionStorageKey: "trainingStreetAddress1",
     testValue: "Test address 1",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "Street address line 2",
-    key: "trainingStreetAddress2",
+    required: false,
+    sessionStorageKey: "trainingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "City *",
-    key: "trainingCity",
+    required: true,
+    sessionStorageKey: "trainingCity",
     testValue: "Test city",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "ZIP code *",
-    key: "trainingZip",
+    required: true,
+    sessionStorageKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,
   },
-];
+]);
 
-const trainingInstructorFields: InputField[] = [
+const trainingInstructorFields: TestField[] = createTestFields([
   {
     name: "First name *",
-    key: "instructorFirstName",
+    required: true,
+    sessionStorageKey: "instructorFirstName",
     testValue: "Jane",
   },
   {
     name: "Last name *",
-    key: "instructorLastName",
+    required: true,
+    sessionStorageKey: "instructorLastName",
     testValue: "Doe",
   },
   {
     name: "Email address *",
-    key: "instructorEmail",
+    required: true,
+    sessionStorageKey: "instructorEmail",
     testValue: "test@example.com",
   },
   {
     name: "Phone number",
-    key: "instructorPhoneNumber",
+    required: false,
+    sessionStorageKey: "instructorPhoneNumber",
     testValue: "111-111-1111",
   },
-];
-
-const requiredKeys = [
-  "trainingStreetAddress1",
-  "trainingCity",
-  "trainingZip",
-  "instructorFirstName",
-  "instructorLastName",
-  "instructorEmail",
-];
-
-const requiredTrainingFields: Array<InputField> = trainingAddressFields.filter((field) =>
-  requiredKeys.includes(field.key),
-);
-
-const requiredInstructorFields: Array<InputField> = trainingInstructorFields.filter((field) =>
-  requiredKeys.includes(field.key),
-);
+]);
 
 const selectTrainingOrganization = async (
   organization: string = "Children's Home Society of NJ (Trenton)",
@@ -210,53 +202,9 @@ describe("<TrainingStep1 />", () => {
         expect.stringContaining("This question is required"),
       );
     });
-
-    it.each(requiredTrainingFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-
-        await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(
-          screen.getByRole("link", {
-            name: `Training ${labelWithoutAsterisk.toLowerCase()} is required`,
-          }),
-        );
-
-        const input = screen.getByRole("textbox", {
-          name: `${labelWithoutAsterisk} *`,
-        });
-        expect(input).toHaveFocus();
-      },
-    );
   });
 
   describe("doula training instructor fields", () => {
-    it.each(requiredInstructorFields)(
-      "clicking on the $name error focuses on the input",
-      async ({ name }) => {
-        const labelWithoutAsterisk = name.replace(" *", "");
-        const user = userEvent.setup();
-        renderWithRouter();
-
-        await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        await user.click(
-          screen.getByRole("link", {
-            name: `${labelWithoutAsterisk} is required`,
-          }),
-        );
-
-        const input = screen.getByRole("textbox", {
-          name: `${labelWithoutAsterisk} *`,
-        });
-        expect(input).toHaveFocus();
-      },
-    );
-
     it("saves values to session storage when user clicks Next", async () => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -265,32 +213,9 @@ describe("<TrainingStep1 />", () => {
       await fillTrainingInstructorFields();
       await user.click(screen.getByRole("button", { name: "Next" }));
       for (const field of trainingInstructorFields) {
-        expect(sessionStorage.getItem(field.key)).toBe(field.testValue);
+        expect(sessionStorage.getItem(field.sessionStorageKey)).toBe(field.testValue);
       }
     });
-  });
-
-  it("displays an error summary if there are 3 or more errors", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    const focusedElement = document.activeElement as HTMLElement;
-    expect(
-      within(focusedElement).getByRole("heading", {
-        name: "There is a problem",
-      }),
-    ).toBeInTheDocument();
-
-    const expectedErrorMessages = [
-      "Training street address is required",
-      "Training city is required",
-      "Training zip code is required",
-    ];
-    for (const errorMessage of expectedErrorMessages) {
-      expect(focusedElement).toHaveTextContent(errorMessage);
-    }
   });
 
   it("fills fields from sessionStorage", async () => {
