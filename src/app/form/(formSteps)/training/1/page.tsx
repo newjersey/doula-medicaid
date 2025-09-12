@@ -1,15 +1,16 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
 import DoulaRadio from "@/app/form/(formSteps)/components/DoulaRadio";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
-import { AddressState, StateApprovedTraining } from "@form/_utils/inputFields/enums";
+import { StateApprovedTraining } from "@form/_utils/inputFields/enums";
 import { getDefaultValue } from "@form/_utils/sessionStorage";
-import { Alert, Fieldset, Label, RequiredMarker, Select } from "@trussworks/react-uswds";
+import { Alert, Label, RequiredMarker, Select } from "@trussworks/react-uswds";
 import { type FieldPath, useForm } from "react-hook-form";
 import DoulaTrainingExplainer from "./DoulaTrainingExplainer";
 
@@ -142,89 +143,27 @@ const TrainingStep1 = () => {
           />
 
           {isDoulaTrainingInPerson === "true" && (
-            <Fieldset
-              legend={
-                <p className="margin-top-3">
-                  What is the address of your training organization? <RequiredMarker />
-                </p>
-              }
-            >
-              <div className="grid-row grid-gap">
-                <div className="mobile-lg:grid-col-6">
-                  <DoulaTextInput
-                    name="trainingStreetAddress1"
-                    label={orderedInputNameToLabel["trainingStreetAddress1"]}
-                    required
-                    errors={errors}
-                    register={register}
-                    registerOptions={{
-                      required: `Training ${orderedInputNameToLabel["trainingStreetAddress1"].toLowerCase()} is required`,
-                    }}
-                  />
-                </div>
-                <div className="mobile-lg:grid-col-6">
-                  <DoulaTextInput
-                    name="trainingStreetAddress2"
-                    label={orderedInputNameToLabel["trainingStreetAddress2"]}
-                    errors={errors}
-                    register={register}
-                  />
-                </div>
-              </div>
-              <div className="grid-row grid-gap">
-                <div className="mobile-lg:grid-col-6">
-                  <DoulaTextInput
-                    name="trainingCity"
-                    label={orderedInputNameToLabel["trainingCity"]}
-                    required
-                    errors={errors}
-                    register={register}
-                    registerOptions={{
-                      required: `Training ${orderedInputNameToLabel["trainingCity"].toLowerCase()} is required`,
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="grid-row grid-gap">
-                <div className="mobile-lg:grid-col-6">
-                  <Label htmlFor="trainingState" requiredMarker>
-                    {orderedInputNameToLabel["trainingState"]}
-                  </Label>
-                  <Select
-                    className="usa-select"
-                    id="trainingState"
-                    required
-                    {...register("trainingState")}
-                  >
-                    {Object.keys(AddressState).map((trainingState) => (
-                      <option key={trainingState} value={trainingState}>
-                        {trainingState}
-                      </option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="mobile-lg:grid-col-4">
-                  <DoulaTextInputMask
-                    name="trainingZip"
-                    label={orderedInputNameToLabel["trainingZip"]}
-                    className="usa-input--medium"
-                    value={trainingZip ?? ""}
-                    mask="#####"
-                    pattern="\d{5}"
-                    required
-                    errors={errors}
-                    register={register}
-                    registerOptions={{
-                      required: `Training ${orderedInputNameToLabel["trainingZip"].toLowerCase()} is required`,
-                      minLength: {
-                        value: 5,
-                        message: `Training ${orderedInputNameToLabel["trainingZip"].toLowerCase()} must have five digits`,
-                      },
-                    }}
-                  />
-                </div>
-              </div>
-            </Fieldset>
+            <DoulaAddress<TrainingData>
+              fieldsetProps={{
+                legend: (
+                  <p className="margin-top-3">
+                    What is the address of your training organization? <RequiredMarker />
+                  </p>
+                ),
+              }}
+              addressKeys={{
+                streetAddress1: "trainingStreetAddress1",
+                streetAddress2: "trainingStreetAddress2",
+                city: "trainingCity",
+                state: "trainingState",
+                zip: "trainingZip",
+              }}
+              zipValue={trainingZip}
+              errorLabelPrefix="Training"
+              orderedInputNameToLabel={orderedInputNameToLabel}
+              errors={errors}
+              register={register}
+            />
           )}
         </div>
       </div>

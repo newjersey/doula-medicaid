@@ -26,7 +26,7 @@ export const getInputField = async (
 export const fillField = async (
   screen: Screen,
   user: UserEvent,
-  fieldToFill: TestField,
+  fieldToFill: { name: string; role?: Role; withinGroupName?: string },
   value: string,
 ) => {
   const inputField = await getInputField(screen, fieldToFill);
@@ -56,7 +56,14 @@ export const fillAllInputs = async (
 export const fillAllInputsExcept = async (
   screen: Screen,
   user: UserEvent,
-  allInputs: Array<TestField>,
+  allInputs: Array<{
+    name: string;
+    sessionStorageKey: string;
+    testValue: string;
+    role?: Role;
+    withinGroupName?: string;
+    prerequisiteField?: { name: string; role?: Role; withinGroupName?: string; testValue: string };
+  }>,
   keysToSkip: Set<string>,
 ) => {
   for (const input of allInputs) {
