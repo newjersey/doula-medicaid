@@ -56,6 +56,8 @@ export const parseFfs = async (file: File) => {
       maxLength: field instanceof PDFTextField && field.getMaxLength(),
     });
   }
+  // Note: this was generated with the code below, but xPos should be in the opposite order.
+  // x seems to go from 0 on the left increasing towards the right, and y is 0 at the bottom increasing going up.
   const sortedFields = allFields.sort(
     (a, b) => a.pageNum - b.pageNum || b.yPos - a.yPos || a.xPos - b.xPos,
   );
