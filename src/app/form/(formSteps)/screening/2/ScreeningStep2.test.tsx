@@ -7,7 +7,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const allInputFields: Array<TestField> = createTestFields([
+const allTestFields: Array<TestField> = createTestFields([
   {
     name: "No",
     role: "radio",
@@ -54,7 +54,7 @@ describe("<ScreeningStep2 />", () => {
     it(`saves ${sessionStorageKey} as false when user selects no and clicks Next`, async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allInputFields, new Set([`${sessionStorageKey}No`]));
+      await fillAllInputsExcept(screen, user, allTestFields, new Set([`${sessionStorageKey}No`]));
 
       const questionGroup = screen.getByRole("group", {
         name: `${question} Select one *`,
@@ -75,7 +75,7 @@ describe("<ScreeningStep2 />", () => {
     it("shows an error message when user selects yes and clicks Next", async () => {
       const user = userEvent.setup();
       const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allInputFields, new Set([`${sessionStorageKey}No`]));
+      await fillAllInputsExcept(screen, user, allTestFields, new Set([`${sessionStorageKey}No`]));
 
       const questionGroup = screen.getByRole("group", {
         name: `${question} Select one *`,
