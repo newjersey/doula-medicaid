@@ -5,14 +5,6 @@ import type { UserEvent } from "@testing-library/user-event";
 
 export type Role = "textbox" | "combobox" | "radio";
 
-export interface InputField {
-  name: string;
-  sessionStorageKey: string;
-  role?: Role;
-  testValue?: string;
-  withinGroupName?: string;
-}
-
 export const getInputField = async (
   screen: Screen,
   input: { name: string; role?: Role; withinGroupName?: string },

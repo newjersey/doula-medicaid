@@ -1,6 +1,7 @@
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import { getInputField, type InputField } from "@/app/form/_utils/testUtils/fillInputs";
+import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -139,23 +140,26 @@ const renderWithRouter = (mayHaveThreeOrMoreErrors: boolean) => {
 };
 
 describe("error summary", () => {
-  const doulaTestFormFields: InputField[] = [
+  const doulaTestFormFields: TestField[] = createTestFields([
     {
       name: "Label 1 *",
+      required: true,
       sessionStorageKey: "field1",
       testValue: "Foo",
     },
     {
       name: "Label 2 *",
+      required: true,
       sessionStorageKey: "field2",
       testValue: "Bar",
     },
     {
       name: "Label 3 *",
+      required: true,
       sessionStorageKey: "field 3",
       testValue: "Zoink",
     },
-  ];
+  ]);
 
   describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {

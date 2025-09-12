@@ -1,5 +1,6 @@
+import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import TrainingStep1 from "@form/(formSteps)/training/1/page";
-import { getInputField, type InputField } from "@form/_utils/testUtils/fillInputs";
+import { getInputField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
@@ -8,55 +9,63 @@ import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
-const trainingAddressFields: InputField[] = [
+const trainingAddressFields: TestField[] = createTestFields([
   {
     name: "Street address *",
+    required: true,
     sessionStorageKey: "trainingStreetAddress1",
     testValue: "Test address 1",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "Street address line 2",
+    required: false,
     sessionStorageKey: "trainingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "City *",
+    required: true,
     sessionStorageKey: "trainingCity",
     testValue: "Test city",
     withinGroupName: trainingAddressGroupName,
   },
   {
     name: "ZIP code *",
+    required: true,
     sessionStorageKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,
   },
-];
+]);
 
-const trainingInstructorFields: InputField[] = [
+const trainingInstructorFields: TestField[] = createTestFields([
   {
     name: "First name *",
+    required: true,
     sessionStorageKey: "instructorFirstName",
     testValue: "Jane",
   },
   {
     name: "Last name *",
+    required: true,
     sessionStorageKey: "instructorLastName",
     testValue: "Doe",
   },
   {
     name: "Email address *",
+    required: true,
     sessionStorageKey: "instructorEmail",
     testValue: "test@example.com",
   },
   {
     name: "Phone number",
+    required: false,
     sessionStorageKey: "instructorPhoneNumber",
     testValue: "111-111-1111",
   },
-];
+]);
 
 const selectTrainingOrganization = async (
   organization: string = "Children's Home Society of NJ (Trenton)",

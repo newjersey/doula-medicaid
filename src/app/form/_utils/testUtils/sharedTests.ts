@@ -3,7 +3,6 @@ import {
   fillAllInputsExcept,
   fillField,
   getInputField,
-  type InputField,
   type Role,
 } from "@/app/form/_utils/testUtils/fillInputs";
 import type { Screen } from "@testing-library/dom";
@@ -22,7 +21,7 @@ interface TestFieldParameters {
   alternateRequiredFieldError?: string;
 }
 
-export interface TestField extends InputField {
+export interface TestField {
   name: string;
   sessionStorageKey: string;
   required: boolean;
