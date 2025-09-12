@@ -127,13 +127,7 @@ describe("<PersonalDetailsStep3 />", () => {
       );
     });
 
-    it.each(otherIdentificationFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
-      async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
-      },
-    );
+    // No fields in this section are required, skipping testRequiredField
 
     it.each(otherIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
