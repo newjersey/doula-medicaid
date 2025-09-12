@@ -202,7 +202,6 @@ describe("<PersonalDetailsStep2 />", () => {
     it.each(mailingAddressFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testRequiredField(field, minimalFields, renderWithRouter, screen);
       },
     );
@@ -210,7 +209,6 @@ describe("<PersonalDetailsStep2 />", () => {
     it.each(mailingAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
@@ -263,7 +261,6 @@ describe("<PersonalDetailsStep2 />", () => {
     it.each(billingAddressFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testRequiredField(field, allTestFields, renderWithRouter, screen);
       },
     );
@@ -271,7 +268,6 @@ describe("<PersonalDetailsStep2 />", () => {
     it.each(billingAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );

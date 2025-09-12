@@ -71,7 +71,6 @@ describe("<PersonalDetailsStep3 />", () => {
     it.each(doulaProviderIdentificationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testRequiredField(field, allTestFields, renderWithRouter, screen);
       },
     );
@@ -79,7 +78,6 @@ describe("<PersonalDetailsStep3 />", () => {
     it.each(doulaProviderIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
@@ -132,7 +130,6 @@ describe("<PersonalDetailsStep3 />", () => {
     it.each(otherIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        const sessionStorageKey = field.sessionStorageKey; // eslint-disable-line @typescript-eslint/no-unused-vars
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
