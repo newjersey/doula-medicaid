@@ -1,4 +1,10 @@
-import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
+import {
+  createTestFields,
+  testFillFromSessionStorage,
+  testRequiredField,
+  testSaveFieldsToSessionStorage,
+  type TestField,
+} from "@/app/form/_utils/testUtils/sharedTests";
 import TrainingStep1 from "@form/(formSteps)/training/1/page";
 import { getInputField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
@@ -9,13 +15,37 @@ import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
+
+const trainingOrganizationFields = createTestFields([
+  {
+    name: "Which state-approved training did you complete? Select one *",
+    required: true,
+    alternateRequiredFieldError: "This question is required",
+    role: "combobox",
+    sessionStorageKey: "stateApprovedTraining",
+    testValue: "Children's Futures (Trenton)",
+  },
+]);
+
+const yesDoulaInPerson = {
+  name: "Yes, in person or hybrid",
+  sessionStorageKey: "isDoulaTrainingInPerson",
+  requiredErrorMessage: "This question is required",
+  required: true,
+  role: "radio" as const,
+  testValue: "true",
+  expectedValue: "true",
+};
+
 const trainingAddressFields: TestField[] = createTestFields([
   {
     name: "Street address *",
     required: true,
     sessionStorageKey: "trainingStreetAddress1",
+    alternateRequiredFieldError: "Training street address is required",
     testValue: "Test address 1",
     withinGroupName: trainingAddressGroupName,
+    prerequisiteField: yesDoulaInPerson,
   },
   {
     name: "Street address line 2",
@@ -23,20 +53,35 @@ const trainingAddressFields: TestField[] = createTestFields([
     sessionStorageKey: "trainingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: trainingAddressGroupName,
+    prerequisiteField: yesDoulaInPerson,
   },
   {
     name: "City *",
     required: true,
+    alternateRequiredFieldError: "Training city is required",
     sessionStorageKey: "trainingCity",
     testValue: "Test city",
     withinGroupName: trainingAddressGroupName,
+    prerequisiteField: yesDoulaInPerson,
+  },
+  {
+    name: "State *",
+    required: false,
+    alternateRequiredFieldError: "Training state is required",
+    role: "combobox",
+    testValue: "NJ",
+    sessionStorageKey: "trainingState",
+    withinGroupName: trainingAddressGroupName,
+    prerequisiteField: yesDoulaInPerson,
   },
   {
     name: "ZIP code *",
     required: true,
+    alternateRequiredFieldError: "Training zip code is required",
     sessionStorageKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,
+    prerequisiteField: yesDoulaInPerson,
   },
 ]);
 
@@ -66,6 +111,27 @@ const trainingInstructorFields: TestField[] = createTestFields([
     testValue: "111-111-1111",
   },
 ]);
+
+const minimalTestFields = [
+  ...trainingOrganizationFields,
+  ...createTestFields([
+    {
+      name: "No, it was virtual",
+      sessionStorageKey: "isDoulaTrainingInPerson",
+      required: true,
+      alternateRequiredFieldError: "This question is required",
+      role: "radio",
+      testValue: "false",
+    },
+  ]),
+  ...trainingInstructorFields,
+];
+
+const allTestFields = [
+  ...trainingOrganizationFields,
+  ...trainingAddressFields,
+  ...trainingInstructorFields,
+];
 
 const selectTrainingOrganization = async (
   organization: string = "Children's Home Society of NJ (Trenton)",
@@ -135,20 +201,29 @@ describe("<TrainingStep1 />", () => {
       expect(input).toHaveAccessibleDescription(expect.stringContaining(alertText));
     });
 
-    it("saves the selected org to sessionStorage", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      await selectTrainingOrganization("None of these");
-      const input = screen.getByRole("textbox", {
-        name: "What is the name of your training organization? *",
-      });
-      await user.type(input, "Test org name");
-      await user.click(screen.getByRole("radio", { name: "No, it was virtual" }));
-      await fillTrainingInstructorFields();
-      await user.click(screen.getByRole("button", { name: "Next" }));
-      expect(sessionStorage.getItem("stateApprovedTraining")).toBe("None of these");
-      expect(sessionStorage.getItem("nameOfTrainingOrganization")).toBe("Test org name");
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        trainingOrganizationFields,
+        minimalTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/1",
+      );
     });
+
+    it.each(trainingOrganizationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
+      },
+    );
+
+    it.each(trainingOrganizationFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
   });
 
   describe("doula training address fields", () => {
@@ -182,77 +257,54 @@ describe("<TrainingStep1 />", () => {
       }
     });
 
-    it("requires an answer to isDoulaTrainingInPerson", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-
-      await selectTrainingOrganization();
-      await fillTrainingInstructorFields();
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      const inputYes = screen.getByRole("radio", { name: "Yes, in person or hybrid" });
-      const inputNo = screen.getByRole("radio", { name: "No, it was virtual" });
-      expect(inputYes).toHaveFocus();
-      expect(inputYes).toHaveAttribute("aria-invalid", "true");
-      expect(inputYes).toHaveAccessibleDescription(
-        expect.stringContaining("This question is required"),
-      );
-      expect(inputNo).toHaveAttribute("aria-invalid", "true");
-      expect(inputNo).toHaveAccessibleDescription(
-        expect.stringContaining("This question is required"),
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        trainingAddressFields,
+        allTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/1",
       );
     });
+
+    it.each(trainingAddressFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+      },
+    );
+
+    it.each(trainingAddressFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
   });
 
   describe("doula training instructor fields", () => {
-    it("saves values to session storage when user clicks Next", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      await selectTrainingOrganization();
-      await user.click(screen.getByRole("radio", { name: "No, it was virtual" }));
-      await fillTrainingInstructorFields();
-      await user.click(screen.getByRole("button", { name: "Next" }));
-      for (const field of trainingInstructorFields) {
-        expect(sessionStorage.getItem(field.sessionStorageKey)).toBe(field.testValue);
-      }
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        trainingInstructorFields,
+        minimalTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/1",
+      );
     });
-  });
 
-  it("fills fields from sessionStorage", async () => {
-    window.sessionStorage.setItem("stateApprovedTraining", "None of these");
-    window.sessionStorage.setItem("nameOfTrainingOrganization", "Test training org");
-    window.sessionStorage.setItem("trainingStreetAddress1", "123 Main St");
-    window.sessionStorage.setItem("trainingStreetAddress2", "Apt 4B");
-    window.sessionStorage.setItem("trainingCity", "Newark");
-    window.sessionStorage.setItem("trainingState", "NJ");
-    window.sessionStorage.setItem("trainingZip", "12345");
-    window.sessionStorage.setItem("isDoulaTrainingInPerson", "true");
-    window.sessionStorage.setItem("instructorFirstName", "First");
-    window.sessionStorage.setItem("instructorLastName", "Last");
-    window.sessionStorage.setItem("instructorEmail", "email@test.com");
-    window.sessionStorage.setItem("instructorPhoneNumber", "111-111-1111");
+    it.each(trainingInstructorFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
+      },
+    );
 
-    renderWithRouter();
-
-    expect(
-      screen.getByRole("combobox", {
-        name: "Which state-approved training did you complete? Select one *",
-      }),
-    ).toHaveValue("None of these");
-    expect(
-      screen.getByRole("textbox", {
-        name: "What is the name of your training organization? *",
-      }),
-    ).toHaveValue("Test training org");
-    expect(screen.getByRole("radio", { name: "Yes, in person or hybrid" })).toBeChecked();
-    expect(screen.getByRole("textbox", { name: "Street address *" })).toHaveValue("123 Main St");
-    expect(screen.getByRole("textbox", { name: "Street address line 2" })).toHaveValue("Apt 4B");
-    expect(screen.getByRole("textbox", { name: "City *" })).toHaveValue("Newark");
-    expect(screen.getByRole("combobox", { name: "State *" })).toHaveValue("NJ");
-    expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveValue("12345");
-    expect(screen.getByRole("textbox", { name: "First name *" })).toHaveValue("First");
-    expect(screen.getByRole("textbox", { name: "Last name *" })).toHaveValue("Last");
-    expect(screen.getByRole("textbox", { name: "Email address *" })).toHaveValue("email@test.com");
-    expect(screen.getByRole("textbox", { name: "Phone number" })).toHaveValue("111-111-1111");
+    it.each(trainingInstructorFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
   });
 });
