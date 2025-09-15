@@ -1,5 +1,5 @@
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
-import { fillAllInputs, fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
+import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
   createTestFields,
@@ -37,9 +37,13 @@ const clickSameBillingMailingAddressYes = async () => {
   return inputYes;
 };
 
+const mailingAddressQuestion =
+  "Mailing address We will send official mail here. It can be your home address.";
+const billingAddressQuestion = "What is your billing address?";
+
 const getBillingAddressGroup = () => {
   const billingAddressGroup = screen.getByRole("group", {
-    name: "What's your billing address?",
+    name: billingAddressQuestion,
   });
   return billingAddressGroup;
 };
@@ -50,24 +54,21 @@ const mailingAddressFields = createTestFields([
     sessionStorageKey: "streetAddress1",
     required: true,
     testValue: "Test address 1",
-    withinGroupName:
-      "Mailing address We will send official mail here. It can be your home address.",
+    withinGroupName: mailingAddressQuestion,
   },
   {
     name: "Street address line 2",
     sessionStorageKey: "streetAddress2",
     required: false,
     testValue: "Test address 2",
-    withinGroupName:
-      "Mailing address We will send official mail here. It can be your home address.",
+    withinGroupName: mailingAddressQuestion,
   },
   {
     name: "City *",
     sessionStorageKey: "city",
     required: true,
     testValue: "Test city",
-    withinGroupName:
-      "Mailing address We will send official mail here. It can be your home address.",
+    withinGroupName: mailingAddressQuestion,
   },
   {
     name: "State *",
@@ -75,33 +76,27 @@ const mailingAddressFields = createTestFields([
     required: false,
     role: "combobox",
     testValue: "PA",
-    withinGroupName:
-      "Mailing address We will send official mail here. It can be your home address.",
+    withinGroupName: mailingAddressQuestion,
   },
   {
     name: "ZIP code *",
     sessionStorageKey: "zip",
     required: true,
     testValue: "12345",
-    withinGroupName:
-      "Mailing address We will send official mail here. It can be your home address.",
+    withinGroupName: mailingAddressQuestion,
   },
 ]);
 
-const minimalFields = [
-  ...mailingAddressFields,
-  ...createTestFields([
-    {
-      name: "Yes",
-      sessionStorageKey: "hasSameBillingMailingAddress",
-      required: true,
-      alternateRequiredFieldError: "This question is required",
-      role: "radio",
-      testValue: "true",
-    },
-  ]),
-];
-
+const yesSameBillingMailingAddress: TestField = {
+  name: "Yes",
+  sessionStorageKey: "hasSameBillingMailingAddress",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "true",
+  expectedValue: "true",
+  withinGroupName: "Are your billing and residential addresses the same? Select one *",
+};
 const noSameBillingMailingAddress: TestField = {
   name: "No",
   sessionStorageKey: "hasSameBillingMailingAddress",
@@ -110,7 +105,10 @@ const noSameBillingMailingAddress: TestField = {
   role: "radio",
   testValue: "false",
   expectedValue: "false",
+  withinGroupName: "Are your billing and residential addresses the same? Select one *",
 };
+
+const minimalTestFields = [...mailingAddressFields, yesSameBillingMailingAddress];
 
 const billingAddressFields = createTestFields([
   {
@@ -118,7 +116,7 @@ const billingAddressFields = createTestFields([
     sessionStorageKey: "billingStreetAddress1",
     required: true,
     testValue: "Test address 1",
-    withinGroupName: "What's your billing address?",
+    withinGroupName: billingAddressQuestion,
     alternateRequiredFieldError: "Billing street address is required",
     prerequisiteField: noSameBillingMailingAddress,
   },
@@ -127,7 +125,7 @@ const billingAddressFields = createTestFields([
     sessionStorageKey: "billingStreetAddress2",
     required: false,
     testValue: "Test address 2",
-    withinGroupName: "What's your billing address?",
+    withinGroupName: billingAddressQuestion,
     prerequisiteField: noSameBillingMailingAddress,
   },
   {
@@ -135,7 +133,7 @@ const billingAddressFields = createTestFields([
     sessionStorageKey: "billingCity",
     required: true,
     testValue: "Houston",
-    withinGroupName: "What's your billing address?",
+    withinGroupName: billingAddressQuestion,
     alternateRequiredFieldError: "Billing city is required",
     prerequisiteField: noSameBillingMailingAddress,
   },
@@ -145,7 +143,7 @@ const billingAddressFields = createTestFields([
     required: false,
     role: "combobox",
     testValue: "TX",
-    withinGroupName: "What's your billing address?",
+    withinGroupName: billingAddressQuestion,
     prerequisiteField: noSameBillingMailingAddress,
   },
   {
@@ -153,21 +151,23 @@ const billingAddressFields = createTestFields([
     sessionStorageKey: "billingZip",
     required: true,
     testValue: "12345",
-    withinGroupName: "What's your billing address?",
+    withinGroupName: billingAddressQuestion,
     alternateRequiredFieldError: "Billing zip code is required",
     prerequisiteField: noSameBillingMailingAddress,
   },
 ]);
 
-const allTestFields = [...mailingAddressFields, ...billingAddressFields];
+const allTestFields = [
+  ...mailingAddressFields,
+  noSameBillingMailingAddress,
+  ...billingAddressFields,
+];
 
 describe("<PersonalDetailsStep2 />", () => {
   const renderWithRouter = () => {
-    const mockPush = jest.fn();
-    const mockRefresh = jest.fn();
     const mockRouter: Partial<AppRouterInstance> = {
-      push: mockPush,
-      refresh: mockRefresh,
+      push: jest.fn(),
+      refresh: jest.fn(),
     };
     render(
       <RouterPathnameProvider
@@ -183,16 +183,13 @@ describe("<PersonalDetailsStep2 />", () => {
   describe("mailing address fields", () => {
     it("enables autocompleting the mailing address", () => {
       renderWithRouter();
-      expectAddressHasAutocomplete(
-        "Mailing address We will send official mail here. It can be your home address.",
-        "shipping",
-      );
+      expectAddressHasAutocomplete(mailingAddressQuestion, "shipping");
     });
 
     it("saves fields to session storage on submit", async () => {
       await testSaveFieldsToSessionStorage(
         mailingAddressFields,
-        minimalFields,
+        minimalTestFields,
         renderWithRouter,
         screen,
         "/form/personal-details/3",
@@ -202,7 +199,7 @@ describe("<PersonalDetailsStep2 />", () => {
     it.each(mailingAddressFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, minimalFields, renderWithRouter, screen);
+        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
       },
     );
 
@@ -248,89 +245,51 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("billing address fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
-        billingAddressFields,
-        allTestFields,
-        renderWithRouter,
-        screen,
-        "/form/personal-details/3",
+    describe("saves fields to session storage on submit", () => {
+      it("when billing address is the same as mailing address", async () => {
+        await testSaveFieldsToSessionStorage(
+          [yesSameBillingMailingAddress],
+          minimalTestFields,
+          renderWithRouter,
+          screen,
+          "/form/personal-details/3",
+        );
+      });
+      it("when billing address is different from mailing address", async () => {
+        await testSaveFieldsToSessionStorage(
+          [noSameBillingMailingAddress, ...billingAddressFields],
+          allTestFields,
+          renderWithRouter,
+          screen,
+          "/form/personal-details/3",
+        );
+      });
+    });
+
+    describe("marks fields as required and displays an error message", () => {
+      it("when hasSameBillingMailingAddress is not filled in", async () => {
+        await testRequiredField(
+          yesSameBillingMailingAddress,
+          minimalTestFields,
+          renderWithRouter,
+          screen,
+        );
+      });
+
+      it.each(billingAddressFields.filter((field) => field.required))(
+        "when mailing and billing address are different and $sessionStorageKey is not filled in",
+        async (field: TestField) => {
+          await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        },
       );
     });
 
-    it.each(billingAddressFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
-      async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
-      },
-    );
-
-    it.each(billingAddressFields)(
+    it.each([noSameBillingMailingAddress, ...billingAddressFields])(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
-
-    it("validates same billing and mailing address radio buttons", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-
-      const group = screen.getByRole("group", {
-        name: "Are your billing and residential addresses the same? Select one *",
-      });
-      const inputYes = within(group).getByRole("radio", {
-        name: "Yes",
-      });
-      const inputNo = within(group).getByRole("radio", {
-        name: "No",
-      });
-      expect(inputYes).toBeRequired();
-      expect(inputNo).toBeRequired();
-      await fillAllInputsExcept(
-        screen,
-        user,
-        minimalFields,
-        new Set(["hasSameBillingMailingAddress"]),
-      );
-      await user.click(screen.getByRole("button", { name: "Next" }));
-      expect(inputYes).toHaveAccessibleDescription(
-        expect.stringContaining("This question is required"),
-      );
-      expect(inputYes).toHaveAttribute("aria-invalid", "true");
-      expect(inputNo).toHaveAccessibleDescription(
-        expect.stringContaining("This question is required"),
-      );
-      expect(inputNo).toHaveAttribute("aria-invalid", "true");
-      expect(inputYes).toHaveFocus();
-    });
-
-    describe("when user answers no to sameMailingBilling", () => {
-      it("errors if billing address fields are unfilled", async () => {
-        const user = userEvent.setup();
-
-        renderWithRouter();
-        await fillAllInputs(screen, user, minimalFields);
-        await clickSameBillingMailingAddressNo();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-
-        const focusedElement = document.activeElement as HTMLElement;
-        expect(
-          within(focusedElement).getByRole("heading", {
-            name: "There is a problem",
-          }),
-        ).toBeInTheDocument();
-
-        const expectedErrorMessages = [
-          "Billing street address is required",
-          "Billing city is required",
-          "Billing zip code is required",
-        ];
-        for (const errorMessage of expectedErrorMessages) {
-          expect(focusedElement).toHaveTextContent(errorMessage);
-        }
-      });
-    });
 
     it("shows/hides billing address fields based on user response", async () => {
       const user = userEvent.setup();
@@ -351,7 +310,7 @@ describe("<PersonalDetailsStep2 />", () => {
       await clickSameBillingMailingAddressYes();
       expect(
         screen.queryByRole("group", {
-          name: "What's your billing address?",
+          name: billingAddressQuestion,
         }),
       ).not.toBeInTheDocument();
 

@@ -106,7 +106,7 @@ const PersonalDetailsStep2 = () => {
             {hasSameBillingMailingAddress === "false" && (
               <DoulaAddress<PersonalDetails2Data>
                 fieldsetProps={{
-                  legend: <p className="margin-top-5">What&apos;s your billing address?</p>,
+                  legend: <p className="margin-top-5">What is your billing address?</p>,
                 }}
                 addressKeys={{
                   streetAddress1: "billingStreetAddress1",
