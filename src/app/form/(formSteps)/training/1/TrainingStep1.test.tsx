@@ -27,7 +27,7 @@ const trainingOrganizationFields = createTestFields([
   },
 ]);
 
-const yesDoulaInPerson = {
+const yesDoulaInPerson: TestField = {
   name: "Yes, in person or hybrid",
   sessionStorageKey: "isDoulaTrainingInPerson",
   requiredErrorMessage: "This question is required",
@@ -35,6 +35,16 @@ const yesDoulaInPerson = {
   role: "radio" as const,
   testValue: "true",
   expectedValue: "true",
+};
+
+const noDoulaTrainingInPerson: TestField = {
+  name: "No, it was virtual",
+  sessionStorageKey: "isDoulaTrainingInPerson",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "false",
+  expectedValue: "false",
 };
 
 const trainingAddressFields: TestField[] = createTestFields([
@@ -114,16 +124,7 @@ const trainingInstructorFields: TestField[] = createTestFields([
 
 const minimalTestFields = [
   ...trainingOrganizationFields,
-  ...createTestFields([
-    {
-      name: "No, it was virtual",
-      sessionStorageKey: "isDoulaTrainingInPerson",
-      required: true,
-      alternateRequiredFieldError: "This question is required",
-      role: "radio",
-      testValue: "false",
-    },
-  ]),
+  noDoulaTrainingInPerson,
   ...trainingInstructorFields,
 ];
 
