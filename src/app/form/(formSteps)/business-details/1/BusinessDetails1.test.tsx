@@ -72,7 +72,7 @@ describe("<BusinessDetailsStep1 />", () => {
 
     expect(getValue("hasSameBusinessAddress", true)).toBe("true");
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/2");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
@@ -122,7 +122,7 @@ describe("<BusinessDetailsStep1 />", () => {
       );
     }
     expect(window.sessionStorage.getItem("businessState")).toEqual("PA");
-    expect(mockRouter.push).toHaveBeenCalledWith("/form/finish");
+    expect(mockRouter.push).toHaveBeenCalledWith("/form/business-details/2");
     expect(mockRouter.refresh).toHaveBeenCalled();
   });
 
