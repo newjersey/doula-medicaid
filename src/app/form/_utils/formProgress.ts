@@ -37,7 +37,7 @@ export const allSections: Array<Section> = [
     id: "business-details",
     progressBarTitle: "Business details",
     heading: "Business details",
-    numSteps: 1,
+    numSteps: 4,
   },
   {
     id: "finish",
