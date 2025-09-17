@@ -1,13 +1,43 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "timezone": "US/Eastern",
+  "minimumReleaseAge": "3 days",
   "extends": ["config:recommended", ":maintainLockFilesWeekly"],
   "automergeSchedule": ["* * * * 0,6", "* 0-6 * * 1"],
   "ignorePaths": ["**/scripts/**"],
+  "labels": ["renovate"],
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
+    },
+    {
+      "matchPackagePrefixes": ["cypress"],
+      "groupName": "cypress"
+    },
+    {
+      "matchPackageNames": ["@types/jest", "ts-jest"],
+      "matchPackagePrefixes": ["jest"],
+      "groupName": "jest"
+    },
+    {
+      "matchPackageNames": ["@types/eslint", "babel-eslint"],
+      "matchPackagePrefixes": ["@typescript-eslint/", "eslint"],
+      "groupName": "linting"
+    },
+    {
+      "matchPackageNames": ["@types/react", "focus-trap-react", "@types/react-dom"],
+      "matchPackagePrefixes": ["react"],
+      "groupName": "react"
+    },
+    {
+      "matchPackagePrefixes": ["@testing-library"],
+      "groupName": "testing-library"
+    },
+    {
+      "matchPackageNames": ["actions/*"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "GH Action Artifacts"
     }
   ]
 }
