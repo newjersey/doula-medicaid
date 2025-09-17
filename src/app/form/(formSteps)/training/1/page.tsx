@@ -93,6 +93,11 @@ const TrainingStep1 = () => {
               </option>
             ))}
           </Select>
+          {errors.stateApprovedTraining && (
+            <span id="stateApprovedTrainingErrorMessage" className="usa-error-message">
+              {errors.stateApprovedTraining.message}
+            </span>
+          )}
           {stateApprovedTraining === StateApprovedTraining.NONE && (
             <div>
               <DoulaTextInput
