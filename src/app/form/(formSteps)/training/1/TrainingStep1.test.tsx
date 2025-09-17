@@ -175,6 +175,30 @@ describe("<TrainingStep1 />", () => {
   });
 
   describe("doula training organization fields", () => {
+    it("saves fields to session storage on submit", async () => {
+      await testSaveFieldsToSessionStorage(
+        trainingOrganizationFields,
+        minimalTestFields,
+        renderWithRouter,
+        screen,
+        "/form/personal-details/1",
+      );
+    });
+
+    it.each(trainingOrganizationFields.filter((field) => field.required))(
+      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      async (field: TestField) => {
+        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
+      },
+    );
+
+    it.each(trainingOrganizationFields)(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
+
     it("asks the user for the name of their training organization if 'None of these' is selected", async () => {
       const user = userEvent.setup();
       const alertText =
@@ -201,33 +225,33 @@ describe("<TrainingStep1 />", () => {
       );
       expect(input).toHaveAccessibleDescription(expect.stringContaining(alertText));
     });
+  });
 
+  describe("doula training address fields", () => {
     it("saves fields to session storage on submit", async () => {
       await testSaveFieldsToSessionStorage(
-        trainingOrganizationFields,
-        minimalTestFields,
+        trainingAddressFields,
+        allTestFields,
         renderWithRouter,
         screen,
         "/form/personal-details/1",
       );
     });
 
-    it.each(trainingOrganizationFields.filter((field) => field.required))(
+    it.each(trainingAddressFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderWithRouter, screen);
       },
     );
 
-    it.each(trainingOrganizationFields)(
+    it.each(trainingAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
-  });
 
-  describe("doula training address fields", () => {
     it("conditionally renders training address fields based on isDoulaTrainingInPerson", async () => {
       const user = userEvent.setup();
       renderWithRouter();
@@ -257,30 +281,6 @@ describe("<TrainingStep1 />", () => {
         expect(input).toHaveValue(field.testValue);
       }
     });
-
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
-        trainingAddressFields,
-        allTestFields,
-        renderWithRouter,
-        screen,
-        "/form/personal-details/1",
-      );
-    });
-
-    it.each(trainingAddressFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
-      async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
-      },
-    );
-
-    it.each(trainingAddressFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
-      async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
-      },
-    );
   });
 
   describe("doula training instructor fields", () => {
