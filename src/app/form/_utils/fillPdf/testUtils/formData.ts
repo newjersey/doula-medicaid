@@ -47,6 +47,8 @@ const testFormData: FormData = {
   businessZip: "08000",
   hasEin: false,
   ein: null,
+  hasUncollectedDebt: false,
+  isSubjectToPaymentSuspension: false,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {

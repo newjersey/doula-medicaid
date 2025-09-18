@@ -9,6 +9,7 @@ import type {
   BusinessAddressSameAsOtherAddressOptions,
   BusinessDetails1Data,
   BusinessDetails2Data,
+  BusinessDetails3Data,
 } from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
@@ -25,7 +26,8 @@ export type SessionStorageKey =
   | keyof PersonalDetails2Data
   | keyof PersonalDetails3Data
   | keyof BusinessDetails1Data
-  | keyof BusinessDetails2Data;
+  | keyof BusinessDetails2Data
+  | keyof BusinessDetails3Data;
 
 export class ValueNotFoundError extends Error {
   constructor(message: string) {
