@@ -64,6 +64,7 @@ export const fillForm = async (
         throw new Error(`Expected string for text field, but got ${typeof value}`);
       }
       field.setText(value.toString());
+      field.setFontSize(4);
     } else if (field instanceof PDFCheckBox) {
       if (typeof value !== "boolean") {
         throw new Error(`Expected boolean for checkbox field, but got ${typeof value}`);
