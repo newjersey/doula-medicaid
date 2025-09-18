@@ -1,4 +1,9 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
+import {
+  formatDateOfBirth,
+  formatMultilineAddress,
+  formatName,
+} from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 18 - disclosure of ownership and control interest statement
@@ -39,6 +44,16 @@ export const getPage18Fields = (formData: FormData): Partial<PdfFfsIndividualPag
   if (formData.isSupportedSoleProprietor === true) {
     return {
       fd452nameofotherentitywithownershipinteresline1: "N/A",
+      fd452managingagentsdateofbirthine1: formatDateOfBirth(formData),
+      fd452managingagentsssnline1: formData.socialSecurityNumber,
+      fd452managingagentsnametitleline1: `${formatName(formData)}, doula`,
+      fd452managingagentsaddressline1: formatMultilineAddress(
+        formData.businessStreetAddress1,
+        formData.businessStreetAddress2,
+        formData.businessCity,
+        formData.businessState,
+        formData.businessZip,
+      ),
       fd452businesstransactions25000ormoreline1: "N/A",
     };
   }

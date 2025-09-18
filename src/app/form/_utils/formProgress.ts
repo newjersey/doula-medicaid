@@ -62,7 +62,7 @@ export const getCurrentFormProgress = (pathname: string): FormProgress => {
     const pathStep = Number(pathParts[3]);
 
     if (!new Set([...Array(currentSection.numSteps + 1).keys()].slice(1)).has(pathStep)) {
-      throw new Error(`Substep not found for ${pathname}`);
+      throw new Error(`Step not found for ${pathname}`);
     }
     return { section: currentSection, step: pathStep };
   }

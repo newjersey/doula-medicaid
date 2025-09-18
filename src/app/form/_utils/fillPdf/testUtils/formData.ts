@@ -45,6 +45,8 @@ const testFormData: FormData = {
   businessCity: "Default business city",
   businessState: AddressState.NJ,
   businessZip: "08000",
+  hasEin: false,
+  ein: null,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {

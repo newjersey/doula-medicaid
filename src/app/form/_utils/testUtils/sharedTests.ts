@@ -104,7 +104,7 @@ export const testFillFromSessionStorage = async (
   window.sessionStorage.setItem(field.sessionStorageKey, field.expectedValue);
   renderFunction();
   if (typeof field.prerequisiteField !== "undefined") {
-    await fillField(screen, user, field.prerequisiteField, field.prerequisiteField.testValue);
+    await fillField(screen, user, field.prerequisiteField);
   }
   const input = await getInputField(screen, field);
   switch (field.role) {
