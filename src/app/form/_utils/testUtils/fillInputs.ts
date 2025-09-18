@@ -5,6 +5,19 @@ import type { UserEvent } from "@testing-library/user-event";
 
 export type Role = "textbox" | "combobox" | "radio";
 
+type FieldToFill =
+  | {
+      name: string | RegExp;
+      role?: "textbox" | "combobox";
+      withinGroupName?: string;
+      testValue: string;
+    }
+  | {
+      name: string | RegExp;
+      role: "radio";
+      withinGroupName?: string;
+    };
+
 export const getInputField = async (
   screen: Screen,
   input: { name: string | RegExp; role?: Role; withinGroupName?: string },
@@ -23,19 +36,14 @@ export const getInputField = async (
       });
 };
 
-export const fillField = async (
-  screen: Screen,
-  user: UserEvent,
-  fieldToFill: { name: string | RegExp; role?: Role; withinGroupName?: string },
-  value: string,
-) => {
+export const fillField = async (screen: Screen, user: UserEvent, fieldToFill: FieldToFill) => {
   const inputField = await getInputField(screen, fieldToFill);
   switch (fieldToFill.role) {
     case "textbox":
-      await user.type(inputField, value);
+      await user.type(inputField, fieldToFill.testValue);
       break;
     case "combobox":
-      await user.selectOptions(inputField, value);
+      await user.selectOptions(inputField, fieldToFill.testValue);
       break;
     case "radio":
       await user.click(inputField);
@@ -56,27 +64,20 @@ export const fillAllInputs = async (
 export const fillAllInputsExcept = async (
   screen: Screen,
   user: UserEvent,
-  allInputs: Array<{
-    name: string | RegExp;
-    sessionStorageKey: string;
-    testValue: string;
-    role?: Role;
-    withinGroupName?: string;
-    prerequisiteField?: {
-      name: string | RegExp;
-      role?: Role;
-      withinGroupName?: string;
-      testValue: string;
-    };
-  }>,
+  allInputs: Array<
+    FieldToFill & {
+      sessionStorageKey: string;
+      prerequisiteField?: FieldToFill;
+    }
+  >,
   keysToSkip: Set<string>,
 ) => {
   for (const input of allInputs) {
     if (!keysToSkip.has(input.sessionStorageKey)) {
       if (typeof input.prerequisiteField !== "undefined") {
-        await fillField(screen, user, input.prerequisiteField, input.prerequisiteField.testValue);
+        await fillField(screen, user, input.prerequisiteField);
       }
-      await fillField(screen, user, input, input.testValue);
+      await fillField(screen, user, input);
     }
   }
 };

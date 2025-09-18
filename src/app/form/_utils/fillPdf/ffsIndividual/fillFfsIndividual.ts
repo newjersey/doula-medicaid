@@ -32,6 +32,7 @@ import {
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page22";
 import {
   getPage25Fields,
+  pdfFfsIndividualPage25FieldOptions,
   type PdfFfsIndividualPage25,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page25";
 import {
@@ -84,8 +85,10 @@ export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndivi
 };
 
 export const fillFfsIndividualForm = (formData: FormData) => {
+  const fieldOptions = { ...pdfFfsIndividualPage25FieldOptions };
   return fillForm(
     mapFfsIndividualFields(formData),
+    fieldOptions,
     FFS_INDIVIDUAL_PDF_PATH,
     FFS_INDIVIDUAL_PDF_NAME,
   );

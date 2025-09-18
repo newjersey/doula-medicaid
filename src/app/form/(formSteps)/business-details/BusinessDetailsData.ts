@@ -1,6 +1,7 @@
 import { type AddressState } from "@/app/form/_utils/inputFields/enums";
 import {
   getAddressState,
+  getBoolean,
   getBusinessAddressSameAsOtherAddress,
   getValue,
 } from "@/app/form/_utils/sessionStorage";
@@ -16,12 +17,19 @@ export interface BusinessDetails1Data {
   businessZip: string;
 }
 
+export interface BusinessDetails2Data {
+  hasEin: "true" | "false" | "";
+  ein: string;
+}
+
 export interface BusinessDetailsFormData {
   businessStreetAddress1: string;
   businessStreetAddress2: string | null;
   businessCity: string;
   businessState: AddressState;
   businessZip: string;
+  hasEin: boolean;
+  ein: string | null;
 }
 
 const getBusinessDetails1Data = () => {
@@ -57,7 +65,13 @@ const getBusinessDetails1Data = () => {
       );
   }
 };
+const getBusinessDetails2Data = () => {
+  return {
+    hasEin: getBoolean("hasEin", true),
+    ein: getValue("ein", false),
+  };
+};
 
 export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
-  return { ...getBusinessDetails1Data() };
+  return { ...getBusinessDetails1Data(), ...getBusinessDetails2Data() };
 };

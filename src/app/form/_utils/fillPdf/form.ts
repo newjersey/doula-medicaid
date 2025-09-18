@@ -30,6 +30,10 @@ export interface FilledPDFData {
   bytes: Uint8Array;
 }
 
+interface FieldOption {
+  fontSize?: number;
+}
+
 export const getFormData = (): FormData => {
   return {
     ...getScreeningFormData(),
@@ -47,8 +51,17 @@ export const fillAllForms = async (formData: FormData) => {
   ]);
 };
 
+const getFontSize = (fieldName: string, fieldOptions: { [key: string]: FieldOption }) => {
+  if (fieldName in fieldOptions && fieldOptions[fieldName].fontSize !== undefined) {
+    return fieldOptions[fieldName].fontSize;
+  } else {
+    return 12;
+  }
+};
+
 export const fillForm = async (
   pdfFields: { [key: string]: string | boolean },
+  fieldOptions: { [key: string]: FieldOption },
   pdfPath: string,
   filename: string,
 ): Promise<FilledPDFData> => {
@@ -64,6 +77,7 @@ export const fillForm = async (
         throw new Error(`Expected string for text field, but got ${typeof value}`);
       }
       field.setText(value.toString());
+      field.setFontSize(getFontSize(fieldName, fieldOptions));
     } else if (field instanceof PDFCheckBox) {
       if (typeof value !== "boolean") {
         throw new Error(`Expected boolean for checkbox field, but got ${typeof value}`);
