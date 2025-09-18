@@ -1,7 +1,6 @@
 import { type AddressState } from "@/app/form/_utils/inputFields/enums";
 import {
   getAddressState,
-  getBoolean,
   getBusinessAddressSameAsOtherAddress,
   getValue,
 } from "@/app/form/_utils/sessionStorage";
@@ -17,20 +16,12 @@ export interface BusinessDetails1Data {
   businessZip: string;
 }
 
-export interface BusinessDetails3Data {
-  hasUncollectedDebt: "true" | "false" | "";
-  isSubjectToPaymentSuspension: "true" | "false" | "";
-}
-
 export interface BusinessDetailsFormData {
   businessStreetAddress1: string;
   businessStreetAddress2: string | null;
   businessCity: string;
   businessState: AddressState;
   businessZip: string;
-
-  hasUncollectedDebt: boolean;
-  isSubjectToPaymentSuspension: boolean;
 }
 
 const getBusinessDetails1Data = () => {
@@ -67,13 +58,6 @@ const getBusinessDetails1Data = () => {
   }
 };
 
-const getBusinessDetails3Data = () => {
-  return {
-    hasUncollectedDebt: getBoolean("hasUncollectedDebt", true),
-    isSubjectToPaymentSuspension: getBoolean("isSubjectToPaymentSuspension", true),
-  };
-};
-
 export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
-  return { ...getBusinessDetails1Data(), ...getBusinessDetails3Data() };
+  return { ...getBusinessDetails1Data() };
 };

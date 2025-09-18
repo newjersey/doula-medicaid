@@ -45,8 +45,6 @@ const testFormData: FormData = {
   businessCity: "Default business city",
   businessState: AddressState.NJ,
   businessZip: "08000",
-  hasUncollectedDebt: false,
-  isSubjectToPaymentSuspension: false,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
@@ -75,8 +73,6 @@ export const setRequiredFieldsInSessionStorage = () => {
 
   // Business details
   window.sessionStorage.setItem("businessAddressSameAsOtherAddress", "different");
-  window.sessionStorage.setItem("hasUncollectedDebt", "false");
-  window.sessionStorage.setItem("isSubjectToPaymentSuspension", "false");
 };
 
 export const setInSessionStorage = (

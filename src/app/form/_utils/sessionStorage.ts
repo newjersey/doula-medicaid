@@ -8,7 +8,6 @@ import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type {
   BusinessAddressSameAsOtherAddressOptions,
   BusinessDetails1Data,
-  BusinessDetails3Data,
 } from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
@@ -24,8 +23,7 @@ export type SessionStorageKey =
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data
   | keyof PersonalDetails3Data
-  | keyof BusinessDetails1Data
-  | keyof BusinessDetails3Data;
+  | keyof BusinessDetails1Data;
 
 export class ValueNotFoundError extends Error {
   constructor(message: string) {
