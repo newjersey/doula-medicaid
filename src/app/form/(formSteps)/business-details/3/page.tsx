@@ -3,7 +3,6 @@
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type BusinessDetails3Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { unsupportedErrorMessage } from "@/app/form/(formSteps)/screening/_utils/unsupportedErrorMessage";
 import { getDefaultBoolean } from "@/app/form/_utils/sessionStorage";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -47,10 +46,6 @@ const BusinessDetails3 = () => {
               value={hasUncollectedDebt}
               label="Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)?"
               required
-              invalidOption={{
-                label: "Yes",
-                message: unsupportedErrorMessage,
-              }}
               register={register}
               errors={errors}
             />
@@ -65,10 +60,6 @@ const BusinessDetails3 = () => {
             value={isSubjectToPaymentSuspension}
             label="Have you ever been subject to a payment suspension under a federal health care program?"
             required
-            invalidOption={{
-              label: "Yes",
-              message: unsupportedErrorMessage,
-            }}
             register={register}
             errors={errors}
           />
