@@ -74,9 +74,6 @@ export const fillAllInputsExcept = async (
 ) => {
   for (const input of allInputs) {
     if (!keysToSkip.has(input.sessionStorageKey)) {
-      if (typeof input.prerequisiteField !== "undefined") {
-        await fillField(screen, user, input.prerequisiteField);
-      }
       await fillField(screen, user, input);
     }
   }

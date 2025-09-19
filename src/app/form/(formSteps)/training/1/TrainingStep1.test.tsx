@@ -1,12 +1,13 @@
 import {
   createTestFields,
+  testConditionalToggle,
   testFillFromSessionStorage,
   testRequiredField,
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import TrainingStep1 from "@form/(formSteps)/training/1/page";
-import { getInputField } from "@form/_utils/testUtils/fillInputs";
+import { fillField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
@@ -36,19 +37,18 @@ const noneTrainingOrganization: TestField = {
   sessionStorageKey: "stateApprovedTraining",
 };
 
-const trainingOrganizationFields = createTestFields([
-  noneTrainingOrganization,
-  {
-    name: "What is the name of your training organization? *",
-    required: true,
-    alternateRequiredFieldError: "This question is required",
-    sessionStorageKey: "nameOfTrainingOrganization",
-    testValue: "Test organization",
-    prerequisiteField: noneTrainingOrganization,
-  },
-]);
+const nameOfTrainingOrganization: TestField = {
+  name: "What is the name of your training organization? *",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "textbox" as const,
+  testValue: "Test organization",
+  expectedValue: "Test organization",
+  sessionStorageKey: "nameOfTrainingOrganization",
+  prerequisiteField: noneTrainingOrganization,
+};
 
-const yesDoulaInPerson: TestField = {
+const yesDoulaTrainingInPerson: TestField = {
   name: "Yes, in person or hybrid",
   sessionStorageKey: "isDoulaTrainingInPerson",
   requiredErrorMessage: "This question is required",
@@ -78,7 +78,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     alternateRequiredFieldError: "Training street address is required",
     testValue: "Test address 1",
     withinGroupName: trainingAddressGroupName,
-    prerequisiteField: yesDoulaInPerson,
+    prerequisiteField: yesDoulaTrainingInPerson,
   },
   {
     name: "Street address line 2",
@@ -86,7 +86,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     sessionStorageKey: "trainingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: trainingAddressGroupName,
-    prerequisiteField: yesDoulaInPerson,
+    prerequisiteField: yesDoulaTrainingInPerson,
   },
   {
     name: "City *",
@@ -95,7 +95,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     sessionStorageKey: "trainingCity",
     testValue: "Test city",
     withinGroupName: trainingAddressGroupName,
-    prerequisiteField: yesDoulaInPerson,
+    prerequisiteField: yesDoulaTrainingInPerson,
   },
   {
     name: "State *",
@@ -105,7 +105,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     testValue: "NJ",
     sessionStorageKey: "trainingState",
     withinGroupName: trainingAddressGroupName,
-    prerequisiteField: yesDoulaInPerson,
+    prerequisiteField: yesDoulaTrainingInPerson,
   },
   {
     name: "ZIP code *",
@@ -114,7 +114,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     sessionStorageKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,
-    prerequisiteField: yesDoulaInPerson,
+    prerequisiteField: yesDoulaTrainingInPerson,
   },
 ]);
 
@@ -146,37 +146,18 @@ const trainingInstructorFields: TestField[] = createTestFields([
 ]);
 
 const minimalTestFields = [
-  ...trainingOrganizationFields,
+  childrensFuturesTrainingOrganization,
   noDoulaTrainingInPerson,
   ...trainingInstructorFields,
 ];
 
 const allTestFields = [
-  ...trainingOrganizationFields,
-  yesDoulaInPerson,
+  noneTrainingOrganization,
+  nameOfTrainingOrganization,
+  yesDoulaTrainingInPerson,
   ...trainingAddressFields,
   ...trainingInstructorFields,
 ];
-
-const selectTrainingOrganization = async (
-  organization: string = "Children's Home Society of NJ (Trenton)",
-) => {
-  const user = userEvent.setup();
-  const field = {
-    name: "Which state-approved training did you complete? Select one *",
-    role: "combobox" as const,
-  };
-  const input = await getInputField(screen, field);
-  await user.selectOptions(input, organization);
-};
-
-const fillTrainingInstructorFields = async () => {
-  const user = userEvent.setup();
-  for (const field of trainingInstructorFields) {
-    const input = await getInputField(screen, field);
-    await user.type(input, field.testValue!);
-  }
-};
 
 const renderWithRouter = () => {
   const mockRouter: Partial<AppRouterInstance> = {
@@ -201,11 +182,7 @@ describe("<TrainingStep1 />", () => {
       it("when a state-approved training organization is selected", async () => {
         await testSaveFieldsToSessionStorage(
           [childrensFuturesTrainingOrganization],
-          [
-            childrensFuturesTrainingOrganization,
-            noDoulaTrainingInPerson,
-            ...trainingInstructorFields,
-          ],
+          minimalTestFields,
           renderWithRouter,
           screen,
           "/form/personal-details/1",
@@ -214,81 +191,70 @@ describe("<TrainingStep1 />", () => {
 
       it("when 'None of these' is selected and the training organization name is provided", async () => {
         await testSaveFieldsToSessionStorage(
-          trainingOrganizationFields,
-          minimalTestFields,
-          renderWithRouter,
-          screen,
-          "/form/personal-details/1",
-        );
-      });
-    });
-
-    describe("marks fields as required and displays an error message if it is not filled in", () => {
-      it.each([childrensFuturesTrainingOrganization].filter((field) => field.required))(
-        "when a stateApprovedTraining organization is selected",
-        async (field: TestField) => {
-          await testRequiredField(
-            field,
-            [
-              childrensFuturesTrainingOrganization,
-              noDoulaTrainingInPerson,
-              ...trainingInstructorFields,
-            ],
-            renderWithRouter,
-            screen,
-          );
-        },
-      );
-
-      it("when None of the these is selected", async () => {
-        const user = userEvent.setup();
-        const alertText =
-          "If your training organization isn't listed, you may not be eligible to apply right now. Contact the Doula Guides at mahs.doulaguide@dhs.nj.gov to learn more.";
-        renderWithRouter();
-        expect(
-          screen.queryByRole("textbox", {
-            name: "What is the name of your training organization? *",
-          }),
-        ).not.toBeInTheDocument();
-        await selectTrainingOrganization("None of these");
-        const input = screen.getByRole("textbox", {
-          name: "What is the name of your training organization? *",
-        });
-        expect(input).toBeInTheDocument();
-        expect(input).toHaveAccessibleDescription(alertText);
-        await user.click(screen.getByRole("radio", { name: "No, it was virtual" }));
-        await fillTrainingInstructorFields();
-        await user.click(screen.getByRole("button", { name: "Next" }));
-        expect(input).toHaveFocus();
-        expect(input).toHaveAttribute("aria-invalid", "true");
-        expect(input).toHaveAccessibleDescription(
-          expect.stringContaining("This question is required"),
-        );
-        expect(input).toHaveAccessibleDescription(expect.stringContaining(alertText));
-      });
-    });
-
-    it.each(trainingOrganizationFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
-      async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
-      },
-    );
-  });
-
-  describe("doula training address fields", () => {
-    describe("saves fields to session storage on submit", () => {
-      it("when yesDoulaTrainingInPerson", async () => {
-        await testSaveFieldsToSessionStorage(
-          trainingAddressFields,
+          [noneTrainingOrganization, nameOfTrainingOrganization],
           allTestFields,
           renderWithRouter,
           screen,
           "/form/personal-details/1",
         );
       });
+    });
 
-      it("when noDoulaTrainingInPerson", async () => {
+    describe("marks fields as required and displays an error message", () => {
+      it("when a stateApprovedTraining is not filled in", async () => {
+        await testRequiredField(
+          childrensFuturesTrainingOrganization,
+          minimalTestFields,
+          renderWithRouter,
+          screen,
+        );
+      });
+      it("when None of the these is selected and nameOfTrainingOrganization is not filled in", async () => {
+        await testRequiredField(
+          nameOfTrainingOrganization,
+          allTestFields,
+          renderWithRouter,
+          screen,
+        );
+      });
+    });
+
+    it.each([
+      childrensFuturesTrainingOrganization,
+      noneTrainingOrganization,
+      nameOfTrainingOrganization,
+    ])(
+      "fills $sessionStorageKey from session storage when page is loaded",
+      async (field: TestField) => {
+        await testFillFromSessionStorage(field, renderWithRouter, screen);
+      },
+    );
+
+    it("toggles custom training organization based on stateApprovedTraining", async () => {
+      await testConditionalToggle(
+        nameOfTrainingOrganization,
+        childrensFuturesTrainingOrganization,
+        renderWithRouter,
+        screen,
+      );
+    });
+
+    it("shows alert text if None of these is selected", async () => {
+      const user = userEvent.setup();
+      renderWithRouter();
+      await fillField(screen, user, noneTrainingOrganization);
+      const input = screen.getByRole("textbox", {
+        name: "What is the name of your training organization? *",
+      });
+      expect(input).toHaveAccessibleDescription(
+        "If your training organization isn't listed, you may not be eligible to apply right now. Contact the Doula Guides at mahs.doulaguide@dhs.nj.gov to learn more.",
+      );
+    });
+  });
+
+  describe("doula training address fields", () => {
+    describe("saves fields to session storage on submit", () => {
+      it("when training was virtual", async () => {
         await testSaveFieldsToSessionStorage(
           [noDoulaTrainingInPerson],
           minimalTestFields,
@@ -297,6 +263,33 @@ describe("<TrainingStep1 />", () => {
           "/form/personal-details/1",
         );
       });
+
+      it("when training was in person or hybrid", async () => {
+        await testSaveFieldsToSessionStorage(
+          [yesDoulaTrainingInPerson, ...trainingAddressFields],
+          allTestFields,
+          renderWithRouter,
+          screen,
+          "/form/personal-details/1",
+        );
+      });
+    });
+
+    describe("marks fields as required and displays an error message", () => {
+      it("when a isDoulaTrainingInPerson is not filled in", async () => {
+        await testRequiredField(
+          yesDoulaTrainingInPerson,
+          minimalTestFields,
+          renderWithRouter,
+          screen,
+        );
+      });
+      it.each(trainingAddressFields.filter((field) => field.required))(
+        "when training was in person or hybrid and $sessionStorageKey is not filled in",
+        async (field: TestField) => {
+          await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        },
+      );
     });
 
     it.each(trainingAddressFields.filter((field) => field.required))(
@@ -306,42 +299,19 @@ describe("<TrainingStep1 />", () => {
       },
     );
 
-    it.each(trainingAddressFields)(
+    it.each([noDoulaTrainingInPerson, yesDoulaTrainingInPerson, ...trainingAddressFields])(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
         await testFillFromSessionStorage(field, renderWithRouter, screen);
       },
     );
 
-    it("conditionally renders training address fields based on isDoulaTrainingInPerson", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-
-      await selectTrainingOrganization();
-      expect(
-        screen.queryByRole("group", { name: trainingAddressGroupName }),
-      ).not.toBeInTheDocument();
-
-      await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-
-      expect(screen.getByRole("group", { name: trainingAddressGroupName })).toBeInTheDocument();
-      for (const field of trainingAddressFields) {
-        const input = await getInputField(screen, field);
-        expect(input).toBeInTheDocument();
-        await user.type(input, field.testValue!);
-      }
-
-      await user.click(screen.getByRole("radio", { name: "No, it was virtual" }));
-      expect(
-        screen.queryByRole("group", { name: trainingAddressGroupName }),
-      ).not.toBeInTheDocument();
-      await user.click(screen.getByRole("radio", { name: "Yes, in person or hybrid" }));
-
-      for (const field of trainingAddressFields) {
-        const input = await getInputField(screen, field);
-        expect(input).toHaveValue(field.testValue);
-      }
-    });
+    it.each(trainingAddressFields.filter((field) => field.required))(
+      "toggles $sessionStorageKey based on isDoulaTrainingInPerson",
+      async (field: TestField) => {
+        await testConditionalToggle(field, noDoulaTrainingInPerson, renderWithRouter, screen);
+      },
+    );
   });
 
   describe("doula training instructor fields", () => {
