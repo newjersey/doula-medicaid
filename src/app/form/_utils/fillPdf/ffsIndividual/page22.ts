@@ -46,9 +46,12 @@ export const getPage22Fields = (formData: FormData): Partial<PdfFfsIndividualPag
   if (formData.isSupportedSoleProprietor === true) {
     return {
       fd452increasedbedcapacityno: true,
+      fd452disclosableeventyyes: formData.hasDisclosableEvent,
+      fd452disclosableeventno: !formData.hasDisclosableEvent,
     };
+  } else {
+    throw new UnexpectedFormDataError(
+      `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
+    );
   }
-  throw new UnexpectedFormDataError(
-    `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
-  );
 };

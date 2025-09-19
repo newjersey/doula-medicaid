@@ -35,7 +35,7 @@ const BusinessDetails3 = () => {
         <div className="desktop:grid-col-8">
           <div>
             <h2 className="font-heading-md">
-              Mark Yes if these apply your business, otherwise mark No.
+              Mark Yes if these apply to your business, otherwise mark No.
             </h2>
             <p className="usa-hint">
               Most individual doulas with a Sole Proprietorship business answer “No” to these
