@@ -1,4 +1,4 @@
-import BusinessDetails3 from "@/app/form/(formSteps)/business-details/3/page";
+import BusinessDetails4 from "@/app/form/(formSteps)/business-details/4/page";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
   testFillFromSessionStorage,
@@ -9,66 +9,66 @@ import {
 import { render, screen } from "@testing-library/react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const noHasUncollectedDebt: TestField = {
+const noHasBeenExcludedFromMedicaid: TestField = {
   name: "No",
-  sessionStorageKey: "hasUncollectedDebt",
+  sessionStorageKey: "hasBeenExcludedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
   expectedValue: "false",
   withinGroupName:
-    "Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)? Select one *",
+    "Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP? Select one *",
 };
 
-const yesHasUncollectedDebt: TestField = {
+const yesHasBeenExcludedFromMedicaid: TestField = {
   name: "Yes",
-  sessionStorageKey: "hasUncollectedDebt",
+  sessionStorageKey: "hasBeenExcludedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
   expectedValue: "true",
   withinGroupName:
-    "Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)? Select one *",
+    "Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP? Select one *",
 };
 
-const noIsSubjectToPaymentSuspension: TestField = {
+const noHasBeenSuspendedFromMedicaid: TestField = {
   name: "No",
-  sessionStorageKey: "isSubjectToPaymentSuspension",
+  sessionStorageKey: "hasBeenSuspendedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
   expectedValue: "false",
   withinGroupName:
-    "Have you ever been subject to a payment suspension under a federal health care program? Select one *",
+    "Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated? Select one *",
 };
 
-const yesIsSubjectToPaymentSuspension: TestField = {
+const yesHasBeenSuspendedFromMedicaid: TestField = {
   name: "Yes",
-  sessionStorageKey: "isSubjectToPaymentSuspension",
+  sessionStorageKey: "hasBeenSuspendedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
   expectedValue: "true",
   withinGroupName:
-    "Have you ever been subject to a payment suspension under a federal health care program? Select one *",
+    "Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated? Select one *",
 };
 
 const minimalTestFields: Array<TestField> = [
-  yesHasUncollectedDebt,
-  yesIsSubjectToPaymentSuspension,
+  yesHasBeenExcludedFromMedicaid,
+  yesHasBeenSuspendedFromMedicaid,
 ];
 const allTestFields: Array<TestField> = [
-  noHasUncollectedDebt,
-  noIsSubjectToPaymentSuspension,
-  yesHasUncollectedDebt,
-  yesIsSubjectToPaymentSuspension,
+  noHasBeenExcludedFromMedicaid,
+  noHasBeenSuspendedFromMedicaid,
+  yesHasBeenExcludedFromMedicaid,
+  yesHasBeenSuspendedFromMedicaid,
 ];
 
-describe("<BusinessDetails3 />", () => {
+describe("<BusinessDetails4 />", () => {
   const renderWithRouter = () => {
     const mockRouter: Partial<AppRouterInstance> = {
       push: jest.fn(),
@@ -76,10 +76,10 @@ describe("<BusinessDetails3 />", () => {
     };
     render(
       <RouterPathnameProvider
-        pathname="/form/business-details/3"
+        pathname="/form/business-details/4"
         router={mockRouter as AppRouterInstance}
       >
-        <BusinessDetails3 />
+        <BusinessDetails4 />
       </RouterPathnameProvider>,
     );
     return mockRouter;
@@ -91,7 +91,7 @@ describe("<BusinessDetails3 />", () => {
       minimalTestFields,
       renderWithRouter,
       screen,
-      "/form/business-details/4",
+      "/form/finish",
     );
   });
 
