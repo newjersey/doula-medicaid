@@ -78,6 +78,8 @@ export const setRequiredFieldsInSessionStorage = () => {
   window.sessionStorage.setItem("businessAddressSameAsOtherAddress", "different");
   window.sessionStorage.setItem("hasUncollectedDebt", "false");
   window.sessionStorage.setItem("isSubjectToPaymentSuspension", "false");
+  window.sessionStorage.setItem("hasBeenExcludedFromMedicaid", "false");
+  window.sessionStorage.setItem("hasBeenSuspendedFromMedicaid", "false");
 };
 
 export const setInSessionStorage = (

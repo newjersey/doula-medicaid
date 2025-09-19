@@ -90,6 +90,8 @@ describe("getBusinessDetailsFormData", () => {
       setInSessionStorage({
         hasUncollectedDebt: "false",
         isSubjectToPaymentSuspension: "false",
+        hasBeenSuspendedFromMedicaid: "false",
+        hasBeenExcludedFromMedicaid: "false",
       });
       expect(getBusinessDetailsFormData()).toMatchObject({
         hasDisclosableEvent: false,
@@ -99,6 +101,8 @@ describe("getBusinessDetailsFormData", () => {
     it.each([
       { key: "hasUncollectedDebt", value: "true" },
       { key: "isSubjectToPaymentSuspension", value: "true" },
+      { key: "hasBeenSuspendedFromMedicaid", value: "true" },
+      { key: "hasBeenExcludedFromMedicaid", value: "true" },
     ])("sets hasDisclosableEvent to true when $key is $value", async ({ key, value }) => {
       setRequiredFieldsInSessionStorage();
       setInSessionStorage({ [key]: value });

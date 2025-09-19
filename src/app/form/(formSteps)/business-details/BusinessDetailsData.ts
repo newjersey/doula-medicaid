@@ -27,6 +27,11 @@ export interface BusinessDetails3Data {
   isSubjectToPaymentSuspension: "true" | "false" | "";
 }
 
+export interface BusinessDetails4Data {
+  hasBeenExcludedFromMedicaid: "true" | "false" | "";
+  hasBeenSuspendedFromMedicaid: "true" | "false" | "";
+}
+
 export interface BusinessDetailsFormData {
   businessStreetAddress1: string;
   businessStreetAddress2: string | null;
@@ -83,8 +88,16 @@ const getBusinessDetails2Data = () => {
 export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
   const hasUncollectedDebt = getBoolean("hasUncollectedDebt", true);
   const isSubjectToPaymentSuspension = getBoolean("isSubjectToPaymentSuspension", true);
+  const hasBeenExcludedFromMedicaid = getBoolean("hasBeenExcludedFromMedicaid", true);
+  const hasBeenSuspendedFromMedicaid = getBoolean("hasBeenSuspendedFromMedicaid", true);
+
   let hasDisclosableEvent = false;
-  if (hasUncollectedDebt === true || isSubjectToPaymentSuspension === true) {
+  if (
+    hasUncollectedDebt === true ||
+    isSubjectToPaymentSuspension === true ||
+    hasBeenExcludedFromMedicaid === true ||
+    hasBeenSuspendedFromMedicaid === true
+  ) {
     hasDisclosableEvent = true;
   }
   return {
