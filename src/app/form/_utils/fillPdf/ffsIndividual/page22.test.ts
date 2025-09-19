@@ -34,7 +34,6 @@ describe("Page 22 - disclosure of ownership and control interest statement", () 
       expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
       const pdfFields = mapFfsIndividualFields(
         generateFormData({
-          isSupportedSoleProprietor: true,
           hasDisclosableEvent: false,
         }),
       );
@@ -46,7 +45,6 @@ describe("Page 22 - disclosure of ownership and control interest statement", () 
       expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
       const pdfFields = mapFfsIndividualFields(
         generateFormData({
-          isSupportedSoleProprietor: true,
           hasDisclosableEvent: true,
         }),
       );
