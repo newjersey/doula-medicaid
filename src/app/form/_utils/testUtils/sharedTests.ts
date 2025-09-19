@@ -100,12 +100,14 @@ export const testFillFromSessionStorage = async (
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
 ) => {
-  const user = userEvent.setup();
+  if (typeof field.prerequisiteField !== "undefined") {
+    window.sessionStorage.setItem(
+      field.prerequisiteField.sessionStorageKey,
+      field.prerequisiteField.expectedValue,
+    );
+  }
   window.sessionStorage.setItem(field.sessionStorageKey, field.expectedValue);
   renderFunction();
-  if (typeof field.prerequisiteField !== "undefined") {
-    await fillField(screen, user, field.prerequisiteField);
-  }
   const input = await getInputField(screen, field);
   switch (field.role) {
     case "textbox":
@@ -120,4 +122,30 @@ export const testFillFromSessionStorage = async (
     default:
       throw new Error(`Role ${field.role} not implemented`);
   }
+};
+
+export const testConditionalToggle = async (
+  field: TestField,
+  hideField: TestField,
+  renderFunction: () => Partial<AppRouterInstance>,
+  screen: Screen,
+) => {
+  if (field.prerequisiteField === undefined) {
+    throw new Error(
+      `${field.sessionStorageKey} needs a prerequisiteField to test toggling visibility`,
+    );
+  }
+  const user = userEvent.setup();
+  renderFunction();
+  await fillField(screen, user, field.prerequisiteField);
+  const input = await getInputField(screen, field);
+
+  await fillField(screen, user, field);
+  expect(input).toHaveValue(field.expectedValue);
+
+  await fillField(screen, user, hideField);
+  expect(input).not.toBeInTheDocument();
+
+  await fillField(screen, user, field.prerequisiteField);
+  expect(input).toHaveValue(field.expectedValue);
 };

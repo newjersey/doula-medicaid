@@ -101,7 +101,7 @@ describe("<BusinessDetails2 />", () => {
     },
   );
 
-  it("shows/hides the EIN field based on the hasEin question and persists when toggled", async () => {
+  it("toggles EIN based on hasEin", async () => {
     const user = userEvent.setup();
     renderWithRouter();
     await fillField(screen, user, yesHasEin);

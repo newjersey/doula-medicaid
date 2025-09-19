@@ -290,7 +290,7 @@ describe("<BusinessDetailsStep1 />", () => {
       });
     });
 
-    it("shows/hides business address fields based on businessAddressSameAsOtherAddress question and persists when toggled", async () => {
+    it("toggles business address based on businessAddressSameAsOtherAddress", async () => {
       const user = userEvent.setup();
       setMailingAddressInSessionStorage();
       renderWithRouter();
