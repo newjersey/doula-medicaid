@@ -27,4 +27,32 @@ describe("Page 22 - disclosure of ownership and control interest statement", () 
     );
     expect(pdfFields[pdfKey]).toEqual(true);
   });
+
+  describe("hasDisclosableEvent", () => {
+    it("checks the No checkbox when formData.hasDisclosableEvent is false", () => {
+      const pdfKey = "fd452disclosableeventno";
+      const oppositePdfKey = "fd452disclosableeventyyes";
+      expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          hasDisclosableEvent: false,
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual(true);
+      expect(pdfFields[oppositePdfKey]).toEqual(false);
+    });
+
+    it("checks the Yes checkbox when formData.hasDisclosableEvent is true", () => {
+      const pdfKey = "fd452disclosableeventyyes";
+      const oppositePdfKey = "fd452disclosableeventno";
+      expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          hasDisclosableEvent: true,
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual(true);
+      expect(pdfFields[oppositePdfKey]).toEqual(false);
+    });
+  });
 });

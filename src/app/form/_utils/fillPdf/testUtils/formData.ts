@@ -47,6 +47,7 @@ const testFormData: FormData = {
   businessZip: "08000",
   hasEin: false,
   ein: null,
+  hasDisclosableEvent: false,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
@@ -75,6 +76,8 @@ export const setRequiredFieldsInSessionStorage = () => {
 
   // Business details
   window.sessionStorage.setItem("businessAddressSameAsOtherAddress", "different");
+  window.sessionStorage.setItem("hasUncollectedDebt", "false");
+  window.sessionStorage.setItem("isSubjectToPaymentSuspension", "false");
 };
 
 export const setInSessionStorage = (

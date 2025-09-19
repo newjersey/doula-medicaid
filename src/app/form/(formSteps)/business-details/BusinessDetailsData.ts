@@ -22,6 +22,11 @@ export interface BusinessDetails2Data {
   ein: string;
 }
 
+export interface BusinessDetails3Data {
+  hasUncollectedDebt: "true" | "false" | "";
+  isSubjectToPaymentSuspension: "true" | "false" | "";
+}
+
 export interface BusinessDetailsFormData {
   businessStreetAddress1: string;
   businessStreetAddress2: string | null;
@@ -30,6 +35,8 @@ export interface BusinessDetailsFormData {
   businessZip: string;
   hasEin: boolean;
   ein: string | null;
+
+  hasDisclosableEvent: boolean;
 }
 
 const getBusinessDetails1Data = () => {
@@ -65,6 +72,7 @@ const getBusinessDetails1Data = () => {
       );
   }
 };
+
 const getBusinessDetails2Data = () => {
   return {
     hasEin: getBoolean("hasEin", true),
@@ -73,5 +81,15 @@ const getBusinessDetails2Data = () => {
 };
 
 export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
-  return { ...getBusinessDetails1Data(), ...getBusinessDetails2Data() };
+  const hasUncollectedDebt = getBoolean("hasUncollectedDebt", true);
+  const isSubjectToPaymentSuspension = getBoolean("isSubjectToPaymentSuspension", true);
+  let hasDisclosableEvent = false;
+  if (hasUncollectedDebt === true || isSubjectToPaymentSuspension === true) {
+    hasDisclosableEvent = true;
+  }
+  return {
+    ...getBusinessDetails1Data(),
+    ...getBusinessDetails2Data(),
+    hasDisclosableEvent: hasDisclosableEvent,
+  };
 };

@@ -84,4 +84,27 @@ describe("getBusinessDetailsFormData", () => {
       });
     });
   });
+  describe("hasDisclosableEvent handling", () => {
+    it("sets hasDisclosableEvent to false when the user answers no to all questions", () => {
+      setRequiredFieldsInSessionStorage();
+      setInSessionStorage({
+        hasUncollectedDebt: "false",
+        isSubjectToPaymentSuspension: "false",
+      });
+      expect(getBusinessDetailsFormData()).toMatchObject({
+        hasDisclosableEvent: false,
+      });
+    });
+
+    it.each([
+      { key: "hasUncollectedDebt", value: "true" },
+      { key: "isSubjectToPaymentSuspension", value: "true" },
+    ])("sets hasDisclosableEvent to true when $key is $value", async ({ key, value }) => {
+      setRequiredFieldsInSessionStorage();
+      setInSessionStorage({ [key]: value });
+      expect(getBusinessDetailsFormData()).toMatchObject({
+        hasDisclosableEvent: true,
+      });
+    });
+  });
 });
