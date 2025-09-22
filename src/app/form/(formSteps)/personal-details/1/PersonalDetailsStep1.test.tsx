@@ -94,11 +94,9 @@ const allTestFields: Array<TestField> = [
 
 describe("<PersonalDetailsStep1 />", () => {
   const renderWithRouter = () => {
-    const mockPush = jest.fn();
-    const mockRefresh = jest.fn();
     const mockRouter: Partial<AppRouterInstance> = {
-      push: mockPush,
-      refresh: mockRefresh,
+      push: jest.fn(),
+      refresh: jest.fn(),
     };
     render(
       <RouterPathnameProvider

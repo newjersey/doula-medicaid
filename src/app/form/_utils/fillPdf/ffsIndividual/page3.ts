@@ -1,5 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
-import { formatDateOfBirth, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatDate, formatDateOfBirth, formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 3 - doula qualifications form
@@ -53,6 +53,11 @@ export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     fd427trainingsiteCity: formData.trainingCity ?? "",
     fd427trainingsiteState: formData.trainingState ?? "",
     fd427trainingsiteZip: formData.trainingZip ?? "",
+    fd427currentprofessionalliabilityinsurancecarrierPeriodofCoverage: `${formatDate(formData.insuranceStartDate)} - ${formatDate(formData.insuranceEndDate)}`,
+    fd427currentprofessionalliabilityinsurancecarrierAmountofCoveragePerOccurrence:
+      formData.insuranceOccurenceAmount,
+    fd427currentprofessionalliabilityinsurancecarrierAmountofCoveragePerAggregate:
+      formData.insuranceAggregateAmount,
     fd427NameofCurrentProfessionalLiabilityInsuranceCarrier: formData.insuranceCarrierName,
     fd427currentprofessionalliabilityinsurancecarrierStreetaddress: `${formData.insuranceStreetAddress1}${formData.insuranceStreetAddress2 ? ` ${formData.insuranceStreetAddress2}` : ""}`,
     fd427currentprofessionalliabilityinsurancecarriercity: formData.insuranceCity,

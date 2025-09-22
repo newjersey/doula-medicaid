@@ -7,6 +7,12 @@ import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type { SessionStorageKey } from "@/app/form/_utils/sessionStorage";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
+const testinsuranceEndDateDay = "31";
+const testinsuranceEndDateMonth = "12";
+const testinsuranceEndDateYear = "2024";
+const testinsuranceStartDateDay = "01";
+const testinsuranceStartDateMonth = "01";
+const testinsuranceStartDateYear = "2025";
 const testDateOfBirthDay = "25";
 const testDateOfBirthMonth = "12";
 const testDateOfBirthYear = "1990";
@@ -31,6 +37,14 @@ const testTrainingFormData: TrainingFormData = {
 };
 
 const testInsuranceFormData: InsuranceFormData = {
+  insuranceAggregateAmount: "1000000",
+  insuranceOccurenceAmount: "300000",
+  insuranceEndDate: new Date(
+    `${testinsuranceEndDateYear}-${testinsuranceEndDateMonth}-${testinsuranceEndDateDay}`,
+  ),
+  insuranceStartDate: new Date(
+    `${testinsuranceStartDateYear}-${testinsuranceStartDateMonth}-${testinsuranceStartDateDay}`,
+  ),
   insuranceCarrierName: "Default insurance carrier",
   insurancePolicyNumber: "Default-policy-123",
   insuranceStreetAddress1: "Default insurance street 1",
@@ -93,6 +107,14 @@ export const setRequiredFieldsInSessionStorage = () => {
   window.sessionStorage.setItem("everHadOtherBusinessOwner", "false");
   window.sessionStorage.setItem("haveOtherBusinessOwnerNextYear", "false");
   window.sessionStorage.setItem("hadDhmasBusiness", "false");
+
+  //Insurance
+  window.sessionStorage.setItem("insuranceStartDateDay", testinsuranceStartDateDay);
+  window.sessionStorage.setItem("insuranceStartDateMonth", testinsuranceStartDateMonth);
+  window.sessionStorage.setItem("insuranceStartDateYear", testinsuranceStartDateYear);
+  window.sessionStorage.setItem("insuranceEndDateDay", testinsuranceEndDateDay);
+  window.sessionStorage.setItem("insuranceEndDateMonth", testinsuranceEndDateMonth);
+  window.sessionStorage.setItem("insuranceEndDateYear", testinsuranceEndDateYear);
 
   // Personal details
   for (const [key, value] of Object.entries(testFormData)) {

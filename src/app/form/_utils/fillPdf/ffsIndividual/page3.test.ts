@@ -195,6 +195,39 @@ describe("Page 3 - doula qualifications form", () => {
   });
 
   describe("Part 3", () => {
+    it("fills period of coverage", () => {
+      const pdfKey = "fd427currentprofessionalliabilityinsurancecarrierPeriodofCoverage";
+      expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
+      const formData = generateFormData({
+        insuranceStartDate: new Date("12/10/2024"),
+        insuranceEndDate: new Date("01/01/2029"),
+      });
+      const pdfFields = mapFfsIndividualFields(formData);
+      expect(pdfFields[pdfKey]).toEqual("12/10/2024 - 01/01/2029");
+    });
+
+    it("fills amount of coverage per occurrence", () => {
+      const pdfKey =
+        "fd427currentprofessionalliabilityinsurancecarrierAmountofCoveragePerOccurrence";
+      expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
+      const formData = generateFormData({
+        insuranceOccurenceAmount: "1000000",
+      });
+      const pdfFields = mapFfsIndividualFields(formData);
+      expect(pdfFields[pdfKey]).toEqual("1000000");
+    });
+
+    it("fills amount of coverage per aggregate", () => {
+      const pdfKey =
+        "fd427currentprofessionalliabilityinsurancecarrierAmountofCoveragePerAggregate";
+      expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
+      const formData = generateFormData({
+        insuranceAggregateAmount: "3000000",
+      });
+      const pdfFields = mapFfsIndividualFields(formData);
+      expect(pdfFields[pdfKey]).toEqual("3000000");
+    });
+
     it("fills name of current professional liability insurance carrier", () => {
       const pdfKey = "fd427NameofCurrentProfessionalLiabilityInsuranceCarrier";
       expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
