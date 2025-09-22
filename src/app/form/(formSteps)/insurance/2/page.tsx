@@ -1,0 +1,117 @@
+"use client";
+
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
+import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
+import type { Insurance2Data } from "@/app/form/(formSteps)/insurance/InsuranceData";
+import { getDefaultValue } from "@/app/form/_utils/sessionStorage";
+import { DoulaForm } from "@/app/form/components/DoulaForm";
+import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
+import { useForm } from "react-hook-form";
+
+const orderedInputNameToLabel = {
+  insuranceCarrierName: "Name of your insurance carrier",
+  insurancePolicyNumber: "Policy number",
+  insuranceStreetAddress1: "Street address",
+  insuranceStreetAddress2: "Street address line 2",
+  insuranceCity: "City",
+  insuranceState: "State",
+  insuranceZip: "ZIP code",
+};
+
+const mayHaveThreeOrMoreErrors = true;
+
+const InsuranceStep2 = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setFocus,
+    watch,
+  } = useForm<Insurance2Data>({
+    defaultValues: {
+      insuranceCarrierName: getDefaultValue("insuranceCarrierName") ?? "",
+      insurancePolicyNumber: getDefaultValue("insurancePolicyNumber") ?? "",
+      insuranceStreetAddress1: getDefaultValue("insuranceStreetAddress1") ?? "",
+      insuranceStreetAddress2: getDefaultValue("insuranceStreetAddress2") ?? "",
+      insuranceCity: getDefaultValue("insuranceCity") ?? "",
+      insuranceState: getDefaultValue("insuranceState") ?? "NJ",
+      insuranceZip: getDefaultValue("insuranceZip") ?? "",
+    },
+    shouldFocusError: !mayHaveThreeOrMoreErrors,
+  });
+  const insuranceZip = watch("insuranceZip");
+
+  return (
+    <DoulaForm<Insurance2Data>
+      orderedInputNameToLabel={orderedInputNameToLabel}
+      errors={errors}
+      setFocus={setFocus}
+      handleSubmit={handleSubmit}
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+    >
+      <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+        <div className="desktop:grid-col-8">
+          <h2 className="font-heading-md">Insurance details</h2>
+          <p className="usa-hint">Enter your current professional liability insurance.</p>
+
+          <div className="tablet:grid-col-6">
+            <DoulaTextInput
+              name="insuranceCarrierName"
+              label={orderedInputNameToLabel["insuranceCarrierName"]}
+              required
+              errors={errors}
+              register={register}
+              registerOptions={{
+                required: `${orderedInputNameToLabel["insuranceCarrierName"]} is required`,
+              }}
+            />
+          </div>
+          <div className="tablet:grid-col-6">
+            <DoulaTextInput
+              name="insurancePolicyNumber"
+              label={orderedInputNameToLabel["insurancePolicyNumber"]}
+              required
+              errors={errors}
+              register={register}
+              registerOptions={{
+                required: `${orderedInputNameToLabel["insurancePolicyNumber"]} is required`,
+              }}
+            />
+          </div>
+        </div>
+      </div>
+      <HorizontalDivider />
+      <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+        <div className="desktop:grid-col-8">
+          <DoulaAddress<Insurance2Data>
+            fieldsetProps={{
+              legend: (
+                <div>
+                  <h2 className="font-heading-md">Insurance address</h2>
+                  <p className="usa-hint">This is the office location of your insurance carrier.</p>
+                </div>
+              ),
+            }}
+            addressKeys={{
+              streetAddress1: "insuranceStreetAddress1",
+              streetAddress2: "insuranceStreetAddress2",
+              city: "insuranceCity",
+              state: "insuranceState",
+              zip: "insuranceZip",
+            }}
+            zipValue={insuranceZip}
+            autocomplete="shipping"
+            orderedInputNameToLabel={orderedInputNameToLabel}
+            errors={errors}
+            register={register}
+          />
+        </div>
+      </div>
+      <HorizontalDivider />
+      <FormProgressButtons />
+    </DoulaForm>
+  );
+};
+
+export default InsuranceStep2;

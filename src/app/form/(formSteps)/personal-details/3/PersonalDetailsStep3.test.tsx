@@ -17,7 +17,7 @@ const npiNumberField = createTestField({
   name: "National Provider Identifier (NPI) *",
   required: true,
   alternateRequiredFieldError:
-    "To be an NJ FamilyCare doula, your need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
+    "To be an NJ FamilyCare doula, you need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
   sessionStorageKey: "npiNumber",
   testValue: "1111111111",
 });

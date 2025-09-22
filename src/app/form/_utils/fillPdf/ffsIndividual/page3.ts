@@ -53,5 +53,11 @@ export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     fd427trainingsiteCity: formData.trainingCity ?? "",
     fd427trainingsiteState: formData.trainingState ?? "",
     fd427trainingsiteZip: formData.trainingZip ?? "",
+    fd427NameofCurrentProfessionalLiabilityInsuranceCarrier: formData.insuranceCarrierName,
+    fd427currentprofessionalliabilityinsurancecarrierStreetaddress: `${formData.insuranceStreetAddress1}${formData.insuranceStreetAddress2 ? ` ${formData.insuranceStreetAddress2}` : ""}`,
+    fd427currentprofessionalliabilityinsurancecarriercity: formData.insuranceCity,
+    fd427currentprofessionalliabilityinsurancecarrierstate: formData.insuranceState,
+    fd427currentprofessionalliabilityinsurancecarrierzip: formData.insuranceZip,
+    fd427currentprofessionalliabilityinsurancecarrierpolicyno: formData.insurancePolicyNumber,
   };
 };

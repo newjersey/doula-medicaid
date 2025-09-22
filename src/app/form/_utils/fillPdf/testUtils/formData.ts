@@ -1,3 +1,8 @@
+import type { BusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import type { InsuranceFormData } from "@/app/form/(formSteps)/insurance/InsuranceData";
+import type { PersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
+import type { TrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type { SessionStorageKey } from "@/app/form/_utils/sessionStorage";
 import { type FormData } from "@form/_utils/fillPdf/form";
@@ -6,29 +11,42 @@ const testDateOfBirthDay = "25";
 const testDateOfBirthMonth = "12";
 const testDateOfBirthYear = "1990";
 
-const testFormData: FormData = {
+const testScreeningFormData: ScreeningFormData = {
   isSupportedSoleProprietor: true,
+};
+
+const testTrainingFormData: TrainingFormData = {
   stateApprovedTraining: "New Jersey Doula Learning Collaborative (NJDLC)",
   nameOfTrainingOrganization: null,
-  instructorFirstName: "Default instructor first",
-  instructorLastName: "Default instructor last",
-  instructorEmail: "defaultInstructor@test.com",
-  instructorPhoneNumber: null,
   isDoulaTrainingInPerson: false,
   trainingStreetAddress1: null,
   trainingStreetAddress2: null,
   trainingCity: null,
   trainingState: null,
   trainingZip: null,
+  instructorFirstName: "Default instructor first",
+  instructorLastName: "Default instructor last",
+  instructorEmail: "defaultInstructor@test.com",
+  instructorPhoneNumber: null,
+};
+
+const testInsuranceFormData: InsuranceFormData = {
+  insuranceCarrierName: "Default insurance carrier",
+  insurancePolicyNumber: "Default-policy-123",
+  insuranceStreetAddress1: "Default insurance street 1",
+  insuranceStreetAddress2: null,
+  insuranceCity: "Default insurance city",
+  insuranceState: AddressState.NJ,
+  insuranceZip: "08000",
+};
+
+const testPersonalDetailsFormData: PersonalDetailsFormData = {
   firstName: "Default first",
   middleName: null,
   lastName: "Default last",
   dateOfBirth: new Date(`${testDateOfBirthYear}-${testDateOfBirthMonth}-${testDateOfBirthDay}`),
   phoneNumber: "333-333-3333",
   email: "default@test.com",
-  npiNumber: "3333333333",
-  medicareProviderId: null,
-  upinNumber: null,
   socialSecurityNumber: "333-33-3333",
   streetAddress1: "Default street 1",
   streetAddress2: null,
@@ -40,6 +58,12 @@ const testFormData: FormData = {
   billingCity: "Default billing city",
   billingState: AddressState.NJ,
   billingZip: "08000",
+  npiNumber: "3333333333",
+  medicareProviderId: null,
+  upinNumber: null,
+};
+
+const testBusinessDetailsFormData: BusinessDetailsFormData = {
   businessStreetAddress1: "Default business street 1",
   businessStreetAddress2: null,
   businessCity: "Default business city",
@@ -48,6 +72,14 @@ const testFormData: FormData = {
   hasEin: false,
   ein: null,
   hasDisclosableEvent: false,
+};
+
+const testFormData: FormData = {
+  ...testScreeningFormData,
+  ...testInsuranceFormData,
+  ...testTrainingFormData,
+  ...testPersonalDetailsFormData,
+  ...testBusinessDetailsFormData,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {

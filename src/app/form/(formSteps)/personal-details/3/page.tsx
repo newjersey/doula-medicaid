@@ -46,38 +46,41 @@ const PersonalDetailsStep3 = () => {
             To be an NJ FamilyCare doula, your NPI must be Type 1 and linked to the doula taxonomy
             code 374J00000X.
           </p>
-          <DoulaTextInputMask
-            name="npiNumber"
-            label={orderedInputNameToLabel["npiNumber"]}
-            hint={"Enter your 10-digit NPI number."}
-            value={npiNumber ?? ""}
-            mask="__________"
-            pattern="\d{10}"
-            required
-            errors={errors}
-            register={register}
-            registerOptions={{
-              required: true,
-              minLength: {
-                value: 10,
-                message: `${orderedInputNameToLabel["npiNumber"]} must have 10 digits`,
-              },
-            }}
-            customErrorMessages={[
-              {
-                type: "required",
-                message: (
-                  <span>
-                    To be an NJ FamilyCare doula, your need a NPI. You can get yours via{" "}
-                    <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
-                      https://nppes.cms.hhs.gov/
-                    </a>
-                    .
-                  </span>
-                ),
-              },
-            ]}
-          />
+
+          <div className="tablet:grid-col-6">
+            <DoulaTextInputMask
+              name="npiNumber"
+              label={orderedInputNameToLabel["npiNumber"]}
+              hint={"Enter your 10-digit NPI number."}
+              value={npiNumber ?? ""}
+              mask="__________"
+              pattern="\d{10}"
+              required
+              errors={errors}
+              register={register}
+              registerOptions={{
+                required: true,
+                minLength: {
+                  value: 10,
+                  message: `${orderedInputNameToLabel["npiNumber"]} must have 10 digits`,
+                },
+              }}
+              customErrorMessages={[
+                {
+                  type: "required",
+                  message: (
+                    <span>
+                      To be an NJ FamilyCare doula, you need a NPI. You can get yours via{" "}
+                      <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
+                        https://nppes.cms.hhs.gov/
+                      </a>
+                      .
+                    </span>
+                  ),
+                },
+              ]}
+            />
+          </div>
         </div>
         <div className="form-explainer desktop:grid-col-4">
           <NpiExplainer />
@@ -88,18 +91,23 @@ const PersonalDetailsStep3 = () => {
         <div className="desktop:grid-col-8">
           <h2 className="font-heading-md">Other identification</h2>
           <p>Leave non-applicable items blank; it won&apos;t affect your application.</p>
-          <DoulaTextInput
-            name="upinNumber"
-            label={`${orderedInputNameToLabel["upinNumber"]} (optional)`}
-            hint={"Most doulas don't have this."}
-            register={register}
-          />
-          <DoulaTextInput
-            name="medicareProviderId"
-            label={`${orderedInputNameToLabel["medicareProviderId"]} (optional)`}
-            hint={"Most doulas don't have this."}
-            register={register}
-          />
+
+          <div className="tablet:grid-col-6">
+            <DoulaTextInput
+              name="upinNumber"
+              label={`${orderedInputNameToLabel["upinNumber"]} (optional)`}
+              hint={"Most doulas don't have this."}
+              register={register}
+            />
+          </div>
+          <div className="tablet:grid-col-6">
+            <DoulaTextInput
+              name="medicareProviderId"
+              label={`${orderedInputNameToLabel["medicareProviderId"]} (optional)`}
+              hint={"Most doulas don't have this."}
+              register={register}
+            />
+          </div>
         </div>
       </div>
       <HorizontalDivider />

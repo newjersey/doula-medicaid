@@ -3,6 +3,10 @@ import {
   type BusinessDetailsFormData,
 } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import {
+  getInsuranceFormData,
+  type InsuranceFormData,
+} from "@/app/form/(formSteps)/insurance/InsuranceData";
+import {
   getPersonalDetailsFormData,
   type PersonalDetailsFormData,
 } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
@@ -22,6 +26,7 @@ import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-li
 export interface FormData
   extends ScreeningFormData,
     TrainingFormData,
+    InsuranceFormData,
     PersonalDetailsFormData,
     BusinessDetailsFormData {}
 
@@ -38,6 +43,7 @@ export const getFormData = (): FormData => {
   return {
     ...getScreeningFormData(),
     ...getTrainingFormData(),
+    ...getInsuranceFormData(),
     ...getPersonalDetailsFormData(),
     ...getBusinessDetailsFormData(),
   };
@@ -74,7 +80,7 @@ export const fillForm = async (
     const field = form.getField(fieldName);
     if (field instanceof PDFTextField) {
       if (typeof value !== "string") {
-        throw new Error(`Expected string for text field, but got ${typeof value}`);
+        throw new Error(`Expected string for text field ${fieldName}, but got ${typeof value}`);
       }
       field.setText(value.toString());
       field.setFontSize(getFontSize(fieldName, fieldOptions));
