@@ -1,6 +1,7 @@
 import {
+  createTestField,
   createTestFields,
-  testConditionalToggle,
+  testConditionalRender,
   testFillFromSessionStorage,
   testRequiredField,
   testSaveFieldsToSessionStorage,
@@ -17,58 +18,53 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
 
-const childrensFuturesTrainingOrganization: TestField = {
+const childrensFuturesTrainingOrganization: TestField = createTestField({
   name: "Which state-approved training did you complete? Select one *",
   required: true,
-  requiredErrorMessage: "This question is required",
-  role: "combobox" as const,
+  alternateRequiredFieldError: "This question is required",
+  role: "combobox",
   testValue: "Children's Futures (Trenton)",
-  expectedValue: "Children's Futures (Trenton)",
   sessionStorageKey: "stateApprovedTraining",
-};
+});
 
-const noneTrainingOrganization: TestField = {
+const noneTrainingOrganization: TestField = createTestField({
   name: "Which state-approved training did you complete? Select one *",
   required: true,
-  requiredErrorMessage: "This question is required",
-  role: "combobox" as const,
+  alternateRequiredFieldError: "This question is required",
+  role: "combobox",
   testValue: "None of these",
-  expectedValue: "None of these",
   sessionStorageKey: "stateApprovedTraining",
-};
+});
 
-const nameOfTrainingOrganization: TestField = {
+const nameOfTrainingOrganization: TestField = createTestField({
   name: "What is the name of your training organization? *",
   required: true,
-  requiredErrorMessage: "This question is required",
-  role: "textbox" as const,
+  alternateRequiredFieldError: "This question is required",
+  role: "textbox",
   testValue: "Test organization",
-  expectedValue: "Test organization",
   sessionStorageKey: "nameOfTrainingOrganization",
   prerequisiteField: noneTrainingOrganization,
-};
+});
 
-const yesDoulaTrainingInPerson: TestField = {
+const yesDoulaTrainingInPerson: TestField = createTestField({
   name: "Yes, in person or hybrid",
   sessionStorageKey: "isDoulaTrainingInPerson",
-  requiredErrorMessage: "This question is required",
   required: true,
-  role: "radio" as const,
+  alternateRequiredFieldError: "This question is required",
+  role: "radio",
   testValue: "true",
-  expectedValue: "true",
   withinGroupName: "Did you attend your doula training classes in person? Select one *",
-};
+});
 
-const noDoulaTrainingInPerson: TestField = {
+const noDoulaTrainingInPerson: TestField = createTestField({
   name: "No, it was virtual",
   sessionStorageKey: "isDoulaTrainingInPerson",
   required: true,
-  requiredErrorMessage: "This question is required",
+  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "false",
-  expectedValue: "false",
   withinGroupName: "Did you attend your doula training classes in person? Select one *",
-};
+});
 
 const trainingAddressFields: TestField[] = createTestFields([
   {
@@ -230,8 +226,8 @@ describe("<TrainingStep1 />", () => {
       },
     );
 
-    it("toggles custom training organization based on stateApprovedTraining", async () => {
-      await testConditionalToggle(
+    it("conditionally renders custom training organization based on stateApprovedTraining", async () => {
+      await testConditionalRender(
         nameOfTrainingOrganization,
         childrensFuturesTrainingOrganization,
         renderWithRouter,
@@ -307,9 +303,9 @@ describe("<TrainingStep1 />", () => {
     );
 
     it.each(trainingAddressFields.filter((field) => field.required))(
-      "toggles $sessionStorageKey based on isDoulaTrainingInPerson",
+      "conditionally renders $sessionStorageKey based on isDoulaTrainingInPerson",
       async (field: TestField) => {
-        await testConditionalToggle(field, noDoulaTrainingInPerson, renderWithRouter, screen);
+        await testConditionalRender(field, noDoulaTrainingInPerson, renderWithRouter, screen);
       },
     );
   });

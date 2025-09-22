@@ -1,31 +1,49 @@
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/page";
-import { getValue } from "@/app/form/_utils/sessionStorage";
-import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
-import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
-import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import {
+  createTestField,
+  testInvalidField,
+  testSaveFieldsToSessionStorage,
+  type TestField,
+} from "@/app/form/_utils/testUtils/sharedTests";
+import { render, screen } from "@testing-library/react";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const allTestFields: Array<TestField> = createTestFields([
-  {
-    name: "No",
-    role: "radio",
-    required: true,
-    sessionStorageKey: "everHadEmployeesNo",
-    testValue: "false",
-    withinGroupName: "Have you ever had employees in your doula business? Select one *",
-  },
-  {
-    name: "No",
-    role: "radio",
-    required: true,
-    sessionStorageKey: "everHadOtherBusinessOwnerNo",
-    testValue: "false",
-    withinGroupName:
-      "Did anyone other than you ever own a percentage of your business? Select one *",
-  },
-]);
+const noEverHadEmployees = createTestField({
+  name: "No",
+  role: "radio",
+  required: true,
+  sessionStorageKey: "everHadEmployees",
+  testValue: "false",
+  withinGroupName: "Have you ever had employees in your doula business? Select one *",
+});
+const yesEverHadEmployees = createTestField({
+  name: "Yes",
+  role: "radio",
+  required: true,
+  sessionStorageKey: "everHadEmployees",
+  testValue: "true",
+  withinGroupName: "Have you ever had employees in your doula business? Select one *",
+});
+
+const noEverHadOtherBusinessOwner = createTestField({
+  name: "No",
+  role: "radio",
+  required: true,
+  sessionStorageKey: "everHadOtherBusinessOwner",
+  testValue: "false",
+  withinGroupName: "Did anyone other than you ever own a percentage of your business? Select one *",
+});
+const yesEverHadOtherBusinessOwner = createTestField({
+  name: "Yes",
+  role: "radio",
+  required: true,
+  sessionStorageKey: "everHadOtherBusinessOwner",
+  testValue: "true",
+  withinGroupName: "Did anyone other than you ever own a percentage of your business? Select one *",
+});
+
+const allTestFields: Array<TestField> = [noEverHadEmployees, noEverHadOtherBusinessOwner];
 
 describe("<ScreeningStep2 />", () => {
   const renderWithRouter = () => {
@@ -41,62 +59,27 @@ describe("<ScreeningStep2 />", () => {
     return mockRouter;
   };
 
-  describe.each([
-    {
-      question: "Have you ever had employees in your doula business?",
-      sessionStorageKey: "everHadEmployees" as const,
-    },
-    {
-      question: "Did anyone other than you ever own a percentage of your business?",
-      sessionStorageKey: "everHadOtherBusinessOwner" as const,
-    },
-  ])("$question", ({ question, sessionStorageKey }) => {
-    it(`saves ${sessionStorageKey} as false when user selects no and clicks Next`, async () => {
-      const user = userEvent.setup();
-      const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allTestFields, new Set([`${sessionStorageKey}No`]));
-
-      const questionGroup = screen.getByRole("group", {
-        name: `${question} Select one *`,
-      });
-      const noButton = within(questionGroup).getByRole("radio", {
-        name: "No",
-      });
-      expect(noButton).not.toBeChecked();
-      await user.click(noButton);
-      expect(noButton).toBeChecked();
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      expect(getValue(sessionStorageKey, true)).toBe("false");
-      expect(mockRouter.push).toHaveBeenCalledWith("/form/screening/3");
-      expect(mockRouter.refresh).toHaveBeenCalled();
-    });
-
-    it("shows an error message when user selects yes and clicks Next", async () => {
-      const user = userEvent.setup();
-      const mockRouter = renderWithRouter();
-      await fillAllInputsExcept(screen, user, allTestFields, new Set([`${sessionStorageKey}No`]));
-
-      const questionGroup = screen.getByRole("group", {
-        name: `${question} Select one *`,
-      });
-      const yesButton = within(questionGroup).getByRole("radio", {
-        name: "Yes",
-      });
-      expect(yesButton).not.toBeChecked();
-      await user.click(yesButton);
-      expect(yesButton).toBeChecked();
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      expect(yesButton).toHaveFocus();
-      expect(yesButton).toHaveAccessibleDescription(
-        expect.stringContaining(
-          "Currently this site cannot support your situation. Please use the standard FFS application",
-        ),
-      );
-      expect(getValue(sessionStorageKey, false)).toBe(null);
-      expect(mockRouter.push).not.toHaveBeenCalled();
-      expect(mockRouter.refresh).not.toHaveBeenCalled();
-    });
+  it("saves fields to session storage on submit", async () => {
+    await testSaveFieldsToSessionStorage(
+      allTestFields,
+      allTestFields,
+      renderWithRouter,
+      screen,
+      "/form/screening/3",
+    );
   });
+
+  it.each([[yesEverHadEmployees], [yesEverHadOtherBusinessOwner]])(
+    "displays an error message if $invalidField.sessionStorageKey is $invalidField.name",
+    async (invalidField) => {
+      await testInvalidField(
+        invalidField,
+        "Currently this site cannot support your situation. Please use the standard FFS application",
+        invalidField,
+        allTestFields,
+        renderWithRouter,
+        screen,
+      );
+    },
+  );
 });

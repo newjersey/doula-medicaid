@@ -1,8 +1,9 @@
 import { setInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
+  createTestField,
   createTestFields,
+  testConditionalRender,
   testFillFromSessionStorage,
   testRequiredField,
   testSaveFieldsToSessionStorage,
@@ -15,33 +16,30 @@ import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.
 
 const businessAddressQuestion = "What is your business address?";
 
-const mailingBusinessAddressSameAsOtherAddress: TestField = {
+const mailingBusinessAddressSameAsOtherAddress: TestField = createTestField({
   name: /Mailing address/i,
   sessionStorageKey: "businessAddressSameAsOtherAddress",
   required: true,
-  requiredErrorMessage: "This question is required",
+  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "mailing",
-  expectedValue: "mailing",
-};
-const billingBusinessAddressSameAsOtherAddress: TestField = {
+});
+const billingBusinessAddressSameAsOtherAddress: TestField = createTestField({
   name: /Billing address/i,
   sessionStorageKey: "businessAddressSameAsOtherAddress",
   required: true,
-  requiredErrorMessage: "This question is required",
+  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "billing",
-  expectedValue: "billing",
-};
-const differentBusinessAddressSameAsOtherAddress: TestField = {
+});
+const differentBusinessAddressSameAsOtherAddress: TestField = createTestField({
   name: "I wish to enter a new address",
   sessionStorageKey: "businessAddressSameAsOtherAddress",
   required: true,
-  requiredErrorMessage: "This question is required",
+  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "different",
-  expectedValue: "different",
-};
+});
 
 const businessAddressFields = createTestFields([
   {
@@ -290,53 +288,17 @@ describe("<BusinessDetailsStep1 />", () => {
       });
     });
 
-    it("toggles business address based on businessAddressSameAsOtherAddress", async () => {
-      const user = userEvent.setup();
-      setMailingAddressInSessionStorage();
-      renderWithRouter();
-
-      const questionGroup = screen.getByRole("group", {
-        name: "Is your business address the same as a previous address? Select one *",
-      });
-      await user.click(
-        within(questionGroup).getByRole("radio", {
-          name: "I wish to enter a new address",
-        }),
-      );
-      expect(screen.getByText("What is your business address?")).toBeInTheDocument();
-
-      const addressTextInputFields = [
-        { name: "Street address *", testValue: "123 Business Rd" },
-        {
-          name: "Street address line 2",
-          testValue: "Suite 100",
-        },
-        { name: "City *", testValue: "Newark" },
-        { name: "ZIP code *", testValue: "22222" },
-      ];
-      for (const addressTextInputField of addressTextInputFields) {
-        const input = screen.getByRole("textbox", {
-          name: addressTextInputField.name,
-        });
-        await user.type(input, addressTextInputField.testValue);
-      }
-
-      await user.click(
-        within(questionGroup).getByRole("radio", {
-          name: /Mailing address/i,
-        }),
-      );
-      expect(screen.queryByText("What is your business address?")).not.toBeInTheDocument();
-
-      await user.click(
-        within(questionGroup).getByRole("radio", {
-          name: "I wish to enter a new address",
-        }),
-      );
-      for (const field of addressTextInputFields) {
-        const input = await getInputField(screen, field);
-        expect(input).toHaveValue(field.testValue);
-      }
-    });
+    it.each(businessAddressFields.filter((field) => field.required))(
+      "conditionally renders $sessionStorageKey based on businessAddressSameAsOtherAddress",
+      async (field) => {
+        setMailingAddressInSessionStorage();
+        await testConditionalRender(
+          field,
+          mailingBusinessAddressSameAsOtherAddress,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
   });
 });

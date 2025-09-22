@@ -1,8 +1,10 @@
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
+  createTestField,
   createTestFields,
   type TestField,
   testFillFromSessionStorage,
+  testInvalidField,
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
@@ -11,16 +13,17 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-const doulaProviderIdentificationFields = createTestFields([
-  {
-    name: "National Provider Identifier (NPI) *",
-    required: true,
-    alternateRequiredFieldError:
-      "To be an NJ FamilyCare doula, your need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
-    sessionStorageKey: "npiNumber",
-    testValue: "1111111111",
-  },
-]);
+const npiNumberField = createTestField({
+  name: "National Provider Identifier (NPI) *",
+  required: true,
+  alternateRequiredFieldError:
+    "To be an NJ FamilyCare doula, your need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
+  sessionStorageKey: "npiNumber",
+  testValue: "1111111111",
+});
+
+const doulaProviderIdentificationFields = [npiNumberField];
+
 const otherIdentificationFields = createTestFields([
   {
     name: "UPIN number (optional)",
@@ -82,35 +85,28 @@ describe("<PersonalDetailsStep3 />", () => {
       },
     );
 
-    it("validates National Provider Identifier (NPI)", async () => {
+    it("displays an error message if npiNumber is invalid", async () => {
+      await testInvalidField(
+        { ...npiNumberField, testValue: "1" },
+        "National Provider Identifier (NPI) must have 10 digits",
+        npiNumberField,
+        allTestFields,
+        renderWithRouter,
+        screen,
+      );
+    });
+
+    it("prevents non-numeric inputs in NPI Number", async () => {
       const user = userEvent.setup();
       renderWithRouter();
-
       const input = screen.getByRole("textbox", {
         name: "National Provider Identifier (NPI) *",
       });
-      expect(input).toBeRequired();
 
       await user.type(input, "aaa");
       expect(input).toHaveValue("");
       await user.type(input, "!!");
       expect(input).toHaveValue("");
-
-      await user.click(screen.getByRole("button", { name: "Next" }));
-
-      expect(input).toHaveAccessibleDescription(
-        expect.stringContaining(
-          "To be an NJ FamilyCare doula, your need a NPI. You can get yours via https://nppes.cms.hhs.gov/",
-        ),
-      );
-      expect(input).toHaveAttribute("aria-invalid", "true");
-
-      await user.type(input, "1");
-      await user.click(screen.getByRole("button", { name: "Next" }));
-      expect(input).toHaveAccessibleDescription(
-        expect.stringContaining("National Provider Identifier (NPI) must have 10 digits"),
-      );
-      expect(input).toHaveAttribute("aria-invalid", "true");
     });
   });
 

@@ -2,7 +2,9 @@ import BusinessDetails2 from "@/app/form/(formSteps)/business-details/2/page";
 import { fillField, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
+  testConditionalRender,
   testFillFromSessionStorage,
+  testInvalidField,
   testRequiredField,
   testSaveFieldsToSessionStorage,
   type TestField,
@@ -101,25 +103,22 @@ describe("<BusinessDetails2 />", () => {
     },
   );
 
-  it("toggles EIN based on hasEin", async () => {
-    const user = userEvent.setup();
-    renderWithRouter();
-    await fillField(screen, user, yesHasEin);
-
-    const input = screen.getByRole("textbox", {
-      name: "EIN *",
-    });
-    await user.type(input, "111111111");
-    expect(input).toHaveValue("11-1111111");
-
-    await fillField(screen, user, noHasEin);
-    expect(input).not.toBeInTheDocument();
-
-    await fillField(screen, user, yesHasEin);
-    expect(input).toHaveValue("11-1111111");
+  it("conditionally renders EIN based on hasEin", async () => {
+    await testConditionalRender(einField, noHasEin, renderWithRouter, screen);
   });
 
-  it("validates EIN format", async () => {
+  it("displays an error message if EIN has too few digits", async () => {
+    await testInvalidField(
+      { ...einField, testValue: "111" },
+      "Entered value does not match the EIN format",
+      einField,
+      allTestFields,
+      renderWithRouter,
+      screen,
+    );
+  });
+
+  it("prevents non-numeric inputs in EIN", async () => {
     const user = userEvent.setup();
     renderWithRouter();
     await fillField(screen, user, yesHasEin);
@@ -131,13 +130,6 @@ describe("<BusinessDetails2 />", () => {
     expect(input).toHaveValue("");
     await user.type(input, "!!");
     expect(input).toHaveValue("");
-
-    await user.type(input, "111");
-    await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(input).toHaveAccessibleDescription(
-      expect.stringContaining("Entered value does not match the EIN format"),
-    );
-    expect(input).toHaveAttribute("aria-invalid", "true");
   });
 
   describe("EIN explainer", () => {
