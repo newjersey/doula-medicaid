@@ -28,7 +28,7 @@
     "pdf-lib": "1.17.1",
     "react": "19.1.1",
     "react-dom": "19.1.1",
-    "react-hook-form": "7.62.0",
+    "react-hook-form": "7.63.0",
     "tesseract.js": "6.0.1"
   },
   "devDependencies": {
