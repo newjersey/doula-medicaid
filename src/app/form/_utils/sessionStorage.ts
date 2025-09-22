@@ -1,3 +1,4 @@
+import type { Insurance2Data } from "@/app/form/(formSteps)/insurance/InsuranceData";
 import type {
   Screening1Data,
   Screening2Data,
@@ -22,6 +23,7 @@ export type SessionStorageKey =
   | keyof Screening1Data
   | keyof Screening2Data
   | keyof Screening3Data
+  | keyof Insurance2Data
   | keyof TrainingData
   | keyof PersonalDetails1Data
   | keyof PersonalDetails2Data

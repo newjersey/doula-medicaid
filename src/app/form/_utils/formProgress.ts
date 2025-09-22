@@ -20,6 +20,7 @@ export const allSections: Array<Section> = [
     id: "insurance",
     progressBarTitle: "Insurance",
     heading: "Insurance",
+    numSteps: 2,
   },
   {
     id: "training",

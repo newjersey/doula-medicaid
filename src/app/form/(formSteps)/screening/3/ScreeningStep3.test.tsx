@@ -69,7 +69,7 @@ describe("<ScreeningStep3 />", () => {
       allTestFields,
       renderWithRouter,
       screen,
-      "/form/insurance",
+      "/form/insurance/1",
     );
   });
 

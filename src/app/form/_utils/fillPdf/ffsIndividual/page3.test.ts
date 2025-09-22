@@ -193,4 +193,71 @@ describe("Page 3 - doula qualifications form", () => {
       }
     });
   });
+
+  describe("Part 3", () => {
+    it("fills name of current professional liability insurance carrier", () => {
+      const pdfKey = "fd427NameofCurrentProfessionalLiabilityInsuranceCarrier";
+      expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          insuranceCarrierName: "Test insurance company",
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual("Test insurance company");
+    });
+
+    it("fills insurance address street, city, state, and zip", () => {
+      const streetKey = "fd427currentprofessionalliabilityinsurancecarrierStreetaddress" as const;
+      const cityKey = "fd427currentprofessionalliabilityinsurancecarriercity" as const;
+      const stateKey = "fd427currentprofessionalliabilityinsurancecarrierstate" as const;
+      const zipKey = "fd427currentprofessionalliabilityinsurancecarrierzip" as const;
+      const pdfKeys = [streetKey, cityKey, stateKey, zipKey];
+      for (const pdfKey of pdfKeys) {
+        expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
+      }
+
+      const testCases = [
+        {
+          description: "there is only one address line",
+          formData: {
+            insuranceStreetAddress1: "55 Cherry St",
+            insuranceStreetAddress2: null,
+            insuranceCity: "Newark",
+            insuranceState: AddressState.NJ,
+            insuranceZip: "08609",
+          },
+          expectedStreet: "55 Cherry St",
+        },
+        {
+          description: "there are two address lines",
+          formData: {
+            insuranceStreetAddress1: "55 Cherry St",
+            insuranceStreetAddress2: "Apt 4",
+            insuranceCity: "Newark",
+            insuranceState: AddressState.NJ,
+            insuranceZip: "08609",
+          },
+          expectedStreet: "55 Cherry St Apt 4",
+        },
+      ];
+      for (const testCase of testCases) {
+        const pdfFields = mapFfsIndividualFields(generateFormData(testCase.formData));
+        expect(pdfFields[streetKey]).toEqual(testCase.expectedStreet);
+        expect(pdfFields[cityKey]).toEqual("Newark");
+        expect(pdfFields[stateKey]).toEqual("NJ");
+        expect(pdfFields[zipKey]).toEqual("08609");
+      }
+    });
+
+    it("fills policy number", () => {
+      const pdfKey = "fd427currentprofessionalliabilityinsurancecarrierpolicyno";
+      expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          insurancePolicyNumber: "POLICY-123",
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual("POLICY-123");
+    });
+  });
 });
