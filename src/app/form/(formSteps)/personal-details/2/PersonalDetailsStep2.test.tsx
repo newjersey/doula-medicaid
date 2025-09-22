@@ -1,52 +1,24 @@
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
-import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
+import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
+  createTestField,
   createTestFields,
+  testConditionalRender,
   type TestField,
   testFillFromSessionStorage,
+  testInvalidField,
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-
-const clickSameBillingMailingAddressNo = async () => {
-  const user = userEvent.setup();
-  const group = screen.getByRole("group", {
-    name: "Are your billing and residential addresses the same? Select one *",
-  });
-  const inputNo = within(group).getByRole("radio", {
-    name: "No",
-  });
-  await user.click(inputNo);
-  return inputNo;
-};
-
-const clickSameBillingMailingAddressYes = async () => {
-  const user = userEvent.setup();
-  const group = screen.getByRole("group", {
-    name: "Are your billing and residential addresses the same? Select one *",
-  });
-  const inputYes = within(group).getByRole("radio", {
-    name: "Yes",
-  });
-  await user.click(inputYes);
-  return inputYes;
-};
 
 const mailingAddressQuestion =
   "Mailing address We will send official mail here. It can be your home address.";
 const billingAddressQuestion = "What is your billing address?";
-
-const getBillingAddressGroup = () => {
-  const billingAddressGroup = screen.getByRole("group", {
-    name: billingAddressQuestion,
-  });
-  return billingAddressGroup;
-};
 
 const mailingAddressFields = createTestFields([
   {
@@ -110,52 +82,56 @@ const noSameBillingMailingAddress: TestField = {
 
 const minimalTestFields = [...mailingAddressFields, yesSameBillingMailingAddress];
 
-const billingAddressFields = createTestFields([
-  {
-    name: "Street address *",
-    sessionStorageKey: "billingStreetAddress1",
-    required: true,
-    testValue: "Test address 1",
-    withinGroupName: billingAddressQuestion,
-    alternateRequiredFieldError: "Billing street address is required",
-    prerequisiteField: noSameBillingMailingAddress,
-  },
-  {
-    name: "Street address line 2",
-    sessionStorageKey: "billingStreetAddress2",
-    required: false,
-    testValue: "Test address 2",
-    withinGroupName: billingAddressQuestion,
-    prerequisiteField: noSameBillingMailingAddress,
-  },
-  {
-    name: "City *",
-    sessionStorageKey: "billingCity",
-    required: true,
-    testValue: "Houston",
-    withinGroupName: billingAddressQuestion,
-    alternateRequiredFieldError: "Billing city is required",
-    prerequisiteField: noSameBillingMailingAddress,
-  },
-  {
-    name: "State *",
-    sessionStorageKey: "billingState",
-    required: false,
-    role: "combobox",
-    testValue: "TX",
-    withinGroupName: billingAddressQuestion,
-    prerequisiteField: noSameBillingMailingAddress,
-  },
-  {
-    name: "ZIP code *",
-    sessionStorageKey: "billingZip",
-    required: true,
-    testValue: "12345",
-    withinGroupName: billingAddressQuestion,
-    alternateRequiredFieldError: "Billing zip code is required",
-    prerequisiteField: noSameBillingMailingAddress,
-  },
-]);
+const zipCodeField = createTestField({
+  name: "ZIP code *",
+  sessionStorageKey: "billingZip",
+  required: true,
+  testValue: "12345",
+  withinGroupName: billingAddressQuestion,
+  alternateRequiredFieldError: "Billing zip code is required",
+  prerequisiteField: noSameBillingMailingAddress,
+});
+
+const billingAddressFields = [
+  ...createTestFields([
+    {
+      name: "Street address *",
+      sessionStorageKey: "billingStreetAddress1",
+      required: true,
+      testValue: "Test address 1",
+      withinGroupName: billingAddressQuestion,
+      alternateRequiredFieldError: "Billing street address is required",
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+    {
+      name: "Street address line 2",
+      sessionStorageKey: "billingStreetAddress2",
+      required: false,
+      testValue: "Test address 2",
+      withinGroupName: billingAddressQuestion,
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+    {
+      name: "City *",
+      sessionStorageKey: "billingCity",
+      required: true,
+      testValue: "Houston",
+      withinGroupName: billingAddressQuestion,
+      alternateRequiredFieldError: "Billing city is required",
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+    {
+      name: "State *",
+      sessionStorageKey: "billingState",
+      required: false,
+      role: "combobox",
+      testValue: "TX",
+      withinGroupName: billingAddressQuestion,
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+  ]),
+  zipCodeField,
+];
 
 const allTestFields = [
   ...mailingAddressFields,
@@ -222,10 +198,20 @@ describe("<PersonalDetailsStep2 />", () => {
       expect(combobox).toHaveValue("PA");
     });
 
-    it("validates ZIP code", async () => {
+    it("displays an error message if zip has less than five digits", async () => {
+      await testInvalidField(
+        { ...zipCodeField, testValue: "1" },
+        "Billing zip code must have five digits",
+        zipCodeField,
+        allTestFields,
+        renderWithRouter,
+        screen,
+      );
+    });
+
+    it("prevents non-numeric inputs in ZIP Code", async () => {
       const user = userEvent.setup();
       renderWithRouter();
-
       const input = screen.getByRole("textbox", {
         name: "ZIP code *",
       });
@@ -234,13 +220,6 @@ describe("<PersonalDetailsStep2 />", () => {
       expect(input).toHaveValue("");
       await user.type(input, "!!");
       expect(input).toHaveValue("");
-
-      await user.type(input, "1");
-      await user.click(screen.getByRole("button", { name: "Next" }));
-      expect(input).toHaveAccessibleDescription(
-        expect.stringContaining("ZIP code must have five digits"),
-      );
-      expect(input).toHaveAttribute("aria-invalid", "true");
     });
   });
 
@@ -291,40 +270,12 @@ describe("<PersonalDetailsStep2 />", () => {
       },
     );
 
-    it("toggles billing address based on hasSameBillingMailingAddress", async () => {
-      const user = userEvent.setup();
-      renderWithRouter();
-      await clickSameBillingMailingAddressNo();
-      let billingAddressGroup = getBillingAddressGroup();
-
-      for (const field of billingAddressFields) {
-        expect(
-          within(billingAddressGroup).getByRole(field.role, { name: field.name }),
-        ).toBeInTheDocument();
-      }
-      expect(
-        within(billingAddressGroup).getByRole("combobox", { name: "State *" }),
-      ).toBeInTheDocument();
-      await fillAllInputsExcept(screen, user, billingAddressFields, new Set());
-
-      await clickSameBillingMailingAddressYes();
-      expect(
-        screen.queryByRole("group", {
-          name: billingAddressQuestion,
-        }),
-      ).not.toBeInTheDocument();
-
-      await clickSameBillingMailingAddressNo();
-      billingAddressGroup = getBillingAddressGroup();
-      for (const field of billingAddressFields) {
-        expect(
-          within(billingAddressGroup).getByRole(field.role, { name: field.name }),
-        ).toBeInTheDocument();
-        expect(within(billingAddressGroup).getByRole(field.role, { name: field.name })).toHaveValue(
-          field.testValue,
-        );
-      }
-    });
+    it.each(billingAddressFields.filter((field) => field.required))(
+      "conditionally renders $sessionStorageKey based on hasSameBillingMailingAddress",
+      async (field: TestField) => {
+        await testConditionalRender(field, yesSameBillingMailingAddress, renderWithRouter, screen);
+      },
+    );
   });
 
   describe("Public information explainer", () => {
@@ -332,8 +283,9 @@ describe("<PersonalDetailsStep2 />", () => {
       const user = userEvent.setup();
       renderWithRouter();
 
-      const sameBillingMailingAddressYes = await clickSameBillingMailingAddressYes();
-      expect(sameBillingMailingAddressYes).toHaveFocus();
+      const input = await getInputField(screen, yesSameBillingMailingAddress);
+      await user.click(input);
+      expect(input).toHaveFocus();
 
       await user.tab();
       const publicInformationExplainer = screen.getByRole("button", {

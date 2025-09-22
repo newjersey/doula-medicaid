@@ -1,11 +1,10 @@
-import { type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import type { Screen } from "@testing-library/dom";
 import { within } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 
 export type Role = "textbox" | "combobox" | "radio";
 
-type FieldToFill =
+export type FieldToFill =
   | {
       name: string | RegExp;
       role?: "textbox" | "combobox";
@@ -18,10 +17,13 @@ type FieldToFill =
       withinGroupName?: string;
     };
 
-export const getInputField = async (
-  screen: Screen,
-  input: { name: string | RegExp; role?: Role; withinGroupName?: string },
-): Promise<HTMLElement> => {
+export interface FieldToGet {
+  name: string | RegExp;
+  role?: Role;
+  withinGroupName?: string;
+}
+
+export const getInputField = async (screen: Screen, input: FieldToGet): Promise<HTMLElement> => {
   const role = input.role ?? "textbox";
   return input.withinGroupName
     ? within(
@@ -56,7 +58,11 @@ export const fillField = async (screen: Screen, user: UserEvent, fieldToFill: Fi
 export const fillAllInputs = async (
   screen: Screen,
   user: UserEvent,
-  allInputs: Array<TestField>,
+  allInputs: Array<
+    FieldToFill & {
+      sessionStorageKey: string;
+    }
+  >,
 ) => {
   await fillAllInputsExcept(screen, user, allInputs, new Set());
 };
@@ -67,7 +73,6 @@ export const fillAllInputsExcept = async (
   allInputs: Array<
     FieldToFill & {
       sessionStorageKey: string;
-      prerequisiteField?: FieldToFill;
     }
   >,
   keysToSkip: Set<string>,
