@@ -75,10 +75,10 @@ describe("<ScreeningStep2 />", () => {
       await testInvalidField(
         invalidField,
         "Currently this site cannot support your situation. Please use the standard FFS application",
-        invalidField,
         allTestFields,
         renderWithRouter,
         screen,
+        invalidField,
       );
     },
   );

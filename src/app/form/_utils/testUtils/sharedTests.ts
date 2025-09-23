@@ -107,10 +107,10 @@ export const testInvalidField = async (
     prerequisiteField?: TestField;
   },
   expectedErrorMessage: string,
-  focusedField: FieldToGet,
   allFields: Array<TestField>,
   renderFunction: () => Partial<AppRouterInstance>,
   screen: Screen,
+  focusedField?: FieldToGet,
 ) => {
   const user = userEvent.setup();
   const mockRouter = renderFunction();
@@ -121,7 +121,7 @@ export const testInvalidField = async (
   const input = await getInputField(screen, invalidField);
   expect(input).toHaveAccessibleDescription(expect.stringContaining(expectedErrorMessage));
   expect(input).toHaveAttribute("aria-invalid", "true");
-  const focusedInput = await getInputField(screen, focusedField);
+  const focusedInput = await getInputField(screen, focusedField ?? invalidField);
   expect(focusedInput).toHaveFocus();
   expect(window.sessionStorage.getItem(invalidField.sessionStorageKey)).toBe(null);
   expect(mockRouter.push).not.toHaveBeenCalled();

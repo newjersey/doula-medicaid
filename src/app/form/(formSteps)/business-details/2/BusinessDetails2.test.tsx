@@ -111,7 +111,6 @@ describe("<BusinessDetails2 />", () => {
     await testInvalidField(
       { ...einField, testValue: "111" },
       "Entered value does not match the EIN format",
-      einField,
       allTestFields,
       renderWithRouter,
       screen,

@@ -61,10 +61,10 @@ describe("<ScreeningStep1 />", () => {
     await testInvalidField(
       noIsSoleProprietor,
       "Currently this site is only for Sole Proprietors. Please use the standard FFS application",
-      yesIsSoleProprietor,
       allTestFields,
       renderWithRouter,
       screen,
+      yesIsSoleProprietor,
     );
   });
 });

@@ -89,7 +89,6 @@ describe("<PersonalDetailsStep3 />", () => {
       await testInvalidField(
         { ...npiNumberField, testValue: "1" },
         "National Provider Identifier (NPI) must have 10 digits",
-        npiNumberField,
         allTestFields,
         renderWithRouter,
         screen,

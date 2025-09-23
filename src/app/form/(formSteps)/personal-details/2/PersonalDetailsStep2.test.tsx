@@ -202,7 +202,6 @@ describe("<PersonalDetailsStep2 />", () => {
       await testInvalidField(
         { ...zipCodeField, testValue: "1" },
         "Billing zip code must have five digits",
-        zipCodeField,
         allTestFields,
         renderWithRouter,
         screen,
