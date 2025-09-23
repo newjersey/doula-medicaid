@@ -146,7 +146,6 @@ describe("<PersonalDetailsStep1 />", () => {
         await testInvalidField(
           { ...dateOfBirthDayField, testValue: invalidTestValue },
           expectedErrorMessage,
-          dateOfBirthDayField,
           allTestFields,
           renderWithRouter,
           screen,
@@ -163,7 +162,6 @@ describe("<PersonalDetailsStep1 />", () => {
         await testInvalidField(
           { ...dateOfBirthYearField, testValue: invalidTestValue },
           expectedErrorMessage,
-          dateOfBirthYearField,
           allTestFields,
           renderWithRouter,
           screen,
@@ -201,7 +199,6 @@ describe("<PersonalDetailsStep1 />", () => {
       await testInvalidField(
         { ...phoneNumberField, testValue: "123" },
         "Entered value does not match phone number format",
-        phoneNumberField,
         allTestFields,
         renderWithRouter,
         screen,
@@ -212,7 +209,6 @@ describe("<PersonalDetailsStep1 />", () => {
       await testInvalidField(
         { ...socialSecurityNumberField, testValue: "123" },
         "Entered value does not match social security number format",
-        socialSecurityNumberField,
         allTestFields,
         renderWithRouter,
         screen,
@@ -225,7 +221,6 @@ describe("<PersonalDetailsStep1 />", () => {
         await testInvalidField(
           { ...emailField, testValue: invalidTestValue },
           "Entered value does not match email format",
-          emailField,
           allTestFields,
           renderWithRouter,
           screen,
