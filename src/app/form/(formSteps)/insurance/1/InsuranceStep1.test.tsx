@@ -62,7 +62,7 @@ const insuranceEndDateYearField = createTestField({
   name: "Year *",
   sessionStorageKey: "insuranceEndDateYear",
   required: true,
-  testValue: "2000",
+  testValue: "2025",
   withinGroupName: "End date *",
 });
 
@@ -146,7 +146,7 @@ describe("<InsuranceStep1 />", () => {
       { invalidTestValue: "0", expectedErrorMessage: "Day must be between 1 and 31" },
       { invalidTestValue: "50", expectedErrorMessage: "Day must be between 1 and 31" },
     ])(
-      "displays an message error if insurance start day is the invalid format %s",
+      "displays an error message if insurance start day is the invalid format %s",
       async ({ invalidTestValue, expectedErrorMessage }) => {
         await testInvalidField(
           { ...insuranceStartDateDayField, testValue: invalidTestValue },
@@ -163,7 +163,7 @@ describe("<InsuranceStep1 />", () => {
       { invalidTestValue: "0", expectedErrorMessage: "Day must be between 1 and 31" },
       { invalidTestValue: "50", expectedErrorMessage: "Day must be between 1 and 31" },
     ])(
-      "displays an message error if insurance end day is the invalid format %s",
+      "displays an error message if insurance end day is the invalid format %s",
       async ({ invalidTestValue, expectedErrorMessage }) => {
         await testInvalidField(
           { ...insuranceEndDateDayField, testValue: invalidTestValue },
@@ -179,7 +179,7 @@ describe("<InsuranceStep1 />", () => {
       { invalidTestValue: "test", expectedErrorMessage: "Year must be a number" },
       { invalidTestValue: "1", expectedErrorMessage: "Year must have four digits" },
     ])(
-      "displays an message error if insurance start year is the invalid format %s",
+      "displays an error message if insurance start year is the invalid format %s",
       async ({ invalidTestValue, expectedErrorMessage }) => {
         await testInvalidField(
           { ...insuranceStartDateYearField, testValue: invalidTestValue },
@@ -195,7 +195,7 @@ describe("<InsuranceStep1 />", () => {
       { invalidTestValue: "test", expectedErrorMessage: "Year must be a number" },
       { invalidTestValue: "1", expectedErrorMessage: "Year must have four digits" },
     ])(
-      "displays an message error if insurance end year is the invalid format %s",
+      "displays an error message if insurance end year is the invalid format %s",
       async ({ invalidTestValue, expectedErrorMessage }) => {
         await testInvalidField(
           { ...insuranceEndDateYearField, testValue: invalidTestValue },
@@ -233,27 +233,45 @@ describe("<InsuranceStep1 />", () => {
       },
     );
 
-    it("shows an error message if amount per occurrence is less than $1,000,000", async () => {
-      const invalidTestValue = "999999";
-      await testInvalidField(
-        { ...amountPerOccurrenceField, testValue: invalidTestValue },
-        "Your coverage is not enough. You need $1,000,000 minimum coverage per occurrence to qualify.",
-        testFields,
-        renderWithRouter,
-        screen,
-      );
-    });
+    it.each([
+      { invalidTestValue: "test", expectedErrorMessage: "Amount per occurrence must be a number" },
+      {
+        invalidTestValue: "999999",
+        expectedErrorMessage:
+          "Your coverage is not enough. You need $1,000,000 minimum coverage per occurrence to qualify.",
+      },
+    ])(
+      "displays an error message if amount per aggregate is the invalid format %s",
+      async ({ invalidTestValue, expectedErrorMessage }) => {
+        await testInvalidField(
+          { ...amountPerOccurrenceField, testValue: invalidTestValue },
+          expectedErrorMessage,
+          testFields,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
 
-    it("shows an error message if amount per aggregate is less than $3,000,000", async () => {
-      const invalidTestValue = "2999999";
-      await testInvalidField(
-        { ...amountPerAggregateField, testValue: invalidTestValue },
-        "Your coverage is not enough. You need a minimum aggregate coverage of $3,000,000 to qualify.",
-        testFields,
-        renderWithRouter,
-        screen,
-      );
-    });
+    it.each([
+      { invalidTestValue: "test", expectedErrorMessage: "Amount per aggregate must be a number" },
+      {
+        invalidTestValue: "2999999",
+        expectedErrorMessage:
+          "Your coverage is not enough. You need a minimum aggregate coverage of $3,000,000 to qualify.",
+      },
+    ])(
+      "displays an error message if amount per aggregate is the invalid format %s",
+      async ({ invalidTestValue, expectedErrorMessage }) => {
+        await testInvalidField(
+          { ...amountPerAggregateField, testValue: invalidTestValue },
+          expectedErrorMessage,
+          testFields,
+          renderWithRouter,
+          screen,
+        );
+      },
+    );
   });
 
   describe("insurance coverage explainer", () => {

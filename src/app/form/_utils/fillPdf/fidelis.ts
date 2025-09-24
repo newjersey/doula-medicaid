@@ -1,5 +1,5 @@
 import { type FormData, fillForm } from "@form/_utils/fillPdf/form";
-import { formatDateOfBirth } from "@form/_utils/fillPdf/formatters";
+import { formatDate } from "@form/_utils/fillPdf/formatters";
 
 export const FIDELIS_PDF_NAME = "fidelis_filled.pdf";
 export const FIDELIS_PDF_PATH = "/pdf/fidelis.pdf";
@@ -12,7 +12,7 @@ export const FIDELIS_FIELD_MAP: Partial<Record<keyof FormData, string>> = {
 
 export const mapFidelisFields = (formData: FormData): { [key: string]: string } => {
   return {
-    Text3: formatDateOfBirth(formData),
+    Text3: formatDate(formData.dateOfBirth),
     Text2: formData.firstName,
     Text1: formData.lastName,
   };

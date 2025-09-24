@@ -139,7 +139,7 @@ describe("<PersonalDetailsStep1 />", () => {
       { invalidTestValue: "0", expectedErrorMessage: "Day must be between 1 and 31" },
       { invalidTestValue: "50", expectedErrorMessage: "Day must be between 1 and 31" },
     ])(
-      "displays an message error if date of birth day is the invalid format %s",
+      "displays an error message if date of birth day is the invalid format %s",
       async ({ invalidTestValue, expectedErrorMessage }) => {
         await testInvalidField(
           { ...dateOfBirthDayField, testValue: invalidTestValue },
@@ -155,7 +155,7 @@ describe("<PersonalDetailsStep1 />", () => {
       { invalidTestValue: "test", expectedErrorMessage: "Year must be a number" },
       { invalidTestValue: "1", expectedErrorMessage: "Year must have four digits" },
     ])(
-      "displays an message error if date of birth year is the invalid format %s",
+      "displays an error message if date of birth year is the invalid format %s",
       async ({ invalidTestValue, expectedErrorMessage }) => {
         await testInvalidField(
           { ...dateOfBirthYearField, testValue: invalidTestValue },

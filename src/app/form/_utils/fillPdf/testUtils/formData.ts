@@ -10,8 +10,8 @@ import { type FormData } from "@form/_utils/fillPdf/form";
 const testinsuranceEndDateDay = "31";
 const testinsuranceEndDateMonth = "12";
 const testinsuranceEndDateYear = "2024";
-const testinsuranceStartDateDay = "01";
-const testinsuranceStartDateMonth = "01";
+const testinsuranceStartDateDay = "1";
+const testinsuranceStartDateMonth = "1";
 const testinsuranceStartDateYear = "2025";
 const testDateOfBirthDay = "25";
 const testDateOfBirthMonth = "12";
@@ -37,14 +37,14 @@ const testTrainingFormData: TrainingFormData = {
 };
 
 const testInsuranceFormData: InsuranceFormData = {
-  insuranceAggregateAmount: "1000000",
-  insuranceOccurenceAmount: "300000",
-  insuranceEndDate: new Date(
-    `${testinsuranceEndDateYear}-${testinsuranceEndDateMonth}-${testinsuranceEndDateDay}`,
-  ),
   insuranceStartDate: new Date(
     `${testinsuranceStartDateYear}-${testinsuranceStartDateMonth}-${testinsuranceStartDateDay}`,
   ),
+  insuranceEndDate: new Date(
+    `${testinsuranceEndDateYear}-${testinsuranceEndDateMonth}-${testinsuranceEndDateDay}`,
+  ),
+  insuranceOccurenceAmount: "300000",
+  insuranceAggregateAmount: "1000000",
   insuranceCarrierName: "Default insurance carrier",
   insurancePolicyNumber: "Default-policy-123",
   insuranceStreetAddress1: "Default insurance street 1",

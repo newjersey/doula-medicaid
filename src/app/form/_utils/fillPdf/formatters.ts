@@ -33,10 +33,6 @@ export const formatName = (formData: FormData): string => {
   return `${formData.firstName} ${formData.lastName}`;
 };
 
-export const formatDateOfBirth = (formData: FormData): string => {
-  return formatDate(formData.dateOfBirth);
-};
-
 export const formatDate = (date: Date): string => {
   return date.toLocaleDateString("en-US", {
     year: "numeric",

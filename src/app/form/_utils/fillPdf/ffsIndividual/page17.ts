@@ -1,6 +1,6 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import {
-  formatDateOfBirth,
+  formatDate,
   formatEinOrSsn,
   formatMultilineAddress,
   formatName,
@@ -44,7 +44,7 @@ export const getPage17Fields = (formData: FormData): Partial<PdfFfsIndividualPag
     return {
       fd452affliatedprevious12monthsno: true,
       fd452ownershipinterestnameline1: formatName(formData),
-      fd452ownershipinterestDateofBirthline1: formatDateOfBirth(formData),
+      fd452ownershipinterestDateofBirthline1: formatDate(formData.dateOfBirth),
       fd452ownershipinterestcontrolpercentline1: "100",
       fd452ownershipinterestssnortaxidline1: formatEinOrSsn(formData),
       fd452ownershipinterestaddressline1: formatMultilineAddress(

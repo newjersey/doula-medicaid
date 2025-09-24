@@ -1,11 +1,11 @@
 import { getAddressState, getValue } from "@/app/form/_utils/sessionStorage";
 
 export interface Insurance1Data {
-  insuranceStartDateMonth: string;
   insuranceStartDateDay: string;
+  insuranceStartDateMonth: string;
   insuranceStartDateYear: string;
-  insuranceEndDateMonth: string;
   insuranceEndDateDay: string;
+  insuranceEndDateMonth: string;
   insuranceEndDateYear: string;
   insuranceOccurenceAmount: string;
   insuranceAggregateAmount: string;

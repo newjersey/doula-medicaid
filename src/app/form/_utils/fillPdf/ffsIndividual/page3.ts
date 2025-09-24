@@ -1,5 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
-import { formatDate, formatDateOfBirth, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatDate, formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 3 - doula qualifications form
@@ -40,7 +40,7 @@ export const getPage3Fields = (formData: FormData): Partial<PdfFfsIndividualPage
   }
 
   return {
-    fd427dateofbirthDate1_af_date: formatDateOfBirth(formData),
+    fd427dateofbirthDate1_af_date: formatDate(formData.dateOfBirth),
     fd427LegalName: formatName(formData),
     fd427SocialSecurityNumber: formData.socialSecurityNumber,
     fd427TrainingProgramName: trainingProgramName,

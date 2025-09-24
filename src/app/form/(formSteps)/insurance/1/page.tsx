@@ -288,38 +288,54 @@ const InsuranceStep1 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <h2 className="font-heading-md">Coverage amount</h2>
-          <DoulaTextInput
-            name="insuranceOccurenceAmount"
-            required
-            label={`${orderedInputNameToLabel["insuranceOccurenceAmount"]}`}
-            hint={"Minimum should be $1,000,000"}
-            register={register}
-            errors={errors}
-            registerOptions={{
-              required: `${orderedInputNameToLabel["insuranceOccurenceAmount"]} is required`,
-              min: {
-                value: 1000000,
-                message:
-                  "Your coverage is not enough. You need $1,000,000 minimum coverage per occurrence to qualify.",
-              },
-            }}
-          />
-          <DoulaTextInput
-            name="insuranceAggregateAmount"
-            required
-            label={`${orderedInputNameToLabel["insuranceAggregateAmount"]}`}
-            hint={"Minimum should be $3,000,000"}
-            register={register}
-            errors={errors}
-            registerOptions={{
-              required: `${orderedInputNameToLabel["insuranceAggregateAmount"]} is required`,
-              min: {
-                value: 3000000,
-                message:
-                  "Your coverage is not enough. You need a minimum aggregate coverage of $3,000,000 to qualify.",
-              },
-            }}
-          />
+          <div className="tablet:grid-col-6">
+            <DoulaTextInput
+              name="insuranceOccurenceAmount"
+              required
+              label={`${orderedInputNameToLabel["insuranceOccurenceAmount"]}`}
+              hint={"Minimum should be $1,000,000"}
+              register={register}
+              errors={errors}
+              inputMode="numeric"
+              registerOptions={{
+                valueAsNumber: true,
+                required: `${orderedInputNameToLabel["insuranceOccurenceAmount"]} is required`,
+                min: {
+                  value: 1000000,
+                  message:
+                    "Your coverage is not enough. You need $1,000,000 minimum coverage per occurrence to qualify.",
+                },
+                validate: (value) => {
+                  if (Number.isNaN(value) || typeof value === "string") {
+                    return `${orderedInputNameToLabel["insuranceOccurenceAmount"]} must be a number`;
+                  }
+                },
+              }}
+            />
+            <DoulaTextInput
+              name="insuranceAggregateAmount"
+              required
+              label={`${orderedInputNameToLabel["insuranceAggregateAmount"]}`}
+              hint={"Minimum should be $3,000,000"}
+              register={register}
+              errors={errors}
+              inputMode="numeric"
+              registerOptions={{
+                required: `${orderedInputNameToLabel["insuranceAggregateAmount"]} is required`,
+                min: {
+                  value: 3000000,
+                  message:
+                    "Your coverage is not enough. You need a minimum aggregate coverage of $3,000,000 to qualify.",
+                },
+                valueAsNumber: true,
+                validate: (value) => {
+                  if (Number.isNaN(value) || typeof value === "string") {
+                    return `${orderedInputNameToLabel["insuranceAggregateAmount"]} must be a number`;
+                  }
+                },
+              }}
+            />
+          </div>
         </div>
         <div className="form-explainer desktop:grid-col-4">
           <CoverageAmountExplainer />
