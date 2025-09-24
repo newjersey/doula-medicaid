@@ -108,20 +108,20 @@ export const setRequiredFieldsInSessionStorage = () => {
   window.sessionStorage.setItem("haveOtherBusinessOwnerNextYear", "false");
   window.sessionStorage.setItem("hadDhmasBusiness", "false");
 
-  //Insurance
-  window.sessionStorage.setItem("insuranceStartDateDay", testinsuranceStartDateDay);
-  window.sessionStorage.setItem("insuranceStartDateMonth", testinsuranceStartDateMonth);
-  window.sessionStorage.setItem("insuranceStartDateYear", testinsuranceStartDateYear);
-  window.sessionStorage.setItem("insuranceEndDateDay", testinsuranceEndDateDay);
-  window.sessionStorage.setItem("insuranceEndDateMonth", testinsuranceEndDateMonth);
-  window.sessionStorage.setItem("insuranceEndDateYear", testinsuranceEndDateYear);
-
   // Personal details
   for (const [key, value] of Object.entries(testFormData)) {
     if (key === "dateOfBirth") {
       window.sessionStorage.setItem("dateOfBirthDay", testDateOfBirthDay);
       window.sessionStorage.setItem("dateOfBirthMonth", testDateOfBirthMonth);
       window.sessionStorage.setItem("dateOfBirthYear", testDateOfBirthYear);
+    } else if (key === "insuranceStartDate") {
+      window.sessionStorage.setItem("insuranceStartDateDay", testinsuranceStartDateDay);
+      window.sessionStorage.setItem("insuranceStartDateMonth", testinsuranceStartDateMonth);
+      window.sessionStorage.setItem("insuranceStartDateYear", testinsuranceStartDateYear);
+    } else if (key === "insuranceEndDate") {
+      window.sessionStorage.setItem("insuranceEndDateDay", testinsuranceEndDateDay);
+      window.sessionStorage.setItem("insuranceEndDateMonth", testinsuranceEndDateMonth);
+      window.sessionStorage.setItem("insuranceEndDateYear", testinsuranceEndDateYear);
     } else if (value !== null) {
       window.sessionStorage.setItem(key as SessionStorageKey, value.toString());
     }
