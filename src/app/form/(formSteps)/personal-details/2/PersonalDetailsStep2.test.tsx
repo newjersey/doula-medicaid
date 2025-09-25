@@ -1,3 +1,4 @@
+import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
@@ -11,7 +12,6 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";

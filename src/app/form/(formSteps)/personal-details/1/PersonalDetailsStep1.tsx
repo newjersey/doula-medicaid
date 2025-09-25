@@ -57,6 +57,7 @@ const PersonalDetailsStep1 = () => {
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
+      <meta name="keywords" content="React, JavaScript, semantic markup, html" />
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div>
           <h2 className="font-heading-md">Personal identification</h2>

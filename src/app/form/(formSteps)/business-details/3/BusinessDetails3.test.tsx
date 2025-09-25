@@ -1,4 +1,4 @@
-import BusinessDetails3 from "@/app/form/(formSteps)/business-details/3/page";
+import BusinessDetails3 from "@/app/form/(formSteps)/business-details/3/BusinessDetails3";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
   testFillFromSessionStorage,

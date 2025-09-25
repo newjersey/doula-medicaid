@@ -2,13 +2,13 @@
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 const FormSection = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
   const formProgressPosition = useFormProgressPosition();
   const { handleSubmit } = useForm<object>({
     defaultValues: {},
@@ -17,7 +17,9 @@ const FormSection = () => {
     <div>
       <Form
         onSubmit={handleSubmit(() => {
-          routeToNextStep(router, formProgressPosition);
+          if (formProgressPosition.next !== null) {
+            navigate(formatFormProgressUrl(formProgressPosition.next));
+          }
         })}
         className="maxw-full"
       >

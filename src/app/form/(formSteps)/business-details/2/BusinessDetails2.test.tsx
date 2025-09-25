@@ -1,4 +1,4 @@
-import BusinessDetails2 from "@/app/form/(formSteps)/business-details/2/page";
+import BusinessDetails2 from "@/app/form/(formSteps)/business-details/2/BusinessDetails2";
 import { fillField, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {

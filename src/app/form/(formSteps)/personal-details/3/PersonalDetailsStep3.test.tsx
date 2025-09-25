@@ -1,3 +1,4 @@
+import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
   createTestField,
@@ -8,7 +9,6 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";

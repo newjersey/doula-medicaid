@@ -1,3 +1,4 @@
+import BusinessDetails1 from "@/app/form/(formSteps)/business-details/1/BusinessDetails1";
 import { setInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
@@ -9,7 +10,6 @@ import {
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import BusinessDetails1 from "@form/(formSteps)/business-details/1/page";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";

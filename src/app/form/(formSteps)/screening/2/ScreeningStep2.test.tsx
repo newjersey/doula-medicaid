@@ -1,4 +1,4 @@
-import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/page";
+import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
   createTestField,

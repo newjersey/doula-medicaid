@@ -1,5 +1,5 @@
+import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { setRequiredFieldsInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import FinishSection from "@form/(formSteps)/finish/page";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";

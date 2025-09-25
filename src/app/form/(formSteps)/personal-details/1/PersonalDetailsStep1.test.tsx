@@ -1,3 +1,4 @@
+import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
   createTestField,
@@ -8,10 +9,10 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { MemoryRouter } from "react-router";
 
 const dateOfBirthDayField = createTestField({
   name: "Day *",
@@ -100,12 +101,12 @@ describe("<PersonalDetailsStep1 />", () => {
       push: mockPush,
       refresh: mockRefresh,
     };
+    const route = "/form/personal-details/1";
     render(
-      <RouterPathnameProvider
-        pathname="/form/personal-details/1"
-        router={mockRouter as AppRouterInstance}
-      >
-        <PersonalDetailsStep1 />
+      <RouterPathnameProvider pathname={route} router={mockRouter as AppRouterInstance}>
+        <MemoryRouter initialEntries={[route]}>
+          <PersonalDetailsStep1 />
+        </MemoryRouter>
       </RouterPathnameProvider>,
     );
     return mockRouter;

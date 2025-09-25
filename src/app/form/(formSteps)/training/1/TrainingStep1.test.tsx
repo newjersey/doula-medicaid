@@ -1,3 +1,4 @@
+import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
 import {
   createTestField,
   createTestFields,
@@ -7,7 +8,6 @@ import {
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import TrainingStep1 from "@form/(formSteps)/training/1/page";
 import { fillField } from "@form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";

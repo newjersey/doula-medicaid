@@ -1,4 +1,4 @@
-import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/page";
+import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
 import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
 import {
