@@ -25,6 +25,7 @@ import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-li
 
 export interface FormData
   extends ScreeningFormData,
+    InsuranceFormData,
     TrainingFormData,
     InsuranceFormData,
     PersonalDetailsFormData,
@@ -42,6 +43,7 @@ interface FieldOption {
 export const getFormData = (): FormData => {
   return {
     ...getScreeningFormData(),
+    ...getInsuranceFormData(),
     ...getTrainingFormData(),
     ...getInsuranceFormData(),
     ...getPersonalDetailsFormData(),

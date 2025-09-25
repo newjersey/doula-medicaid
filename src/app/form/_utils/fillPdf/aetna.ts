@@ -1,12 +1,12 @@
 import { type FormData, fillForm } from "@form/_utils/fillPdf/form";
-import { formatDateOfBirth } from "@form/_utils/fillPdf/formatters";
+import { formatDate } from "@form/_utils/fillPdf/formatters";
 
 export const AETNA_PDF_NAME = "aetna_filled.pdf";
 export const AETNA_PDF_PATH = "/pdf/aetna.pdf";
 
 export const mapAetnaFields = (formData: FormData): { [key: string]: string } => {
   return {
-    Text2: formatDateOfBirth(formData),
+    Text2: formatDate(formData.dateOfBirth),
     Text3: formData.firstName,
     Text1: formData.lastName,
   };

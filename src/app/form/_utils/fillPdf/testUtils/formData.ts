@@ -7,6 +7,12 @@ import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import type { SessionStorageKey } from "@/app/form/_utils/sessionStorage";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
+const testinsuranceEndDateDay = "31";
+const testinsuranceEndDateMonth = "12";
+const testinsuranceEndDateYear = "2024";
+const testinsuranceStartDateDay = "1";
+const testinsuranceStartDateMonth = "1";
+const testinsuranceStartDateYear = "2025";
 const testDateOfBirthDay = "25";
 const testDateOfBirthMonth = "12";
 const testDateOfBirthYear = "1990";
@@ -31,6 +37,14 @@ const testTrainingFormData: TrainingFormData = {
 };
 
 const testInsuranceFormData: InsuranceFormData = {
+  insuranceStartDate: new Date(
+    `${testinsuranceStartDateYear}-${testinsuranceStartDateMonth}-${testinsuranceStartDateDay}`,
+  ),
+  insuranceEndDate: new Date(
+    `${testinsuranceEndDateYear}-${testinsuranceEndDateMonth}-${testinsuranceEndDateDay}`,
+  ),
+  insuranceOccurenceAmount: "300000",
+  insuranceAggregateAmount: "1000000",
   insuranceCarrierName: "Default insurance carrier",
   insurancePolicyNumber: "Default-policy-123",
   insuranceStreetAddress1: "Default insurance street 1",
@@ -100,6 +114,14 @@ export const setRequiredFieldsInSessionStorage = () => {
       window.sessionStorage.setItem("dateOfBirthDay", testDateOfBirthDay);
       window.sessionStorage.setItem("dateOfBirthMonth", testDateOfBirthMonth);
       window.sessionStorage.setItem("dateOfBirthYear", testDateOfBirthYear);
+    } else if (key === "insuranceStartDate") {
+      window.sessionStorage.setItem("insuranceStartDateDay", testinsuranceStartDateDay);
+      window.sessionStorage.setItem("insuranceStartDateMonth", testinsuranceStartDateMonth);
+      window.sessionStorage.setItem("insuranceStartDateYear", testinsuranceStartDateYear);
+    } else if (key === "insuranceEndDate") {
+      window.sessionStorage.setItem("insuranceEndDateDay", testinsuranceEndDateDay);
+      window.sessionStorage.setItem("insuranceEndDateMonth", testinsuranceEndDateMonth);
+      window.sessionStorage.setItem("insuranceEndDateYear", testinsuranceEndDateYear);
     } else if (value !== null) {
       window.sessionStorage.setItem(key as SessionStorageKey, value.toString());
     }

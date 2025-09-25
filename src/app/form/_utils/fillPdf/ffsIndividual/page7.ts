@@ -1,8 +1,4 @@
-import {
-  formatDateOfBirth,
-  formatNaIfBlank,
-  formatName,
-} from "@/app/form/_utils/fillPdf/formatters";
+import { formatDate, formatNaIfBlank, formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 7 - individual doula provider application section I provider identification
@@ -34,7 +30,7 @@ export interface PdfFfsIndividualPage7 {
 export const getPage7Fields = (formData: FormData): Partial<PdfFfsIndividualPage7> => {
   return {
     fd425legalname: formatName(formData),
-    fd452dobfdate_af_date: formatDateOfBirth(formData),
+    fd452dobfdate_af_date: formatDate(formData.dateOfBirth),
     fd425socialsecuritynumber: formData.socialSecurityNumber ?? "",
     fd452medicareprovnumber: formatNaIfBlank(formData.medicareProviderId),
     fd425upinno: formatNaIfBlank(formData.upinNumber),
