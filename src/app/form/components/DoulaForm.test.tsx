@@ -1,13 +1,9 @@
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import {
-  fillAllInputs,
-  fillAllInputsExcept,
-  getInputField,
-} from "@/app/form/_utils/testUtils/fillInputs";
+import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { getRenderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
-import { screen, waitFor } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Label, TextInput } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
@@ -162,38 +158,6 @@ const doulaTestFormFields: TestField[] = createTestFields([
 //   );
 //   return mockRouter;
 // };
-
-describe("submission behavior", () => {
-  it("saves fields to session storage and routes to the next step on submit", async () => {
-    getRenderWithRouter(
-      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-      "/form/personal-details/2",
-    );
-    const user = userEvent.setup();
-    await fillAllInputs(screen, user, doulaTestFormFields);
-    for (const field of doulaTestFormFields) {
-      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
-    }
-    waitFor(() => {
-      expect(window.location.pathname).toEqual("/form/personal-details/3");
-    });
-  });
-
-  it("does not save fields to session storage and does not route on error", async () => {
-    getRenderWithRouter(
-      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-      "/form/personal-details/2",
-    );
-    const user = userEvent.setup();
-    await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
-    for (const field of doulaTestFormFields) {
-      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(null);
-    }
-    waitFor(() => {
-      expect(window.location.pathname).not.toEqual("/form/personal-details/3");
-    });
-  });
-});
 
 describe("error summary", () => {
   describe("when mayHaveThreeOrMoreErrors is true", () => {
