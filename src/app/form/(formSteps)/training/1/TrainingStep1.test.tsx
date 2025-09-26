@@ -1,4 +1,5 @@
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -9,7 +10,6 @@ import {
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { fillField } from "@form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
 import { jest } from "@jest/globals";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

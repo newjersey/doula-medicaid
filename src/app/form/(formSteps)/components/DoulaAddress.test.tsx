@@ -4,7 +4,7 @@ import {
 } from "@/app/form/(formSteps)/components/DoulaAddress";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import { fillAllInputsExcept, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

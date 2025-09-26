@@ -1,4 +1,4 @@
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { within } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";

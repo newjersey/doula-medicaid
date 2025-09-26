@@ -1,5 +1,5 @@
 import BusinessDetails3 from "@/app/form/(formSteps)/business-details/3/BusinessDetails3";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   testFillFromSessionStorage,
   testRequiredField,

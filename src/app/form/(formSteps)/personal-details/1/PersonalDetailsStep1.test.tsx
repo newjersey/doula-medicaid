@@ -1,5 +1,5 @@
 import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { getRenderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -9,10 +9,9 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { MemoryRouter } from "react-router";
+import * as router from "react-router";
 
 const dateOfBirthDayField = createTestField({
   name: "Day *",
@@ -93,32 +92,30 @@ const allTestFields: Array<TestField> = [
   ...contactInformationFields,
 ];
 
-describe("<PersonalDetailsStep1 />", () => {
-  const renderWithRouter = () => {
-    const mockPush = jest.fn();
-    const mockRefresh = jest.fn();
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: mockPush,
-      refresh: mockRefresh,
-    };
-    const route = "/form/personal-details/1";
-    render(
-      <RouterPathnameProvider pathname={route} router={mockRouter as AppRouterInstance}>
-        <MemoryRouter initialEntries={[route]}>
-          <PersonalDetailsStep1 />
-        </MemoryRouter>
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+const mockNavigate = jest.fn();
 
+beforeEach(() => {
+  jest.spyOn(router, "useNavigate").mockImplementation(() => mockNavigate);
+});
+
+afterEach(() => {
+  window.sessionStorage.clear();
+  jest.clearAllMocks();
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
+
+describe("<PersonalDetailsStep1 />", () => {
   describe("personal identification fields", () => {
     it("saves fields to session storage on submit", async () => {
       await testSaveFieldsToSessionStorage(
         personalIdentificationFields,
         allTestFields,
-        renderWithRouter,
+        getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
+        mockNavigate,
         "/form/personal-details/2",
       );
     });
@@ -126,14 +123,24 @@ describe("<PersonalDetailsStep1 />", () => {
     it.each(personalIdentificationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(
+          field,
+          allTestFields,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
+          screen,
+          mockNavigate,
+        );
       },
     );
 
     it.each(personalIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(
+          field,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
+          screen,
+        );
       },
     );
 
@@ -148,8 +155,9 @@ describe("<PersonalDetailsStep1 />", () => {
           { ...dateOfBirthDayField, testValue: invalidTestValue },
           expectedErrorMessage,
           allTestFields,
-          renderWithRouter,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
+          mockNavigate,
         );
       },
     );
@@ -164,8 +172,9 @@ describe("<PersonalDetailsStep1 />", () => {
           { ...dateOfBirthYearField, testValue: invalidTestValue },
           expectedErrorMessage,
           allTestFields,
-          renderWithRouter,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
+          mockNavigate,
         );
       },
     );
@@ -176,8 +185,9 @@ describe("<PersonalDetailsStep1 />", () => {
       await testSaveFieldsToSessionStorage(
         contactInformationFields,
         allTestFields,
-        renderWithRouter,
+        getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
+        mockNavigate,
         "/form/personal-details/2",
       );
     });
@@ -185,14 +195,24 @@ describe("<PersonalDetailsStep1 />", () => {
     it.each(contactInformationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(
+          field,
+          allTestFields,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
+          screen,
+          mockNavigate,
+        );
       },
     );
 
     it.each(contactInformationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(
+          field,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
+          screen,
+        );
       },
     );
 
@@ -201,8 +221,9 @@ describe("<PersonalDetailsStep1 />", () => {
         { ...phoneNumberField, testValue: "123" },
         "Entered value does not match phone number format",
         allTestFields,
-        renderWithRouter,
+        getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
+        mockNavigate,
       );
     });
 
@@ -211,8 +232,9 @@ describe("<PersonalDetailsStep1 />", () => {
         { ...socialSecurityNumberField, testValue: "123" },
         "Entered value does not match social security number format",
         allTestFields,
-        renderWithRouter,
+        getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
+        mockNavigate,
       );
     });
 
@@ -223,8 +245,9 @@ describe("<PersonalDetailsStep1 />", () => {
           { ...emailField, testValue: invalidTestValue },
           "Entered value does not match email format",
           allTestFields,
-          renderWithRouter,
+          getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
+          mockNavigate,
         );
       },
     );
@@ -241,7 +264,7 @@ describe("<PersonalDetailsStep1 />", () => {
     },
   ])("prevents non-numeric inputs in $lowercaseName", async ({ name }) => {
     const user = userEvent.setup();
-    renderWithRouter();
+    getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1")();
     const input = screen.getByRole("textbox", {
       name: name,
     });

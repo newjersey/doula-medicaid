@@ -1,6 +1,6 @@
 import BusinessDetails1 from "@/app/form/(formSteps)/business-details/1/BusinessDetails1";
 import { setInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,

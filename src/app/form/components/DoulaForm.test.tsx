@@ -1,12 +1,15 @@
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import {
+  fillAllInputs,
+  fillAllInputsExcept,
+  getInputField,
+} from "@/app/form/_utils/testUtils/fillInputs";
+import { getRenderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
-import { render, screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Label, TextInput } from "@trussworks/react-uswds";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useForm } from "react-hook-form";
 
 interface DoulaFormTestData {
@@ -120,51 +123,86 @@ const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
   );
 };
 
-const renderWithRouter = (mayHaveThreeOrMoreErrors: boolean) => {
-  const mockPush = jest.fn();
-  const mockRefresh = jest.fn();
-  const mockRouter: Partial<AppRouterInstance> = {
-    push: mockPush,
-    refresh: mockRefresh,
-  };
+const doulaTestFormFields: TestField[] = createTestFields([
+  {
+    name: "Label 1 *",
+    required: true,
+    sessionStorageKey: "field1",
+    testValue: "Foo",
+  },
+  {
+    name: "Label 2 *",
+    required: true,
+    sessionStorageKey: "field2",
+    testValue: "Bar",
+  },
+  {
+    name: "Label 3 *",
+    required: true,
+    sessionStorageKey: "field 3",
+    testValue: "Zoink",
+  },
+]);
 
-  render(
-    <RouterPathnameProvider
-      pathname="/form/personal-details/2"
-      router={mockRouter as AppRouterInstance}
-    >
-      <DoulaFormTestPage mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors} />
-    </RouterPathnameProvider>,
-  );
-  return mockRouter;
-};
+// const renderWithRouter = (mayHaveThreeOrMoreErrors: boolean) => {
+//   const mockPush = jest.fn();
+//   const mockRefresh = jest.fn();
+//   const mockRouter: Partial<AppRouterInstance> = {
+//     push: mockPush,
+//     refresh: mockRefresh,
+//   };
+
+//   render(
+//     <RouterPathnameProvider
+//       pathname="/form/personal-details/2"
+//       router={mockRouter as AppRouterInstance}
+//     >
+//       <DoulaFormTestPage mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors} />
+//     </RouterPathnameProvider>,
+//   );
+//   return mockRouter;
+// };
+
+describe("submission behavior", () => {
+  it("saves fields to session storage and routes to the next step on submit", async () => {
+    getRenderWithRouter(
+      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+      "/form/personal-details/2",
+    );
+    const user = userEvent.setup();
+    await fillAllInputs(screen, user, doulaTestFormFields);
+    for (const field of doulaTestFormFields) {
+      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
+    }
+    waitFor(() => {
+      expect(window.location.pathname).toEqual("/form/personal-details/3");
+    });
+  });
+
+  it("does not save fields to session storage and does not route on error", async () => {
+    getRenderWithRouter(
+      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+      "/form/personal-details/2",
+    );
+    const user = userEvent.setup();
+    await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
+    for (const field of doulaTestFormFields) {
+      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(null);
+    }
+    waitFor(() => {
+      expect(window.location.pathname).not.toEqual("/form/personal-details/3");
+    });
+  });
+});
 
 describe("error summary", () => {
-  const doulaTestFormFields: TestField[] = createTestFields([
-    {
-      name: "Label 1 *",
-      required: true,
-      sessionStorageKey: "field1",
-      testValue: "Foo",
-    },
-    {
-      name: "Label 2 *",
-      required: true,
-      sessionStorageKey: "field2",
-      testValue: "Bar",
-    },
-    {
-      name: "Label 3 *",
-      required: true,
-      sessionStorageKey: "field 3",
-      testValue: "Zoink",
-    },
-  ]);
-
   describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
       const user = userEvent.setup();
-      renderWithRouter(true);
+      getRenderWithRouter(
+        <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+        "/form/personal-details/2",
+      );
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       const focusedElement = document.activeElement as HTMLElement;
@@ -186,7 +224,10 @@ describe("error summary", () => {
 
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
       const user = userEvent.setup();
-      renderWithRouter(true);
+      getRenderWithRouter(
+        <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+        "/form/personal-details/2",
+      );
       await user.type(
         screen.getByRole("textbox", {
           name: "Label 1 *",
@@ -211,7 +252,10 @@ describe("error summary", () => {
   describe("when mayHaveThreeOrMoreErrors is false", () => {
     it("does not show an error summary if there are 3 errors, instead it focuses on the first error", async () => {
       const user = userEvent.setup();
-      renderWithRouter(false);
+      getRenderWithRouter(
+        <DoulaFormTestPage mayHaveThreeOrMoreErrors={false} />,
+        "/form/personal-details/2",
+      );
 
       await user.click(screen.getByRole("button", { name: "Next" }));
 
@@ -232,7 +276,10 @@ describe("error summary", () => {
     async ({ name }) => {
       const labelWithoutAsterisk = name.toString().replace(" *", "");
       const user = userEvent.setup();
-      renderWithRouter(true);
+      getRenderWithRouter(
+        <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+        "/form/personal-details/2",
+      );
       await user.click(screen.getByRole("button", { name: "Next" }));
       await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
 

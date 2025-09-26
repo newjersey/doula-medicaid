@@ -1,5 +1,5 @@
 import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   testInvalidField,

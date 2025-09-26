@@ -1,6 +1,6 @@
 import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { setRequiredFieldsInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
+import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { jest } from "@jest/globals";
 import { render, screen, waitFor } from "@testing-library/react";
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
