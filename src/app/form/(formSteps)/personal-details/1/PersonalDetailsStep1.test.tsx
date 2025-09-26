@@ -1,4 +1,5 @@
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -8,10 +9,8 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import PersonalDetailsStep1 from "@form/(formSteps)/personal-details/1/page";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const dateOfBirthDayField = createTestField({
   name: "Day *",
@@ -93,44 +92,30 @@ const allTestFields: Array<TestField> = [
 ];
 
 describe("<PersonalDetailsStep1 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider
-        pathname="/form/personal-details/1"
-        router={mockRouter as AppRouterInstance}
-      >
-        <PersonalDetailsStep1 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () =>
+    renderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1");
 
   describe("personal identification fields", () => {
     it("saves fields to session storage on submit", async () => {
       await testSaveFieldsToSessionStorage(
         personalIdentificationFields,
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/personal-details/2",
       );
     });
 
     it.each(personalIdentificationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(personalIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -145,7 +130,7 @@ describe("<PersonalDetailsStep1 />", () => {
           { ...dateOfBirthDayField, testValue: invalidTestValue },
           expectedErrorMessage,
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -161,7 +146,7 @@ describe("<PersonalDetailsStep1 />", () => {
           { ...dateOfBirthYearField, testValue: invalidTestValue },
           expectedErrorMessage,
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -173,23 +158,22 @@ describe("<PersonalDetailsStep1 />", () => {
       await testSaveFieldsToSessionStorage(
         contactInformationFields,
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/personal-details/2",
       );
     });
 
     it.each(contactInformationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(contactInformationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -198,7 +182,7 @@ describe("<PersonalDetailsStep1 />", () => {
         { ...phoneNumberField, testValue: "123" },
         "Entered value does not match phone number format",
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
       );
     });
@@ -208,7 +192,7 @@ describe("<PersonalDetailsStep1 />", () => {
         { ...socialSecurityNumberField, testValue: "123" },
         "Entered value does not match social security number format",
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
       );
     });
@@ -220,7 +204,7 @@ describe("<PersonalDetailsStep1 />", () => {
           { ...emailField, testValue: invalidTestValue },
           "Entered value does not match email format",
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -238,7 +222,7 @@ describe("<PersonalDetailsStep1 />", () => {
     },
   ])("prevents non-numeric inputs in $lowercaseName", async ({ name }) => {
     const user = userEvent.setup();
-    renderWithRouter();
+    renderFunction();
     const input = screen.getByRole("textbox", {
       name: name,
     });

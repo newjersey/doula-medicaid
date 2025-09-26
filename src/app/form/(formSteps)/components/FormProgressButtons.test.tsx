@@ -1,8 +1,7 @@
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { within } from "@testing-library/dom";
-import { render, screen } from "@testing-library/react";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { screen } from "@testing-library/react";
 
 const getFormProgressButtonsList = () => {
   const allLists = screen.getAllByRole("list");
@@ -21,17 +20,7 @@ const getFormProgressButtonsList = () => {
 
 describe("<FormProgressButtons />", () => {
   it("shows only the next button when on the first step", async () => {
-    const mockPush = jest.fn();
-    const mockRefresh = jest.fn();
-    const router: Partial<AppRouterInstance> = {
-      push: mockPush,
-      refresh: mockRefresh,
-    };
-    render(
-      <RouterPathnameProvider pathname="/form/screening/1" router={router as AppRouterInstance}>
-        <FormProgressButtons />
-      </RouterPathnameProvider>,
-    );
+    renderWithRouter(<FormProgressButtons />, "/form/screening/1");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(1);
@@ -42,20 +31,7 @@ describe("<FormProgressButtons />", () => {
   });
 
   it("shows both previous and next buttons when on a middle step", async () => {
-    const mockPush = jest.fn();
-    const mockRefresh = jest.fn();
-    const router: Partial<AppRouterInstance> = {
-      push: mockPush,
-      refresh: mockRefresh,
-    };
-    render(
-      <RouterPathnameProvider
-        pathname="/form/personal-details/2"
-        router={router as AppRouterInstance}
-      >
-        <FormProgressButtons />
-      </RouterPathnameProvider>,
-    );
+    renderWithRouter(<FormProgressButtons />, "/form/personal-details/2");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(2);
@@ -69,11 +45,7 @@ describe("<FormProgressButtons />", () => {
   });
 
   it("shows only the previous button when on the last step", () => {
-    render(
-      <RouterPathnameProvider pathname="/form/finish">
-        <FormProgressButtons />
-      </RouterPathnameProvider>,
-    );
+    renderWithRouter(<FormProgressButtons />, "/form/finish");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(1);

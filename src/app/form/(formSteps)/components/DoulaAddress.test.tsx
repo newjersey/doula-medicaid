@@ -4,7 +4,7 @@ import {
 } from "@/app/form/(formSteps)/components/DoulaAddress";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import { fillAllInputsExcept, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -71,30 +71,28 @@ const TestForm = (
   });
   const testZip = watch("testZip");
   return (
-    <RouterPathnameProvider pathname="/form/personal-details/2">
-      <DoulaForm<TestFormData>
+    <DoulaForm<TestFormData>
+      orderedInputNameToLabel={testFormOrderedInputNameToLabel}
+      errors={errors}
+      setFocus={setFocus}
+      handleSubmit={handleSubmit}
+      mayHaveThreeOrMoreErrors={true}
+    >
+      <DoulaAddress
+        {...props}
+        zipValue={testZip}
         orderedInputNameToLabel={testFormOrderedInputNameToLabel}
         errors={errors}
-        setFocus={setFocus}
-        handleSubmit={handleSubmit}
-        mayHaveThreeOrMoreErrors={true}
-      >
-        <DoulaAddress
-          {...props}
-          zipValue={testZip}
-          orderedInputNameToLabel={testFormOrderedInputNameToLabel}
-          errors={errors}
-          register={register}
-        />
-        <FormProgressButtons />
-      </DoulaForm>
-    </RouterPathnameProvider>
+        register={register}
+      />
+      <FormProgressButtons />
+    </DoulaForm>
   );
 };
 
 describe("DoulaAddress", () => {
   it("renders all expected address inputs", async () => {
-    render(
+    renderWithRouter(
       <DoulaAddress
         fieldsetProps={{
           legend: "What is your address?",
@@ -117,6 +115,7 @@ describe("DoulaAddress", () => {
         errors={{}}
         register={jest.fn()}
       />,
+      "/form/personal-details/2",
     );
     const streetAddress1Input = await getInputField(screen, {
       name: "Street address *",
@@ -196,7 +195,7 @@ describe("DoulaAddress", () => {
 
   it("displays an error message if zip has fewer than five digits", async () => {
     const user = userEvent.setup();
-    render(
+    renderWithRouter(
       <TestForm
         fieldsetProps={{
           legend: "What is your address?",
@@ -209,6 +208,7 @@ describe("DoulaAddress", () => {
           zip: "testZip",
         }}
       />,
+      "/form/personal-details/2",
     );
     await fillAllInputsExcept(screen, user, allInputFields, new Set(["testZip"]));
     const zipInput = await getInputField(screen, { name: "ZIP code *" });
@@ -220,7 +220,7 @@ describe("DoulaAddress", () => {
 
   it("displays error messages that includes a prefix if provided", async () => {
     const user = userEvent.setup();
-    render(
+    renderWithRouter(
       <TestForm
         fieldsetProps={{
           legend: "What is your address?",
@@ -234,6 +234,7 @@ describe("DoulaAddress", () => {
         }}
         errorLabelPrefix="Test"
       />,
+      "/form/personal-details/2",
     );
     const streetAddress1Input = await getInputField(screen, {
       name: "Street address *",

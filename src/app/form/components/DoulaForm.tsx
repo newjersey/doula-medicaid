@@ -1,8 +1,7 @@
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import { type SessionStorageKey, setKeyValue } from "@/app/form/_utils/sessionStorage";
-import { routeToNextStep, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type {
   FieldErrors,
@@ -11,6 +10,7 @@ import type {
   UseFormHandleSubmit,
   UseFormSetFocus,
 } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 type DoulaFormProps<T extends FieldValues> =
   | {
@@ -32,7 +32,7 @@ type DoulaFormProps<T extends FieldValues> =
 
 export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
   let onSubmitHandler;
-  const router = useRouter();
+  const navigate = useNavigate();
   const formProgressPosition = useFormProgressPosition();
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
@@ -48,7 +48,9 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
       const value = data[key] ?? "";
       setKeyValue(key as SessionStorageKey, value);
     }
-    routeToNextStep(router, formProgressPosition);
+    if (formProgressPosition.next !== null) {
+      navigate(formatFormProgressUrl(formProgressPosition.next));
+    }
   };
 
   if (props.mayHaveThreeOrMoreErrors) {

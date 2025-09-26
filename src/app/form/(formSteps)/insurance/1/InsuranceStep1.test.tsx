@@ -1,6 +1,6 @@
-import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/page";
+import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -10,9 +10,8 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const insuranceStartDateDayField = createTestField({
   name: "Day *",
@@ -103,41 +102,29 @@ const coverageAmountFields: Array<TestField> = createTestFields([
 const testFields: Array<TestField> = [...insuranceCoverageFields, ...coverageAmountFields];
 
 describe("<InsuranceStep1 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider pathname="/form/insurance/1" router={mockRouter as AppRouterInstance}>
-        <InsuranceStep1 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () => renderWithRouter(<InsuranceStep1 />, "/form/insurance/1");
 
   describe("insurance coverage fields", () => {
     it("saves fields to session storage on submit", async () => {
       await testSaveFieldsToSessionStorage(
         insuranceCoverageFields,
         testFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/insurance/2",
       );
     });
 
     it.each(insuranceCoverageFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, testFields, renderWithRouter, screen);
+        await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
     it.each(insuranceCoverageFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -152,7 +139,7 @@ describe("<InsuranceStep1 />", () => {
           { ...insuranceStartDateDayField, testValue: invalidTestValue },
           expectedErrorMessage,
           testFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -169,7 +156,7 @@ describe("<InsuranceStep1 />", () => {
           { ...insuranceEndDateDayField, testValue: invalidTestValue },
           expectedErrorMessage,
           testFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -185,7 +172,7 @@ describe("<InsuranceStep1 />", () => {
           { ...insuranceStartDateYearField, testValue: invalidTestValue },
           expectedErrorMessage,
           testFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -201,7 +188,7 @@ describe("<InsuranceStep1 />", () => {
           { ...insuranceEndDateYearField, testValue: invalidTestValue },
           expectedErrorMessage,
           testFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -213,23 +200,22 @@ describe("<InsuranceStep1 />", () => {
       await testSaveFieldsToSessionStorage(
         coverageAmountFields,
         testFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/insurance/2",
       );
     });
 
     it.each(coverageAmountFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, testFields, renderWithRouter, screen);
+        await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
     it.each(coverageAmountFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -247,7 +233,7 @@ describe("<InsuranceStep1 />", () => {
           { ...amountPerOccurrenceField, testValue: invalidTestValue },
           expectedErrorMessage,
           testFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -267,7 +253,7 @@ describe("<InsuranceStep1 />", () => {
           { ...amountPerAggregateField, testValue: invalidTestValue },
           expectedErrorMessage,
           testFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },
@@ -277,7 +263,7 @@ describe("<InsuranceStep1 />", () => {
   describe("insurance coverage explainer", () => {
     it("orders the insurance coverage explainer immediately after the end date year question", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
 
       const insuranceEndDateYear = await getInputField(screen, insuranceEndDateYearField);
       await user.click(insuranceEndDateYear);
@@ -290,7 +276,7 @@ describe("<InsuranceStep1 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      renderWithRouter();
+      renderFunction();
       const sectionHeadingLevel = 2;
       const insuranceCoverageSectionHeading = screen.getByRole("heading", {
         name: "Your insurance coverage",
@@ -313,7 +299,7 @@ describe("<InsuranceStep1 />", () => {
   describe("coverage amount explainer", () => {
     it("orders the insurance coverage explainer immediately after the end date year question", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
 
       const amountPerAggregate = await getInputField(screen, amountPerAggregateField);
       await user.click(amountPerAggregate);
@@ -326,7 +312,7 @@ describe("<InsuranceStep1 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      renderWithRouter();
+      renderFunction();
       const sectionHeadingLevel = 2;
       const insuranceCoverageSectionHeading = screen.getByRole("heading", {
         name: "Your insurance coverage",

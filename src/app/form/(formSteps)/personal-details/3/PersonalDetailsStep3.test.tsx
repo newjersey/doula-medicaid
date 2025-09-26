@@ -1,4 +1,5 @@
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -8,10 +9,8 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import PersonalDetailsStep3 from "@form/(formSteps)/personal-details/3/page";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const npiNumberField = createTestField({
   name: "National Provider Identifier (NPI) *",
@@ -42,44 +41,30 @@ const otherIdentificationFields = createTestFields([
 const allTestFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
 
 describe("<PersonalDetailsStep3 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider
-        pathname="/form/personal-details/3"
-        router={mockRouter as AppRouterInstance}
-      >
-        <PersonalDetailsStep3 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () =>
+    renderWithRouter(<PersonalDetailsStep3 />, "/form/personal-details/3");
 
   describe("Doula provider identification fields", () => {
     it("saves fields to session storage on submit", async () => {
       await testSaveFieldsToSessionStorage(
         doulaProviderIdentificationFields,
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/business-details/1",
       );
     });
 
     it.each(doulaProviderIdentificationFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(doulaProviderIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -88,14 +73,14 @@ describe("<PersonalDetailsStep3 />", () => {
         { ...npiNumberField, testValue: "1" },
         "National Provider Identifier (NPI) must have 10 digits",
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
       );
     });
 
     it("prevents non-numeric inputs in NPI Number", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
       const input = screen.getByRole("textbox", {
         name: "National Provider Identifier (NPI) *",
       });
@@ -112,9 +97,8 @@ describe("<PersonalDetailsStep3 />", () => {
       await testSaveFieldsToSessionStorage(
         otherIdentificationFields,
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/business-details/1",
       );
     });
 
@@ -123,7 +107,7 @@ describe("<PersonalDetailsStep3 />", () => {
     it.each(otherIdentificationFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
   });
@@ -131,7 +115,7 @@ describe("<PersonalDetailsStep3 />", () => {
   describe("NPI explainer", () => {
     it("orders the NPI explainer immediately after the NPI input", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
 
       const npiInput = screen.getByRole("textbox", {
         name: "National Provider Identifier (NPI) *",
@@ -145,7 +129,7 @@ describe("<PersonalDetailsStep3 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      renderWithRouter();
+      renderFunction();
       const sectionHeadingLevel = 2;
       const npiSectionHeading = screen.getByRole("heading", {
         name: "Doula provider identification",

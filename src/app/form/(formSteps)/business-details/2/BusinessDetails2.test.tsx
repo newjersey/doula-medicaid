@@ -1,6 +1,6 @@
-import BusinessDetails2 from "@/app/form/(formSteps)/business-details/2/page";
+import BusinessDetails2 from "@/app/form/(formSteps)/business-details/2/BusinessDetails2";
 import { fillField, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   testConditionalRender,
   testFillFromSessionStorage,
@@ -9,9 +9,8 @@ import {
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const yesHasEin: TestField = {
   name: "Yes",
@@ -50,61 +49,40 @@ const einField: TestField = {
 const allTestFields = [yesHasEin, einField];
 
 describe("<BusinessDetails2 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider
-        pathname="/form/business-details/2"
-        router={mockRouter as AppRouterInstance}
-      >
-        <BusinessDetails2 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () => renderWithRouter(<BusinessDetails2 />, "/form/business-details/2");
 
   describe("saves fields to session storage on submit", () => {
     it("when the user does not have an EIN", async () => {
       await testSaveFieldsToSessionStorage(
         minimalTestFields,
         minimalTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/business-details/3",
       );
     });
     it("when the user does has an EIN", async () => {
-      await testSaveFieldsToSessionStorage(
-        allTestFields,
-        allTestFields,
-        renderWithRouter,
-        screen,
-        "/form/business-details/3",
-      );
+      await testSaveFieldsToSessionStorage(allTestFields, allTestFields, renderFunction, screen);
     });
   });
   describe("marks fields as required and displays an error message", () => {
     it("when hasEin is not filled in", async () => {
-      await testRequiredField(yesHasEin, minimalTestFields, renderWithRouter, screen);
+      await testRequiredField(yesHasEin, minimalTestFields, renderFunction, screen);
     });
 
     it("when the user has an EIN and EIN is not filled in", async () => {
-      await testRequiredField(einField, allTestFields, renderWithRouter, screen);
+      await testRequiredField(einField, allTestFields, renderFunction, screen);
     });
   });
 
   it.each(allTestFields)(
     "fills $sessionStorageKey from session storage when page is loaded",
     async (field: TestField) => {
-      await testFillFromSessionStorage(field, renderWithRouter, screen);
+      await testFillFromSessionStorage(field, renderFunction, screen);
     },
   );
 
   it("conditionally renders EIN based on hasEin", async () => {
-    await testConditionalRender(einField, noHasEin, renderWithRouter, screen);
+    await testConditionalRender(einField, noHasEin, renderFunction, screen);
   });
 
   it("displays an error message if EIN has too few digits", async () => {
@@ -112,14 +90,14 @@ describe("<BusinessDetails2 />", () => {
       { ...einField, testValue: "111" },
       "Entered value does not match the EIN format",
       allTestFields,
-      renderWithRouter,
+      renderFunction,
       screen,
     );
   });
 
   it("prevents non-numeric inputs in EIN", async () => {
     const user = userEvent.setup();
-    renderWithRouter();
+    renderFunction();
     await fillField(screen, user, yesHasEin);
     const input = screen.getByRole("textbox", {
       name: "EIN *",
@@ -134,7 +112,7 @@ describe("<BusinessDetails2 />", () => {
   describe("EIN explainer", () => {
     it("orders the EIN explainer immediately after the EIN input", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
 
       const noHasEinInput = await getInputField(screen, noHasEin);
       await user.click(noHasEinInput);
@@ -148,7 +126,7 @@ describe("<BusinessDetails2 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      renderWithRouter();
+      renderFunction();
       const sectionHeadingLevel = 2;
       const einSectionHeading = screen.getByRole("heading", {
         name: "Tax ID",

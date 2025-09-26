@@ -1,3 +1,5 @@
+import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -7,14 +9,9 @@ import {
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import TrainingStep1 from "@form/(formSteps)/training/1/page";
 import { fillField } from "@form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
-import { jest } from "@jest/globals";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
 
@@ -155,18 +152,7 @@ const allTestFields = [
   ...trainingInstructorFields,
 ];
 
-const renderWithRouter = () => {
-  const mockRouter: Partial<AppRouterInstance> = {
-    push: jest.fn(),
-    refresh: jest.fn(),
-  };
-  render(
-    <RouterPathnameProvider pathname="/form/training/1" router={mockRouter as AppRouterInstance}>
-      <TrainingStep1 />
-    </RouterPathnameProvider>,
-  );
-  return mockRouter;
-};
+const renderFunction = () => renderWithRouter(<TrainingStep1 />, "/form/training/1");
 
 describe("<TrainingStep1 />", () => {
   beforeEach(() => {
@@ -179,9 +165,8 @@ describe("<TrainingStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [childrensFuturesTrainingOrganization],
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/personal-details/1",
         );
       });
 
@@ -189,9 +174,8 @@ describe("<TrainingStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [noneTrainingOrganization, nameOfTrainingOrganization],
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/personal-details/1",
         );
       });
     });
@@ -201,17 +185,12 @@ describe("<TrainingStep1 />", () => {
         await testRequiredField(
           childrensFuturesTrainingOrganization,
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       });
       it("when None of the these is selected and nameOfTrainingOrganization is not filled in", async () => {
-        await testRequiredField(
-          nameOfTrainingOrganization,
-          allTestFields,
-          renderWithRouter,
-          screen,
-        );
+        await testRequiredField(nameOfTrainingOrganization, allTestFields, renderFunction, screen);
       });
     });
 
@@ -222,7 +201,7 @@ describe("<TrainingStep1 />", () => {
     ])(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -230,14 +209,14 @@ describe("<TrainingStep1 />", () => {
       await testConditionalRender(
         nameOfTrainingOrganization,
         childrensFuturesTrainingOrganization,
-        renderWithRouter,
+        renderFunction,
         screen,
       );
     });
 
     it("shows alert text if None of these is selected", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
       await fillField(screen, user, noneTrainingOrganization);
       const input = screen.getByRole("textbox", {
         name: "What is the name of your training organization? *",
@@ -254,9 +233,8 @@ describe("<TrainingStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [noDoulaTrainingInPerson],
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/personal-details/1",
         );
       });
 
@@ -264,9 +242,8 @@ describe("<TrainingStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [yesDoulaTrainingInPerson, ...trainingAddressFields],
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/personal-details/1",
         );
       });
     });
@@ -276,14 +253,14 @@ describe("<TrainingStep1 />", () => {
         await testRequiredField(
           yesDoulaTrainingInPerson,
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       });
       it.each(trainingAddressFields.filter((field) => field.required))(
         "when training was in person or hybrid and $sessionStorageKey is not filled in",
         async (field: TestField) => {
-          await testRequiredField(field, allTestFields, renderWithRouter, screen);
+          await testRequiredField(field, allTestFields, renderFunction, screen);
         },
       );
     });
@@ -291,21 +268,21 @@ describe("<TrainingStep1 />", () => {
     it.each(trainingAddressFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each([noDoulaTrainingInPerson, yesDoulaTrainingInPerson, ...trainingAddressFields])(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
     it.each(trainingAddressFields.filter((field) => field.required))(
       "conditionally renders $sessionStorageKey based on isDoulaTrainingInPerson",
       async (field: TestField) => {
-        await testConditionalRender(field, noDoulaTrainingInPerson, renderWithRouter, screen);
+        await testConditionalRender(field, noDoulaTrainingInPerson, renderFunction, screen);
       },
     );
   });
@@ -315,23 +292,22 @@ describe("<TrainingStep1 />", () => {
       await testSaveFieldsToSessionStorage(
         trainingInstructorFields,
         minimalTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/personal-details/1",
       );
     });
 
     it.each(trainingInstructorFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
+        await testRequiredField(field, minimalTestFields, renderFunction, screen);
       },
     );
 
     it.each(trainingInstructorFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
   });

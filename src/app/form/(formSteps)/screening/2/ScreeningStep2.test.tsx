@@ -1,13 +1,12 @@
-import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/page";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   testInvalidField,
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import { render, screen } from "@testing-library/react";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { screen } from "@testing-library/react";
 
 const noEverHadEmployees = createTestField({
   name: "No",
@@ -46,27 +45,10 @@ const yesEverHadOtherBusinessOwner = createTestField({
 const allTestFields: Array<TestField> = [noEverHadEmployees, noEverHadOtherBusinessOwner];
 
 describe("<ScreeningStep2 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider pathname="/form/screening/2" router={mockRouter as AppRouterInstance}>
-        <ScreeningStep2 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () => renderWithRouter(<ScreeningStep2 />, "/form/screening/2");
 
   it("saves fields to session storage on submit", async () => {
-    await testSaveFieldsToSessionStorage(
-      allTestFields,
-      allTestFields,
-      renderWithRouter,
-      screen,
-      "/form/screening/3",
-    );
+    await testSaveFieldsToSessionStorage(allTestFields, allTestFields, renderFunction, screen);
   });
 
   it.each([[yesEverHadEmployees], [yesEverHadOtherBusinessOwner]])(
@@ -76,7 +58,7 @@ describe("<ScreeningStep2 />", () => {
         invalidField,
         "Currently this site cannot support your situation. Please use the standard FFS application",
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
         invalidField,
       );
