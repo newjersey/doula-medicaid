@@ -11,7 +11,6 @@ import {
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import * as router from "react-router";
 
 const dateOfBirthDayField = createTestField({
   name: "Day *",
@@ -92,21 +91,6 @@ const allTestFields: Array<TestField> = [
   ...contactInformationFields,
 ];
 
-const mockNavigate = jest.fn();
-
-beforeEach(() => {
-  jest.spyOn(router, "useNavigate").mockImplementation(() => mockNavigate);
-});
-
-afterEach(() => {
-  window.sessionStorage.clear();
-  jest.clearAllMocks();
-});
-
-afterAll(() => {
-  jest.restoreAllMocks();
-});
-
 describe("<PersonalDetailsStep1 />", () => {
   describe("personal identification fields", () => {
     it("saves fields to session storage on submit", async () => {
@@ -115,7 +99,6 @@ describe("<PersonalDetailsStep1 />", () => {
         allTestFields,
         getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
-        mockNavigate,
         "/form/personal-details/2",
       );
     });
@@ -128,7 +111,6 @@ describe("<PersonalDetailsStep1 />", () => {
           allTestFields,
           getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
-          mockNavigate,
         );
       },
     );
@@ -157,7 +139,6 @@ describe("<PersonalDetailsStep1 />", () => {
           allTestFields,
           getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
-          mockNavigate,
         );
       },
     );
@@ -174,7 +155,6 @@ describe("<PersonalDetailsStep1 />", () => {
           allTestFields,
           getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
-          mockNavigate,
         );
       },
     );
@@ -187,7 +167,6 @@ describe("<PersonalDetailsStep1 />", () => {
         allTestFields,
         getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
-        mockNavigate,
         "/form/personal-details/2",
       );
     });
@@ -200,7 +179,6 @@ describe("<PersonalDetailsStep1 />", () => {
           allTestFields,
           getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
-          mockNavigate,
         );
       },
     );
@@ -223,7 +201,6 @@ describe("<PersonalDetailsStep1 />", () => {
         allTestFields,
         getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
-        mockNavigate,
       );
     });
 
@@ -234,7 +211,6 @@ describe("<PersonalDetailsStep1 />", () => {
         allTestFields,
         getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
         screen,
-        mockNavigate,
       );
     });
 
@@ -247,7 +223,6 @@ describe("<PersonalDetailsStep1 />", () => {
           allTestFields,
           getRenderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1"),
           screen,
-          mockNavigate,
         );
       },
     );

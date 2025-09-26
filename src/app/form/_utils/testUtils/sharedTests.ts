@@ -7,7 +7,7 @@ import {
   type FieldToGet,
   type Role,
 } from "@/app/form/_utils/testUtils/fillInputs";
-import { type Screen } from "@testing-library/dom";
+import { waitFor, type Screen } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 
 interface TestFieldParameters {
@@ -62,7 +62,6 @@ export const testSaveFieldsToSessionStorage = async (
   allFields: Array<TestField>,
   renderFunction: () => void,
   screen: Screen,
-  mockNavigate: jest.Mock,
   pathToNextPage: string,
 ) => {
   const user = userEvent.setup();
@@ -73,7 +72,9 @@ export const testSaveFieldsToSessionStorage = async (
   for (const field of fieldsToTest) {
     expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
   }
-  expect(mockNavigate).toHaveBeenCalledWith(pathToNextPage);
+  waitFor(() => {
+    expect(window.location.pathname).toEqual(pathToNextPage);
+  });
 };
 
 export const testRequiredField = async (
@@ -81,7 +82,6 @@ export const testRequiredField = async (
   allFields: Array<TestField>,
   renderFunction: () => void,
   screen: Screen,
-  mockNavigate: jest.Mock,
 ) => {
   const user = userEvent.setup();
   renderFunction();
@@ -96,8 +96,6 @@ export const testRequiredField = async (
   expect(input).toHaveAttribute("aria-invalid", "true");
   expect(input).toHaveFocus();
   expect(window.sessionStorage.getItem(fieldToTest.sessionStorageKey)).toBe(null);
-
-  expect(mockNavigate).not.toHaveBeenCalled();
 };
 
 export const testInvalidField = async (
@@ -109,7 +107,6 @@ export const testInvalidField = async (
   allFields: Array<TestField>,
   renderFunction: () => void,
   screen: Screen,
-  mockNavigate: jest.Mock,
   focusedField?: FieldToGet,
 ) => {
   const user = userEvent.setup();
@@ -124,7 +121,6 @@ export const testInvalidField = async (
   const focusedInput = await getInputField(screen, focusedField ?? invalidField);
   expect(focusedInput).toHaveFocus();
   expect(window.sessionStorage.getItem(invalidField.sessionStorageKey)).toBe(null);
-  expect(mockNavigate).not.toHaveBeenCalled();
 };
 
 export const testFillFromSessionStorage = async (
