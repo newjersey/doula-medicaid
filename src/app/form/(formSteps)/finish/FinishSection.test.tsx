@@ -1,9 +1,8 @@
+import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { setRequiredFieldsInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import FinishSection from "@form/(formSteps)/finish/page";
-import { RouterPathnameProvider } from "@form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { jest } from "@jest/globals";
-import { render, screen, waitFor } from "@testing-library/react";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { screen, waitFor } from "@testing-library/react";
 
 jest.mock("@form/_utils/fillPdf/form", () => ({
   ...(jest.requireActual("@form/_utils/fillPdf/form") as object),
@@ -15,20 +14,7 @@ jest.mock("@form/_utils/fillPdf/form", () => ({
 const mockCreateObjectURL = jest.fn();
 (global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
 
-const renderWithRouter = () => {
-  const mockPush = jest.fn();
-  const mockRefresh = jest.fn();
-  const mockRouter: Partial<AppRouterInstance> = {
-    push: mockPush,
-    refresh: mockRefresh,
-  };
-  render(
-    <RouterPathnameProvider pathname="/form/finish/1" router={mockRouter as AppRouterInstance}>
-      <FinishSection />
-    </RouterPathnameProvider>,
-  );
-  return mockRouter;
-};
+const renderFunction = () => renderWithRouter(<FinishSection />, "/form/finish/1");
 
 describe("<FinishSection />", () => {
   beforeEach(() => {
@@ -39,7 +25,7 @@ describe("<FinishSection />", () => {
   it("builds form, renders download link, and previous buttons", async () => {
     setRequiredFieldsInSessionStorage();
     mockCreateObjectURL.mockReturnValue("mock-blob-url");
-    renderWithRouter();
+    renderFunction();
 
     expect(screen.getByRole("link", { name: "Previous" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Next" })).not.toBeInTheDocument();
@@ -56,7 +42,7 @@ describe("<FinishSection />", () => {
   it("shows a message if not all required fields have been filled", async () => {
     setRequiredFieldsInSessionStorage();
     window.sessionStorage.removeItem("dateOfBirthDay");
-    renderWithRouter();
+    renderFunction();
     expect(
       screen.getByText(
         "Not all required fields have been filled out. Please fill all required fields.",

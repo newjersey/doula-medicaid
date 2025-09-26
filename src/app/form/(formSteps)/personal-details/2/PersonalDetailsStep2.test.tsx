@@ -1,6 +1,7 @@
+import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -11,10 +12,8 @@ import {
   testRequiredField,
   testSaveFieldsToSessionStorage,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import PersonalDetailsStep2 from "@form/(formSteps)/personal-details/2/page";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const mailingAddressQuestion =
   "Mailing address We will send official mail here. It can be your home address.";
@@ -140,25 +139,12 @@ const allTestFields = [
 ];
 
 describe("<PersonalDetailsStep2 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider
-        pathname="/form/personal-details/2"
-        router={mockRouter as AppRouterInstance}
-      >
-        <PersonalDetailsStep2 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () =>
+    renderWithRouter(<PersonalDetailsStep2 />, "/form/personal-details/2");
 
   describe("mailing address fields", () => {
     it("enables autocompleting the mailing address", () => {
-      renderWithRouter();
+      renderFunction();
       expectAddressHasAutocomplete(mailingAddressQuestion, "shipping");
     });
 
@@ -166,29 +152,28 @@ describe("<PersonalDetailsStep2 />", () => {
       await testSaveFieldsToSessionStorage(
         mailingAddressFields,
         minimalTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/personal-details/3",
       );
     });
 
     it.each(mailingAddressFields.filter((field) => field.required))(
       "marks $sessionStorageKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, minimalTestFields, renderWithRouter, screen);
+        await testRequiredField(field, minimalTestFields, renderFunction, screen);
       },
     );
 
     it.each(mailingAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
     it("defaults address state to NJ and updates it", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
       const combobox = screen.getByRole("combobox", {
         name: "State *",
       });
@@ -203,14 +188,14 @@ describe("<PersonalDetailsStep2 />", () => {
         { ...zipCodeField, testValue: "1" },
         "Billing zip code must have five digits",
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
       );
     });
 
     it("prevents non-numeric inputs in ZIP Code", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
       const input = screen.getByRole("textbox", {
         name: "ZIP code *",
       });
@@ -228,18 +213,16 @@ describe("<PersonalDetailsStep2 />", () => {
         await testSaveFieldsToSessionStorage(
           [yesSameBillingMailingAddress],
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/personal-details/3",
         );
       });
       it("when billing address is different from mailing address", async () => {
         await testSaveFieldsToSessionStorage(
           [noSameBillingMailingAddress, ...billingAddressFields],
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/personal-details/3",
         );
       });
     });
@@ -249,7 +232,7 @@ describe("<PersonalDetailsStep2 />", () => {
         await testRequiredField(
           yesSameBillingMailingAddress,
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       });
@@ -257,7 +240,7 @@ describe("<PersonalDetailsStep2 />", () => {
       it.each(billingAddressFields.filter((field) => field.required))(
         "when mailing and billing address are different and $sessionStorageKey is not filled in",
         async (field: TestField) => {
-          await testRequiredField(field, allTestFields, renderWithRouter, screen);
+          await testRequiredField(field, allTestFields, renderFunction, screen);
         },
       );
     });
@@ -265,14 +248,14 @@ describe("<PersonalDetailsStep2 />", () => {
     it.each([noSameBillingMailingAddress, ...billingAddressFields])(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
     it.each(billingAddressFields.filter((field) => field.required))(
       "conditionally renders $sessionStorageKey based on hasSameBillingMailingAddress",
       async (field: TestField) => {
-        await testConditionalRender(field, yesSameBillingMailingAddress, renderWithRouter, screen);
+        await testConditionalRender(field, yesSameBillingMailingAddress, renderFunction, screen);
       },
     );
   });
@@ -280,7 +263,7 @@ describe("<PersonalDetailsStep2 />", () => {
   describe("Public information explainer", () => {
     it("orders the public information explainer immediately after the billing address question", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
 
       const input = await getInputField(screen, yesSameBillingMailingAddress);
       await user.click(input);
@@ -294,7 +277,7 @@ describe("<PersonalDetailsStep2 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      renderWithRouter();
+      renderFunction();
       const sectionHeadingLevel = 2;
       const mailingAddressSectionHeading = screen.getByRole("heading", {
         name: "Mailing address",

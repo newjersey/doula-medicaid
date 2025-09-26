@@ -1,7 +1,8 @@
 "use client";
 
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { Button, ButtonGroup, Link } from "@trussworks/react-uswds";
+import { Button, ButtonGroup } from "@trussworks/react-uswds";
+import { NavLink } from "react-router";
 
 const FormProgressButtons = () => {
   const formProgressPosition = useFormProgressPosition();
@@ -9,13 +10,13 @@ const FormProgressButtons = () => {
   const buttons: Array<React.ReactNode> = [];
   if (formProgressPosition.previous !== null) {
     buttons.push(
-      <Link
+      <NavLink
         key="previous"
-        href={formatFormProgressUrl(formProgressPosition.previous)}
+        to={formatFormProgressUrl(formProgressPosition.previous)}
         className="usa-button usa-button--outline margin-top-0"
       >
         Previous
-      </Link>,
+      </NavLink>,
     );
   }
   if (formProgressPosition.next !== null) {

@@ -6,6 +6,14 @@ const nextConfig: NextConfig = {
     config.resolve.alias.encoding = false;
     return config;
   },
+  rewrites: async () => {
+    return [
+      {
+        source: "/form/:slug*",
+        destination: "/form",
+      },
+    ];
+  },
   async redirects() {
     return [
       {

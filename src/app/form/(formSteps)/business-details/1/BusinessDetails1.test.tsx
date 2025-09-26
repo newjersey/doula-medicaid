@@ -1,5 +1,6 @@
+import BusinessDetails1 from "@/app/form/(formSteps)/business-details/1/BusinessDetails1";
 import { setInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
@@ -9,10 +10,8 @@ import {
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import BusinessDetails1 from "@form/(formSteps)/business-details/1/page";
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const businessAddressQuestion = "What is your business address?";
 
@@ -109,27 +108,13 @@ const setBillingAddressInSessionStorage = () => {
 };
 
 describe("<BusinessDetailsStep1 />", () => {
-  const renderWithRouter = () => {
-    const mockRouter: Partial<AppRouterInstance> = {
-      push: jest.fn(),
-      refresh: jest.fn(),
-    };
-    render(
-      <RouterPathnameProvider
-        pathname="/form/business-details/1"
-        router={mockRouter as AppRouterInstance}
-      >
-        <BusinessDetails1 />
-      </RouterPathnameProvider>,
-    );
-    return mockRouter;
-  };
+  const renderFunction = () => renderWithRouter(<BusinessDetails1 />, "/form/business-details/1");
 
   describe("Sole proprietor explainer", () => {
     it("orders the sole proprietor explainer immediately after the sole proprietor content", async () => {
       const user = userEvent.setup();
       setMailingAddressInSessionStorage();
-      renderWithRouter();
+      renderFunction();
 
       const soleProprietorHeading = screen.getByRole("heading", {
         name: "You verified that you manage your business as an individual doula operating as a Sole Proprietor.",
@@ -150,7 +135,7 @@ describe("<BusinessDetailsStep1 />", () => {
 
     it("has a heading level one greater than the section heading level", () => {
       setMailingAddressInSessionStorage();
-      renderWithRouter();
+      renderFunction();
       const sectionHeadingLevel = 2;
       const soleProprietorHeading = screen.getByRole("heading", {
         name: "You verified that you manage your business as an individual doula operating as a Sole Proprietor.",
@@ -172,9 +157,8 @@ describe("<BusinessDetailsStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [mailingBusinessAddressSameAsOtherAddress],
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/business-details/2",
         );
       });
 
@@ -184,9 +168,8 @@ describe("<BusinessDetailsStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [billingBusinessAddressSameAsOtherAddress],
           [billingBusinessAddressSameAsOtherAddress],
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/business-details/2",
         );
       });
 
@@ -195,9 +178,8 @@ describe("<BusinessDetailsStep1 />", () => {
         await testSaveFieldsToSessionStorage(
           [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields],
           allTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
-          "/form/business-details/2",
         );
       });
     });
@@ -208,7 +190,7 @@ describe("<BusinessDetailsStep1 />", () => {
         await testRequiredField(
           mailingBusinessAddressSameAsOtherAddress,
           minimalTestFields,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       });
@@ -217,7 +199,7 @@ describe("<BusinessDetailsStep1 />", () => {
         "when business address is different and $sessionStorageKey is not filled in",
         async (field) => {
           setMailingAddressInSessionStorage();
-          await testRequiredField(field, allTestFields, renderWithRouter, screen);
+          await testRequiredField(field, allTestFields, renderFunction, screen);
         },
       );
     });
@@ -226,7 +208,7 @@ describe("<BusinessDetailsStep1 />", () => {
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field) => {
         setMailingAddressInSessionStorage();
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
@@ -240,7 +222,7 @@ describe("<BusinessDetailsStep1 />", () => {
           zip: "10001",
           hasSameBillingMailingAddress: "true",
         });
-        renderWithRouter();
+        renderFunction();
         const questionGroup = screen.getByRole("group", {
           name: "Is your business address the same as a previous address? Select one *",
         });
@@ -265,7 +247,7 @@ describe("<BusinessDetailsStep1 />", () => {
       it("shows billing address option when hasSameBillingMailingAddress is false", () => {
         setMailingAddressInSessionStorage();
         setBillingAddressInSessionStorage();
-        renderWithRouter();
+        renderFunction();
         const questionGroup = screen.getByRole("group", {
           name: "Is your business address the same as a previous address? Select one *",
         });
@@ -295,7 +277,7 @@ describe("<BusinessDetailsStep1 />", () => {
         await testConditionalRender(
           field,
           mailingBusinessAddressSameAsOtherAddress,
-          renderWithRouter,
+          renderFunction,
           screen,
         );
       },

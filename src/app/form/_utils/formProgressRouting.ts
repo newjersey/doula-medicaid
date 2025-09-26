@@ -7,7 +7,6 @@ import {
   getPreviousFormProgress,
   type FormProgress,
 } from "@form/_utils/formProgress";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { usePathname } from "next/navigation";
 
 export interface FormProgressPosition {
@@ -22,16 +21,6 @@ export const useFormProgressPosition = (): FormProgressPosition => {
   const next = getNextFormProgress(current, allSections);
   const previous = getPreviousFormProgress(current, allSections);
   return { current, next, previous };
-};
-
-export const routeToNextStep = (
-  router: AppRouterInstance,
-  formProgressPosition: FormProgressPosition,
-) => {
-  if (formProgressPosition.next !== null) {
-    router.push(formatFormProgressUrl(formProgressPosition.next));
-    router.refresh();
-  }
 };
 
 export const formatFormProgressUrl = (formProgress: FormProgress) => {

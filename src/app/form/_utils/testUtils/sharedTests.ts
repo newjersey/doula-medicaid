@@ -9,7 +9,6 @@ import {
 } from "@/app/form/_utils/testUtils/fillInputs";
 import type { Screen } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 interface TestFieldParameters {
   name: string | RegExp;
@@ -61,31 +60,27 @@ export const createTestFields = (fields: Array<TestFieldParameters>): Array<Test
 export const testSaveFieldsToSessionStorage = async (
   fieldsToTest: Array<TestField>,
   allFields: Array<TestField>,
-  renderFunction: () => Partial<AppRouterInstance>,
+  renderFunction: () => void,
   screen: Screen,
-  pathToNextPage: string,
 ) => {
   const user = userEvent.setup();
-  const mockRouter = renderFunction();
+  renderFunction();
   await fillAllInputs(screen, user, allFields);
   await user.click(screen.getByRole("button", { name: "Next" }));
 
   for (const field of fieldsToTest) {
     expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
   }
-
-  expect(mockRouter.push).toHaveBeenCalledWith(pathToNextPage);
-  expect(mockRouter.refresh).toHaveBeenCalled();
 };
 
 export const testRequiredField = async (
   fieldToTest: TestField,
   allFields: Array<TestField>,
-  renderFunction: () => Partial<AppRouterInstance>,
+  renderFunction: () => void,
   screen: Screen,
 ) => {
   const user = userEvent.setup();
-  const mockRouter = renderFunction();
+  renderFunction();
   await fillAllInputsExcept(screen, user, allFields, new Set([fieldToTest.sessionStorageKey]));
   const input = await getInputField(screen, fieldToTest);
   expect(input).toBeRequired();
@@ -97,8 +92,6 @@ export const testRequiredField = async (
   expect(input).toHaveAttribute("aria-invalid", "true");
   expect(input).toHaveFocus();
   expect(window.sessionStorage.getItem(fieldToTest.sessionStorageKey)).toBe(null);
-  expect(mockRouter.push).not.toHaveBeenCalled();
-  expect(mockRouter.refresh).not.toHaveBeenCalled();
 };
 
 export const testInvalidField = async (
@@ -108,12 +101,12 @@ export const testInvalidField = async (
   },
   expectedErrorMessage: string,
   allFields: Array<TestField>,
-  renderFunction: () => Partial<AppRouterInstance>,
+  renderFunction: () => void,
   screen: Screen,
   focusedField?: FieldToGet,
 ) => {
   const user = userEvent.setup();
-  const mockRouter = renderFunction();
+  renderFunction();
   await fillAllInputsExcept(screen, user, allFields, new Set([invalidField.sessionStorageKey]));
   await fillField(screen, user, invalidField);
 
@@ -124,13 +117,11 @@ export const testInvalidField = async (
   const focusedInput = await getInputField(screen, focusedField ?? invalidField);
   expect(focusedInput).toHaveFocus();
   expect(window.sessionStorage.getItem(invalidField.sessionStorageKey)).toBe(null);
-  expect(mockRouter.push).not.toHaveBeenCalled();
-  expect(mockRouter.refresh).not.toHaveBeenCalled();
 };
 
 export const testFillFromSessionStorage = async (
   field: TestField,
-  renderFunction: () => Partial<AppRouterInstance>,
+  renderFunction: () => void,
   screen: Screen,
 ) => {
   if (field.prerequisiteField !== undefined) {
@@ -160,7 +151,7 @@ export const testFillFromSessionStorage = async (
 export const testConditionalRender = async (
   field: TestField,
   hideField: TestField,
-  renderFunction: () => Partial<AppRouterInstance>,
+  renderFunction: () => void,
   screen: Screen,
 ) => {
   if (field.prerequisiteField === undefined) {

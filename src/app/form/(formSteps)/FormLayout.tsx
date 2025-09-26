@@ -1,23 +1,27 @@
-"use client";
-
+import { formatTitle } from "@/app/_utils/title";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { allSections, getCurrentFormProgress } from "@form/_utils/formProgress";
 import { RequiredMarker } from "@trussworks/react-uswds";
 import { usePathname } from "next/navigation";
+import { Outlet } from "react-router";
 
 type CompletionState = "complete" | "current" | "incomplete";
 
-// This is a client component because Next seems to not re-render server side components on browser back button https://github.com/newjersey/doula-pm/issues/216
-// Even if that issue was solved, the separate component enables us to test this, because as of writing, Jest does not support testing NextJs asynchronous server components (https://nextjs.org/docs/app/guides/testing/jest)
-export const FormLayout = (props: { children?: React.ReactNode }) => {
+export const FormLayout = () => {
   const pathname = usePathname();
   const { section: currentSection, step: currentStep } = getCurrentFormProgress(pathname);
   const currentSectionIndex = allSections.findIndex(
     (sections) => sections.id === currentSection.id,
   );
 
+  let pageTitle = currentSection.heading;
+  if (currentStep !== undefined) {
+    pageTitle += ` ${currentStep} of ${currentSection.numSteps}`;
+  }
+
   return (
     <>
+      <title>{formatTitle(pageTitle)}</title>
       <div className="usa-step-indicator" aria-label="progress">
         <ol className="usa-step-indicator__segments">
           {allSections.map((sections, sectionIndex) => {
@@ -84,7 +88,7 @@ export const FormLayout = (props: { children?: React.ReactNode }) => {
         </div>
       </div>
       <HorizontalDivider />
-      {props.children}
+      <Outlet />
     </>
   );
 };

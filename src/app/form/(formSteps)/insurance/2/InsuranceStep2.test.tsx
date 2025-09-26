@@ -1,6 +1,6 @@
-import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/page";
+import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
 import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
-import { RouterPathnameProvider } from "@/app/form/_utils/testUtils/RouterPathnameProvider";
+import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestFields,
   testFillFromSessionStorage,
@@ -8,9 +8,8 @@ import {
   testSaveFieldsToSessionStorage,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 const insuranceAddressGroupName =
   "Insurance address This is the office location of your insurance carrier.";
@@ -71,18 +70,7 @@ const insuranceAddressFields: TestField[] = createTestFields([
 
 const allTestFields = [...insuranceDetailsFields, ...insuranceAddressFields];
 
-const renderWithRouter = () => {
-  const mockRouter: Partial<AppRouterInstance> = {
-    push: jest.fn(),
-    refresh: jest.fn(),
-  };
-  render(
-    <RouterPathnameProvider pathname="/form/insurance/2" router={mockRouter as AppRouterInstance}>
-      <InsuranceStep2 />
-    </RouterPathnameProvider>,
-  );
-  return mockRouter;
-};
+const renderFunction = () => renderWithRouter(<InsuranceStep2 />, "/form/insurance/2");
 
 describe("<InsuranceStep2 />", () => {
   beforeEach(() => {
@@ -94,23 +82,22 @@ describe("<InsuranceStep2 />", () => {
       await testSaveFieldsToSessionStorage(
         insuranceDetailsFields,
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/training/1",
       );
     });
 
     it.each(insuranceDetailsFields)(
       "marks $sessionStorageKey as required and displays an error message if it is not filed in",
       async (field) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(insuranceDetailsFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
   });
@@ -120,29 +107,28 @@ describe("<InsuranceStep2 />", () => {
       await testSaveFieldsToSessionStorage(
         insuranceAddressFields,
         allTestFields,
-        renderWithRouter,
+        renderFunction,
         screen,
-        "/form/training/1",
       );
     });
 
     it.each(insuranceAddressFields.filter((field) => field.required === true))(
       "marks $sessionStorageKey as required and displays an error message if it is not filed in",
       async (field) => {
-        await testRequiredField(field, allTestFields, renderWithRouter, screen);
+        await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(insuranceAddressFields)(
       "fills $sessionStorageKey from session storage when page is loaded",
       async (field) => {
-        await testFillFromSessionStorage(field, renderWithRouter, screen);
+        await testFillFromSessionStorage(field, renderFunction, screen);
       },
     );
 
     it("defaults address state to NJ", async () => {
       const user = userEvent.setup();
-      renderWithRouter();
+      renderFunction();
       const combobox = screen.getByRole("combobox", {
         name: "State *",
       });
