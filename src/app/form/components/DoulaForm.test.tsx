@@ -1,5 +1,9 @@
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
+import {
+  fillAllInputs,
+  fillAllInputsExcept,
+  getInputField,
+} from "@/app/form/_utils/testUtils/fillInputs";
 import { getRenderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
@@ -7,6 +11,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Label, TextInput } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
+import * as router from "react-router";
 
 interface DoulaFormTestData {
   field1: string | null;
@@ -158,6 +163,53 @@ const doulaTestFormFields: TestField[] = createTestFields([
 //   );
 //   return mockRouter;
 // };
+
+const mockNavigate = jest.fn();
+
+describe("submission behavior", () => {
+  beforeEach(() => {
+    jest.spyOn(router, "useNavigate").mockImplementation(() => mockNavigate);
+  });
+
+  afterEach(() => {
+    window.sessionStorage.clear();
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("saves fields to session storage and routes to the next step on submit", async () => {
+    getRenderWithRouter(
+      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+      "/form/personal-details/2",
+    )();
+    const user = userEvent.setup();
+    await fillAllInputs(screen, user, doulaTestFormFields);
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    for (const field of doulaTestFormFields) {
+      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
+    }
+    expect(mockNavigate).toHaveBeenCalledWith("/form/personal-details/3");
+  });
+
+  it("does not save fields to session storage and does not route on error", async () => {
+    getRenderWithRouter(
+      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+      "/form/personal-details/2",
+    )();
+    const user = userEvent.setup();
+    await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
+    await user.click(screen.getByRole("button", { name: "Next" }));
+
+    for (const field of doulaTestFormFields) {
+      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(null);
+    }
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+});
 
 describe("error summary", () => {
   describe("when mayHaveThreeOrMoreErrors is true", () => {
