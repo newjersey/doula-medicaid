@@ -1,16 +1,16 @@
 import BusinessDetails3 from "@/app/form/(formSteps)/business-details/3/BusinessDetails3";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 
 const noHasUncollectedDebt: TestField = {
   name: "No",
-  sessionStorageKey: "hasUncollectedDebt",
+  dataStoreKey: "hasUncollectedDebt",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -22,7 +22,7 @@ const noHasUncollectedDebt: TestField = {
 
 const yesHasUncollectedDebt: TestField = {
   name: "Yes",
-  sessionStorageKey: "hasUncollectedDebt",
+  dataStoreKey: "hasUncollectedDebt",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -34,7 +34,7 @@ const yesHasUncollectedDebt: TestField = {
 
 const noIsSubjectToPaymentSuspension: TestField = {
   name: "No",
-  sessionStorageKey: "isSubjectToPaymentSuspension",
+  dataStoreKey: "isSubjectToPaymentSuspension",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -46,7 +46,7 @@ const noIsSubjectToPaymentSuspension: TestField = {
 
 const yesIsSubjectToPaymentSuspension: TestField = {
   name: "Yes",
-  sessionStorageKey: "isSubjectToPaymentSuspension",
+  dataStoreKey: "isSubjectToPaymentSuspension",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -70,26 +70,21 @@ const allTestFields: Array<TestField> = [
 describe("<BusinessDetails3 />", () => {
   const renderFunction = () => renderWithRouter(<BusinessDetails3 />, "/form/business-details/3");
 
-  it("saves fields to session storage on submit", async () => {
-    await testSaveFieldsToSessionStorage(
-      minimalTestFields,
-      minimalTestFields,
-      renderFunction,
-      screen,
-    );
+  it("saves fields to the data store on submit", async () => {
+    await testSaveFieldsToDataStore(minimalTestFields, minimalTestFields, renderFunction, screen);
   });
 
   it.each(minimalTestFields.filter((field) => field.required === true))(
-    "marks $sessionStorageKey as required and displays an error message if it is not filed in",
+    "marks $dataStoreKey as required and displays an error message if it is not filed in",
     async (field) => {
       await testRequiredField(field, minimalTestFields, renderFunction, screen);
     },
   );
 
   it.each(allTestFields)(
-    "fills $sessionStorageKey from session storage when page is loaded",
+    "fills $dataStoreKey from the data store when page is loaded",
     async (field) => {
-      await testFillFromSessionStorage(field, renderFunction, screen);
+      await testFillFromDataStore(field, renderFunction, screen);
     },
   );
 });

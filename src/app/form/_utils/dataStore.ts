@@ -22,7 +22,7 @@ import type {
   PersonalDetails3Data,
 } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 
-export type SessionStorageKey =
+export type DataStoreKey =
   | keyof Screening1Data
   | keyof Screening2Data
   | keyof Screening3Data
@@ -44,25 +44,25 @@ export class ValueNotFoundError extends Error {
   }
 }
 
-export const setKeyValue = (key: SessionStorageKey, value: string): void => {
+export const setKeyValue = (key: DataStoreKey, value: string): void => {
   window.sessionStorage.setItem(key, value);
 };
 
-export const getDefaultValue = (key: SessionStorageKey) => getValue(key, false);
+export const getDefaultValue = (key: DataStoreKey) => getValue(key, false);
 /**
   getDefaultBoolean returns a string because it's used to populate the `defaultValues` in useForm. Even though our two options are yes/no, radio button values require a string.
  */
-export const getDefaultBoolean = (key: SessionStorageKey): "" | "true" | "false" => {
+export const getDefaultBoolean = (key: DataStoreKey): "" | "true" | "false" => {
   const value = getValue(key, false);
   if (value === null) return "";
   if (value === "true" || value === "false") return value;
   throw new Error(`Invalid boolean string value: ${key}, ${value}`);
 };
 
-export function getValue(key: SessionStorageKey, required: true): string;
-export function getValue(key: SessionStorageKey, required: false): string | null;
-export function getValue(key: SessionStorageKey, required: boolean): string | null;
-export function getValue(key: SessionStorageKey, required: boolean): string | null {
+export function getValue(key: DataStoreKey, required: true): string;
+export function getValue(key: DataStoreKey, required: false): string | null;
+export function getValue(key: DataStoreKey, required: boolean): string | null;
+export function getValue(key: DataStoreKey, required: boolean): string | null {
   if (required) {
     const value = window.sessionStorage.getItem(key);
     if (value === null) {
@@ -75,10 +75,10 @@ export function getValue(key: SessionStorageKey, required: boolean): string | nu
   return null;
 }
 
-export function getBoolean(key: SessionStorageKey, required: true): boolean;
-export function getBoolean(key: SessionStorageKey, required: false): boolean | null;
-export function getBoolean(key: SessionStorageKey, required: boolean): boolean | null;
-export function getBoolean(key: SessionStorageKey, required: boolean): boolean | null {
+export function getBoolean(key: DataStoreKey, required: true): boolean;
+export function getBoolean(key: DataStoreKey, required: false): boolean | null;
+export function getBoolean(key: DataStoreKey, required: boolean): boolean | null;
+export function getBoolean(key: DataStoreKey, required: boolean): boolean | null {
   const value = getValue(key, required);
   if (value === null) return null;
   if (value === "true") return true;
@@ -86,10 +86,10 @@ export function getBoolean(key: SessionStorageKey, required: boolean): boolean |
   throw new Error(`Invalid boolean value: ${key}, ${value}`);
 }
 
-export function getAddressState(key: SessionStorageKey, required: true): AddressState;
-export function getAddressState(key: SessionStorageKey, required: false): AddressState | null;
-export function getAddressState(key: SessionStorageKey, required: boolean): AddressState | null;
-export function getAddressState(key: SessionStorageKey, required: boolean): AddressState | null {
+export function getAddressState(key: DataStoreKey, required: true): AddressState;
+export function getAddressState(key: DataStoreKey, required: false): AddressState | null;
+export function getAddressState(key: DataStoreKey, required: boolean): AddressState | null;
+export function getAddressState(key: DataStoreKey, required: boolean): AddressState | null {
   const value = getValue(key, required);
   if (value === null) return null;
   if (Object.values<string>(AddressState).includes(value)) {

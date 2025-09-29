@@ -28,21 +28,21 @@ const testFormOrderedInputNameToLabel = {
 const allInputFields = [
   {
     name: "Street address *",
-    sessionStorageKey: "testStreetAddress1",
+    dataStoreKey: "testStreetAddress1",
     role: "textbox" as const,
     testValue: "55 Cherry St",
   },
   {
     name: "Street address line 2",
-    sessionStorageKey: "testStreetAddress2",
+    dataStoreKey: "testStreetAddress2",
     role: "textbox" as const,
     testValue: "Apt 4",
   },
-  { name: "City *", sessionStorageKey: "testCity", role: "textbox" as const, testValue: "Newark" },
-  { name: "State *", sessionStorageKey: "testState", role: "combobox" as const, testValue: "PA" },
+  { name: "City *", dataStoreKey: "testCity", role: "textbox" as const, testValue: "Newark" },
+  { name: "State *", dataStoreKey: "testState", role: "combobox" as const, testValue: "PA" },
   {
     name: "ZIP code *",
-    sessionStorageKey: "testZip",
+    dataStoreKey: "testZip",
     role: "textbox" as const,
     testValue: "08609",
   },

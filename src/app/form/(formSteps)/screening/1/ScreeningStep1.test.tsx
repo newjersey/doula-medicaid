@@ -3,14 +3,14 @@ import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   testInvalidField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 
 const yesIsSoleProprietor: TestField = createTestField({
   name: "Yes",
-  sessionStorageKey: "isSoleProprietor",
+  dataStoreKey: "isSoleProprietor",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -21,7 +21,7 @@ const yesIsSoleProprietor: TestField = createTestField({
 
 const noIsSoleProprietor: TestField = createTestField({
   name: "No",
-  sessionStorageKey: "isSoleProprietor",
+  dataStoreKey: "isSoleProprietor",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -35,8 +35,8 @@ const allTestFields: Array<TestField> = [yesIsSoleProprietor];
 describe("<ScreeningStep1 />", () => {
   const renderFunction = () => renderWithRouter(<ScreeningStep1 />, "/form/screening/1");
 
-  it("saves fields to session storage on submit", async () => {
-    await testSaveFieldsToSessionStorage(allTestFields, allTestFields, renderFunction, screen);
+  it("saves fields to the data store on submit", async () => {
+    await testSaveFieldsToDataStore(allTestFields, allTestFields, renderFunction, screen);
   });
 
   it("displays an error message if isSoleProprietor is no", async () => {

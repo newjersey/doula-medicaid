@@ -1,15 +1,15 @@
 import { getTrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
 import {
-  setInSessionStorage,
-  setRequiredFieldsInSessionStorage,
+  setInDataStore,
+  setRequiredFieldsInDataStore,
 } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("getTrainingFormData", () => {
   describe("isDoulaTrainingInPerson", () => {
     it("saves all training address values when isDoulaTrainingInPerson is true", () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         stateApprovedTraining: "Doula training org",
         isDoulaTrainingInPerson: "true",
         trainingStreetAddress1: "123 Main St",
@@ -38,8 +38,8 @@ describe("getTrainingFormData", () => {
     });
 
     it("overwrites all training address values with empty string/null when isDoulaTrainingInPerson is false", () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         stateApprovedTraining: "Doula training org",
         isDoulaTrainingInPerson: "false",
         trainingStreetAddress1: "123 Main St",

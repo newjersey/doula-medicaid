@@ -128,19 +128,19 @@ const doulaTestFormFields: TestField[] = createTestFields([
   {
     name: "Label 1 *",
     required: true,
-    sessionStorageKey: "field1",
+    dataStoreKey: "field1",
     testValue: "Foo",
   },
   {
     name: "Label 2 *",
     required: true,
-    sessionStorageKey: "field2",
+    dataStoreKey: "field2",
     testValue: "Bar",
   },
   {
     name: "Label 3 *",
     required: true,
-    sessionStorageKey: "field3",
+    dataStoreKey: "field3",
     testValue: "Zoink",
   },
 ]);
@@ -157,7 +157,7 @@ describe("submission behavior", () => {
     jest.clearAllMocks();
   });
 
-  it("saves fields to session storage and routes to the next step on submit", async () => {
+  it("saves fields to the data store and routes to the next step on submit", async () => {
     renderWithRouter(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
       "/form/personal-details/2",
@@ -167,12 +167,12 @@ describe("submission behavior", () => {
     await user.click(screen.getByRole("button", { name: "Next" }));
 
     for (const field of doulaTestFormFields) {
-      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
+      expect(window.sessionStorage.getItem(field.dataStoreKey)).toEqual(field.expectedValue);
     }
     expect(mockNavigate).toHaveBeenCalledWith("/form/personal-details/3");
   });
 
-  it("does not save fields to session storage and does not route on error", async () => {
+  it("does not save fields to the data store and does not route on error", async () => {
     renderWithRouter(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
       "/form/personal-details/2",
@@ -182,7 +182,7 @@ describe("submission behavior", () => {
     await user.click(screen.getByRole("button", { name: "Next" }));
 
     for (const field of doulaTestFormFields) {
-      expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(null);
+      expect(window.sessionStorage.getItem(field.dataStoreKey)).toEqual(null);
     }
     expect(mockNavigate).not.toHaveBeenCalled();
   });

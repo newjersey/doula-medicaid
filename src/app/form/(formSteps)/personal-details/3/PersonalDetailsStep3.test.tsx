@@ -4,10 +4,10 @@ import {
   createTestField,
   createTestFields,
   type TestField,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testInvalidField,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -17,7 +17,7 @@ const npiNumberField = createTestField({
   required: true,
   alternateRequiredFieldError:
     "To be an NJ FamilyCare doula, you need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
-  sessionStorageKey: "npiNumber",
+  dataStoreKey: "npiNumber",
   testValue: "1111111111",
 });
 
@@ -27,13 +27,13 @@ const otherIdentificationFields = createTestFields([
   {
     name: "UPIN number (optional)",
     required: false,
-    sessionStorageKey: "upinNumber",
+    dataStoreKey: "upinNumber",
     testValue: "12345",
   },
   {
     name: "Medicare provider ID (optional)",
     required: false,
-    sessionStorageKey: "medicareProviderId",
+    dataStoreKey: "medicareProviderId",
     testValue: "ABC12345",
   },
 ]);
@@ -45,8 +45,8 @@ describe("<PersonalDetailsStep3 />", () => {
     renderWithRouter(<PersonalDetailsStep3 />, "/form/personal-details/3");
 
   describe("Doula provider identification fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         doulaProviderIdentificationFields,
         allTestFields,
         renderFunction,
@@ -55,16 +55,16 @@ describe("<PersonalDetailsStep3 />", () => {
     });
 
     it.each(doulaProviderIdentificationFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(doulaProviderIdentificationFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
@@ -93,8 +93,8 @@ describe("<PersonalDetailsStep3 />", () => {
   });
 
   describe("Other identification fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         otherIdentificationFields,
         allTestFields,
         renderFunction,
@@ -105,9 +105,9 @@ describe("<PersonalDetailsStep3 />", () => {
     // No fields in this section are required, skipping testRequiredField
 
     it.each(otherIdentificationFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
   });

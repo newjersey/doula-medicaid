@@ -1,15 +1,15 @@
 import { getBusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import {
-  setInSessionStorage,
-  setRequiredFieldsInSessionStorage,
+  setInDataStore,
+  setRequiredFieldsInDataStore,
 } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("getBusinessDetailsFormData", () => {
   describe("businessAddressSameAsOtherAddress handling", () => {
     it("overwrites all business address values with mailing address values when businessAddressSameAsOtherAddress is mailing", () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -32,8 +32,8 @@ describe("getBusinessDetailsFormData", () => {
     });
 
     it("overwrites all business address values with billing address values when businessAddressSameAsOtherAddress is billing", () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         billingStreetAddress1: "123 Main St",
         billingStreetAddress2: "Apt 4B",
         billingCity: "Trenton",
@@ -56,8 +56,8 @@ describe("getBusinessDetailsFormData", () => {
     });
 
     it("uses separate business address values when businessAddressSameAsOtherAddress is different", () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -86,8 +86,8 @@ describe("getBusinessDetailsFormData", () => {
   });
   describe("hasDisclosableEvent handling", () => {
     it("sets hasDisclosableEvent to false when the user answers no to all questions", () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         hasUncollectedDebt: "false",
         isSubjectToPaymentSuspension: "false",
         hasBeenSuspendedFromMedicaid: "false",
@@ -104,8 +104,8 @@ describe("getBusinessDetailsFormData", () => {
       { key: "hasBeenSuspendedFromMedicaid", value: "true" },
       { key: "hasBeenExcludedFromMedicaid", value: "true" },
     ])("sets hasDisclosableEvent to true when $key is $value", async ({ key, value }) => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({ [key]: value });
+      setRequiredFieldsInDataStore();
+      setInDataStore({ [key]: value });
       expect(getBusinessDetailsFormData()).toMatchObject({
         hasDisclosableEvent: true,
       });

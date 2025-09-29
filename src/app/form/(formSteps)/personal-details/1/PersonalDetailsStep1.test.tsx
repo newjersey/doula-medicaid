@@ -4,23 +4,23 @@ import {
   createTestField,
   createTestFields,
   type TestField,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testInvalidField,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const dateOfBirthDayField = createTestField({
   name: "Day *",
-  sessionStorageKey: "dateOfBirthDay",
+  dataStoreKey: "dateOfBirthDay",
   required: true,
   testValue: "6",
 });
 const dateOfBirthMonthField = createTestField({
   name: "Month *",
-  sessionStorageKey: "dateOfBirthMonth",
+  dataStoreKey: "dateOfBirthMonth",
   required: true,
   testValue: "07 - July",
   expectedValue: "7",
@@ -28,14 +28,14 @@ const dateOfBirthMonthField = createTestField({
 });
 const dateOfBirthYearField = createTestField({
   name: "Year *",
-  sessionStorageKey: "dateOfBirthYear",
+  dataStoreKey: "dateOfBirthYear",
   required: true,
   testValue: "1988",
 });
 
 const socialSecurityNumberField = createTestField({
   name: "Social security number *",
-  sessionStorageKey: "socialSecurityNumber",
+  dataStoreKey: "socialSecurityNumber",
   required: true,
   testValue: "123456789",
   expectedValue: "123-45-6789",
@@ -46,19 +46,19 @@ const personalIdentificationFields: Array<TestField> = [
   ...createTestFields([
     {
       name: "First name *",
-      sessionStorageKey: "firstName",
+      dataStoreKey: "firstName",
       required: true,
       testValue: "Test first name",
     },
     {
       name: "Middle name",
-      sessionStorageKey: "middleName",
+      dataStoreKey: "middleName",
       required: false,
       testValue: "Test middle name",
     },
     {
       name: "Last name *",
-      sessionStorageKey: "lastName",
+      dataStoreKey: "lastName",
       required: true,
       testValue: "Test last name",
     },
@@ -71,14 +71,14 @@ const personalIdentificationFields: Array<TestField> = [
 
 const emailField = createTestField({
   name: "Email address *",
-  sessionStorageKey: "email",
+  dataStoreKey: "email",
   testValue: "test@test.com",
   required: true,
 });
 
 const phoneNumberField = createTestField({
   name: "Phone number *",
-  sessionStorageKey: "phoneNumber",
+  dataStoreKey: "phoneNumber",
   testValue: "3211234567",
   expectedValue: "321-123-4567",
   required: true,
@@ -96,8 +96,8 @@ describe("<PersonalDetailsStep1 />", () => {
     renderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1");
 
   describe("personal identification fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         personalIdentificationFields,
         allTestFields,
         renderFunction,
@@ -106,16 +106,16 @@ describe("<PersonalDetailsStep1 />", () => {
     });
 
     it.each(personalIdentificationFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(personalIdentificationFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
@@ -154,8 +154,8 @@ describe("<PersonalDetailsStep1 />", () => {
   });
 
   describe("contact info fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         contactInformationFields,
         allTestFields,
         renderFunction,
@@ -164,16 +164,16 @@ describe("<PersonalDetailsStep1 />", () => {
     });
 
     it.each(contactInformationFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(contactInformationFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 

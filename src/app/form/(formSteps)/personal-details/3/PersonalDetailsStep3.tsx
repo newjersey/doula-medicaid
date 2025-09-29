@@ -5,9 +5,9 @@ import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import NpiExplainer from "@/app/form/(formSteps)/personal-details/3/NpiExplainer";
 import type { PersonalDetails3Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { getDefaultValue } from "@form/_utils/sessionStorage";
 import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails3Data]: string } = {

@@ -5,17 +5,17 @@ import {
   createTestField,
   createTestFields,
   type TestField,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testInvalidField,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 const insuranceStartDateDayField = createTestField({
   name: "Day *",
-  sessionStorageKey: "insuranceStartDateDay",
+  dataStoreKey: "insuranceStartDateDay",
   required: true,
   testValue: "6",
   withinGroupName: "Start date *",
@@ -23,7 +23,7 @@ const insuranceStartDateDayField = createTestField({
 
 const insuranceStartDateMonthField = createTestField({
   name: "Month *",
-  sessionStorageKey: "insuranceStartDateMonth",
+  dataStoreKey: "insuranceStartDateMonth",
   required: true,
   testValue: "07 - July",
   expectedValue: "7",
@@ -33,7 +33,7 @@ const insuranceStartDateMonthField = createTestField({
 
 const insuranceStartDateYearField = createTestField({
   name: "Year *",
-  sessionStorageKey: "insuranceStartDateYear",
+  dataStoreKey: "insuranceStartDateYear",
   required: true,
   testValue: "1988",
   withinGroupName: "Start date *",
@@ -41,7 +41,7 @@ const insuranceStartDateYearField = createTestField({
 
 const insuranceEndDateDayField = createTestField({
   name: "Day *",
-  sessionStorageKey: "insuranceEndDateDay",
+  dataStoreKey: "insuranceEndDateDay",
   required: true,
   testValue: "30",
   withinGroupName: "End date *",
@@ -49,7 +49,7 @@ const insuranceEndDateDayField = createTestField({
 
 const insuranceEndDateMonthField = createTestField({
   name: "Month *",
-  sessionStorageKey: "insuranceEndDateMonth",
+  dataStoreKey: "insuranceEndDateMonth",
   required: true,
   testValue: "02 - February",
   expectedValue: "2",
@@ -59,7 +59,7 @@ const insuranceEndDateMonthField = createTestField({
 
 const insuranceEndDateYearField = createTestField({
   name: "Year *",
-  sessionStorageKey: "insuranceEndDateYear",
+  dataStoreKey: "insuranceEndDateYear",
   required: true,
   testValue: "2025",
   withinGroupName: "End date *",
@@ -76,7 +76,7 @@ const insuranceCoverageFields: Array<TestField> = createTestFields([
 
 const amountPerOccurrenceField: TestField = {
   name: "Amount per occurrence *",
-  sessionStorageKey: "insuranceOccurenceAmount",
+  dataStoreKey: "insuranceOccurenceAmount",
   requiredErrorMessage: "Amount per occurrence is required",
   role: "textbox",
   required: true,
@@ -86,7 +86,7 @@ const amountPerOccurrenceField: TestField = {
 
 const amountPerAggregateField: TestField = {
   name: "Amount per aggregate *",
-  sessionStorageKey: "insuranceAggregateAmount",
+  dataStoreKey: "insuranceAggregateAmount",
   requiredErrorMessage: "Amount per aggregate is required",
   role: "textbox",
   required: true,
@@ -105,26 +105,21 @@ describe("<InsuranceStep1 />", () => {
   const renderFunction = () => renderWithRouter(<InsuranceStep1 />, "/form/insurance/1");
 
   describe("insurance coverage fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
-        insuranceCoverageFields,
-        testFields,
-        renderFunction,
-        screen,
-      );
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(insuranceCoverageFields, testFields, renderFunction, screen);
     });
 
     it.each(insuranceCoverageFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
     it.each(insuranceCoverageFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
@@ -196,26 +191,21 @@ describe("<InsuranceStep1 />", () => {
   });
 
   describe("coverage amount fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
-        coverageAmountFields,
-        testFields,
-        renderFunction,
-        screen,
-      );
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(coverageAmountFields, testFields, renderFunction, screen);
     });
 
     it.each(coverageAmountFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
     it.each(coverageAmountFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 

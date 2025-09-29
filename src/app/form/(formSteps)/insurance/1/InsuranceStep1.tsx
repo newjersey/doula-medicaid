@@ -6,7 +6,7 @@ import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
 import CoverageAmountExplainer from "@/app/form/(formSteps)/insurance/1/CoverageAmountExplainer";
 import InsuranceCoverageExplainer from "@/app/form/(formSteps)/insurance/1/InsuranceCoverageExplainer";
 import { type Insurance1Data } from "@/app/form/(formSteps)/insurance/InsuranceData";
-import { getDefaultValue } from "@/app/form/_utils/sessionStorage";
+import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { DateInputGroup, Fieldset, FormGroup, Label, Select } from "@trussworks/react-uswds";

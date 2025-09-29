@@ -1,4 +1,4 @@
-import { getBoolean, ValueNotFoundError } from "@/app/form/_utils/sessionStorage";
+import { getBoolean, ValueNotFoundError } from "@/app/form/_utils/dataStore";
 
 export interface Screening1Data {
   isSoleProprietor: "true" | "false" | "";

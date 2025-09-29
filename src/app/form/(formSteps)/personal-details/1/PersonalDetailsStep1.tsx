@@ -5,9 +5,9 @@ import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { getDefaultValue } from "@form/_utils/sessionStorage";
 import { DateInputGroup, Fieldset, FormGroup, Label, Select } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
 

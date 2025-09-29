@@ -1,14 +1,14 @@
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import {
   getAddressState,
   getBoolean,
   getBusinessAddressSameAsOtherAddress,
   getDefaultBoolean,
   getValue,
-} from "@/app/form/_utils/sessionStorage";
+} from "@/app/form/_utils/dataStore";
+import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("getValue", () => {
-  it("returns the value in session storage", () => {
+  it("returns the value in the data store", () => {
     window.sessionStorage.setItem("firstName", "test name");
     expect(getValue("firstName", true)).toEqual("test name");
     expect(getValue("firstName", false)).toEqual("test name");
@@ -24,11 +24,11 @@ describe("getValue", () => {
 });
 
 describe("getDefaultBooleanString", () => {
-  it("returns an empty string if the value is not in session storage", () => {
+  it("returns an empty string if the value is not in the data store", () => {
     expect(getDefaultBoolean("isSoleProprietor")).toEqual("");
   });
 
-  it("returns the value in session storage as a true or false string", () => {
+  it("returns the value in the data store as a true or false string", () => {
     window.sessionStorage.setItem("isSoleProprietor", "true");
     expect(getDefaultBoolean("isSoleProprietor")).toEqual("true");
 
@@ -45,7 +45,7 @@ describe("getDefaultBooleanString", () => {
 });
 
 describe("getBoolean", () => {
-  it("returns the value in session storage as a boolean type", () => {
+  it("returns the value in the data store as a boolean type", () => {
     window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
     expect(getBoolean("hasSameBillingMailingAddress", true)).toEqual(true);
     expect(getBoolean("hasSameBillingMailingAddress", false)).toEqual(true);
@@ -77,7 +77,7 @@ describe("getBoolean", () => {
 });
 
 describe("getAddressState", () => {
-  it("returns the value in session storage as an AddressState enum", () => {
+  it("returns the value in the data store as an AddressState enum", () => {
     window.sessionStorage.setItem("state", "NJ");
     expect(getAddressState("state", true)).toEqual(AddressState.NJ);
     expect(getAddressState("state", false)).toEqual(AddressState.NJ);
@@ -96,7 +96,7 @@ describe("getAddressState", () => {
 
 describe("getBusinessAddressSameAsOtherAddress", () => {
   it.each([["mailing"], ["billing"], ["different"]])(
-    "returns the value in session storage if the value is $1",
+    "returns the value in the data store if the value is $1",
     (value) => {
       window.sessionStorage.setItem("businessAddressSameAsOtherAddress", value);
       expect(getBusinessAddressSameAsOtherAddress(true)).toEqual(value);

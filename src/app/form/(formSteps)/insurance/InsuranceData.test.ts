@@ -1,14 +1,14 @@
 import { getInsuranceFormData } from "@/app/form/(formSteps)/insurance/InsuranceData";
 import {
-  setInSessionStorage,
-  setRequiredFieldsInSessionStorage,
+  setInDataStore,
+  setRequiredFieldsInDataStore,
 } from "@/app/form/_utils/fillPdf/testUtils/formData";
 
 describe("getInsuranceFormData", () => {
   describe("insurance start and end date handling", () => {
     it("creates date when all date components are present", async () => {
-      setRequiredFieldsInSessionStorage();
-      setInSessionStorage({
+      setRequiredFieldsInDataStore();
+      setInDataStore({
         insuranceStartDateDay: "25",
         insuranceStartDateMonth: "12",
         insuranceStartDateYear: "2020",

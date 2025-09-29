@@ -3,10 +3,10 @@ import { fillField, getInputField } from "@/app/form/_utils/testUtils/fillInputs
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   testConditionalRender,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testInvalidField,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
@@ -14,7 +14,7 @@ import userEvent from "@testing-library/user-event";
 
 const yesHasEin: TestField = {
   name: "Yes",
-  sessionStorageKey: "hasEin",
+  dataStoreKey: "hasEin",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -24,7 +24,7 @@ const yesHasEin: TestField = {
 };
 const noHasEin: TestField = {
   name: "No",
-  sessionStorageKey: "hasEin",
+  dataStoreKey: "hasEin",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -37,7 +37,7 @@ const minimalTestFields = [noHasEin];
 
 const einField: TestField = {
   name: "EIN *",
-  sessionStorageKey: "ein",
+  dataStoreKey: "ein",
   required: true,
   requiredErrorMessage: "EIN is required",
   role: "textbox",
@@ -51,17 +51,12 @@ const allTestFields = [yesHasEin, einField];
 describe("<BusinessDetails2 />", () => {
   const renderFunction = () => renderWithRouter(<BusinessDetails2 />, "/form/business-details/2");
 
-  describe("saves fields to session storage on submit", () => {
+  describe("saves fields to the data store on submit", () => {
     it("when the user does not have an EIN", async () => {
-      await testSaveFieldsToSessionStorage(
-        minimalTestFields,
-        minimalTestFields,
-        renderFunction,
-        screen,
-      );
+      await testSaveFieldsToDataStore(minimalTestFields, minimalTestFields, renderFunction, screen);
     });
     it("when the user does has an EIN", async () => {
-      await testSaveFieldsToSessionStorage(allTestFields, allTestFields, renderFunction, screen);
+      await testSaveFieldsToDataStore(allTestFields, allTestFields, renderFunction, screen);
     });
   });
   describe("marks fields as required and displays an error message", () => {
@@ -75,9 +70,9 @@ describe("<BusinessDetails2 />", () => {
   });
 
   it.each(allTestFields)(
-    "fills $sessionStorageKey from session storage when page is loaded",
+    "fills $dataStoreKey from the data store when page is loaded",
     async (field: TestField) => {
-      await testFillFromSessionStorage(field, renderFunction, screen);
+      await testFillFromDataStore(field, renderFunction, screen);
     },
   );
 

@@ -3,7 +3,7 @@ import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   testInvalidField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
@@ -12,7 +12,7 @@ const noHaveOtherBusinessOwnerNextYear = createTestField({
   name: "No",
   role: "radio",
   required: true,
-  sessionStorageKey: "haveOtherBusinessOwnerNextYear",
+  dataStoreKey: "haveOtherBusinessOwnerNextYear",
   testValue: "false",
   withinGroupName:
     "Do you anticipate anyone else having a percentage of your business in the next year? Select one *",
@@ -21,7 +21,7 @@ const yesHaveOtherBusinessOwnerNextYear = createTestField({
   name: "Yes",
   role: "radio",
   required: true,
-  sessionStorageKey: "haveOtherBusinessOwnerNextYear",
+  dataStoreKey: "haveOtherBusinessOwnerNextYear",
   testValue: "true",
   withinGroupName:
     "Do you anticipate anyone else having a percentage of your business in the next year? Select one *",
@@ -31,7 +31,7 @@ const noHadDhmasBusiness = createTestField({
   name: "No",
   role: "radio",
   required: true,
-  sessionStorageKey: "hadDhmasBusiness",
+  dataStoreKey: "hadDhmasBusiness",
   testValue: "false",
   withinGroupName:
     "In the last 5 years, have you owned any percentage of companies that do business with the Division of Medical Assistance and Health Services? Select one *",
@@ -40,7 +40,7 @@ const yesHadDhmasBusiness = createTestField({
   name: "Yes",
   role: "radio",
   required: true,
-  sessionStorageKey: "hadDhmasBusiness",
+  dataStoreKey: "hadDhmasBusiness",
   testValue: "true",
   withinGroupName:
     "In the last 5 years, have you owned any percentage of companies that do business with the Division of Medical Assistance and Health Services? Select one *",
@@ -51,12 +51,12 @@ const allTestFields: Array<TestField> = [noHaveOtherBusinessOwnerNextYear, noHad
 describe("<ScreeningStep3 />", () => {
   const renderFunction = () => renderWithRouter(<ScreeningStep3 />, "/form/screening/3");
 
-  it("saves fields to session storage on submit", async () => {
-    await testSaveFieldsToSessionStorage(allTestFields, allTestFields, renderFunction, screen);
+  it("saves fields to the data store on submit", async () => {
+    await testSaveFieldsToDataStore(allTestFields, allTestFields, renderFunction, screen);
   });
 
   it.each([[yesHaveOtherBusinessOwnerNextYear], [yesHadDhmasBusiness]])(
-    "displays an error message if $invalidField.sessionStorageKey is $invalidField.name",
+    "displays an error message if $invalidField.dataStoreKey is $invalidField.name",
     async (invalidField) => {
       await testInvalidField(
         invalidField,

@@ -1,5 +1,5 @@
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
-import { type SessionStorageKey, setKeyValue } from "@/app/form/_utils/sessionStorage";
+import { type DataStoreKey, setKeyValue } from "@/app/form/_utils/dataStore";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
 import { useEffect, useRef, useState } from "react";
@@ -46,7 +46,7 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
     let key: keyof T;
     for (key in data) {
       const value = data[key] ?? "";
-      setKeyValue(key as SessionStorageKey, value);
+      setKeyValue(key as DataStoreKey, value);
     }
     if (formProgressPosition.next !== null) {
       navigate(formatFormProgressUrl(formProgressPosition.next));

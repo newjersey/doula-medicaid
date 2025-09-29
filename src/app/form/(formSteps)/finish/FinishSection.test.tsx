@@ -1,5 +1,5 @@
 import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
-import { setRequiredFieldsInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { setRequiredFieldsInDataStore } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import { jest } from "@jest/globals";
 import { screen, waitFor } from "@testing-library/react";
@@ -23,7 +23,7 @@ describe("<FinishSection />", () => {
   });
 
   it("builds form, renders download link, and previous buttons", async () => {
-    setRequiredFieldsInSessionStorage();
+    setRequiredFieldsInDataStore();
     mockCreateObjectURL.mockReturnValue("mock-blob-url");
     renderFunction();
 
@@ -40,7 +40,7 @@ describe("<FinishSection />", () => {
   });
 
   it("shows a message if not all required fields have been filled", async () => {
-    setRequiredFieldsInSessionStorage();
+    setRequiredFieldsInDataStore();
     window.sessionStorage.removeItem("dateOfBirthDay");
     renderFunction();
     expect(

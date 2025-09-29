@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import SoleProprietorExplainer from "@/app/form/(formSteps)/components/SoleProprietorExplainer";
 import type { Screening1Data } from "@/app/form/(formSteps)/screening/ScreeningData";
-import { getDefaultBoolean } from "@/app/form/_utils/sessionStorage";
+import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";

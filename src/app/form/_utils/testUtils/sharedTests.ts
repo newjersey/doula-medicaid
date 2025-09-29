@@ -12,7 +12,7 @@ import userEvent from "@testing-library/user-event";
 
 interface TestFieldParameters {
   name: string | RegExp;
-  sessionStorageKey: string;
+  dataStoreKey: string;
   required: boolean;
   testValue: string;
   expectedValue?: string;
@@ -24,7 +24,7 @@ interface TestFieldParameters {
 
 export interface TestField {
   name: string | RegExp;
-  sessionStorageKey: string;
+  dataStoreKey: string;
   required: boolean;
   testValue: string;
   expectedValue: string;
@@ -37,7 +37,7 @@ export interface TestField {
 export const createTestField = (field: TestFieldParameters): TestField => {
   return {
     name: field.name,
-    sessionStorageKey: field.sessionStorageKey,
+    dataStoreKey: field.dataStoreKey,
     required: field.required,
     testValue: field.testValue,
     expectedValue: field.expectedValue ?? field.testValue,
@@ -57,7 +57,7 @@ export const createTestFields = (fields: Array<TestFieldParameters>): Array<Test
   return testFields;
 };
 
-export const testSaveFieldsToSessionStorage = async (
+export const testSaveFieldsToDataStore = async (
   fieldsToTest: Array<TestField>,
   allFields: Array<TestField>,
   renderFunction: () => void,
@@ -69,7 +69,7 @@ export const testSaveFieldsToSessionStorage = async (
   await user.click(screen.getByRole("button", { name: "Next" }));
 
   for (const field of fieldsToTest) {
-    expect(window.sessionStorage.getItem(field.sessionStorageKey)).toEqual(field.expectedValue);
+    expect(window.sessionStorage.getItem(field.dataStoreKey)).toEqual(field.expectedValue);
   }
 };
 
@@ -81,7 +81,7 @@ export const testRequiredField = async (
 ) => {
   const user = userEvent.setup();
   renderFunction();
-  await fillAllInputsExcept(screen, user, allFields, new Set([fieldToTest.sessionStorageKey]));
+  await fillAllInputsExcept(screen, user, allFields, new Set([fieldToTest.dataStoreKey]));
   const input = await getInputField(screen, fieldToTest);
   expect(input).toBeRequired();
 
@@ -91,12 +91,12 @@ export const testRequiredField = async (
   );
   expect(input).toHaveAttribute("aria-invalid", "true");
   expect(input).toHaveFocus();
-  expect(window.sessionStorage.getItem(fieldToTest.sessionStorageKey)).toBe(null);
+  expect(window.sessionStorage.getItem(fieldToTest.dataStoreKey)).toBe(null);
 };
 
 export const testInvalidField = async (
   invalidField: FieldToFill & {
-    sessionStorageKey: string;
+    dataStoreKey: string;
     prerequisiteField?: TestField;
   },
   expectedErrorMessage: string,
@@ -107,7 +107,7 @@ export const testInvalidField = async (
 ) => {
   const user = userEvent.setup();
   renderFunction();
-  await fillAllInputsExcept(screen, user, allFields, new Set([invalidField.sessionStorageKey]));
+  await fillAllInputsExcept(screen, user, allFields, new Set([invalidField.dataStoreKey]));
   await fillField(screen, user, invalidField);
 
   await user.click(screen.getByRole("button", { name: "Next" }));
@@ -116,21 +116,21 @@ export const testInvalidField = async (
   expect(input).toHaveAttribute("aria-invalid", "true");
   const focusedInput = await getInputField(screen, focusedField ?? invalidField);
   expect(focusedInput).toHaveFocus();
-  expect(window.sessionStorage.getItem(invalidField.sessionStorageKey)).toBe(null);
+  expect(window.sessionStorage.getItem(invalidField.dataStoreKey)).toBe(null);
 };
 
-export const testFillFromSessionStorage = async (
+export const testFillFromDataStore = async (
   field: TestField,
   renderFunction: () => void,
   screen: Screen,
 ) => {
   if (field.prerequisiteField !== undefined) {
     window.sessionStorage.setItem(
-      field.prerequisiteField.sessionStorageKey,
+      field.prerequisiteField.dataStoreKey,
       field.prerequisiteField.expectedValue,
     );
   }
-  window.sessionStorage.setItem(field.sessionStorageKey, field.expectedValue);
+  window.sessionStorage.setItem(field.dataStoreKey, field.expectedValue);
   renderFunction();
   const input = await getInputField(screen, field);
   switch (field.role) {
@@ -155,9 +155,7 @@ export const testConditionalRender = async (
   screen: Screen,
 ) => {
   if (field.prerequisiteField === undefined) {
-    throw new Error(
-      `${field.sessionStorageKey} needs a prerequisiteField to test toggling visibility`,
-    );
+    throw new Error(`${field.dataStoreKey} needs a prerequisiteField to test toggling visibility`);
   }
   const user = userEvent.setup();
   renderFunction();
