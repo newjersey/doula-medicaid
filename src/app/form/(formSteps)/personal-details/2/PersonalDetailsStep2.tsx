@@ -5,9 +5,9 @@ import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
+import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
-import { getDefaultValue } from "@form/_utils/sessionStorage";
 import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {

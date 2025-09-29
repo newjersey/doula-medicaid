@@ -4,9 +4,9 @@ import {
   createTestField,
   createTestFields,
   testConditionalRender,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { fillField } from "@form/_utils/testUtils/fillInputs";
@@ -21,7 +21,7 @@ const childrensFuturesTrainingOrganization: TestField = createTestField({
   alternateRequiredFieldError: "This question is required",
   role: "combobox",
   testValue: "Children's Futures (Trenton)",
-  sessionStorageKey: "stateApprovedTraining",
+  dataStoreKey: "stateApprovedTraining",
 });
 
 const noneTrainingOrganization: TestField = createTestField({
@@ -30,7 +30,7 @@ const noneTrainingOrganization: TestField = createTestField({
   alternateRequiredFieldError: "This question is required",
   role: "combobox",
   testValue: "None of these",
-  sessionStorageKey: "stateApprovedTraining",
+  dataStoreKey: "stateApprovedTraining",
 });
 
 const nameOfTrainingOrganization: TestField = createTestField({
@@ -39,13 +39,13 @@ const nameOfTrainingOrganization: TestField = createTestField({
   alternateRequiredFieldError: "This question is required",
   role: "textbox",
   testValue: "Test organization",
-  sessionStorageKey: "nameOfTrainingOrganization",
+  dataStoreKey: "nameOfTrainingOrganization",
   prerequisiteField: noneTrainingOrganization,
 });
 
 const yesDoulaTrainingInPerson: TestField = createTestField({
   name: "Yes, in person or hybrid",
-  sessionStorageKey: "isDoulaTrainingInPerson",
+  dataStoreKey: "isDoulaTrainingInPerson",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -55,7 +55,7 @@ const yesDoulaTrainingInPerson: TestField = createTestField({
 
 const noDoulaTrainingInPerson: TestField = createTestField({
   name: "No, it was virtual",
-  sessionStorageKey: "isDoulaTrainingInPerson",
+  dataStoreKey: "isDoulaTrainingInPerson",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -67,7 +67,7 @@ const trainingAddressFields: TestField[] = createTestFields([
   {
     name: "Street address *",
     required: true,
-    sessionStorageKey: "trainingStreetAddress1",
+    dataStoreKey: "trainingStreetAddress1",
     alternateRequiredFieldError: "Training street address is required",
     testValue: "Test address 1",
     withinGroupName: trainingAddressGroupName,
@@ -76,7 +76,7 @@ const trainingAddressFields: TestField[] = createTestFields([
   {
     name: "Street address line 2",
     required: false,
-    sessionStorageKey: "trainingStreetAddress2",
+    dataStoreKey: "trainingStreetAddress2",
     testValue: "Test address 2",
     withinGroupName: trainingAddressGroupName,
     prerequisiteField: yesDoulaTrainingInPerson,
@@ -85,7 +85,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     name: "City *",
     required: true,
     alternateRequiredFieldError: "Training city is required",
-    sessionStorageKey: "trainingCity",
+    dataStoreKey: "trainingCity",
     testValue: "Test city",
     withinGroupName: trainingAddressGroupName,
     prerequisiteField: yesDoulaTrainingInPerson,
@@ -96,7 +96,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     alternateRequiredFieldError: "Training state is required",
     role: "combobox",
     testValue: "NJ",
-    sessionStorageKey: "trainingState",
+    dataStoreKey: "trainingState",
     withinGroupName: trainingAddressGroupName,
     prerequisiteField: yesDoulaTrainingInPerson,
   },
@@ -104,7 +104,7 @@ const trainingAddressFields: TestField[] = createTestFields([
     name: "ZIP code *",
     required: true,
     alternateRequiredFieldError: "Training zip code is required",
-    sessionStorageKey: "trainingZip",
+    dataStoreKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,
     prerequisiteField: yesDoulaTrainingInPerson,
@@ -115,25 +115,25 @@ const trainingInstructorFields: TestField[] = createTestFields([
   {
     name: "First name *",
     required: true,
-    sessionStorageKey: "instructorFirstName",
+    dataStoreKey: "instructorFirstName",
     testValue: "Jane",
   },
   {
     name: "Last name *",
     required: true,
-    sessionStorageKey: "instructorLastName",
+    dataStoreKey: "instructorLastName",
     testValue: "Doe",
   },
   {
     name: "Email address *",
     required: true,
-    sessionStorageKey: "instructorEmail",
+    dataStoreKey: "instructorEmail",
     testValue: "test@example.com",
   },
   {
     name: "Phone number",
     required: false,
-    sessionStorageKey: "instructorPhoneNumber",
+    dataStoreKey: "instructorPhoneNumber",
     testValue: "111-111-1111",
   },
 ]);
@@ -160,9 +160,9 @@ describe("<TrainingStep1 />", () => {
   });
 
   describe("doula training organization fields", () => {
-    describe("saves fields to session storage on submit", () => {
+    describe("saves fields to the data store on submit", () => {
       it("when a state-approved training organization is selected", async () => {
-        await testSaveFieldsToSessionStorage(
+        await testSaveFieldsToDataStore(
           [childrensFuturesTrainingOrganization],
           minimalTestFields,
           renderFunction,
@@ -171,7 +171,7 @@ describe("<TrainingStep1 />", () => {
       });
 
       it("when 'None of these' is selected and the training organization name is provided", async () => {
-        await testSaveFieldsToSessionStorage(
+        await testSaveFieldsToDataStore(
           [noneTrainingOrganization, nameOfTrainingOrganization],
           allTestFields,
           renderFunction,
@@ -198,12 +198,9 @@ describe("<TrainingStep1 />", () => {
       childrensFuturesTrainingOrganization,
       noneTrainingOrganization,
       nameOfTrainingOrganization,
-    ])(
-      "fills $sessionStorageKey from session storage when page is loaded",
-      async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
-      },
-    );
+    ])("fills $dataStoreKey from the data store when page is loaded", async (field: TestField) => {
+      await testFillFromDataStore(field, renderFunction, screen);
+    });
 
     it("conditionally renders custom training organization based on stateApprovedTraining", async () => {
       await testConditionalRender(
@@ -228,9 +225,9 @@ describe("<TrainingStep1 />", () => {
   });
 
   describe("doula training address fields", () => {
-    describe("saves fields to session storage on submit", () => {
+    describe("saves fields to the data store on submit", () => {
       it("when training was virtual", async () => {
-        await testSaveFieldsToSessionStorage(
+        await testSaveFieldsToDataStore(
           [noDoulaTrainingInPerson],
           minimalTestFields,
           renderFunction,
@@ -239,7 +236,7 @@ describe("<TrainingStep1 />", () => {
       });
 
       it("when training was in person or hybrid", async () => {
-        await testSaveFieldsToSessionStorage(
+        await testSaveFieldsToDataStore(
           [yesDoulaTrainingInPerson, ...trainingAddressFields],
           allTestFields,
           renderFunction,
@@ -258,7 +255,7 @@ describe("<TrainingStep1 />", () => {
         );
       });
       it.each(trainingAddressFields.filter((field) => field.required))(
-        "when training was in person or hybrid and $sessionStorageKey is not filled in",
+        "when training was in person or hybrid and $dataStoreKey is not filled in",
         async (field: TestField) => {
           await testRequiredField(field, allTestFields, renderFunction, screen);
         },
@@ -266,21 +263,21 @@ describe("<TrainingStep1 />", () => {
     });
 
     it.each(trainingAddressFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each([noDoulaTrainingInPerson, yesDoulaTrainingInPerson, ...trainingAddressFields])(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
     it.each(trainingAddressFields.filter((field) => field.required))(
-      "conditionally renders $sessionStorageKey based on isDoulaTrainingInPerson",
+      "conditionally renders $dataStoreKey based on isDoulaTrainingInPerson",
       async (field: TestField) => {
         await testConditionalRender(field, noDoulaTrainingInPerson, renderFunction, screen);
       },
@@ -288,8 +285,8 @@ describe("<TrainingStep1 />", () => {
   });
 
   describe("doula training instructor fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         trainingInstructorFields,
         minimalTestFields,
         renderFunction,
@@ -298,16 +295,16 @@ describe("<TrainingStep1 />", () => {
     });
 
     it.each(trainingInstructorFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, minimalTestFields, renderFunction, screen);
       },
     );
 
     it.each(trainingInstructorFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
   });

@@ -1,13 +1,13 @@
 import BusinessDetails1 from "@/app/form/(formSteps)/business-details/1/BusinessDetails1";
-import { setInSessionStorage } from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { setInDataStore } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestField,
   createTestFields,
   testConditionalRender,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen, within } from "@testing-library/react";
@@ -17,7 +17,7 @@ const businessAddressQuestion = "What is your business address?";
 
 const mailingBusinessAddressSameAsOtherAddress: TestField = createTestField({
   name: /Mailing address/i,
-  sessionStorageKey: "businessAddressSameAsOtherAddress",
+  dataStoreKey: "businessAddressSameAsOtherAddress",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -25,7 +25,7 @@ const mailingBusinessAddressSameAsOtherAddress: TestField = createTestField({
 });
 const billingBusinessAddressSameAsOtherAddress: TestField = createTestField({
   name: /Billing address/i,
-  sessionStorageKey: "businessAddressSameAsOtherAddress",
+  dataStoreKey: "businessAddressSameAsOtherAddress",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -33,7 +33,7 @@ const billingBusinessAddressSameAsOtherAddress: TestField = createTestField({
 });
 const differentBusinessAddressSameAsOtherAddress: TestField = createTestField({
   name: "I wish to enter a new address",
-  sessionStorageKey: "businessAddressSameAsOtherAddress",
+  dataStoreKey: "businessAddressSameAsOtherAddress",
   required: true,
   alternateRequiredFieldError: "This question is required",
   role: "radio",
@@ -43,7 +43,7 @@ const differentBusinessAddressSameAsOtherAddress: TestField = createTestField({
 const businessAddressFields = createTestFields([
   {
     name: "Street address *",
-    sessionStorageKey: "businessStreetAddress1",
+    dataStoreKey: "businessStreetAddress1",
     required: true,
     testValue: "Test address 1",
     withinGroupName: businessAddressQuestion,
@@ -51,7 +51,7 @@ const businessAddressFields = createTestFields([
   },
   {
     name: "Street address line 2",
-    sessionStorageKey: "businessStreetAddress2",
+    dataStoreKey: "businessStreetAddress2",
     required: false,
     testValue: "Test address 2",
     withinGroupName: businessAddressQuestion,
@@ -59,7 +59,7 @@ const businessAddressFields = createTestFields([
   },
   {
     name: "City *",
-    sessionStorageKey: "businessCity",
+    dataStoreKey: "businessCity",
     required: true,
     testValue: "Test city",
     withinGroupName: businessAddressQuestion,
@@ -67,7 +67,7 @@ const businessAddressFields = createTestFields([
   },
   {
     name: "State *",
-    sessionStorageKey: "businessState",
+    dataStoreKey: "businessState",
     required: false,
     role: "combobox",
     testValue: "PA",
@@ -76,7 +76,7 @@ const businessAddressFields = createTestFields([
   },
   {
     name: "ZIP code *",
-    sessionStorageKey: "businessZip",
+    dataStoreKey: "businessZip",
     required: true,
     testValue: "12345",
     withinGroupName: businessAddressQuestion,
@@ -87,8 +87,8 @@ const businessAddressFields = createTestFields([
 const minimalTestFields = [mailingBusinessAddressSameAsOtherAddress];
 const allTestFields = [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields];
 
-const setMailingAddressInSessionStorage = () => {
-  setInSessionStorage({
+const setMailingAddressInDataStore = () => {
+  setInDataStore({
     streetAddress1: "123 Main St",
     streetAddress2: "Apt 4B",
     city: "Trenton",
@@ -96,8 +96,8 @@ const setMailingAddressInSessionStorage = () => {
     zip: "10001",
   });
 };
-const setBillingAddressInSessionStorage = () => {
-  setInSessionStorage({
+const setBillingAddressInDataStore = () => {
+  setInDataStore({
     hasSameBillingMailingAddress: "false",
     billingStreetAddress1: "400 Billing St",
     billingStreetAddress2: "Unit 4",
@@ -113,7 +113,7 @@ describe("<BusinessDetailsStep1 />", () => {
   describe("Sole proprietor explainer", () => {
     it("orders the sole proprietor explainer immediately after the sole proprietor content", async () => {
       const user = userEvent.setup();
-      setMailingAddressInSessionStorage();
+      setMailingAddressInDataStore();
       renderFunction();
 
       const soleProprietorHeading = screen.getByRole("heading", {
@@ -134,7 +134,7 @@ describe("<BusinessDetailsStep1 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      setMailingAddressInSessionStorage();
+      setMailingAddressInDataStore();
       renderFunction();
       const sectionHeadingLevel = 2;
       const soleProprietorHeading = screen.getByRole("heading", {
@@ -151,10 +151,10 @@ describe("<BusinessDetailsStep1 />", () => {
   });
 
   describe("business address fields", () => {
-    describe("saves fields to session storage on submit", () => {
+    describe("saves fields to the data store on submit", () => {
       it("when the business address is the same as mailing address", async () => {
-        setMailingAddressInSessionStorage();
-        await testSaveFieldsToSessionStorage(
+        setMailingAddressInDataStore();
+        await testSaveFieldsToDataStore(
           [mailingBusinessAddressSameAsOtherAddress],
           minimalTestFields,
           renderFunction,
@@ -163,9 +163,9 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it("when the business address is the same as billing address", async () => {
-        setMailingAddressInSessionStorage();
-        setBillingAddressInSessionStorage();
-        await testSaveFieldsToSessionStorage(
+        setMailingAddressInDataStore();
+        setBillingAddressInDataStore();
+        await testSaveFieldsToDataStore(
           [billingBusinessAddressSameAsOtherAddress],
           [billingBusinessAddressSameAsOtherAddress],
           renderFunction,
@@ -174,8 +174,8 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it("when the business address is different", async () => {
-        setMailingAddressInSessionStorage();
-        await testSaveFieldsToSessionStorage(
+        setMailingAddressInDataStore();
+        await testSaveFieldsToDataStore(
           [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields],
           allTestFields,
           renderFunction,
@@ -186,7 +186,7 @@ describe("<BusinessDetailsStep1 />", () => {
 
     describe("marks fields as required and displays an error message", () => {
       it("when businessAddressSameAsOtherAddress it is not filled in", async () => {
-        setMailingAddressInSessionStorage();
+        setMailingAddressInDataStore();
         await testRequiredField(
           mailingBusinessAddressSameAsOtherAddress,
           minimalTestFields,
@@ -196,25 +196,25 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it.each(businessAddressFields.filter((field) => field.required === true))(
-        "when business address is different and $sessionStorageKey is not filled in",
+        "when business address is different and $dataStoreKey is not filled in",
         async (field) => {
-          setMailingAddressInSessionStorage();
+          setMailingAddressInDataStore();
           await testRequiredField(field, allTestFields, renderFunction, screen);
         },
       );
     });
 
     it.each([mailingBusinessAddressSameAsOtherAddress, ...businessAddressFields])(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field) => {
-        setMailingAddressInSessionStorage();
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        setMailingAddressInDataStore();
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
     describe("address options", () => {
       it("shows mailing and different address options when hasSameBillingMailingAddress is true", () => {
-        setInSessionStorage({
+        setInDataStore({
           streetAddress1: "123 Main St",
           streetAddress2: "Apt 4B",
           city: "Trenton",
@@ -245,8 +245,8 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it("shows billing address option when hasSameBillingMailingAddress is false", () => {
-        setMailingAddressInSessionStorage();
-        setBillingAddressInSessionStorage();
+        setMailingAddressInDataStore();
+        setBillingAddressInDataStore();
         renderFunction();
         const questionGroup = screen.getByRole("group", {
           name: "Is your business address the same as a previous address? Select one *",
@@ -271,9 +271,9 @@ describe("<BusinessDetailsStep1 />", () => {
     });
 
     it.each(businessAddressFields.filter((field) => field.required))(
-      "conditionally renders $sessionStorageKey based on businessAddressSameAsOtherAddress",
+      "conditionally renders $dataStoreKey based on businessAddressSameAsOtherAddress",
       async (field) => {
-        setMailingAddressInSessionStorage();
+        setMailingAddressInDataStore();
         await testConditionalRender(
           field,
           mailingBusinessAddressSameAsOtherAddress,

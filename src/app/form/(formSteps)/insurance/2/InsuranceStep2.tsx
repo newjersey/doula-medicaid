@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import type { Insurance2Data } from "@/app/form/(formSteps)/insurance/InsuranceData";
-import { getDefaultValue } from "@/app/form/_utils/sessionStorage";
+import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";

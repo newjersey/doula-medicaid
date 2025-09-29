@@ -3,9 +3,9 @@ import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   createTestFields,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
@@ -18,13 +18,13 @@ const insuranceDetailsFields: TestField[] = createTestFields([
   {
     name: "Name of your insurance carrier *",
     required: true,
-    sessionStorageKey: "insuranceCarrierName",
+    dataStoreKey: "insuranceCarrierName",
     testValue: "Test insurance carrier",
   },
   {
     name: "Policy number *",
     required: true,
-    sessionStorageKey: "insurancePolicyNumber",
+    dataStoreKey: "insurancePolicyNumber",
     testValue: "ABC-12345",
   },
 ]);
@@ -33,21 +33,21 @@ const insuranceAddressFields: TestField[] = createTestFields([
   {
     name: "Street address *",
     required: true,
-    sessionStorageKey: "insuranceStreetAddress1",
+    dataStoreKey: "insuranceStreetAddress1",
     testValue: "Test insurance address 1",
     withinGroupName: insuranceAddressGroupName,
   },
   {
     name: "Street address line 2",
     required: false,
-    sessionStorageKey: "insuranceStreetAddress2",
+    dataStoreKey: "insuranceStreetAddress2",
     testValue: "Test insurance address 2",
     withinGroupName: insuranceAddressGroupName,
   },
   {
     name: "City *",
     required: true,
-    sessionStorageKey: "insuranceCity",
+    dataStoreKey: "insuranceCity",
     testValue: "Test insurance city",
     withinGroupName: insuranceAddressGroupName,
   },
@@ -56,13 +56,13 @@ const insuranceAddressFields: TestField[] = createTestFields([
     required: false,
     role: "combobox",
     testValue: "NJ",
-    sessionStorageKey: "insuranceState",
+    dataStoreKey: "insuranceState",
     withinGroupName: insuranceAddressGroupName,
   },
   {
     name: "ZIP code *",
     required: true,
-    sessionStorageKey: "insuranceZip",
+    dataStoreKey: "insuranceZip",
     testValue: "12345",
     withinGroupName: insuranceAddressGroupName,
   },
@@ -78,8 +78,8 @@ describe("<InsuranceStep2 />", () => {
   });
 
   describe("insurance details fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         insuranceDetailsFields,
         allTestFields,
         renderFunction,
@@ -88,23 +88,23 @@ describe("<InsuranceStep2 />", () => {
     });
 
     it.each(insuranceDetailsFields)(
-      "marks $sessionStorageKey as required and displays an error message if it is not filed in",
+      "marks $dataStoreKey as required and displays an error message if it is not filed in",
       async (field) => {
         await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(insuranceDetailsFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
   });
 
   describe("insurance address fields", () => {
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         insuranceAddressFields,
         allTestFields,
         renderFunction,
@@ -113,16 +113,16 @@ describe("<InsuranceStep2 />", () => {
     });
 
     it.each(insuranceAddressFields.filter((field) => field.required === true))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filed in",
+      "marks $dataStoreKey as required and displays an error message if it is not filed in",
       async (field) => {
         await testRequiredField(field, allTestFields, renderFunction, screen);
       },
     );
 
     it.each(insuranceAddressFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 

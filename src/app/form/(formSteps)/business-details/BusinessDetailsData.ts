@@ -1,10 +1,10 @@
-import { type AddressState } from "@/app/form/_utils/inputFields/enums";
 import {
   getAddressState,
   getBoolean,
   getBusinessAddressSameAsOtherAddress,
   getValue,
-} from "@/app/form/_utils/sessionStorage";
+} from "@/app/form/_utils/dataStore";
+import { type AddressState } from "@/app/form/_utils/inputFields/enums";
 
 export type BusinessAddressSameAsOtherAddressOptions = "mailing" | "billing" | "different" | "";
 

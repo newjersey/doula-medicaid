@@ -7,10 +7,10 @@ import {
   createTestFields,
   testConditionalRender,
   type TestField,
-  testFillFromSessionStorage,
+  testFillFromDataStore,
   testInvalidField,
   testRequiredField,
-  testSaveFieldsToSessionStorage,
+  testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -22,28 +22,28 @@ const billingAddressQuestion = "What is your billing address?";
 const mailingAddressFields = createTestFields([
   {
     name: "Street address *",
-    sessionStorageKey: "streetAddress1",
+    dataStoreKey: "streetAddress1",
     required: true,
     testValue: "Test address 1",
     withinGroupName: mailingAddressQuestion,
   },
   {
     name: "Street address line 2",
-    sessionStorageKey: "streetAddress2",
+    dataStoreKey: "streetAddress2",
     required: false,
     testValue: "Test address 2",
     withinGroupName: mailingAddressQuestion,
   },
   {
     name: "City *",
-    sessionStorageKey: "city",
+    dataStoreKey: "city",
     required: true,
     testValue: "Test city",
     withinGroupName: mailingAddressQuestion,
   },
   {
     name: "State *",
-    sessionStorageKey: "state",
+    dataStoreKey: "state",
     required: false,
     role: "combobox",
     testValue: "PA",
@@ -51,7 +51,7 @@ const mailingAddressFields = createTestFields([
   },
   {
     name: "ZIP code *",
-    sessionStorageKey: "zip",
+    dataStoreKey: "zip",
     required: true,
     testValue: "12345",
     withinGroupName: mailingAddressQuestion,
@@ -60,7 +60,7 @@ const mailingAddressFields = createTestFields([
 
 const yesSameBillingMailingAddress: TestField = {
   name: "Yes",
-  sessionStorageKey: "hasSameBillingMailingAddress",
+  dataStoreKey: "hasSameBillingMailingAddress",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -70,7 +70,7 @@ const yesSameBillingMailingAddress: TestField = {
 };
 const noSameBillingMailingAddress: TestField = {
   name: "No",
-  sessionStorageKey: "hasSameBillingMailingAddress",
+  dataStoreKey: "hasSameBillingMailingAddress",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
@@ -83,7 +83,7 @@ const minimalTestFields = [...mailingAddressFields, yesSameBillingMailingAddress
 
 const zipCodeField = createTestField({
   name: "ZIP code *",
-  sessionStorageKey: "billingZip",
+  dataStoreKey: "billingZip",
   required: true,
   testValue: "12345",
   withinGroupName: billingAddressQuestion,
@@ -95,7 +95,7 @@ const billingAddressFields = [
   ...createTestFields([
     {
       name: "Street address *",
-      sessionStorageKey: "billingStreetAddress1",
+      dataStoreKey: "billingStreetAddress1",
       required: true,
       testValue: "Test address 1",
       withinGroupName: billingAddressQuestion,
@@ -104,7 +104,7 @@ const billingAddressFields = [
     },
     {
       name: "Street address line 2",
-      sessionStorageKey: "billingStreetAddress2",
+      dataStoreKey: "billingStreetAddress2",
       required: false,
       testValue: "Test address 2",
       withinGroupName: billingAddressQuestion,
@@ -112,7 +112,7 @@ const billingAddressFields = [
     },
     {
       name: "City *",
-      sessionStorageKey: "billingCity",
+      dataStoreKey: "billingCity",
       required: true,
       testValue: "Houston",
       withinGroupName: billingAddressQuestion,
@@ -121,7 +121,7 @@ const billingAddressFields = [
     },
     {
       name: "State *",
-      sessionStorageKey: "billingState",
+      dataStoreKey: "billingState",
       required: false,
       role: "combobox",
       testValue: "TX",
@@ -148,8 +148,8 @@ describe("<PersonalDetailsStep2 />", () => {
       expectAddressHasAutocomplete(mailingAddressQuestion, "shipping");
     });
 
-    it("saves fields to session storage on submit", async () => {
-      await testSaveFieldsToSessionStorage(
+    it("saves fields to the data store on submit", async () => {
+      await testSaveFieldsToDataStore(
         mailingAddressFields,
         minimalTestFields,
         renderFunction,
@@ -158,16 +158,16 @@ describe("<PersonalDetailsStep2 />", () => {
     });
 
     it.each(mailingAddressFields.filter((field) => field.required))(
-      "marks $sessionStorageKey as required and displays an error message if it is not filled in",
+      "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
         await testRequiredField(field, minimalTestFields, renderFunction, screen);
       },
     );
 
     it.each(mailingAddressFields)(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
@@ -208,9 +208,9 @@ describe("<PersonalDetailsStep2 />", () => {
   });
 
   describe("billing address fields", () => {
-    describe("saves fields to session storage on submit", () => {
+    describe("saves fields to the data store on submit", () => {
       it("when billing address is the same as mailing address", async () => {
-        await testSaveFieldsToSessionStorage(
+        await testSaveFieldsToDataStore(
           [yesSameBillingMailingAddress],
           minimalTestFields,
           renderFunction,
@@ -218,7 +218,7 @@ describe("<PersonalDetailsStep2 />", () => {
         );
       });
       it("when billing address is different from mailing address", async () => {
-        await testSaveFieldsToSessionStorage(
+        await testSaveFieldsToDataStore(
           [noSameBillingMailingAddress, ...billingAddressFields],
           allTestFields,
           renderFunction,
@@ -238,7 +238,7 @@ describe("<PersonalDetailsStep2 />", () => {
       });
 
       it.each(billingAddressFields.filter((field) => field.required))(
-        "when mailing and billing address are different and $sessionStorageKey is not filled in",
+        "when mailing and billing address are different and $dataStoreKey is not filled in",
         async (field: TestField) => {
           await testRequiredField(field, allTestFields, renderFunction, screen);
         },
@@ -246,14 +246,14 @@ describe("<PersonalDetailsStep2 />", () => {
     });
 
     it.each([noSameBillingMailingAddress, ...billingAddressFields])(
-      "fills $sessionStorageKey from session storage when page is loaded",
+      "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
-        await testFillFromSessionStorage(field, renderFunction, screen);
+        await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
     it.each(billingAddressFields.filter((field) => field.required))(
-      "conditionally renders $sessionStorageKey based on hasSameBillingMailingAddress",
+      "conditionally renders $dataStoreKey based on hasSameBillingMailingAddress",
       async (field: TestField) => {
         await testConditionalRender(field, yesSameBillingMailingAddress, renderFunction, screen);
       },

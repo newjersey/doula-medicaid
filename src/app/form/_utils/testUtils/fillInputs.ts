@@ -60,7 +60,7 @@ export const fillAllInputs = async (
   user: UserEvent,
   allInputs: Array<
     FieldToFill & {
-      sessionStorageKey: string;
+      dataStoreKey: string;
     }
   >,
 ) => {
@@ -72,13 +72,13 @@ export const fillAllInputsExcept = async (
   user: UserEvent,
   allInputs: Array<
     FieldToFill & {
-      sessionStorageKey: string;
+      dataStoreKey: string;
     }
   >,
   keysToSkip: Set<string>,
 ) => {
   for (const input of allInputs) {
-    if (!keysToSkip.has(input.sessionStorageKey)) {
+    if (!keysToSkip.has(input.dataStoreKey)) {
       await fillField(screen, user, input);
     }
   }

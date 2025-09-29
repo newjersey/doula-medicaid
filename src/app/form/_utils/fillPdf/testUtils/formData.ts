@@ -3,8 +3,8 @@ import type { InsuranceFormData } from "@/app/form/(formSteps)/insurance/Insuran
 import type { PersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
+import type { DataStoreKey } from "@/app/form/_utils/dataStore";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
-import type { SessionStorageKey } from "@/app/form/_utils/sessionStorage";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 const testinsuranceEndDateDay = "31";
@@ -100,7 +100,7 @@ export const generateFormData = (formDataOverrides: Partial<FormData>): FormData
   return { ...testFormData, ...formDataOverrides };
 };
 
-export const setRequiredFieldsInSessionStorage = () => {
+export const setRequiredFieldsInDataStore = () => {
   // Screening
   window.sessionStorage.setItem("isSoleProprietor", "true");
   window.sessionStorage.setItem("everHadEmployees", "false");
@@ -123,7 +123,7 @@ export const setRequiredFieldsInSessionStorage = () => {
       window.sessionStorage.setItem("insuranceEndDateMonth", testinsuranceEndDateMonth);
       window.sessionStorage.setItem("insuranceEndDateYear", testinsuranceEndDateYear);
     } else if (value !== null) {
-      window.sessionStorage.setItem(key as SessionStorageKey, value.toString());
+      window.sessionStorage.setItem(key as DataStoreKey, value.toString());
     }
   }
   window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
@@ -136,12 +136,12 @@ export const setRequiredFieldsInSessionStorage = () => {
   window.sessionStorage.setItem("hasBeenSuspendedFromMedicaid", "false");
 };
 
-export const setInSessionStorage = (
-  sessionStorageValues: Partial<{
-    [key in SessionStorageKey]: string;
+export const setInDataStore = (
+  dataStoreValues: Partial<{
+    [key in DataStoreKey]: string;
   }>,
 ) => {
-  for (const [key, value] of Object.entries(sessionStorageValues)) {
+  for (const [key, value] of Object.entries(dataStoreValues)) {
     window.sessionStorage.setItem(key, value);
   }
 };

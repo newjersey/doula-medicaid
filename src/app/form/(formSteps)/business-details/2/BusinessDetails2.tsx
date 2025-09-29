@@ -5,7 +5,7 @@ import EinExplainer from "@/app/form/(formSteps)/business-details/2/EinExplainer
 import type { BusinessDetails2Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/sessionStorage";
+import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";

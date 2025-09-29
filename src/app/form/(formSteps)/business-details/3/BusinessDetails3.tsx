@@ -3,7 +3,7 @@
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type BusinessDetails3Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { getDefaultBoolean } from "@/app/form/_utils/sessionStorage";
+import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
