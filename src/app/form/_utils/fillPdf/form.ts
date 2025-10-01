@@ -19,8 +19,6 @@ import {
   type TrainingFormData,
 } from "@/app/form/(formSteps)/training/TrainingData";
 import { fillFfsIndividualForm } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
-import { fillAetnaForm } from "@form/_utils/fillPdf/aetna";
-import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
 import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 
 export interface FormData
@@ -52,11 +50,7 @@ export const getFormData = (): FormData => {
 };
 
 export const fillAllForms = async (formData: FormData) => {
-  return await Promise.all([
-    fillAetnaForm(formData),
-    fillFidelisForm(formData),
-    fillFfsIndividualForm(formData),
-  ]);
+  return await Promise.all([fillFfsIndividualForm(formData)]);
 };
 
 const getFontSize = (fieldName: string, fieldOptions: { [key: string]: FieldOption }) => {
