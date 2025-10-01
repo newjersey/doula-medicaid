@@ -25,6 +25,10 @@
 # production
 /build
 
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
 # misc
 .DS_Store
 *.pem

@@ -2,6 +2,9 @@
   "name": "doula-common-app",
   "version": "0.1.0",
   "private": true,
+  "bin": {
+    "cdk": "bin/cdk.js"
+  },
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
@@ -13,7 +16,12 @@
     "cypress:run": "cypress run",
     "cypress:gui": "cypress open",
     "test": "jest",
-    "typecheck": "tsc --noemit"
+    "typecheck": "tsc --noemit",
+    "cdk:bootstrap": "cdk bootstrap",
+    "cdk:deploy": "npm run build && cdk deploy",
+    "cdk:destroy": "cdk destroy --force",
+    "cdk:diff": "npm run build && cdk diff",
+    "cdk:synth": "npm run build && cdk synth"
   },
   "author": {
     "name": "New Jersey State Office of Innovation",
@@ -32,7 +40,8 @@
     "react-dom": "19.2.0",
     "react-hook-form": "7.65.0",
     "react-router": "7.9.4",
-    "tesseract.js": "6.0.1"
+    "tesseract.js": "6.0.1",
+    "tsx": "4.20.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
@@ -46,6 +55,9 @@
     "@types/nodemailer": "7.0.2",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2",
+        "aws-cdk": "2.1029.3",
+    "aws-cdk-lib": "2.217.0",
+    "constructs": "10.4.2",
     "cypress": "15.5.0",
     "eslint": "9.38.0",
     "eslint-config-next": "15.5.6",
@@ -60,6 +72,7 @@
     "prettier-plugin-jsdoc": "1.3.3",
     "prettier-plugin-organize-imports": "latest",
     "ts-jest": "29.4.5",
+    "tsx": "4.20.6",
     "typescript": "5.9.3",
     "typescript-eslint": "8.46.1"
   },
