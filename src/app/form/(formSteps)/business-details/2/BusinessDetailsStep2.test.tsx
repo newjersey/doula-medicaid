@@ -1,4 +1,4 @@
-import BusinessDetails2 from "@/app/form/(formSteps)/business-details/2/BusinessDetails2";
+import BusinessDetailsStep2 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
 import { fillField, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
@@ -48,8 +48,9 @@ const einField: TestField = {
 
 const allTestFields = [yesHasEin, einField];
 
-describe("<BusinessDetails2 />", () => {
-  const renderFunction = () => renderWithRouter(<BusinessDetails2 />, "/form/business-details/2");
+describe("<BusinessDetailsStep2 />", () => {
+  const renderFunction = () =>
+    renderWithRouter(<BusinessDetailsStep2 />, "/form/business-details/2");
 
   describe("saves fields to the data store on submit", () => {
     it("when the user does not have an EIN", async () => {

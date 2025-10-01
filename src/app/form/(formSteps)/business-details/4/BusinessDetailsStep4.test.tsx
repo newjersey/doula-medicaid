@@ -1,4 +1,4 @@
-import BusinessDetails3 from "@/app/form/(formSteps)/business-details/3/BusinessDetails3";
+import BusinessDetailsStep4 from "@/app/form/(formSteps)/business-details/4/BusinessDetailsStep4";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
   testFillFromDataStore,
@@ -8,67 +8,68 @@ import {
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 
-const noHasUncollectedDebt: TestField = {
+const noHasBeenExcludedFromMedicaid: TestField = {
   name: "No",
-  dataStoreKey: "hasUncollectedDebt",
+  dataStoreKey: "hasBeenExcludedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
   expectedValue: "false",
   withinGroupName:
-    "Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)? Select one *",
+    "Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP? Select one *",
 };
 
-const yesHasUncollectedDebt: TestField = {
+const yesHasBeenExcludedFromMedicaid: TestField = {
   name: "Yes",
-  dataStoreKey: "hasUncollectedDebt",
+  dataStoreKey: "hasBeenExcludedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
   expectedValue: "true",
   withinGroupName:
-    "Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)? Select one *",
+    "Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP? Select one *",
 };
 
-const noIsSubjectToPaymentSuspension: TestField = {
+const noHasBeenSuspendedFromMedicaid: TestField = {
   name: "No",
-  dataStoreKey: "isSubjectToPaymentSuspension",
+  dataStoreKey: "hasBeenSuspendedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
   expectedValue: "false",
   withinGroupName:
-    "Have you ever been subject to a payment suspension under a federal health care program? Select one *",
+    "Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated? Select one *",
 };
 
-const yesIsSubjectToPaymentSuspension: TestField = {
+const yesHasBeenSuspendedFromMedicaid: TestField = {
   name: "Yes",
-  dataStoreKey: "isSubjectToPaymentSuspension",
+  dataStoreKey: "hasBeenSuspendedFromMedicaid",
   required: true,
   requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
   expectedValue: "true",
   withinGroupName:
-    "Have you ever been subject to a payment suspension under a federal health care program? Select one *",
+    "Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated? Select one *",
 };
 
 const minimalTestFields: Array<TestField> = [
-  yesHasUncollectedDebt,
-  yesIsSubjectToPaymentSuspension,
+  yesHasBeenExcludedFromMedicaid,
+  yesHasBeenSuspendedFromMedicaid,
 ];
 const allTestFields: Array<TestField> = [
-  noHasUncollectedDebt,
-  noIsSubjectToPaymentSuspension,
-  yesHasUncollectedDebt,
-  yesIsSubjectToPaymentSuspension,
+  noHasBeenExcludedFromMedicaid,
+  noHasBeenSuspendedFromMedicaid,
+  yesHasBeenExcludedFromMedicaid,
+  yesHasBeenSuspendedFromMedicaid,
 ];
 
-describe("<BusinessDetails3 />", () => {
-  const renderFunction = () => renderWithRouter(<BusinessDetails3 />, "/form/business-details/3");
+describe("<BusinessDetailsStep4 />", () => {
+  const renderFunction = () =>
+    renderWithRouter(<BusinessDetailsStep4 />, "/form/business-details/4");
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(minimalTestFields, minimalTestFields, renderFunction, screen);

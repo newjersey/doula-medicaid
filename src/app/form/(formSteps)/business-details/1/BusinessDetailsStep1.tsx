@@ -28,7 +28,7 @@ const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } =
 };
 
 const mayHaveThreeOrMoreErrors = true;
-const BusinessDetails1 = () => {
+const BusinessDetailsStep1 = () => {
   const {
     register,
     handleSubmit,
@@ -195,4 +195,4 @@ const getAddressOptions = (): Array<DoulaRadioOption<BusinessDetails1Data>> => {
   return addressOptions;
 };
 
-export default BusinessDetails1;
+export default BusinessDetailsStep1;
