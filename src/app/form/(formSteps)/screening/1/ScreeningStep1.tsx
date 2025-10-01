@@ -5,6 +5,7 @@ import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import SoleProprietorExplainer from "@/app/form/(formSteps)/components/SoleProprietorExplainer";
 import type { Screening1Data } from "@/app/form/(formSteps)/screening/ScreeningData";
 import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
@@ -16,13 +17,14 @@ const orderedInputNameToLabel = {
 
 const mayHaveThreeOrMoreErrors = false;
 const ScreeningStep1 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
   } = useForm<Screening1Data>({
-    defaultValues: { isSoleProprietor: getDefaultBoolean("isSoleProprietor") },
+    defaultValues: { isSoleProprietor: getDefaultBoolean(dataStore, "isSoleProprietor") },
   });
   const isSoleProprietor = watch("isSoleProprietor");
   return (

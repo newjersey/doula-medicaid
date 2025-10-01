@@ -6,6 +6,7 @@ import DoulaRadio from "@/app/form/(formSteps)/components/DoulaRadio";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import type { TrainingData } from "@form/(formSteps)/training/TrainingData";
@@ -31,6 +32,7 @@ const orderedInputNameToLabel: { [key in FieldPath<TrainingData>]: string } = {
 
 const mayHaveThreeOrMoreErrors = true;
 const TrainingStep1 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -39,18 +41,18 @@ const TrainingStep1 = () => {
     watch,
   } = useForm<TrainingData>({
     defaultValues: {
-      stateApprovedTraining: getDefaultValue("stateApprovedTraining") ?? "",
-      nameOfTrainingOrganization: getDefaultValue("nameOfTrainingOrganization") ?? "",
-      trainingStreetAddress1: getDefaultValue("trainingStreetAddress1") ?? "",
-      trainingStreetAddress2: getDefaultValue("trainingStreetAddress2") ?? "",
-      trainingCity: getDefaultValue("trainingCity") ?? "",
-      trainingState: getDefaultValue("trainingState") ?? "NJ",
-      trainingZip: getDefaultValue("trainingZip") ?? "",
-      isDoulaTrainingInPerson: getDefaultValue("isDoulaTrainingInPerson") ?? "",
-      instructorFirstName: getDefaultValue("instructorFirstName") ?? "",
-      instructorLastName: getDefaultValue("instructorLastName") ?? "",
-      instructorEmail: getDefaultValue("instructorEmail") ?? "",
-      instructorPhoneNumber: getDefaultValue("instructorPhoneNumber") ?? "",
+      stateApprovedTraining: getDefaultValue(dataStore, "stateApprovedTraining") ?? "",
+      nameOfTrainingOrganization: getDefaultValue(dataStore, "nameOfTrainingOrganization") ?? "",
+      trainingStreetAddress1: getDefaultValue(dataStore, "trainingStreetAddress1") ?? "",
+      trainingStreetAddress2: getDefaultValue(dataStore, "trainingStreetAddress2") ?? "",
+      trainingCity: getDefaultValue(dataStore, "trainingCity") ?? "",
+      trainingState: getDefaultValue(dataStore, "trainingState") ?? "NJ",
+      trainingZip: getDefaultValue(dataStore, "trainingZip") ?? "",
+      isDoulaTrainingInPerson: getDefaultValue(dataStore, "isDoulaTrainingInPerson") ?? "",
+      instructorFirstName: getDefaultValue(dataStore, "instructorFirstName") ?? "",
+      instructorLastName: getDefaultValue(dataStore, "instructorLastName") ?? "",
+      instructorEmail: getDefaultValue(dataStore, "instructorEmail") ?? "",
+      instructorPhoneNumber: getDefaultValue(dataStore, "instructorPhoneNumber") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

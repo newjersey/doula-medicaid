@@ -37,6 +37,8 @@ export type DataStoreKey =
   | keyof BusinessDetails3Data
   | keyof BusinessDetails4Data;
 
+export type DataStore = { [key: string]: string };
+
 export class ValueNotFoundError extends Error {
   constructor(message: string) {
     super(message);
@@ -44,53 +46,83 @@ export class ValueNotFoundError extends Error {
   }
 }
 
-export const setKeyValue = (key: DataStoreKey, value: string): void => {
-  window.sessionStorage.setItem(key, value);
-};
-
-export const getDefaultValue = (key: DataStoreKey) => getValue(key, false);
-/**
-  getDefaultBoolean returns a string because it's used to populate the `defaultValues` in useForm. Even though our two options are yes/no, radio button values require a string.
- */
-export const getDefaultBoolean = (key: DataStoreKey): "" | "true" | "false" => {
-  const value = getValue(key, false);
-  if (value === null) return "";
-  if (value === "true" || value === "false") return value;
-  throw new Error(`Invalid boolean string value: ${key}, ${value}`);
-};
-
-export function getValue(key: DataStoreKey, required: true): string;
-export function getValue(key: DataStoreKey, required: false): string | null;
-export function getValue(key: DataStoreKey, required: boolean): string | null;
-export function getValue(key: DataStoreKey, required: boolean): string | null {
+export function getValue(dataStore: DataStore, key: DataStoreKey, required: true): string;
+export function getValue(dataStore: DataStore, key: DataStoreKey, required: false): string | null;
+export function getValue(dataStore: DataStore, key: DataStoreKey, required: boolean): string | null;
+export function getValue(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: boolean,
+): string | null {
   if (required) {
-    const value = window.sessionStorage.getItem(key);
-    if (value === null) {
+    if (dataStore[key] === undefined) {
       throw new ValueNotFoundError(`${key} is unexpectedly null`);
     }
-    return value;
-  } else if (typeof window !== "undefined") {
-    return window.sessionStorage.getItem(key);
+    return dataStore[key];
+  } else {
+    return dataStore[key] ?? null;
   }
-  return null;
 }
 
-export function getBoolean(key: DataStoreKey, required: true): boolean;
-export function getBoolean(key: DataStoreKey, required: false): boolean | null;
-export function getBoolean(key: DataStoreKey, required: boolean): boolean | null;
-export function getBoolean(key: DataStoreKey, required: boolean): boolean | null {
-  const value = getValue(key, required);
+export function getBoolean(dataStore: DataStore, key: DataStoreKey, required: true): boolean;
+export function getBoolean(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: false,
+): boolean | null;
+export function getBoolean(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: boolean,
+): boolean | null;
+export function getBoolean(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: boolean,
+): boolean | null {
+  const value = getValue(dataStore, key, required);
   if (value === null) return null;
   if (value === "true") return true;
   if (value === "false") return false;
   throw new Error(`Invalid boolean value: ${key}, ${value}`);
 }
 
-export function getAddressState(key: DataStoreKey, required: true): AddressState;
-export function getAddressState(key: DataStoreKey, required: false): AddressState | null;
-export function getAddressState(key: DataStoreKey, required: boolean): AddressState | null;
-export function getAddressState(key: DataStoreKey, required: boolean): AddressState | null {
-  const value = getValue(key, required);
+export const getDefaultValue = (dataStore: DataStore, key: DataStoreKey) =>
+  getValue(dataStore, key, false);
+/**
+  getDefaultBoolean returns a string because it's used to populate the `defaultValues` in useForm. Even though our two options are yes/no, radio button values require a string.
+ */
+export const getDefaultBoolean = (
+  dataStore: DataStore,
+  key: DataStoreKey,
+): "" | "true" | "false" => {
+  const value = getValue(dataStore, key, false);
+  if (value === null) return "";
+  if (value === "true" || value === "false") return value;
+  throw new Error(`Invalid boolean string value: ${key}, ${value}`);
+};
+
+export function getAddressState(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: true,
+): AddressState;
+export function getAddressState(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: false,
+): AddressState | null;
+export function getAddressState(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: boolean,
+): AddressState | null;
+export function getAddressState(
+  dataStore: DataStore,
+  key: DataStoreKey,
+  required: boolean,
+): AddressState | null {
+  const value = getValue(dataStore, key, required);
   if (value === null) return null;
   if (Object.values<string>(AddressState).includes(value)) {
     return AddressState[value as keyof typeof AddressState];
@@ -99,18 +131,22 @@ export function getAddressState(key: DataStoreKey, required: boolean): AddressSt
 }
 
 export function getBusinessAddressSameAsOtherAddress(
+  dataStore: DataStore,
   required: true,
 ): BusinessAddressSameAsOtherAddressOptions;
 export function getBusinessAddressSameAsOtherAddress(
+  dataStore: DataStore,
   required: false,
 ): BusinessAddressSameAsOtherAddressOptions | null;
 export function getBusinessAddressSameAsOtherAddress(
+  dataStore: DataStore,
   required: boolean,
 ): BusinessAddressSameAsOtherAddressOptions | null;
 export function getBusinessAddressSameAsOtherAddress(
+  dataStore: DataStore,
   required: boolean,
 ): BusinessAddressSameAsOtherAddressOptions | null {
-  const value = getValue("businessAddressSameAsOtherAddress", required);
+  const value = getValue(dataStore, "businessAddressSameAsOtherAddress", required);
   if (value === null) return "";
   if (value === "mailing" || value === "billing" || value === "different") return value;
   throw new Error(`Invalid value for businessAddressSameAsOtherAddress: ${value}`);

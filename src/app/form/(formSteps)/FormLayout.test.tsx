@@ -1,11 +1,11 @@
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { routes } from "@/app/form/clientRoutes";
 import { within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
 
 describe("<FormLayout />", () => {
   it("shows the section progress bar", () => {
-    renderWithRouter(routes, "/form/business-details/1");
+    renderWithProviders(routes, "/form/business-details/1");
     const progressSection = screen.getByRole("generic", { name: /progress/i });
     const sections = within(progressSection).getAllByRole("listitem");
     expect(sections.length).toEqual(6);
@@ -24,7 +24,7 @@ describe("<FormLayout />", () => {
   });
 
   it("shows heading 1 with the step indicator and section title when the title is different from the section name", () => {
-    renderWithRouter(routes, "/form/finish");
+    renderWithProviders(routes, "/form/finish");
     const progressBarTitle = "Finish";
     const sectionTitle = "Download forms";
 
@@ -39,19 +39,19 @@ describe("<FormLayout />", () => {
   });
 
   it("shows heading 1 with only section title when the section has multiple steps", () => {
-    renderWithRouter(routes, "/form/personal-details/2");
+    renderWithProviders(routes, "/form/personal-details/2");
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("2 of 3 Personal details");
   });
 
   it("shows heading 1 with the step indicator and section title when the section does not have steps", () => {
-    renderWithRouter(routes, "/form/finish");
+    renderWithProviders(routes, "/form/finish");
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("Download forms");
   });
 
   it("shows required field indicator text with an asterisk", () => {
-    renderWithRouter(routes, "/form/business-details/1");
+    renderWithProviders(routes, "/form/business-details/1");
 
     expect(screen.getByText(/A red asterisk.*indicates a required field/)).toBeInTheDocument();
 

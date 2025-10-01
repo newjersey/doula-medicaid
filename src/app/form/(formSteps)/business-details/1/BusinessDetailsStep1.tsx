@@ -12,10 +12,11 @@ import {
   getDefaultValue,
   getValue,
   ValueNotFoundError,
+  type DataStore,
 } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } = {
@@ -29,6 +30,7 @@ const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } =
 
 const mayHaveThreeOrMoreErrors = true;
 const BusinessDetailsStep1 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -37,34 +39,30 @@ const BusinessDetailsStep1 = () => {
     watch,
   } = useForm<BusinessDetails1Data>({
     defaultValues: {
-      businessAddressSameAsOtherAddress: getBusinessAddressSameAsOtherAddress(false) ?? "",
-      businessStreetAddress1: getDefaultValue("businessStreetAddress1") ?? "",
-      businessStreetAddress2: getDefaultValue("businessStreetAddress2") ?? "",
-      businessCity: getDefaultValue("businessCity") ?? "",
-      businessState: getDefaultValue("businessState") ?? "NJ",
-      businessZip: getDefaultValue("businessZip") ?? "",
+      businessAddressSameAsOtherAddress:
+        getBusinessAddressSameAsOtherAddress(dataStore, false) ?? "",
+      businessStreetAddress1: getDefaultValue(dataStore, "businessStreetAddress1") ?? "",
+      businessStreetAddress2: getDefaultValue(dataStore, "businessStreetAddress2") ?? "",
+      businessCity: getDefaultValue(dataStore, "businessCity") ?? "",
+      businessState: getDefaultValue(dataStore, "businessState") ?? "NJ",
+      businessZip: getDefaultValue(dataStore, "businessZip") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
   const businessAddressSameAsOtherAddress = watch("businessAddressSameAsOtherAddress");
   const businessZip = watch("businessZip");
 
-  const [hasMissingAddress, setHasMissingAddress] = useState<boolean>(false);
-  const [addressOptions, setAddressOptions] = useState<
-    Array<DoulaRadioOption<BusinessDetails1Data>>
-  >([]);
-  useEffect(() => {
-    try {
-      setAddressOptions(getAddressOptions());
-    } catch (e) {
-      if (e instanceof ValueNotFoundError) {
-        setHasMissingAddress(true);
-      } else {
-        throw e;
-      }
+  let addressOptions = null;
+  try {
+    addressOptions = getAddressOptions(dataStore);
+  } catch (e) {
+    if (e instanceof ValueNotFoundError) {
+    } else {
+      throw e;
     }
-  }, []);
-  if (hasMissingAddress) {
+  }
+
+  if (addressOptions === null) {
     return (
       <>
         <div className="margin-top-5 margin-bottom-5">
@@ -149,17 +147,17 @@ const BusinessDetailsStep1 = () => {
   );
 };
 
-const getAddressOptions = (): Array<DoulaRadioOption<BusinessDetails1Data>> => {
+const getAddressOptions = (dataStore: DataStore): Array<DoulaRadioOption<BusinessDetails1Data>> => {
   const mailingOption = {
     label: (
       <div>
         <div>Mailing address:</div>
         {formatAddressLabel(
-          getValue("streetAddress1", true),
-          getValue("streetAddress2", false),
-          getValue("city", true),
-          getAddressState("state", true),
-          getValue("zip", true),
+          getValue(dataStore, "streetAddress1", true),
+          getValue(dataStore, "streetAddress2", false),
+          getValue(dataStore, "city", true),
+          getAddressState(dataStore, "state", true),
+          getValue(dataStore, "zip", true),
         )}
       </div>
     ),
@@ -168,18 +166,18 @@ const getAddressOptions = (): Array<DoulaRadioOption<BusinessDetails1Data>> => {
 
   const addressOptions: Array<DoulaRadioOption<BusinessDetails1Data>> = [mailingOption];
 
-  const hasSameBillingMailingAddress = getValue("hasSameBillingMailingAddress", false);
+  const hasSameBillingMailingAddress = getValue(dataStore, "hasSameBillingMailingAddress", false);
   if (hasSameBillingMailingAddress === "false") {
     const billingOption = {
       label: (
         <div>
           <div>Billing address:</div>
           {formatAddressLabel(
-            getValue("billingStreetAddress1", true),
-            getValue("billingStreetAddress2", false),
-            getValue("billingCity", true),
-            getAddressState("billingState", true),
-            getValue("billingZip", true),
+            getValue(dataStore, "billingStreetAddress1", true),
+            getValue(dataStore, "billingStreetAddress2", false),
+            getValue(dataStore, "billingCity", true),
+            getAddressState(dataStore, "billingState", true),
+            getValue(dataStore, "billingZip", true),
           )}
         </div>
       ),

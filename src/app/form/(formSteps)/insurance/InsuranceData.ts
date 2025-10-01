@@ -1,4 +1,4 @@
-import { getAddressState, getValue } from "@/app/form/_utils/dataStore";
+import { getAddressState, getValue, type DataStore } from "@/app/form/_utils/dataStore";
 
 export interface Insurance1Data {
   insuranceStartDateDay: string;
@@ -38,36 +38,36 @@ export interface InsuranceFormData {
   insuranceZip: string;
 }
 
-export const getInsuranceFormData = (): InsuranceFormData => {
+export const getInsuranceFormData = (dataStore: DataStore): InsuranceFormData => {
   return {
-    ...getInsurance1FormData(),
-    ...getInsurance2FormData(),
+    ...getInsurance1FormData(dataStore),
+    ...getInsurance2FormData(dataStore),
   };
 };
 
-const getInsurance2FormData = () => {
+const getInsurance2FormData = (dataStore: DataStore) => {
   return {
-    insuranceCarrierName: getValue("insuranceCarrierName", true),
-    insurancePolicyNumber: getValue("insurancePolicyNumber", true),
-    insuranceStreetAddress1: getValue("insuranceStreetAddress1", true),
-    insuranceStreetAddress2: getValue("insuranceStreetAddress2", false),
-    insuranceCity: getValue("insuranceCity", true),
-    insuranceState: getAddressState("insuranceState", true),
-    insuranceZip: getValue("insuranceZip", true),
+    insuranceCarrierName: getValue(dataStore, "insuranceCarrierName", true),
+    insurancePolicyNumber: getValue(dataStore, "insurancePolicyNumber", true),
+    insuranceStreetAddress1: getValue(dataStore, "insuranceStreetAddress1", true),
+    insuranceStreetAddress2: getValue(dataStore, "insuranceStreetAddress2", false),
+    insuranceCity: getValue(dataStore, "insuranceCity", true),
+    insuranceState: getAddressState(dataStore, "insuranceState", true),
+    insuranceZip: getValue(dataStore, "insuranceZip", true),
   };
 };
 
-const getInsurance1FormData = () => {
+const getInsurance1FormData = (dataStore: DataStore) => {
   const insuranceStartDate = new Date(
-    `${getValue("insuranceStartDateMonth", true)}/${getValue("insuranceStartDateDay", true)}/${getValue("insuranceStartDateYear", true)}`,
+    `${getValue(dataStore, "insuranceStartDateMonth", true)}/${getValue(dataStore, "insuranceStartDateDay", true)}/${getValue(dataStore, "insuranceStartDateYear", true)}`,
   );
   const insuranceEndDate = new Date(
-    `${getValue("insuranceEndDateMonth", true)}/${getValue("insuranceEndDateDay", true)}/${getValue("insuranceEndDateYear", true)}`,
+    `${getValue(dataStore, "insuranceEndDateMonth", true)}/${getValue(dataStore, "insuranceEndDateDay", true)}/${getValue(dataStore, "insuranceEndDateYear", true)}`,
   );
   return {
     insuranceStartDate: insuranceStartDate,
     insuranceEndDate: insuranceEndDate,
-    insuranceOccurenceAmount: getValue("insuranceOccurenceAmount", true),
-    insuranceAggregateAmount: getValue("insuranceAggregateAmount", true),
+    insuranceOccurenceAmount: getValue(dataStore, "insuranceOccurenceAmount", true),
+    insuranceAggregateAmount: getValue(dataStore, "insuranceAggregateAmount", true),
   };
 };

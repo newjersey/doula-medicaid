@@ -1,5 +1,6 @@
 import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   createTestFields,
@@ -41,8 +42,8 @@ const otherIdentificationFields = createTestFields([
 const allTestFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
 
 describe("<PersonalDetailsStep3 />", () => {
-  const renderFunction = () =>
-    renderWithRouter(<PersonalDetailsStep3 />, "/form/personal-details/3");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<PersonalDetailsStep3 />, "/form/personal-details/3", dataStore);
 
   describe("Doula provider identification fields", () => {
     it("saves fields to the data store on submit", async () => {

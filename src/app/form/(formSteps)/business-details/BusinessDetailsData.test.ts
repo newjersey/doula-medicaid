@@ -1,15 +1,11 @@
 import { getBusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
-import {
-  setInDataStore,
-  setRequiredFieldsInDataStore,
-} from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("getBusinessDetailsFormData", () => {
   describe("businessAddressSameAsOtherAddress handling", () => {
     it("overwrites all business address values with mailing address values when businessAddressSameAsOtherAddress is mailing", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -22,7 +18,7 @@ describe("getBusinessDetailsFormData", () => {
         businessState: "NY",
         businessZip: "22222",
       });
-      expect(getBusinessDetailsFormData()).toMatchObject({
+      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
         businessStreetAddress1: "123 Main St",
         businessStreetAddress2: "Apt 4B",
         businessCity: "Trenton",
@@ -32,8 +28,7 @@ describe("getBusinessDetailsFormData", () => {
     });
 
     it("overwrites all business address values with billing address values when businessAddressSameAsOtherAddress is billing", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         billingStreetAddress1: "123 Main St",
         billingStreetAddress2: "Apt 4B",
         billingCity: "Trenton",
@@ -46,7 +41,7 @@ describe("getBusinessDetailsFormData", () => {
         businessState: "NY",
         businessZip: "22222",
       });
-      expect(getBusinessDetailsFormData()).toMatchObject({
+      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
         businessStreetAddress1: "123 Main St",
         businessStreetAddress2: "Apt 4B",
         businessCity: "Trenton",
@@ -56,8 +51,7 @@ describe("getBusinessDetailsFormData", () => {
     });
 
     it("uses separate business address values when businessAddressSameAsOtherAddress is different", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -75,7 +69,7 @@ describe("getBusinessDetailsFormData", () => {
         businessState: "NJ",
         businessZip: "08609",
       });
-      expect(getBusinessDetailsFormData()).toMatchObject({
+      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
         businessStreetAddress1: "55 Cherry St",
         businessStreetAddress2: "Apt 10",
         businessCity: "Newark",
@@ -86,14 +80,13 @@ describe("getBusinessDetailsFormData", () => {
   });
   describe("hasDisclosableEvent handling", () => {
     it("sets hasDisclosableEvent to false when the user answers no to all questions", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         hasUncollectedDebt: "false",
         isSubjectToPaymentSuspension: "false",
         hasBeenSuspendedFromMedicaid: "false",
         hasBeenExcludedFromMedicaid: "false",
       });
-      expect(getBusinessDetailsFormData()).toMatchObject({
+      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
         hasDisclosableEvent: false,
       });
     });
@@ -104,9 +97,8 @@ describe("getBusinessDetailsFormData", () => {
       { key: "hasBeenSuspendedFromMedicaid", value: "true" },
       { key: "hasBeenExcludedFromMedicaid", value: "true" },
     ])("sets hasDisclosableEvent to true when $key is $value", async ({ key, value }) => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({ [key]: value });
-      expect(getBusinessDetailsFormData()).toMatchObject({
+      const dataStore = generateDataStoreWithRequiredFields({ [key]: value });
+      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
         hasDisclosableEvent: true,
       });
     });

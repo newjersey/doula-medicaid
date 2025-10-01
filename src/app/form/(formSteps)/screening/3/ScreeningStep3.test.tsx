@@ -1,5 +1,6 @@
 import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   testInvalidField,
@@ -49,7 +50,8 @@ const yesHadDhmasBusiness = createTestField({
 const allTestFields: Array<TestField> = [noHaveOtherBusinessOwnerNextYear, noHadDhmasBusiness];
 
 describe("<ScreeningStep3 />", () => {
-  const renderFunction = () => renderWithRouter(<ScreeningStep3 />, "/form/screening/3");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<ScreeningStep3 />, "/form/screening/3", dataStore);
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(allTestFields, allTestFields, renderFunction, screen);

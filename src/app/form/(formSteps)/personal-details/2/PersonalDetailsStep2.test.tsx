@@ -1,7 +1,8 @@
 import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
+import type { DataStore } from "@/app/form/_utils/dataStore";
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   createTestFields,
@@ -139,8 +140,8 @@ const allTestFields = [
 ];
 
 describe("<PersonalDetailsStep2 />", () => {
-  const renderFunction = () =>
-    renderWithRouter(<PersonalDetailsStep2 />, "/form/personal-details/2");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<PersonalDetailsStep2 />, "/form/personal-details/2", dataStore);
 
   describe("mailing address fields", () => {
     it("enables autocompleting the mailing address", () => {

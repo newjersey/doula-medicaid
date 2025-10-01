@@ -1,5 +1,6 @@
 import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   testInvalidField,
@@ -33,7 +34,8 @@ const noIsSoleProprietor: TestField = createTestField({
 const allTestFields: Array<TestField> = [yesIsSoleProprietor];
 
 describe("<ScreeningStep1 />", () => {
-  const renderFunction = () => renderWithRouter(<ScreeningStep1 />, "/form/screening/1");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<ScreeningStep1 />, "/form/screening/1", dataStore);
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(allTestFields, allTestFields, renderFunction, screen);

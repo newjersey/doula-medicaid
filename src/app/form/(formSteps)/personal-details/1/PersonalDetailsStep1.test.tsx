@@ -1,5 +1,6 @@
 import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   createTestFields,
@@ -92,8 +93,8 @@ const allTestFields: Array<TestField> = [
 ];
 
 describe("<PersonalDetailsStep1 />", () => {
-  const renderFunction = () =>
-    renderWithRouter(<PersonalDetailsStep1 />, "/form/personal-details/1");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<PersonalDetailsStep1 />, "/form/personal-details/1", dataStore);
 
   describe("personal identification fields", () => {
     it("saves fields to the data store on submit", async () => {

@@ -18,6 +18,7 @@ import {
   getTrainingFormData,
   type TrainingFormData,
 } from "@/app/form/(formSteps)/training/TrainingData";
+import type { DataStore } from "@/app/form/_utils/dataStore";
 import { fillFfsIndividualForm } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { fillAetnaForm } from "@form/_utils/fillPdf/aetna";
 import { fillFidelisForm } from "@form/_utils/fillPdf/fidelis";
@@ -40,14 +41,14 @@ interface FieldOption {
   fontSize?: number;
 }
 
-export const getFormData = (): FormData => {
+export const getFormData = (dataStore: DataStore): FormData => {
   return {
-    ...getScreeningFormData(),
-    ...getInsuranceFormData(),
-    ...getTrainingFormData(),
-    ...getInsuranceFormData(),
-    ...getPersonalDetailsFormData(),
-    ...getBusinessDetailsFormData(),
+    ...getScreeningFormData(dataStore),
+    ...getInsuranceFormData(dataStore),
+    ...getTrainingFormData(dataStore),
+    ...getInsuranceFormData(dataStore),
+    ...getPersonalDetailsFormData(dataStore),
+    ...getBusinessDetailsFormData(dataStore),
   };
 };
 

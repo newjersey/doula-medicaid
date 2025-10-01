@@ -1,15 +1,11 @@
 import { getTrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
-import {
-  setInDataStore,
-  setRequiredFieldsInDataStore,
-} from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("getTrainingFormData", () => {
   describe("isDoulaTrainingInPerson", () => {
     it("saves all training address values when isDoulaTrainingInPerson is true", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         stateApprovedTraining: "Doula training org",
         isDoulaTrainingInPerson: "true",
         trainingStreetAddress1: "123 Main St",
@@ -22,7 +18,7 @@ describe("getTrainingFormData", () => {
         instructorEmail: "john@test.com",
         instructorPhoneNumber: "111-111-1111",
       });
-      expect(getTrainingFormData()).toMatchObject({
+      expect(getTrainingFormData(dataStore)).toMatchObject({
         stateApprovedTraining: "Doula training org",
         isDoulaTrainingInPerson: true,
         trainingStreetAddress1: "123 Main St",
@@ -38,8 +34,7 @@ describe("getTrainingFormData", () => {
     });
 
     it("overwrites all training address values with empty string/null when isDoulaTrainingInPerson is false", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         stateApprovedTraining: "Doula training org",
         isDoulaTrainingInPerson: "false",
         trainingStreetAddress1: "123 Main St",
@@ -52,7 +47,7 @@ describe("getTrainingFormData", () => {
         instructorEmail: "john@test.com",
         instructorPhoneNumber: "111-111-1111",
       });
-      expect(getTrainingFormData()).toMatchObject({
+      expect(getTrainingFormData(dataStore)).toMatchObject({
         stateApprovedTraining: "Doula training org",
         isDoulaTrainingInPerson: false,
         trainingStreetAddress1: null,

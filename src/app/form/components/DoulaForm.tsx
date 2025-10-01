@@ -1,5 +1,6 @@
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
-import { type DataStoreKey, setKeyValue } from "@/app/form/_utils/dataStore";
+import {} from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
 import { useEffect, useRef, useState } from "react";
@@ -37,17 +38,19 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
   const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
+  const { updateDataStore } = useDataStore();
 
   useEffect(() => {
     setIsDataLoaded(true);
   }, []);
 
   const onSubmit = (data: T) => {
-    let key: keyof T;
-    for (key in data) {
-      const value = data[key] ?? "";
-      setKeyValue(key as DataStoreKey, value);
+    const stringData: { [key: string]: string } = {};
+    for (const key in data) {
+      const value = data[key];
+      stringData[key] = typeof value === "string" ? value : value.toString();
     }
+    updateDataStore(stringData);
     if (formProgressPosition.next !== null) {
       navigate(formatFormProgressUrl(formProgressPosition.next));
     }

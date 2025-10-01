@@ -1,4 +1,4 @@
-import { getBoolean, ValueNotFoundError } from "@/app/form/_utils/dataStore";
+import { getBoolean, ValueNotFoundError, type DataStore } from "@/app/form/_utils/dataStore";
 
 export interface Screening1Data {
   isSoleProprietor: "true" | "false" | "";
@@ -18,12 +18,16 @@ export interface ScreeningFormData {
   isSupportedSoleProprietor: boolean;
 }
 
-export const getScreeningFormData = (): ScreeningFormData => {
-  const isSoleProprietor = getBoolean("isSoleProprietor", true);
-  const everHadEmployees = getBoolean("everHadEmployees", true);
-  const everHadOtherBusinessOwner = getBoolean("everHadOtherBusinessOwner", true);
-  const haveOtherBusinessOwnerNextYear = getBoolean("haveOtherBusinessOwnerNextYear", true);
-  const hadDhmasBusiness = getBoolean("hadDhmasBusiness", true);
+export const getScreeningFormData = (dataStore: DataStore): ScreeningFormData => {
+  const isSoleProprietor = getBoolean(dataStore, "isSoleProprietor", true);
+  const everHadEmployees = getBoolean(dataStore, "everHadEmployees", true);
+  const everHadOtherBusinessOwner = getBoolean(dataStore, "everHadOtherBusinessOwner", true);
+  const haveOtherBusinessOwnerNextYear = getBoolean(
+    dataStore,
+    "haveOtherBusinessOwnerNextYear",
+    true,
+  );
+  const hadDhmasBusiness = getBoolean(dataStore, "hadDhmasBusiness", true);
   if (
     isSoleProprietor === true &&
     everHadEmployees === false &&

@@ -1,3 +1,4 @@
+import type { DataStore } from "@/app/form/_utils/dataStore";
 import {
   fillAllInputs,
   fillAllInputsExcept,
@@ -34,6 +35,8 @@ export interface TestField {
   prerequisiteField?: TestField;
 }
 
+type RenderFunction = (dataStore?: DataStore) => { mockUpdateDataStore: jest.Mock };
+
 export const createTestField = (field: TestFieldParameters): TestField => {
   return {
     name: field.name,
@@ -60,27 +63,28 @@ export const createTestFields = (fields: Array<TestFieldParameters>): Array<Test
 export const testSaveFieldsToDataStore = async (
   fieldsToTest: Array<TestField>,
   allFields: Array<TestField>,
-  renderFunction: () => void,
+  renderFunction: RenderFunction,
   screen: Screen,
 ) => {
   const user = userEvent.setup();
-  renderFunction();
+  const { mockUpdateDataStore } = renderFunction();
   await fillAllInputs(screen, user, allFields);
   await user.click(screen.getByRole("button", { name: "Next" }));
 
-  for (const field of fieldsToTest) {
-    expect(window.sessionStorage.getItem(field.dataStoreKey)).toEqual(field.expectedValue);
-  }
+  const dataUpdates = Object.fromEntries(
+    fieldsToTest.map((field) => [field.dataStoreKey, field.expectedValue]),
+  );
+  expect(mockUpdateDataStore).toHaveBeenCalledWith(expect.objectContaining(dataUpdates));
 };
 
 export const testRequiredField = async (
   fieldToTest: TestField,
   allFields: Array<TestField>,
-  renderFunction: () => void,
+  renderFunction: RenderFunction,
   screen: Screen,
 ) => {
   const user = userEvent.setup();
-  renderFunction();
+  const { mockUpdateDataStore } = renderFunction();
   await fillAllInputsExcept(screen, user, allFields, new Set([fieldToTest.dataStoreKey]));
   const input = await getInputField(screen, fieldToTest);
   expect(input).toBeRequired();
@@ -91,7 +95,7 @@ export const testRequiredField = async (
   );
   expect(input).toHaveAttribute("aria-invalid", "true");
   expect(input).toHaveFocus();
-  expect(window.sessionStorage.getItem(fieldToTest.dataStoreKey)).toBe(null);
+  expect(mockUpdateDataStore).not.toHaveBeenCalled();
 };
 
 export const testInvalidField = async (
@@ -101,12 +105,12 @@ export const testInvalidField = async (
   },
   expectedErrorMessage: string,
   allFields: Array<TestField>,
-  renderFunction: () => void,
+  renderFunction: RenderFunction,
   screen: Screen,
   focusedField?: FieldToGet,
 ) => {
   const user = userEvent.setup();
-  renderFunction();
+  const { mockUpdateDataStore } = renderFunction();
   await fillAllInputsExcept(screen, user, allFields, new Set([invalidField.dataStoreKey]));
   await fillField(screen, user, invalidField);
 
@@ -116,22 +120,20 @@ export const testInvalidField = async (
   expect(input).toHaveAttribute("aria-invalid", "true");
   const focusedInput = await getInputField(screen, focusedField ?? invalidField);
   expect(focusedInput).toHaveFocus();
-  expect(window.sessionStorage.getItem(invalidField.dataStoreKey)).toBe(null);
+  expect(mockUpdateDataStore).not.toHaveBeenCalled();
 };
 
 export const testFillFromDataStore = async (
   field: TestField,
-  renderFunction: () => void,
+  renderFunction: RenderFunction,
   screen: Screen,
 ) => {
+  const dataStore: DataStore = {};
   if (field.prerequisiteField !== undefined) {
-    window.sessionStorage.setItem(
-      field.prerequisiteField.dataStoreKey,
-      field.prerequisiteField.expectedValue,
-    );
+    dataStore[field.prerequisiteField.dataStoreKey] = field.prerequisiteField.expectedValue;
   }
-  window.sessionStorage.setItem(field.dataStoreKey, field.expectedValue);
-  renderFunction();
+  dataStore[field.dataStoreKey] = field.expectedValue;
+  renderFunction(dataStore);
   const input = await getInputField(screen, field);
   switch (field.role) {
     case "textbox":
@@ -151,7 +153,7 @@ export const testFillFromDataStore = async (
 export const testConditionalRender = async (
   field: TestField,
   hideField: TestField,
-  renderFunction: () => void,
+  renderFunction: RenderFunction,
   screen: Screen,
 ) => {
   if (field.prerequisiteField === undefined) {

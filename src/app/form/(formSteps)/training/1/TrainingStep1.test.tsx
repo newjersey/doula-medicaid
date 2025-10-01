@@ -1,5 +1,6 @@
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   createTestFields,
@@ -152,13 +153,10 @@ const allTestFields = [
   ...trainingInstructorFields,
 ];
 
-const renderFunction = () => renderWithRouter(<TrainingStep1 />, "/form/training/1");
+const renderFunction = (dataStore: DataStore = {}) =>
+  renderWithProviders(<TrainingStep1 />, "/form/training/1", dataStore);
 
 describe("<TrainingStep1 />", () => {
-  beforeEach(() => {
-    window.sessionStorage.clear();
-  });
-
   describe("doula training organization fields", () => {
     describe("saves fields to the data store on submit", () => {
       it("when a state-approved training organization is selected", async () => {

@@ -3,7 +3,7 @@ import type { InsuranceFormData } from "@/app/form/(formSteps)/insurance/Insuran
 import type { PersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
-import type { DataStoreKey } from "@/app/form/_utils/dataStore";
+import type { DataStore, DataStoreKey } from "@/app/form/_utils/dataStore";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
@@ -100,48 +100,69 @@ export const generateFormData = (formDataOverrides: Partial<FormData>): FormData
   return { ...testFormData, ...formDataOverrides };
 };
 
-export const setRequiredFieldsInDataStore = () => {
-  // Screening
-  window.sessionStorage.setItem("isSoleProprietor", "true");
-  window.sessionStorage.setItem("everHadEmployees", "false");
-  window.sessionStorage.setItem("everHadOtherBusinessOwner", "false");
-  window.sessionStorage.setItem("haveOtherBusinessOwnerNextYear", "false");
-  window.sessionStorage.setItem("hadDhmasBusiness", "false");
+export const generateDataStoreWithRequiredFields = (
+  overrides?: DataStore,
+  keysToOmit?: Array<DataStoreKey>,
+) => {
+  const dataStoreFieldsNotInFormData: DataStore = {
+    // Screening
+    isSoleProprietor: "true",
+    everHadEmployees: "false",
+    everHadOtherBusinessOwner: "false",
+    haveOtherBusinessOwnerNextYear: "false",
+    hadDhmasBusiness: "false",
 
-  // Personal details
+    // Personal details
+    hasSameBillingMailingAddress: "true",
+
+    // Business details
+    businessAddressSameAsOtherAddress: "different",
+    hasUncollectedDebt: "false",
+    isSubjectToPaymentSuspension: "false",
+    hasBeenExcludedFromMedicaid: "false",
+    hasBeenSuspendedFromMedicaid: "false",
+  };
+
+  const defaultDataStore: DataStore = {
+    ...dataStoreFieldsNotInFormData,
+  };
+
+  const replaceFormDataWithDataStoreFields = {
+    dateOfBirth: [
+      { key: "dateOfBirthDay", value: testDateOfBirthDay },
+      { key: "dateOfBirthMonth", value: testDateOfBirthMonth },
+      { key: "dateOfBirthYear", value: testDateOfBirthYear },
+    ],
+    insuranceStartDate: [
+      { key: "insuranceStartDateDay", value: testinsuranceStartDateDay },
+      { key: "insuranceStartDateMonth", value: testinsuranceStartDateMonth },
+      { key: "insuranceStartDateYear", value: testinsuranceStartDateYear },
+    ],
+    insuranceEndDate: [
+      { key: "insuranceEndDateDay", value: testinsuranceEndDateDay },
+      { key: "insuranceEndDateMonth", value: testinsuranceEndDateMonth },
+      { key: "insuranceEndDateYear", value: testinsuranceEndDateYear },
+    ],
+  };
+
   for (const [key, value] of Object.entries(testFormData)) {
-    if (key === "dateOfBirth") {
-      window.sessionStorage.setItem("dateOfBirthDay", testDateOfBirthDay);
-      window.sessionStorage.setItem("dateOfBirthMonth", testDateOfBirthMonth);
-      window.sessionStorage.setItem("dateOfBirthYear", testDateOfBirthYear);
-    } else if (key === "insuranceStartDate") {
-      window.sessionStorage.setItem("insuranceStartDateDay", testinsuranceStartDateDay);
-      window.sessionStorage.setItem("insuranceStartDateMonth", testinsuranceStartDateMonth);
-      window.sessionStorage.setItem("insuranceStartDateYear", testinsuranceStartDateYear);
-    } else if (key === "insuranceEndDate") {
-      window.sessionStorage.setItem("insuranceEndDateDay", testinsuranceEndDateDay);
-      window.sessionStorage.setItem("insuranceEndDateMonth", testinsuranceEndDateMonth);
-      window.sessionStorage.setItem("insuranceEndDateYear", testinsuranceEndDateYear);
-    } else if (value !== null) {
-      window.sessionStorage.setItem(key as DataStoreKey, value.toString());
+    if (!(key in replaceFormDataWithDataStoreFields) && value !== null) {
+      defaultDataStore[key as DataStoreKey] = value.toString();
     }
   }
-  window.sessionStorage.setItem("hasSameBillingMailingAddress", "true");
 
-  // Business details
-  window.sessionStorage.setItem("businessAddressSameAsOtherAddress", "different");
-  window.sessionStorage.setItem("hasUncollectedDebt", "false");
-  window.sessionStorage.setItem("isSubjectToPaymentSuspension", "false");
-  window.sessionStorage.setItem("hasBeenExcludedFromMedicaid", "false");
-  window.sessionStorage.setItem("hasBeenSuspendedFromMedicaid", "false");
-};
-
-export const setInDataStore = (
-  dataStoreValues: Partial<{
-    [key in DataStoreKey]: string;
-  }>,
-) => {
-  for (const [key, value] of Object.entries(dataStoreValues)) {
-    window.sessionStorage.setItem(key, value);
+  for (const replacementFields of Object.values(replaceFormDataWithDataStoreFields)) {
+    for (const replacement of replacementFields) {
+      defaultDataStore[replacement.key] = replacement.value;
+    }
   }
+
+  const dataStore = { ...defaultDataStore, ...overrides };
+  if (keysToOmit !== undefined) {
+    for (const key of keysToOmit) {
+      delete dataStore[key];
+    }
+  }
+
+  return dataStore;
 };

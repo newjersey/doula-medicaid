@@ -6,12 +6,14 @@ import type { BusinessDetails2Data } from "@/app/form/(formSteps)/business-detai
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
 const BusinessDetailsStep2 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -19,8 +21,8 @@ const BusinessDetailsStep2 = () => {
     watch,
   } = useForm<BusinessDetails2Data>({
     defaultValues: {
-      hasEin: getDefaultBoolean("hasEin") ?? "",
-      ein: getDefaultValue("ein") ?? "",
+      hasEin: getDefaultBoolean(dataStore, "hasEin") ?? "",
+      ein: getDefaultValue(dataStore, "ein") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

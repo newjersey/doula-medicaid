@@ -1,6 +1,7 @@
 import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
-import { setRequiredFieldsInDataStore } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { type DataStore } from "@/app/form/_utils/dataStore";
+import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { jest } from "@jest/globals";
 import { screen, waitFor } from "@testing-library/react";
 
@@ -14,18 +15,18 @@ jest.mock("@form/_utils/fillPdf/form", () => ({
 const mockCreateObjectURL = jest.fn();
 (global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
 
-const renderFunction = () => renderWithRouter(<FinishSection />, "/form/finish/1");
+const renderFunction = (dataStore: DataStore) =>
+  renderWithProviders(<FinishSection />, "/form/finish/1", dataStore);
 
 describe("<FinishSection />", () => {
   beforeEach(() => {
-    window.sessionStorage.clear();
     jest.clearAllMocks();
   });
 
   it("builds form, renders download link, and previous buttons", async () => {
-    setRequiredFieldsInDataStore();
+    const dataStore = generateDataStoreWithRequiredFields();
     mockCreateObjectURL.mockReturnValue("mock-blob-url");
-    renderFunction();
+    renderFunction(dataStore);
 
     expect(screen.getByRole("link", { name: "Previous" })).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: "Next" })).not.toBeInTheDocument();
@@ -40,9 +41,8 @@ describe("<FinishSection />", () => {
   });
 
   it("shows a message if not all required fields have been filled", async () => {
-    setRequiredFieldsInDataStore();
-    window.sessionStorage.removeItem("dateOfBirthDay");
-    renderFunction();
+    const dataStore = generateDataStoreWithRequiredFields({}, ["dateOfBirthDay"]);
+    renderFunction(dataStore);
     expect(
       screen.getByText(
         "Not all required fields have been filled out. Please fill all required fields.",

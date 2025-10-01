@@ -1,6 +1,7 @@
 import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
+import type { DataStore } from "@/app/form/_utils/dataStore";
 import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestFields,
   testFillFromDataStore,
@@ -70,13 +71,10 @@ const insuranceAddressFields: TestField[] = createTestFields([
 
 const allTestFields = [...insuranceDetailsFields, ...insuranceAddressFields];
 
-const renderFunction = () => renderWithRouter(<InsuranceStep2 />, "/form/insurance/2");
+const renderFunction = (dataStore: DataStore = {}) =>
+  renderWithProviders(<InsuranceStep2 />, "/form/insurance/2", dataStore);
 
 describe("<InsuranceStep2 />", () => {
-  beforeEach(() => {
-    window.sessionStorage.clear();
-  });
-
   describe("insurance details fields", () => {
     it("saves fields to the data store on submit", async () => {
       await testSaveFieldsToDataStore(
@@ -128,7 +126,7 @@ describe("<InsuranceStep2 />", () => {
 
     it("defaults address state to NJ", async () => {
       const user = userEvent.setup();
-      renderFunction();
+      const { mockUpdateDataStore } = renderFunction();
       const combobox = screen.getByRole("combobox", {
         name: "State *",
       });
@@ -137,7 +135,9 @@ describe("<InsuranceStep2 />", () => {
       await fillAllInputsExcept(screen, user, allTestFields, new Set("insuranceState"));
       await user.click(screen.getByRole("button", { name: "Next" }));
 
-      expect(window.sessionStorage.getItem("insuranceState")).toEqual("NJ");
+      expect(mockUpdateDataStore).toHaveBeenCalledWith(
+        expect.objectContaining({ insuranceState: "NJ" }),
+      );
     });
   });
 });

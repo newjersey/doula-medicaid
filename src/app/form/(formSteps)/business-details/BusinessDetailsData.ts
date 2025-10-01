@@ -3,6 +3,7 @@ import {
   getBoolean,
   getBusinessAddressSameAsOtherAddress,
   getValue,
+  type DataStore,
 } from "@/app/form/_utils/dataStore";
 import { type AddressState } from "@/app/form/_utils/inputFields/enums";
 
@@ -44,32 +45,32 @@ export interface BusinessDetailsFormData {
   hasDisclosableEvent: boolean;
 }
 
-const getBusinessDetails1Data = () => {
-  const businessAddressSameAsOtherAddress = getBusinessAddressSameAsOtherAddress(true);
+const getBusinessDetails1Data = (dataStore: DataStore) => {
+  const businessAddressSameAsOtherAddress = getBusinessAddressSameAsOtherAddress(dataStore, true);
   switch (businessAddressSameAsOtherAddress) {
     case "mailing":
       return {
-        businessStreetAddress1: getValue("streetAddress1", true),
-        businessStreetAddress2: getValue("streetAddress2", false),
-        businessCity: getValue("city", true),
-        businessState: getAddressState("state", true),
-        businessZip: getValue("zip", true),
+        businessStreetAddress1: getValue(dataStore, "streetAddress1", true),
+        businessStreetAddress2: getValue(dataStore, "streetAddress2", false),
+        businessCity: getValue(dataStore, "city", true),
+        businessState: getAddressState(dataStore, "state", true),
+        businessZip: getValue(dataStore, "zip", true),
       };
     case "billing":
       return {
-        businessStreetAddress1: getValue("billingStreetAddress1", true),
-        businessStreetAddress2: getValue("billingStreetAddress2", false),
-        businessCity: getValue("billingCity", true),
-        businessState: getAddressState("billingState", true),
-        businessZip: getValue("billingZip", true),
+        businessStreetAddress1: getValue(dataStore, "billingStreetAddress1", true),
+        businessStreetAddress2: getValue(dataStore, "billingStreetAddress2", false),
+        businessCity: getValue(dataStore, "billingCity", true),
+        businessState: getAddressState(dataStore, "billingState", true),
+        businessZip: getValue(dataStore, "billingZip", true),
       };
     case "different":
       return {
-        businessStreetAddress1: getValue("businessStreetAddress1", true),
-        businessStreetAddress2: getValue("businessStreetAddress2", false),
-        businessCity: getValue("businessCity", true),
-        businessState: getAddressState("businessState", true),
-        businessZip: getValue("businessZip", true),
+        businessStreetAddress1: getValue(dataStore, "businessStreetAddress1", true),
+        businessStreetAddress2: getValue(dataStore, "businessStreetAddress2", false),
+        businessCity: getValue(dataStore, "businessCity", true),
+        businessState: getAddressState(dataStore, "businessState", true),
+        businessZip: getValue(dataStore, "businessZip", true),
       };
     default:
       throw new Error(
@@ -78,18 +79,18 @@ const getBusinessDetails1Data = () => {
   }
 };
 
-const getBusinessDetails2Data = () => {
+const getBusinessDetails2Data = (dataStore: DataStore) => {
   return {
-    hasEin: getBoolean("hasEin", true),
-    ein: getValue("ein", false),
+    hasEin: getBoolean(dataStore, "hasEin", true),
+    ein: getValue(dataStore, "ein", false),
   };
 };
 
-export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
-  const hasUncollectedDebt = getBoolean("hasUncollectedDebt", true);
-  const isSubjectToPaymentSuspension = getBoolean("isSubjectToPaymentSuspension", true);
-  const hasBeenExcludedFromMedicaid = getBoolean("hasBeenExcludedFromMedicaid", true);
-  const hasBeenSuspendedFromMedicaid = getBoolean("hasBeenSuspendedFromMedicaid", true);
+export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetailsFormData => {
+  const hasUncollectedDebt = getBoolean(dataStore, "hasUncollectedDebt", true);
+  const isSubjectToPaymentSuspension = getBoolean(dataStore, "isSubjectToPaymentSuspension", true);
+  const hasBeenExcludedFromMedicaid = getBoolean(dataStore, "hasBeenExcludedFromMedicaid", true);
+  const hasBeenSuspendedFromMedicaid = getBoolean(dataStore, "hasBeenSuspendedFromMedicaid", true);
 
   let hasDisclosableEvent = false;
   if (
@@ -101,8 +102,8 @@ export const getBusinessDetailsFormData = (): BusinessDetailsFormData => {
     hasDisclosableEvent = true;
   }
   return {
-    ...getBusinessDetails1Data(),
-    ...getBusinessDetails2Data(),
+    ...getBusinessDetails1Data(dataStore),
+    ...getBusinessDetails2Data(dataStore),
     hasDisclosableEvent: hasDisclosableEvent,
   };
 };
