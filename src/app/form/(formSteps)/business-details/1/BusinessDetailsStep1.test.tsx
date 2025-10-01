@@ -1,6 +1,6 @@
 import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
-import { setInDataStore } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   createTestFields,
@@ -87,34 +87,35 @@ const businessAddressFields = createTestFields([
 const minimalTestFields = [mailingBusinessAddressSameAsOtherAddress];
 const allTestFields = [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields];
 
-const setMailingAddressInDataStore = () => {
-  setInDataStore({
-    streetAddress1: "123 Main St",
-    streetAddress2: "Apt 4B",
-    city: "Trenton",
-    state: "NJ",
-    zip: "10001",
-  });
+const mailingAddress = {
+  streetAddress1: "123 Main St",
+  streetAddress2: "Apt 4B",
+  city: "Trenton",
+  state: "NJ",
+  zip: "10001",
 };
-const setBillingAddressInDataStore = () => {
-  setInDataStore({
-    hasSameBillingMailingAddress: "false",
-    billingStreetAddress1: "400 Billing St",
-    billingStreetAddress2: "Unit 4",
-    billingCity: "New York",
-    billingState: "NY",
-    billingZip: "22222",
-  });
+const billingAddress = {
+  hasSameBillingMailingAddress: "false",
+  billingStreetAddress1: "400 Billing St",
+  billingStreetAddress2: "Unit 4",
+  billingCity: "New York",
+  billingState: "NY",
+  billingZip: "22222",
 };
 
 describe("<BusinessDetailsStep1 />", () => {
-  const renderFunction = () =>
-    renderWithRouter(<BusinessDetailsStep1 />, "/form/business-details/1");
+  const getRenderWithExistingData = (existingData: DataStore) => {
+    return (dataStore: DataStore = {}) =>
+      renderWithProviders(<BusinessDetailsStep1 />, "/form/business-details/1", {
+        ...dataStore,
+        ...existingData,
+      });
+  };
 
   describe("Sole proprietor explainer", () => {
     it("orders the sole proprietor explainer immediately after the sole proprietor content", async () => {
       const user = userEvent.setup();
-      setMailingAddressInDataStore();
+      const renderFunction = getRenderWithExistingData(mailingAddress);
       renderFunction();
 
       const soleProprietorHeading = screen.getByRole("heading", {
@@ -135,7 +136,7 @@ describe("<BusinessDetailsStep1 />", () => {
     });
 
     it("has a heading level one greater than the section heading level", () => {
-      setMailingAddressInDataStore();
+      const renderFunction = getRenderWithExistingData(mailingAddress);
       renderFunction();
       const sectionHeadingLevel = 2;
       const soleProprietorHeading = screen.getByRole("heading", {
@@ -154,7 +155,7 @@ describe("<BusinessDetailsStep1 />", () => {
   describe("business address fields", () => {
     describe("saves fields to the data store on submit", () => {
       it("when the business address is the same as mailing address", async () => {
-        setMailingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData(mailingAddress);
         await testSaveFieldsToDataStore(
           [mailingBusinessAddressSameAsOtherAddress],
           minimalTestFields,
@@ -164,8 +165,7 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it("when the business address is the same as billing address", async () => {
-        setMailingAddressInDataStore();
-        setBillingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData({ ...mailingAddress, ...billingAddress });
         await testSaveFieldsToDataStore(
           [billingBusinessAddressSameAsOtherAddress],
           [billingBusinessAddressSameAsOtherAddress],
@@ -175,7 +175,7 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it("when the business address is different", async () => {
-        setMailingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData(mailingAddress);
         await testSaveFieldsToDataStore(
           [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields],
           allTestFields,
@@ -187,7 +187,7 @@ describe("<BusinessDetailsStep1 />", () => {
 
     describe("marks fields as required and displays an error message", () => {
       it("when businessAddressSameAsOtherAddress it is not filled in", async () => {
-        setMailingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData(mailingAddress);
         await testRequiredField(
           mailingBusinessAddressSameAsOtherAddress,
           minimalTestFields,
@@ -199,7 +199,7 @@ describe("<BusinessDetailsStep1 />", () => {
       it.each(businessAddressFields.filter((field) => field.required === true))(
         "when business address is different and $dataStoreKey is not filled in",
         async (field) => {
-          setMailingAddressInDataStore();
+          const renderFunction = getRenderWithExistingData(mailingAddress);
           await testRequiredField(field, allTestFields, renderFunction, screen);
         },
       );
@@ -208,14 +208,14 @@ describe("<BusinessDetailsStep1 />", () => {
     it.each([mailingBusinessAddressSameAsOtherAddress, ...businessAddressFields])(
       "fills $dataStoreKey from the data store when page is loaded",
       async (field) => {
-        setMailingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData(mailingAddress);
         await testFillFromDataStore(field, renderFunction, screen);
       },
     );
 
     describe("address options", () => {
       it("shows mailing and different address options when hasSameBillingMailingAddress is true", () => {
-        setInDataStore({
+        const renderFunction = getRenderWithExistingData({
           streetAddress1: "123 Main St",
           streetAddress2: "Apt 4B",
           city: "Trenton",
@@ -246,8 +246,7 @@ describe("<BusinessDetailsStep1 />", () => {
       });
 
       it("shows billing address option when hasSameBillingMailingAddress is false", () => {
-        setMailingAddressInDataStore();
-        setBillingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData({ ...mailingAddress, ...billingAddress });
         renderFunction();
         const questionGroup = screen.getByRole("group", {
           name: "Is your business address the same as a previous address? Select one *",
@@ -274,7 +273,7 @@ describe("<BusinessDetailsStep1 />", () => {
     it.each(businessAddressFields.filter((field) => field.required))(
       "conditionally renders $dataStoreKey based on businessAddressSameAsOtherAddress",
       async (field) => {
-        setMailingAddressInDataStore();
+        const renderFunction = getRenderWithExistingData(mailingAddress);
         await testConditionalRender(
           field,
           mailingBusinessAddressSameAsOtherAddress,

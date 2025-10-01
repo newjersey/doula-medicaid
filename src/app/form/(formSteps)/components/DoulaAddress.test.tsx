@@ -4,7 +4,7 @@ import {
 } from "@/app/form/(formSteps)/components/DoulaAddress";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import { fillAllInputsExcept, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -92,7 +92,7 @@ const TestForm = (
 
 describe("DoulaAddress", () => {
   it("renders all expected address inputs", async () => {
-    renderWithRouter(
+    renderWithProviders(
       <DoulaAddress
         fieldsetProps={{
           legend: "What is your address?",
@@ -195,7 +195,7 @@ describe("DoulaAddress", () => {
 
   it("displays an error message if zip has fewer than five digits", async () => {
     const user = userEvent.setup();
-    renderWithRouter(
+    renderWithProviders(
       <TestForm
         fieldsetProps={{
           legend: "What is your address?",
@@ -220,7 +220,7 @@ describe("DoulaAddress", () => {
 
   it("displays error messages that includes a prefix if provided", async () => {
     const user = userEvent.setup();
-    renderWithRouter(
+    renderWithProviders(
       <TestForm
         fieldsetProps={{
           legend: "What is your address?",

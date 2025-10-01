@@ -6,6 +6,7 @@ import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInput
 import NpiExplainer from "@/app/form/(formSteps)/personal-details/3/NpiExplainer";
 import type { PersonalDetails3Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
@@ -18,6 +19,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails3Data]: string } =
 
 const mayHaveThreeOrMoreErrors = false;
 const PersonalDetailsStep3 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -25,9 +27,9 @@ const PersonalDetailsStep3 = () => {
     watch,
   } = useForm<PersonalDetails3Data>({
     defaultValues: {
-      npiNumber: getDefaultValue("npiNumber") ?? "",
-      upinNumber: getDefaultValue("upinNumber") ?? "",
-      medicareProviderId: getDefaultValue("medicareProviderId") ?? "",
+      npiNumber: getDefaultValue(dataStore, "npiNumber") ?? "",
+      upinNumber: getDefaultValue(dataStore, "upinNumber") ?? "",
+      medicareProviderId: getDefaultValue(dataStore, "medicareProviderId") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

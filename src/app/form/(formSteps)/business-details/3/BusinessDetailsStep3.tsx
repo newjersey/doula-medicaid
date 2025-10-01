@@ -4,12 +4,14 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type BusinessDetails3Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
 const BusinessDetailsStep3 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -17,8 +19,8 @@ const BusinessDetailsStep3 = () => {
     watch,
   } = useForm<BusinessDetails3Data>({
     defaultValues: {
-      hasUncollectedDebt: getDefaultBoolean("hasUncollectedDebt"),
-      isSubjectToPaymentSuspension: getDefaultBoolean("isSubjectToPaymentSuspension"),
+      hasUncollectedDebt: getDefaultBoolean(dataStore, "hasUncollectedDebt"),
+      isSubjectToPaymentSuspension: getDefaultBoolean(dataStore, "isSubjectToPaymentSuspension"),
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

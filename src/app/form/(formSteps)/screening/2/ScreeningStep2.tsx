@@ -2,15 +2,17 @@
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import type { Screening2Data } from "@/app/form/(formSteps)/screening/ScreeningData";
 import { unsupportedErrorMessage } from "@/app/form/(formSteps)/screening/_utils/unsupportedErrorMessage";
+import type { Screening2Data } from "@/app/form/(formSteps)/screening/ScreeningData";
 import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
 const ScreeningStep2 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -18,8 +20,8 @@ const ScreeningStep2 = () => {
     watch,
   } = useForm<Screening2Data>({
     defaultValues: {
-      everHadEmployees: getDefaultBoolean("everHadEmployees"),
-      everHadOtherBusinessOwner: getDefaultBoolean("everHadOtherBusinessOwner"),
+      everHadEmployees: getDefaultBoolean(dataStore, "everHadEmployees"),
+      everHadOtherBusinessOwner: getDefaultBoolean(dataStore, "everHadOtherBusinessOwner"),
     },
   });
   const everHadEmployees = watch("everHadEmployees");

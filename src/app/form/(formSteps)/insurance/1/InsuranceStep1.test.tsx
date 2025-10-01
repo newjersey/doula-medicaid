@@ -1,6 +1,7 @@
 import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
+import type { DataStore } from "@/app/form/_utils/dataStore";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   createTestField,
   createTestFields,
@@ -102,7 +103,8 @@ const coverageAmountFields: Array<TestField> = createTestFields([
 const testFields: Array<TestField> = [...insuranceCoverageFields, ...coverageAmountFields];
 
 describe("<InsuranceStep1 />", () => {
-  const renderFunction = () => renderWithRouter(<InsuranceStep1 />, "/form/insurance/1");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<InsuranceStep1 />, "/form/insurance/1", dataStore);
 
   describe("insurance coverage fields", () => {
     it("saves fields to the data store on submit", async () => {

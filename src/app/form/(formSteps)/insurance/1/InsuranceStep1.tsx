@@ -7,6 +7,7 @@ import CoverageAmountExplainer from "@/app/form/(formSteps)/insurance/1/Coverage
 import InsuranceCoverageExplainer from "@/app/form/(formSteps)/insurance/1/InsuranceCoverageExplainer";
 import { type Insurance1Data } from "@/app/form/(formSteps)/insurance/InsuranceData";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { DateInputGroup, Fieldset, FormGroup, Label, Select } from "@trussworks/react-uswds";
@@ -25,6 +26,7 @@ const orderedInputNameToLabel: { [key in keyof Insurance1Data]: string } = {
 
 const InsuranceStep1 = () => {
   const mayHaveThreeOrMoreErrors = true;
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -32,14 +34,14 @@ const InsuranceStep1 = () => {
     formState: { errors },
   } = useForm<Insurance1Data>({
     defaultValues: {
-      insuranceStartDateMonth: getDefaultValue("insuranceStartDateMonth") ?? "",
-      insuranceStartDateDay: getDefaultValue("insuranceStartDateDay") ?? "",
-      insuranceStartDateYear: getDefaultValue("insuranceStartDateYear") ?? "",
-      insuranceEndDateMonth: getDefaultValue("insuranceEndDateMonth") ?? "",
-      insuranceEndDateDay: getDefaultValue("insuranceEndDateDay") ?? "",
-      insuranceEndDateYear: getDefaultValue("insuranceEndDateYear") ?? "",
-      insuranceOccurenceAmount: getDefaultValue("insuranceOccurenceAmount") ?? "",
-      insuranceAggregateAmount: getDefaultValue("insuranceAggregateAmount") ?? "",
+      insuranceStartDateMonth: getDefaultValue(dataStore, "insuranceStartDateMonth") ?? "",
+      insuranceStartDateDay: getDefaultValue(dataStore, "insuranceStartDateDay") ?? "",
+      insuranceStartDateYear: getDefaultValue(dataStore, "insuranceStartDateYear") ?? "",
+      insuranceEndDateMonth: getDefaultValue(dataStore, "insuranceEndDateMonth") ?? "",
+      insuranceEndDateDay: getDefaultValue(dataStore, "insuranceEndDateDay") ?? "",
+      insuranceEndDateYear: getDefaultValue(dataStore, "insuranceEndDateYear") ?? "",
+      insuranceOccurenceAmount: getDefaultValue(dataStore, "insuranceOccurenceAmount") ?? "",
+      insuranceAggregateAmount: getDefaultValue(dataStore, "insuranceAggregateAmount") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

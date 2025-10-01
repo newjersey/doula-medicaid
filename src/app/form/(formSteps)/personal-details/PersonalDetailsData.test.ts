@@ -1,15 +1,11 @@
 import { getPersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
-import {
-  setInDataStore,
-  setRequiredFieldsInDataStore,
-} from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("getPersonalDetailsFormData", () => {
   describe("hasSameBillingMailingAddress handling", () => {
     it("overwrites all billing address values with mailing address values when hasSameBillingMailingAddress is true", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -22,7 +18,7 @@ describe("getPersonalDetailsFormData", () => {
         billingState: "NY",
         billingZip: "22222",
       });
-      expect(getPersonalDetailsFormData()).toMatchObject({
+      expect(getPersonalDetailsFormData(dataStore)).toMatchObject({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -37,8 +33,7 @@ describe("getPersonalDetailsFormData", () => {
     });
 
     it("uses separate billing address values when hasSameBillingMailingAddress is false", () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -51,7 +46,7 @@ describe("getPersonalDetailsFormData", () => {
         billingState: "NY",
         billingZip: "22222",
       });
-      expect(getPersonalDetailsFormData()).toMatchObject({
+      expect(getPersonalDetailsFormData(dataStore)).toMatchObject({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -68,13 +63,12 @@ describe("getPersonalDetailsFormData", () => {
 
   describe("date of birth handling", () => {
     it("creates date when all date components are present", async () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         dateOfBirthDay: "25",
         dateOfBirthMonth: "12",
         dateOfBirthYear: "1990",
       });
-      expect(getPersonalDetailsFormData()).toMatchObject({
+      expect(getPersonalDetailsFormData(dataStore)).toMatchObject({
         dateOfBirth: new Date("1990/12/25"),
       });
     });

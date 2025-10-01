@@ -1,4 +1,4 @@
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
@@ -20,7 +20,7 @@ const getFormProgressButtonsList = () => {
 
 describe("<FormProgressButtons />", () => {
   it("shows only the next button when on the first step", async () => {
-    renderWithRouter(<FormProgressButtons />, "/form/screening/1");
+    renderWithProviders(<FormProgressButtons />, "/form/screening/1");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(1);
@@ -31,7 +31,7 @@ describe("<FormProgressButtons />", () => {
   });
 
   it("shows both previous and next buttons when on a middle step", async () => {
-    renderWithRouter(<FormProgressButtons />, "/form/personal-details/2");
+    renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(2);
@@ -45,7 +45,7 @@ describe("<FormProgressButtons />", () => {
   });
 
   it("shows only the previous button when on the last step", () => {
-    renderWithRouter(<FormProgressButtons />, "/form/finish");
+    renderWithProviders(<FormProgressButtons />, "/form/finish");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(1);

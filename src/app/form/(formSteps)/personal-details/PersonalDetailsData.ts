@@ -1,3 +1,4 @@
+import type { DataStore } from "@/app/form/_utils/dataStore";
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/dataStore";
 import type { AddressState } from "@/app/form/_utils/inputFields/enums";
 
@@ -61,57 +62,59 @@ export interface PersonalDetailsFormData {
   upinNumber: string | null;
 }
 
-export const getPersonalDetailsFormData = (): PersonalDetailsFormData => {
+export const getPersonalDetailsFormData = (dataStore: DataStore): PersonalDetailsFormData => {
   return {
-    ...getPersonalDetails1FormData(),
-    ...getPersonalDetails2FormData(),
-    ...getPersonalDetails3FormData(),
+    ...getPersonalDetails1FormData(dataStore),
+    ...getPersonalDetails2FormData(dataStore),
+    ...getPersonalDetails3FormData(dataStore),
   };
 };
 
-const getPersonalDetails1FormData = () => {
+const getPersonalDetails1FormData = (dataStore: DataStore) => {
   const dateOfBirth = new Date(
-    `${getValue("dateOfBirthMonth", true)}/${getValue("dateOfBirthDay", true)}/${getValue("dateOfBirthYear", true)}`,
+    `${getValue(dataStore, "dateOfBirthMonth", true)}/${getValue(dataStore, "dateOfBirthDay", true)}/${getValue(dataStore, "dateOfBirthYear", true)}`,
   );
   return {
-    firstName: getValue("firstName", true),
-    middleName: getValue("middleName", false),
-    lastName: getValue("lastName", true),
+    firstName: getValue(dataStore, "firstName", true),
+    middleName: getValue(dataStore, "middleName", false),
+    lastName: getValue(dataStore, "lastName", true),
     dateOfBirth: dateOfBirth,
-    socialSecurityNumber: getValue("socialSecurityNumber", true),
-    email: getValue("email", true),
-    phoneNumber: getValue("phoneNumber", true),
+    socialSecurityNumber: getValue(dataStore, "socialSecurityNumber", true),
+    email: getValue(dataStore, "email", true),
+    phoneNumber: getValue(dataStore, "phoneNumber", true),
   };
 };
 
-const getPersonalDetails2FormData = () => {
-  const hasSameBillingMailingAddress = getBoolean("hasSameBillingMailingAddress", true);
+const getPersonalDetails2FormData = (dataStore: DataStore) => {
+  const hasSameBillingMailingAddress = getBoolean(dataStore, "hasSameBillingMailingAddress", true);
   return {
-    streetAddress1: getValue("streetAddress1", true),
-    streetAddress2: getValue("streetAddress2", false),
-    city: getValue("city", true),
-    state: getAddressState("state", true),
-    zip: getValue("zip", true),
+    streetAddress1: getValue(dataStore, "streetAddress1", true),
+    streetAddress2: getValue(dataStore, "streetAddress2", false),
+    city: getValue(dataStore, "city", true),
+    state: getAddressState(dataStore, "state", true),
+    zip: getValue(dataStore, "zip", true),
     billingStreetAddress1: hasSameBillingMailingAddress
-      ? getValue("streetAddress1", true)
-      : getValue("billingStreetAddress1", true),
+      ? getValue(dataStore, "streetAddress1", true)
+      : getValue(dataStore, "billingStreetAddress1", true),
     billingStreetAddress2: hasSameBillingMailingAddress
-      ? getValue("streetAddress2", false)
-      : getValue("billingStreetAddress2", false),
+      ? getValue(dataStore, "streetAddress2", false)
+      : getValue(dataStore, "billingStreetAddress2", false),
     billingCity: hasSameBillingMailingAddress
-      ? getValue("city", true)
-      : getValue("billingCity", true),
+      ? getValue(dataStore, "city", true)
+      : getValue(dataStore, "billingCity", true),
     billingState: hasSameBillingMailingAddress
-      ? getAddressState("state", true)
-      : getAddressState("billingState", true),
-    billingZip: hasSameBillingMailingAddress ? getValue("zip", true) : getValue("billingZip", true),
+      ? getAddressState(dataStore, "state", true)
+      : getAddressState(dataStore, "billingState", true),
+    billingZip: hasSameBillingMailingAddress
+      ? getValue(dataStore, "zip", true)
+      : getValue(dataStore, "billingZip", true),
   };
 };
 
-const getPersonalDetails3FormData = () => {
+const getPersonalDetails3FormData = (dataStore: DataStore) => {
   return {
-    npiNumber: getValue("npiNumber", true),
-    medicareProviderId: getValue("medicareProviderId", false),
-    upinNumber: getValue("upinNumber", false),
+    npiNumber: getValue(dataStore, "npiNumber", true),
+    medicareProviderId: getValue(dataStore, "medicareProviderId", false),
+    upinNumber: getValue(dataStore, "upinNumber", false),
   };
 };

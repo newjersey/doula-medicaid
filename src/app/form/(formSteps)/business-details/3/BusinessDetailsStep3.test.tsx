@@ -1,5 +1,6 @@
 import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/3/BusinessDetailsStep3";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import type { DataStore } from "@/app/form/_utils/dataStore";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   testFillFromDataStore,
   testRequiredField,
@@ -68,8 +69,8 @@ const allTestFields: Array<TestField> = [
 ];
 
 describe("<BusinessDetailsStep3 />", () => {
-  const renderFunction = () =>
-    renderWithRouter(<BusinessDetailsStep3 />, "/form/business-details/3");
+  const renderFunction = (dataStore: DataStore = {}) =>
+    renderWithProviders(<BusinessDetailsStep3 />, "/form/business-details/3", dataStore);
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(minimalTestFields, minimalTestFields, renderFunction, screen);

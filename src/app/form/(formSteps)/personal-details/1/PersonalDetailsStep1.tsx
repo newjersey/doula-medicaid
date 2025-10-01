@@ -6,6 +6,7 @@ import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInput
 import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { DateInputGroup, Fieldset, FormGroup, Label, Select } from "@trussworks/react-uswds";
@@ -25,6 +26,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } =
 
 const mayHaveThreeOrMoreErrors = true;
 const PersonalDetailsStep1 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     formState: { errors },
@@ -33,15 +35,15 @@ const PersonalDetailsStep1 = () => {
     watch,
   } = useForm<PersonalDetails1Data>({
     defaultValues: {
-      firstName: getDefaultValue("firstName") ?? "",
-      middleName: getDefaultValue("middleName") ?? "",
-      lastName: getDefaultValue("lastName") ?? "",
-      dateOfBirthMonth: getDefaultValue("dateOfBirthMonth") ?? "",
-      dateOfBirthDay: getDefaultValue("dateOfBirthDay") ?? "",
-      dateOfBirthYear: getDefaultValue("dateOfBirthYear") ?? "",
-      socialSecurityNumber: getDefaultValue("socialSecurityNumber") ?? "",
-      email: getDefaultValue("email") ?? "",
-      phoneNumber: getDefaultValue("phoneNumber") ?? "",
+      firstName: getDefaultValue(dataStore, "firstName") ?? "",
+      middleName: getDefaultValue(dataStore, "middleName") ?? "",
+      lastName: getDefaultValue(dataStore, "lastName") ?? "",
+      dateOfBirthMonth: getDefaultValue(dataStore, "dateOfBirthMonth") ?? "",
+      dateOfBirthDay: getDefaultValue(dataStore, "dateOfBirthDay") ?? "",
+      dateOfBirthYear: getDefaultValue(dataStore, "dateOfBirthYear") ?? "",
+      socialSecurityNumber: getDefaultValue(dataStore, "socialSecurityNumber") ?? "",
+      email: getDefaultValue(dataStore, "email") ?? "",
+      phoneNumber: getDefaultValue(dataStore, "phoneNumber") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

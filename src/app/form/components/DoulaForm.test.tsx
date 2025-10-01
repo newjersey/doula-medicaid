@@ -4,7 +4,7 @@ import {
   fillAllInputsExcept,
   getInputField,
 } from "@/app/form/_utils/testUtils/fillInputs";
-import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { screen } from "@testing-library/react";
@@ -153,27 +153,27 @@ describe("submission behavior", () => {
   });
 
   afterEach(() => {
-    window.sessionStorage.clear();
     jest.clearAllMocks();
   });
 
   it("saves fields to the data store and routes to the next step on submit", async () => {
-    renderWithRouter(
+    const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
       "/form/personal-details/2",
     );
     const user = userEvent.setup();
     await fillAllInputs(screen, user, doulaTestFormFields);
     await user.click(screen.getByRole("button", { name: "Next" }));
-
-    for (const field of doulaTestFormFields) {
-      expect(window.sessionStorage.getItem(field.dataStoreKey)).toEqual(field.expectedValue);
-    }
+    expect(mockUpdateDataStore).toHaveBeenCalledWith({
+      field1: "Foo",
+      field2: "Bar",
+      field3: "Zoink",
+    });
     expect(mockNavigate).toHaveBeenCalledWith("/form/personal-details/3");
   });
 
   it("does not save fields to the data store and does not route on error", async () => {
-    renderWithRouter(
+    const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
       "/form/personal-details/2",
     );
@@ -181,9 +181,7 @@ describe("submission behavior", () => {
     await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    for (const field of doulaTestFormFields) {
-      expect(window.sessionStorage.getItem(field.dataStoreKey)).toEqual(null);
-    }
+    expect(mockUpdateDataStore).not.toHaveBeenCalled();
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 });
@@ -192,7 +190,7 @@ describe("error summary", () => {
   describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
       const user = userEvent.setup();
-      renderWithRouter(
+      renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
         "/form/personal-details/2",
       );
@@ -217,7 +215,7 @@ describe("error summary", () => {
 
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
       const user = userEvent.setup();
-      renderWithRouter(
+      renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
         "/form/personal-details/2",
       );
@@ -245,7 +243,7 @@ describe("error summary", () => {
   describe("when mayHaveThreeOrMoreErrors is false", () => {
     it("does not show an error summary if there are 3 errors, instead it focuses on the first error", async () => {
       const user = userEvent.setup();
-      renderWithRouter(
+      renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={false} />,
         "/form/personal-details/2",
       );
@@ -269,7 +267,7 @@ describe("error summary", () => {
     async ({ name }) => {
       const labelWithoutAsterisk = name.toString().replace(" *", "");
       const user = userEvent.setup();
-      renderWithRouter(
+      renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
         "/form/personal-details/2",
       );

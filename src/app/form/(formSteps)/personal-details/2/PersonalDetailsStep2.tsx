@@ -6,6 +6,7 @@ import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
 import { useForm } from "react-hook-form";
@@ -26,6 +27,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } =
 
 const mayHaveThreeOrMoreErrors = true;
 const PersonalDetailsStep2 = () => {
+  const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
@@ -34,17 +36,18 @@ const PersonalDetailsStep2 = () => {
     watch,
   } = useForm<PersonalDetails2Data>({
     defaultValues: {
-      streetAddress1: getDefaultValue("streetAddress1") ?? "",
-      streetAddress2: getDefaultValue("streetAddress2") ?? "",
-      city: getDefaultValue("city") ?? "",
-      state: getDefaultValue("state") ?? "NJ",
-      zip: getDefaultValue("zip") ?? "",
-      hasSameBillingMailingAddress: getDefaultValue("hasSameBillingMailingAddress") ?? "",
-      billingStreetAddress1: getDefaultValue("billingStreetAddress1") ?? "",
-      billingStreetAddress2: getDefaultValue("billingStreetAddress2") ?? "",
-      billingCity: getDefaultValue("billingCity") ?? "",
-      billingState: getDefaultValue("billingState") ?? "NJ",
-      billingZip: getDefaultValue("billingZip") ?? "",
+      streetAddress1: getDefaultValue(dataStore, "streetAddress1") ?? "",
+      streetAddress2: getDefaultValue(dataStore, "streetAddress2") ?? "",
+      city: getDefaultValue(dataStore, "city") ?? "",
+      state: getDefaultValue(dataStore, "state") ?? "NJ",
+      zip: getDefaultValue(dataStore, "zip") ?? "",
+      hasSameBillingMailingAddress:
+        getDefaultValue(dataStore, "hasSameBillingMailingAddress") ?? "",
+      billingStreetAddress1: getDefaultValue(dataStore, "billingStreetAddress1") ?? "",
+      billingStreetAddress2: getDefaultValue(dataStore, "billingStreetAddress2") ?? "",
+      billingCity: getDefaultValue(dataStore, "billingCity") ?? "",
+      billingState: getDefaultValue(dataStore, "billingState") ?? "NJ",
+      billingZip: getDefaultValue(dataStore, "billingZip") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });

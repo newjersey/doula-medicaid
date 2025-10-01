@@ -1,4 +1,4 @@
-import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/dataStore";
+import { getAddressState, getBoolean, getValue, type DataStore } from "@/app/form/_utils/dataStore";
 import type { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 export interface TrainingData {
@@ -31,24 +31,26 @@ export interface TrainingFormData {
   instructorPhoneNumber: string | null;
 }
 
-export const getTrainingFormData = (): TrainingFormData => {
-  const isDoulaTrainingInPerson = getBoolean("isDoulaTrainingInPerson", true);
+export const getTrainingFormData = (dataStore: DataStore): TrainingFormData => {
+  const isDoulaTrainingInPerson = getBoolean(dataStore, "isDoulaTrainingInPerson", true);
   return {
-    stateApprovedTraining: getValue("stateApprovedTraining", true),
-    nameOfTrainingOrganization: getValue("nameOfTrainingOrganization", false),
+    stateApprovedTraining: getValue(dataStore, "stateApprovedTraining", true),
+    nameOfTrainingOrganization: getValue(dataStore, "nameOfTrainingOrganization", false),
     isDoulaTrainingInPerson: isDoulaTrainingInPerson,
     trainingStreetAddress1: isDoulaTrainingInPerson
-      ? getValue("trainingStreetAddress1", false)
+      ? getValue(dataStore, "trainingStreetAddress1", false)
       : null,
     trainingStreetAddress2: isDoulaTrainingInPerson
-      ? getValue("trainingStreetAddress2", false)
+      ? getValue(dataStore, "trainingStreetAddress2", false)
       : null,
-    trainingCity: isDoulaTrainingInPerson ? getValue("trainingCity", false) : null,
-    trainingState: isDoulaTrainingInPerson ? getAddressState("trainingState", false) : null,
-    trainingZip: isDoulaTrainingInPerson ? getValue("trainingZip", false) : null,
-    instructorFirstName: getValue("instructorFirstName", true),
-    instructorLastName: getValue("instructorLastName", true),
-    instructorEmail: getValue("instructorEmail", true),
-    instructorPhoneNumber: getValue("instructorPhoneNumber", false),
+    trainingCity: isDoulaTrainingInPerson ? getValue(dataStore, "trainingCity", false) : null,
+    trainingState: isDoulaTrainingInPerson
+      ? getAddressState(dataStore, "trainingState", false)
+      : null,
+    trainingZip: isDoulaTrainingInPerson ? getValue(dataStore, "trainingZip", false) : null,
+    instructorFirstName: getValue(dataStore, "instructorFirstName", true),
+    instructorLastName: getValue(dataStore, "instructorLastName", true),
+    instructorEmail: getValue(dataStore, "instructorEmail", true),
+    instructorPhoneNumber: getValue(dataStore, "instructorPhoneNumber", false),
   };
 };

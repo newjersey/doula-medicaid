@@ -1,21 +1,17 @@
 import { getScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
-import {
-  setInDataStore,
-  setRequiredFieldsInDataStore,
-} from "@/app/form/_utils/fillPdf/testUtils/formData";
+import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 
 describe("getScreeningFormData", () => {
   describe("disclosing entity handling", () => {
     it("sets isSupportedSoleProprietor to true when isSoleProprietor is true, everHadEmployees is false, everHadOtherBusinessOwner is false, haveOtherBusinessOwnerNextYear is false, and hadDhmasBusiness is false", async () => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({
+      const dataStore = generateDataStoreWithRequiredFields({
         isSoleProprietor: "true",
         everHadEmployees: "false",
         everHadOtherBusinessOwner: "false",
         haveOtherBusinessOwnerNextYear: "false",
         hadDhmasBusiness: "false",
       });
-      expect(getScreeningFormData()).toMatchObject({
+      expect(getScreeningFormData(dataStore)).toMatchObject({
         isSupportedSoleProprietor: true,
       });
     });
@@ -27,8 +23,7 @@ describe("getScreeningFormData", () => {
       { key: "haveOtherBusinessOwnerNextYear", value: "true" },
       { key: "hadDhmasBusiness", value: "true" },
     ])("throws an error when $key is $value", async ({ key, value }) => {
-      setRequiredFieldsInDataStore();
-      setInDataStore({ [key]: value });
+      const dataStore = generateDataStoreWithRequiredFields({ [key]: value });
       const expectedValues = {
         isSoleProprietor: "true",
         everHadEmployees: "false",
@@ -37,7 +32,7 @@ describe("getScreeningFormData", () => {
         hadDhmasBusiness: "false",
         ...{ [key]: value },
       };
-      expect(() => getScreeningFormData()).toThrow(
+      expect(() => getScreeningFormData(dataStore)).toThrow(
         `Invalid screening answers: isSoleProprietor: ${expectedValues["isSoleProprietor"]}, everHadEmployees: ${expectedValues["everHadEmployees"]}, everHadOtherBusinessOwner ${expectedValues["everHadOtherBusinessOwner"]}, haveOtherBusinessOwnerNextYear ${expectedValues["haveOtherBusinessOwnerNextYear"]}, hadDhmasBusiness ${expectedValues["hadDhmasBusiness"]}`,
       );
     });
