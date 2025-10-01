@@ -9,7 +9,7 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
-const BusinessDetails3 = () => {
+const BusinessDetailsStep3 = () => {
   const {
     register,
     handleSubmit,
@@ -71,4 +71,4 @@ const BusinessDetails3 = () => {
   );
 };
 
-export default BusinessDetails3;
+export default BusinessDetailsStep3;

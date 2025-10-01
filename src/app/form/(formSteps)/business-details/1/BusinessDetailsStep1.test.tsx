@@ -1,4 +1,4 @@
-import BusinessDetails1 from "@/app/form/(formSteps)/business-details/1/BusinessDetails1";
+import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
 import { setInDataStore } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { renderWithRouter } from "@/app/form/_utils/testUtils/renderWithRouter";
 import {
@@ -108,7 +108,8 @@ const setBillingAddressInDataStore = () => {
 };
 
 describe("<BusinessDetailsStep1 />", () => {
-  const renderFunction = () => renderWithRouter(<BusinessDetails1 />, "/form/business-details/1");
+  const renderFunction = () =>
+    renderWithRouter(<BusinessDetailsStep1 />, "/form/business-details/1");
 
   describe("Sole proprietor explainer", () => {
     it("orders the sole proprietor explainer immediately after the sole proprietor content", async () => {
