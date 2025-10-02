@@ -1,10 +1,10 @@
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { routes } from "@/app/form/clientRoutes";
-import { within } from "@testing-library/dom";
+import { waitFor, within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
 
 describe("<FormLayout />", () => {
-  it("shows the section progress bar", () => {
+  it("shows the progress bar", () => {
     renderWithProviders(routes, "/form/business-details/1");
     const progressSection = screen.getByRole("generic", { name: /progress/i });
     const sections = within(progressSection).getAllByRole("listitem");
@@ -23,38 +23,33 @@ describe("<FormLayout />", () => {
     expect(sections[5]).toHaveTextContent("not completed");
   });
 
-  it("shows heading 1 with the step indicator and section title when the title is different from the section name", () => {
-    renderWithProviders(routes, "/form/finish");
-    const progressBarTitle = "Finish";
-    const sectionTitle = "Download forms";
-
-    const progressSection = screen.getByRole("generic", { name: /progress/i });
-    const progressBarTitles = within(progressSection)
-      .getAllByRole("listitem")
-      .map((section) => section.textContent);
-    expect(progressBarTitles.includes(progressBarTitle)).toBe(true);
-
-    const heading1 = screen.getByRole("heading", { level: 1 });
-    expect(heading1).toHaveTextContent(sectionTitle);
-  });
-
-  it("shows heading 1 with only section title when the section has multiple steps", () => {
+  it("shows heading 1 and page title with the step number and section title", async () => {
     renderWithProviders(routes, "/form/personal-details/2");
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("2 of 3 Personal details");
-  });
-
-  it("shows heading 1 with the step indicator and section title when the section does not have steps", () => {
-    renderWithProviders(routes, "/form/finish");
-    const heading1 = screen.getByRole("heading", { level: 1 });
-    expect(heading1).toHaveTextContent("Download forms");
+    await waitFor(() => expect(document.title).toBe("Personal details 2 of 3 | Doula Common App"));
   });
 
   it("shows required field indicator text with an asterisk", () => {
     renderWithProviders(routes, "/form/business-details/1");
-
     expect(screen.getByText(/A red asterisk.*indicates a required field/)).toBeInTheDocument();
+  });
 
-    expect(screen.getByText("*")).toBeInTheDocument();
+  it("shows the progress bar and page title but not the heading or required indicator when shouldHideProgressHeadingAndRequiredMessage is true", async () => {
+    renderWithProviders(routes, "/form/finish");
+    const name = "Finish";
+
+    const progressSection = screen.getByRole("generic", { name: /progress/i });
+    const names = within(progressSection)
+      .getAllByRole("listitem")
+      .map((section) => section.textContent);
+    expect(names.includes(name)).toBe(true);
+    await waitFor(() => expect(document.title).toBe(`${name} | Doula Common App`));
+
+    const heading1 = screen.getByRole("heading", { level: 1 });
+    expect(heading1).not.toHaveTextContent(name);
+    expect(
+      screen.queryByText(/A red asterisk.*indicates a required field/),
+    ).not.toBeInTheDocument();
   });
 });

@@ -8,7 +8,11 @@ describe("getCurrentFormProgress", () => {
   it("returns the correct step when the path has no steps", () => {
     const currentFormProgress = getCurrentFormProgress("/form/finish");
     expect(currentFormProgress).toEqual({
-      section: { id: "finish", progressBarTitle: "Finish", heading: "Download forms" },
+      section: {
+        id: "finish",
+        name: "Finish",
+        shouldHideProgressHeadingAndRequiredMessage: true,
+      },
     });
   });
 
@@ -17,8 +21,7 @@ describe("getCurrentFormProgress", () => {
     expect(currentFormProgress).toEqual({
       section: {
         id: "personal-details",
-        progressBarTitle: "Personal details",
-        heading: "Personal details",
+        name: "Personal details",
         numSteps: 3,
       },
       step: 2,
@@ -28,7 +31,7 @@ describe("getCurrentFormProgress", () => {
 
 describe("getNextFormProgress", () => {
   it("returns null when the current section has no steps and is the last one", () => {
-    const section = { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" };
+    const section = { id: "section1", name: "Section 1" };
     const allSections = [section];
     const currentFormProgress = {
       section,
@@ -39,8 +42,7 @@ describe("getNextFormProgress", () => {
   it("returns null when the current section has steps and is the last one", () => {
     const section = {
       id: "section1",
-      progressBarTitle: "Section 1",
-      heading: "Section 1",
+      name: "Section 1",
       numSteps: 2,
     };
     const allSections = [section];
@@ -54,7 +56,7 @@ describe("getNextFormProgress", () => {
 
 describe("getPreviousFormProgress", () => {
   it("returns null when the current section has no steps and is the first one", () => {
-    const section = { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" };
+    const section = { id: "section1", name: "Section 1" };
     const allSections = [section];
     const currentFormProgress = {
       section,
@@ -65,8 +67,7 @@ describe("getPreviousFormProgress", () => {
   it("returns null when the current section has steps and is the first one", () => {
     const section = {
       id: "section1",
-      progressBarTitle: "Section 1",
-      heading: "Section 1",
+      name: "Section 1",
       numSteps: 2,
     };
     const allSections = [section];
@@ -82,8 +83,7 @@ describe("getNextStep and getPreviousStep", () => {
   it("gets the correct next and previous steps when transitioning within a section", () => {
     const section = {
       id: "section1",
-      progressBarTitle: "Section 1",
-      heading: "Section 1",
+      name: "Section 1",
       numSteps: 2,
     };
     const allSections = [section];
@@ -104,22 +104,21 @@ describe("getNextStep and getPreviousStep", () => {
     {
       name: "both the first and second sections have no steps",
       firstFormProgress: {
-        section: { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" },
+        section: { id: "section1", name: "Section 1" },
       },
       secondFormProgress: {
-        section: { id: "section2", progressBarTitle: "Section 2", heading: "Section 2" },
+        section: { id: "section2", name: "Section 2" },
       },
     },
     {
       name: "the first section has no steps and the second section has steps",
       firstFormProgress: {
-        section: { id: "section1", progressBarTitle: "Section 1", heading: "Section 1" },
+        section: { id: "section1", name: "Section 1" },
       },
       secondFormProgress: {
         section: {
           id: "section2",
-          progressBarTitle: "Section 2",
-          heading: "Section 2",
+          name: "Section 2",
           numSteps: 3,
         },
         step: 1,
@@ -130,14 +129,13 @@ describe("getNextStep and getPreviousStep", () => {
       firstFormProgress: {
         section: {
           id: "section1",
-          progressBarTitle: "Section 1",
-          heading: "Section 1",
+          name: "Section 1",
           numSteps: 3,
         },
         step: 3,
       },
       secondFormProgress: {
-        section: { id: "section2", progressBarTitle: "Section 2", heading: "Section 2" },
+        section: { id: "section2", name: "Section 2" },
       },
     },
     {
@@ -145,8 +143,7 @@ describe("getNextStep and getPreviousStep", () => {
       firstFormProgress: {
         section: {
           id: "section1",
-          progressBarTitle: "Section 1",
-          heading: "Section 1",
+          name: "Section 1",
           numSteps: 3,
         },
         step: 3,
@@ -154,8 +151,7 @@ describe("getNextStep and getPreviousStep", () => {
       secondFormProgress: {
         section: {
           id: "section2",
-          progressBarTitle: "Section 2",
-          heading: "Section 2",
+          name: "Section 2",
           numSteps: 3,
         },
         step: 1,
