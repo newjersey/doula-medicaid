@@ -15,7 +15,7 @@ export const FormLayout = () => {
     (sections) => sections.id === currentSection.id,
   );
 
-  let pageTitle = currentSection.heading;
+  let pageTitle = currentSection.name;
   if (currentStep !== undefined) {
     pageTitle += ` ${currentStep} of ${currentSection.numSteps}`;
   }
@@ -26,7 +26,7 @@ export const FormLayout = () => {
         <title>{formatTitle(pageTitle)}</title>
         <div className="usa-step-indicator" aria-label="progress">
           <ol className="usa-step-indicator__segments">
-            {allSections.map((sections, sectionIndex) => {
+            {allSections.map((section, sectionIndex) => {
               let completionState: CompletionState;
               switch (true) {
                 case sectionIndex < currentSectionIndex:
@@ -56,12 +56,12 @@ export const FormLayout = () => {
 
               return (
                 <li
-                  key={sections.id}
+                  key={section.id}
                   className={`usa-step-indicator__segment ${liSegmentClassSuffix ? `usa-step-indicator__segment--${liSegmentClassSuffix}` : ""}`}
                   {...(completionState === "current" && { "aria-current": "true" })}
                 >
                   <span className="usa-step-indicator__segment-label">
-                    {sections.progressBarTitle}
+                    {section.name}
                     {screenreaderStatus && (
                       <span className="usa-sr-only">{screenreaderStatus}</span>
                     )}
@@ -71,25 +71,27 @@ export const FormLayout = () => {
             })}
           </ol>
 
-          <div className="usa-step-indicator__header display-flex flex-justify">
-            <h1 className="font-heading-lg">
-              {currentStep !== undefined && (
-                <span className="usa-step-indicator__heading-counter">
-                  <span className="usa-sr-only" data-testid="step-text">
-                    Step
+          {currentSection.shouldHideProgressHeadingAndRequiredMessage !== true && (
+            <div className="usa-step-indicator__header display-flex flex-justify">
+              <h1 className="font-heading-lg">
+                {currentStep !== undefined && (
+                  <span className="usa-step-indicator__heading-counter">
+                    <span className="usa-sr-only" data-testid="step-text">
+                      Step
+                    </span>
+                    <span className="usa-step-indicator__current-step">{currentStep}</span>
+                    &nbsp;
+                    <span className="usa-step-indicator__total-steps">{`of ${currentSection.numSteps}`}</span>
+                    &nbsp;
                   </span>
-                  <span className="usa-step-indicator__current-step">{currentStep}</span>
-                  &nbsp;
-                  <span className="usa-step-indicator__total-steps">{`of ${currentSection.numSteps}`}</span>
-                  &nbsp;
-                </span>
-              )}
-              <span className="usa-step-indicator__heading-text">{currentSection.heading}</span>
-            </h1>
-            <div className="text-right">
-              A red asterisk (<RequiredMarker />) indicates a required field.
+                )}
+                <span className="usa-step-indicator__heading-text">{currentSection.name}</span>
+              </h1>
+              <div className="text-right">
+                A red asterisk (<RequiredMarker />) indicates a required field.
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <HorizontalDivider />
         <Outlet />

@@ -49,7 +49,7 @@ import {
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page7";
 import { fillForm, type FormData } from "@form/_utils/fillPdf/form";
 
-export const FFS_INDIVIDUAL_PDF_NAME = "ffs_individual_filled.pdf";
+export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
 
 export interface PdfFfsIndividual

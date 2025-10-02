@@ -4,7 +4,7 @@ import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/for
 import { Button, ButtonGroup } from "@trussworks/react-uswds";
 import { NavLink } from "react-router";
 
-const FormProgressButtons = () => {
+const FormProgressButtons = (props: { overrideClassNames?: string }) => {
   const formProgressPosition = useFormProgressPosition();
 
   const buttons: Array<React.ReactNode> = [];
@@ -29,7 +29,11 @@ const FormProgressButtons = () => {
 
   return (
     <>
-      <div className="margin-top-4 display-flex flex-column flex-align-end">
+      <div
+        className={
+          props.overrideClassNames ?? "margin-top-4 display-flex flex-column flex-align-end"
+        }
+      >
         <ButtonGroup type="default">{buttons}</ButtonGroup>
       </div>
     </>

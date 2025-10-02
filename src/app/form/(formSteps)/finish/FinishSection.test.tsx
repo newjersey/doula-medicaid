@@ -7,7 +7,7 @@ import { screen, waitFor } from "@testing-library/react";
 
 jest.mock("@form/_utils/fillPdf/form", () => ({
   ...(jest.requireActual("@form/_utils/fillPdf/form") as object),
-  fillForm: jest.fn((_pdfFields, _pdfPath, filename: string) => {
+  fillForm: jest.fn((_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
     return { filename, bytes: new Uint8Array(0) };
   }),
 }));
@@ -32,21 +32,22 @@ describe("<FinishSection />", () => {
     expect(screen.queryByRole("link", { name: "Next" })).not.toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByText("Download your forms")).toBeInTheDocument();
+      expect(screen.getByText("Download your form")).toBeInTheDocument();
     });
 
-    const downloadLink = screen.getByRole("link", { name: "Download your forms" });
+    const downloadLink = screen.getByRole("link", { name: "Download your form" });
     expect(downloadLink).toHaveAttribute("href", "mock-blob-url");
-    expect(downloadLink).toHaveAttribute("download", "filled_forms.zip");
+    expect(downloadLink).toHaveAttribute("download", "Fee For Service Application.pdf");
   });
 
   it("shows a message if not all required fields have been filled", async () => {
     const dataStore = generateDataStoreWithRequiredFields({}, ["dateOfBirthDay"]);
     renderFunction(dataStore);
     expect(
-      screen.getByText(
-        "Not all required fields have been filled out. Please fill all required fields.",
-      ),
+      screen.getByRole("heading", { level: 1, name: "Some form fields are missing" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Please go through previous steps and fill all required fields."),
     ).toBeInTheDocument();
   });
 });

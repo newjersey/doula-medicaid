@@ -1,7 +1,7 @@
 export interface Section {
   id: string;
-  progressBarTitle: string;
-  heading: string;
+  name: string;
+  shouldHideProgressHeadingAndRequiredMessage?: boolean;
   numSteps?: number;
 }
 
@@ -12,38 +12,33 @@ export interface FormProgress {
 export const allSections: Array<Section> = [
   {
     id: "screening",
-    progressBarTitle: "Screening",
-    heading: "Screening",
+    name: "Screening",
     numSteps: 3,
   },
   {
     id: "insurance",
-    progressBarTitle: "Insurance",
-    heading: "Insurance",
+    name: "Insurance",
     numSteps: 2,
   },
   {
     id: "training",
-    progressBarTitle: "Training",
-    heading: "Training",
+    name: "Training",
     numSteps: 1,
   },
   {
     id: "personal-details",
-    progressBarTitle: "Personal details",
-    heading: "Personal details",
+    name: "Personal details",
     numSteps: 3,
   },
   {
     id: "business-details",
-    progressBarTitle: "Business details",
-    heading: "Business details",
+    name: "Business details",
     numSteps: 4,
   },
   {
     id: "finish",
-    progressBarTitle: "Finish",
-    heading: "Download forms",
+    name: "Finish",
+    shouldHideProgressHeadingAndRequiredMessage: true,
   },
 ];
 
