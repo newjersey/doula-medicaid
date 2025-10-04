@@ -21,7 +21,7 @@
   "dependencies": {
     "@newjersey/njwds": "2.6.1",
     "@trussworks/react-uswds": "10.0.2",
-    "jiti": "2.6.0",
+    "jiti": "2.6.1",
     "jszip": "3.10.1",
     "next": "15.5.4",
     "node-poppler": "8.0.4",
