@@ -1,6 +1,7 @@
 export interface Section {
   id: string;
   name: string;
+  shouldHideProgressBar?: boolean;
   shouldHideProgressHeadingAndRequiredMessage?: boolean;
   numSteps?: number;
 }
@@ -10,6 +11,12 @@ export interface FormProgress {
   step?: number;
 }
 export const allSections: Array<Section> = [
+  {
+    id: "landing",
+    name: "Landing",
+    shouldHideProgressBar: true,
+    shouldHideProgressHeadingAndRequiredMessage: true,
+  },
   {
     id: "screening",
     name: "Screening",
@@ -41,6 +48,8 @@ export const allSections: Array<Section> = [
     shouldHideProgressHeadingAndRequiredMessage: true,
   },
 ];
+
+export const progressBarSections = allSections.filter((section) => section.id !== "landing");
 
 export const getCurrentFormProgress = (pathname: string): FormProgress => {
   const pathParts = pathname.split("/");

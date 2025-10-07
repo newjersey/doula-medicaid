@@ -9,8 +9,17 @@ const nextConfig: NextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/:slug*",
-        destination: "/",
+        source: "/form/:slug*",
+        destination: "/form",
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/form/landing",
+        permanent: false,
       },
     ];
   },
