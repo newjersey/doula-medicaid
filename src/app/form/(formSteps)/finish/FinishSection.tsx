@@ -44,7 +44,7 @@ const FinishSection = () => {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
         {downloadData === null && hasMissingValues === false && (
           <>
-            <h1 className="font-heading-lg">Filling your form...</h1>
+            <h1 className="font-heading-lg">Filling your application...</h1>
           </>
         )}
         {hasMissingValues && (
@@ -56,17 +56,17 @@ const FinishSection = () => {
         {downloadData && (
           <>
             <div className="font-heading-2xl">🎉</div>
-            <h1 className="font-heading-lg">Great job! Next, download your form.</h1>
+            <h1 className="font-heading-lg">Great job! Next, download your application.</h1>
             <p style={{ textAlign: "center" }}>
               Download your pre-filled application forms and follow the instructions on the cover
-              page to complete and submit your Medicaid Fee-for-Serivce application.
+              page to complete and submit your Medicaid Fee-for-Service application.
             </p>
             <a
               href={downloadData.url}
               download={downloadData.filename}
               className="usa-button margin-right-0 margin-top-4"
             >
-              Download your form
+              Download your application
             </a>
           </>
         )}
