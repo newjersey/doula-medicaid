@@ -9,17 +9,8 @@ const nextConfig: NextConfig = {
   rewrites: async () => {
     return [
       {
-        source: "/form/:slug*",
-        destination: "/form",
-      },
-    ];
-  },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/form/screening/1",
-        permanent: false,
+        source: "/:slug*",
+        destination: "/",
       },
     ];
   },

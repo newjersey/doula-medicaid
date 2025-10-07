@@ -1,3 +1,4 @@
+import LandingPage from "@/app/components/LandingPage";
 import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
 import BusinessDetailsStep2 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
 import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/3/BusinessDetailsStep3";
@@ -17,6 +18,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 
 export const routes = (
   <Routes>
+    <Route index element={<LandingPage />}></Route>
     <Route path="form">
       <Route element={<FormLayout />}>
         <Route path="screening">
