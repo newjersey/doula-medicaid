@@ -17,7 +17,6 @@ describe("Page 3 - doula qualifications form", () => {
       const pdfKey = "fd427LegalName";
       expectNoDuplicateTest<PdfFfsIndividualPage3>(pdfKey, testedPdfKeys);
       testLegalName(pdfKey);
-      expect(true).toEqual(false);
     });
 
     it("fills social security number", () => {
