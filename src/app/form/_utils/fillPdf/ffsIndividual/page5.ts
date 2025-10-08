@@ -27,15 +27,16 @@ export interface PdfFfsIndividualPage5 {
 }
 
 export const getPage5Fields = (formData: FormData): Partial<PdfFfsIndividualPage5> => {
+  const addressLine3 = formatAddressLine3(
+    formData.billingCity,
+    formData.billingState,
+    formData.billingZip,
+  );
   return {
     fd443telephoneno: formData.phoneNumber ?? "",
     fd443npino: formData.npiNumber ?? "",
     fd443paytoaddressline1: formData.billingStreetAddress1 ?? "",
-    fd443paytoaddressline2: formData.billingStreetAddress2 ?? "",
-    fd443paytoaddressline3: formatAddressLine3(
-      formData.billingCity,
-      formData.billingState,
-      formData.billingZip,
-    ),
+    fd443paytoaddressline2: formData.billingStreetAddress2 ?? addressLine3,
+    fd443paytoaddressline3: formData.billingStreetAddress2 ? addressLine3 : "",
   };
 };

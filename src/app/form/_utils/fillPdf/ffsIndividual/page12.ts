@@ -17,16 +17,13 @@ export interface PdfFfsIndividualPage12 {
 }
 
 export const getPage12Fields = (formData: FormData): Partial<PdfFfsIndividualPage12> => {
+  const addressLine3 = formatAddressLine3(formData.city, formData.state, formData.zip);
   return {
     "fd455aREQPAPER_Provider Name": formatName(formData),
     "fd455aREQPAPER_Provider Number": formData.npiNumber ?? "",
     "fd455aREQPAPER_Telephone Number": formData.phoneNumber ?? "",
     "fd455aREQPAPER_Mail To Address 1": formData.streetAddress1 ?? "",
-    "fd455aREQPAPER_Mail To Address 2": formData.streetAddress2 ?? "",
-    "fd455aREQPAPER_Mail To Address 3": formatAddressLine3(
-      formData.city,
-      formData.state,
-      formData.zip,
-    ),
+    "fd455aREQPAPER_Mail To Address 2": formData.streetAddress2 ?? addressLine3,
+    "fd455aREQPAPER_Mail To Address 3": formData.streetAddress2 ? addressLine3 : "",
   };
 };

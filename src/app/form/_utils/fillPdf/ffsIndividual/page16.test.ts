@@ -74,8 +74,8 @@ describe("Page 16 - disclosure of ownership and control interest statement", () 
             businessZip: "22222",
           },
           expectedLine1Key: "456 Test St",
-          expectedLine2Key: "",
-          expectedLine3Key: "Newark, NJ 22222",
+          expectedLine2Key: "Newark, NJ 22222",
+          expectedLine3Key: "",
         },
       ];
       for (const testCase of testCases) {
