@@ -20,7 +20,7 @@ const getFormProgressButtonsList = () => {
 
 describe("<FormProgressButtons />", () => {
   it("shows only the next button when on the first step", async () => {
-    renderWithProviders(<FormProgressButtons />, "/form/screening/1");
+    renderWithProviders(<FormProgressButtons />, "/form/landing");
 
     const formProgressButtonGroup = getFormProgressButtonsList();
     expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(1);

@@ -7,12 +7,16 @@ import { NavLink } from "react-router";
 const LandingPage = () => {
   const formProgressPosition = useFormProgressPosition();
 
+  if (formProgressPosition.next === null) {
+    throw new Error(`Unexpected no next page found for ${formProgressPosition.current}`);
+  }
+
   return (
     <div>
       <h1>Welcome to the Doula Medicaid Application</h1>
       <NavLink
         key="start"
-        to={formatFormProgressUrl(formProgressPosition.next!)}
+        to={formatFormProgressUrl(formProgressPosition.next)}
         className="usa-button usa-button--outline margin-top-0"
       >
         Start now

@@ -1,8 +1,8 @@
 export interface Section {
   id: string;
   name: string;
-  shouldHideProgressBar?: boolean;
-  shouldHideProgressHeadingAndRequiredMessage?: boolean;
+  shouldShowProgressBar: boolean;
+  shouldShowProgressHeadingAndRequiredMessage: boolean;
   numSteps?: number;
 }
 
@@ -10,46 +10,58 @@ export interface FormProgress {
   section: Section;
   step?: number;
 }
-export const allSections: Array<Section> = [
-  {
-    id: "landing",
-    name: "Landing",
-    shouldHideProgressBar: true,
-    shouldHideProgressHeadingAndRequiredMessage: true,
-  },
+export const progressBarSections: Array<Section> = [
   {
     id: "screening",
     name: "Screening",
     numSteps: 3,
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
     id: "insurance",
     name: "Insurance",
     numSteps: 2,
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
     id: "training",
     name: "Training",
     numSteps: 1,
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
     id: "personal-details",
     name: "Personal details",
     numSteps: 3,
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
     id: "business-details",
     name: "Business details",
     numSteps: 4,
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
     id: "finish",
     name: "Finish",
-    shouldHideProgressHeadingAndRequiredMessage: true,
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: false,
   },
 ];
 
-export const progressBarSections = allSections.filter((section) => section.id !== "landing");
+export const allSections: Array<Section> = [
+  {
+    id: "landing",
+    name: "Landing",
+    shouldShowProgressBar: false,
+    shouldShowProgressHeadingAndRequiredMessage: false,
+  },
+].concat(progressBarSections);
 
 export const getCurrentFormProgress = (pathname: string): FormProgress => {
   const pathParts = pathname.split("/");

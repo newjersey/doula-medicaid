@@ -57,7 +57,7 @@ export const ProgressBar = () => {
         })}
       </ol>
 
-      {currentSection.shouldHideProgressHeadingAndRequiredMessage !== true && (
+      {currentSection.shouldShowProgressHeadingAndRequiredMessage === true && (
         <div className="usa-step-indicator__header display-flex flex-justify">
           <h1 className="font-heading-lg">
             {currentStep !== undefined && (

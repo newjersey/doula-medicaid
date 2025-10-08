@@ -11,7 +11,8 @@ describe("getCurrentFormProgress", () => {
       section: {
         id: "finish",
         name: "Finish",
-        shouldHideProgressHeadingAndRequiredMessage: true,
+        shouldShowProgressBar: true,
+        shouldShowProgressHeadingAndRequiredMessage: false,
       },
     });
   });
@@ -23,6 +24,8 @@ describe("getCurrentFormProgress", () => {
         id: "personal-details",
         name: "Personal details",
         numSteps: 3,
+        shouldShowProgressBar: true,
+        shouldShowProgressHeadingAndRequiredMessage: true,
       },
       step: 2,
     });
@@ -31,7 +34,12 @@ describe("getCurrentFormProgress", () => {
 
 describe("getNextFormProgress", () => {
   it("returns null when the current section has no steps and is the last one", () => {
-    const section = { id: "section1", name: "Section 1" };
+    const section = {
+      id: "section1",
+      name: "Section 1",
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
+    };
     const allSections = [section];
     const currentFormProgress = {
       section,
@@ -44,6 +52,8 @@ describe("getNextFormProgress", () => {
       id: "section1",
       name: "Section 1",
       numSteps: 2,
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
     };
     const allSections = [section];
     const currentFormProgress = {
@@ -56,7 +66,12 @@ describe("getNextFormProgress", () => {
 
 describe("getPreviousFormProgress", () => {
   it("returns null when the current section has no steps and is the first one", () => {
-    const section = { id: "section1", name: "Section 1" };
+    const section = {
+      id: "section1",
+      name: "Section 1",
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
+    };
     const allSections = [section];
     const currentFormProgress = {
       section,
@@ -69,6 +84,8 @@ describe("getPreviousFormProgress", () => {
       id: "section1",
       name: "Section 1",
       numSteps: 2,
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
     };
     const allSections = [section];
     const currentFormProgress = {
@@ -85,6 +102,8 @@ describe("getNextStep and getPreviousStep", () => {
       id: "section1",
       name: "Section 1",
       numSteps: 2,
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
     };
     const allSections = [section];
     const firstFormProgress = {
@@ -104,22 +123,39 @@ describe("getNextStep and getPreviousStep", () => {
     {
       name: "both the first and second sections have no steps",
       firstFormProgress: {
-        section: { id: "section1", name: "Section 1" },
+        section: {
+          id: "section1",
+          name: "Section 1",
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
+        },
       },
       secondFormProgress: {
-        section: { id: "section2", name: "Section 2" },
+        section: {
+          id: "section2",
+          name: "Section 2",
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
+        },
       },
     },
     {
       name: "the first section has no steps and the second section has steps",
       firstFormProgress: {
-        section: { id: "section1", name: "Section 1" },
+        section: {
+          id: "section1",
+          name: "Section 1",
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
+        },
       },
       secondFormProgress: {
         section: {
           id: "section2",
           name: "Section 2",
           numSteps: 3,
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
         },
         step: 1,
       },
@@ -131,11 +167,18 @@ describe("getNextStep and getPreviousStep", () => {
           id: "section1",
           name: "Section 1",
           numSteps: 3,
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
         },
         step: 3,
       },
       secondFormProgress: {
-        section: { id: "section2", name: "Section 2" },
+        section: {
+          id: "section2",
+          name: "Section 2",
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
+        },
       },
     },
     {
@@ -145,6 +188,8 @@ describe("getNextStep and getPreviousStep", () => {
           id: "section1",
           name: "Section 1",
           numSteps: 3,
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
         },
         step: 3,
       },
@@ -153,6 +198,8 @@ describe("getNextStep and getPreviousStep", () => {
           id: "section2",
           name: "Section 2",
           numSteps: 3,
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
         },
         step: 1,
       },
