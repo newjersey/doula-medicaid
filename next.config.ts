@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
-        destination: "/form/screening/1",
+        destination: "/form/welcome",
         permanent: false,
       },
     ];

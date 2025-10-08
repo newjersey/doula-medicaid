@@ -13,12 +13,14 @@ import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
 import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
+import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 export const routes = (
   <Routes>
     <Route path="form">
       <Route element={<FormLayout />}>
+        <Route path="welcome" element={<WelcomeSection />} />
         <Route path="screening">
           <Route path="1" element={<ScreeningStep1 />} />
           <Route path="2" element={<ScreeningStep2 />} />
