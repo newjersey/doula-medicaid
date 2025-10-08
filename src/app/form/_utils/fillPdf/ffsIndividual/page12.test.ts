@@ -30,36 +30,47 @@ describe("Page 12 - request for paper updates", () => {
     testPhoneNumber(pdfKey);
   });
 
-  it.each([
-    {
-      description: "mail to address line 1",
-      pdfKey: "fd455aREQPAPER_Mail To Address 1" as const,
-      formData: {
-        streetAddress1: "123 Main St",
+  it("fills in mail to address", () => {
+    const line1Key = "fd455aREQPAPER_Mail To Address 1" as const;
+    const line2Key = "fd455aREQPAPER_Mail To Address 2" as const;
+    const line3Key = "fd455aREQPAPER_Mail To Address 3" as const;
+    const pdfKeys = [line1Key, line2Key, line3Key];
+    for (const pdfKey of pdfKeys) {
+      expectNoDuplicateTest<PdfFfsIndividualPage12>(pdfKey, testedPdfKeys);
+    }
+
+    const testCases = [
+      {
+        description: "has streetAddress2",
+        formData: {
+          streetAddress1: "456 Test St",
+          streetAddress2: "Suite Test",
+          city: "Newark",
+          state: AddressState.NJ,
+          zip: "22222",
+        },
+        expectedLine1Key: "456 Test St",
+        expectedLine2Key: "Suite Test",
+        expectedLine3Key: "Newark, NJ 22222",
       },
-      expected: "123 Main St",
-    },
-    {
-      description: "mail to address line 2",
-      pdfKey: "fd455aREQPAPER_Mail To Address 2" as const,
-      formData: {
-        streetAddress2: "Apt 2F",
+      {
+        description: "no streetAddress2",
+        formData: {
+          streetAddress1: "456 Test St",
+          city: "Newark",
+          state: AddressState.NJ,
+          zip: "22222",
+        },
+        expectedLine1Key: "456 Test St",
+        expectedLine2Key: "Newark, NJ 22222",
+        expectedLine3Key: "",
       },
-      expected: "Apt 2F",
-    },
-    {
-      description: "mail to address line 3",
-      pdfKey: "fd455aREQPAPER_Mail To Address 3" as const,
-      formData: {
-        city: "Trenton",
-        state: AddressState.NJ,
-        zip: "11111",
-      },
-      expected: "Trenton, NJ 11111",
-    },
-  ])("fills in $description", ({ pdfKey, formData, expected }) => {
-    expectNoDuplicateTest<PdfFfsIndividualPage12>(pdfKey, testedPdfKeys);
-    const pdfFields = mapFfsIndividualFields(generateFormData(formData));
-    expect(pdfFields[pdfKey]).toEqual(expected);
+    ];
+    for (const testCase of testCases) {
+      const pdfFields = mapFfsIndividualFields(generateFormData(testCase.formData));
+      expect(pdfFields[line1Key]).toEqual(testCase.expectedLine1Key);
+      expect(pdfFields[line2Key]).toEqual(testCase.expectedLine2Key);
+      expect(pdfFields[line3Key]).toEqual(testCase.expectedLine3Key);
+    }
   });
 });

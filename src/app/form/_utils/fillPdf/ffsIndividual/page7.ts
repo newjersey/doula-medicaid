@@ -42,6 +42,7 @@ export const getPage7Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     fd425mailtoaddressstate: formData.state ?? "",
     fd425mailtoaddresscity: formData.city ?? "",
     fd425mailtoaddresszip: formData.zip ?? "",
+    fd425transfercbno: true,
 
     fd425paytoaddressstreet: `${formData.billingStreetAddress1}${formData.billingStreetAddress2 ? ` ${formData.billingStreetAddress2}` : ""}`,
     fd425paytoaddresscity: formData.billingCity ?? "",

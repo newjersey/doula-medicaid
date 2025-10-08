@@ -29,6 +29,11 @@ export interface PdfFfsIndividualPage16 {
 
 export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPage16> => {
   if (formData.isSupportedSoleProprietor === true) {
+    const addressLine3 = formatAddressLine3(
+      formData.businessCity,
+      formData.businessState,
+      formData.businessZip,
+    );
     return {
       "fd452disclosingentitySole Proprietorship": true,
       fd452nameofdisclosingentity: formatName(formData),
@@ -38,12 +43,8 @@ export const getPage16Fields = (formData: FormData): Partial<PdfFfsIndividualPag
       fd452ownershipoffivepercentormoreno: true,
       fd452convictedofcrimeno: true,
       fd452businessstreetline1: formData.businessStreetAddress1,
-      fd452businessstreetline2: formData.businessStreetAddress2 ?? "",
-      fd452businessstreetline3: formatAddressLine3(
-        formData.businessCity,
-        formData.businessState,
-        formData.businessZip,
-      ),
+      fd452businessstreetline2: formData.businessStreetAddress2 ?? addressLine3,
+      fd452businessstreetline3: formData.businessStreetAddress2 ? addressLine3 : "",
     };
   }
   throw new UnexpectedFormDataError(

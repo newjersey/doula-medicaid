@@ -87,6 +87,65 @@ describe("Page 7 - individual doula provider application section I provider iden
     expect(pdfFields[pdfKey]).toEqual("test@test.com");
   });
 
+  describe("mail to address", () => {
+    it("fills in mail to address line 1", () => {
+      const pdfKey = "fd425mailtoaddressstreet";
+      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+      const pdfFieldsOnlyAddress1 = mapFfsIndividualFields(
+        generateFormData({
+          streetAddress1: "55 Cherry St",
+        }),
+      );
+      expect(pdfFieldsOnlyAddress1[pdfKey]).toEqual("55 Cherry St");
+
+      const pdfFieldsAddress1And2 = mapFfsIndividualFields(
+        generateFormData({
+          streetAddress1: "55 Cherry St",
+          streetAddress2: "Apt 4",
+        }),
+      );
+      expect(pdfFieldsAddress1And2[pdfKey]).toEqual("55 Cherry St Apt 4");
+    });
+
+    it.each([
+      {
+        description: "mail to address city",
+        pdfKey: "fd425mailtoaddresscity" as const,
+        formData: {
+          city: "Newark",
+        },
+        expected: "Newark",
+      },
+      {
+        description: "mail to address state",
+        pdfKey: "fd425mailtoaddressstate" as const,
+        formData: {
+          state: AddressState.NJ,
+        },
+        expected: "NJ",
+      },
+      {
+        description: "mail to address zip",
+        pdfKey: "fd425mailtoaddresszip" as const,
+        formData: {
+          zip: "08609",
+        },
+        expected: "08609",
+      },
+    ])("fills in $description", ({ pdfKey, formData, expected }) => {
+      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(generateFormData(formData));
+      expect(pdfFields[pdfKey]).toEqual(expected);
+    });
+  });
+
+  it("fills in transfer of ownership no", () => {
+    const pdfKey = "fd425transfercbno";
+    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    const pdfFields = mapFfsIndividualFields(generateFormData({}));
+    expect(pdfFields[pdfKey]).toEqual(true);
+  });
+
   describe("pay to address", () => {
     it("fills in pay to address line 1", () => {
       const pdfKey = "fd425paytoaddressstreet";
@@ -129,58 +188,6 @@ describe("Page 7 - individual doula provider application section I provider iden
         pdfKey: "fd425paytoaddresszip" as const,
         formData: {
           billingZip: "08609",
-        },
-        expected: "08609",
-      },
-    ])("fills in $description", ({ pdfKey, formData, expected }) => {
-      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
-      const pdfFields = mapFfsIndividualFields(generateFormData(formData));
-      expect(pdfFields[pdfKey]).toEqual(expected);
-    });
-  });
-
-  describe("mail to address", () => {
-    it("fills in pay to address line 1", () => {
-      const pdfKey = "fd425mailtoaddressstreet";
-      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
-      const pdfFieldsOnlyAddress1 = mapFfsIndividualFields(
-        generateFormData({
-          streetAddress1: "55 Cherry St",
-        }),
-      );
-      expect(pdfFieldsOnlyAddress1[pdfKey]).toEqual("55 Cherry St");
-
-      const pdfFieldsAddress1And2 = mapFfsIndividualFields(
-        generateFormData({
-          streetAddress1: "55 Cherry St",
-          streetAddress2: "Apt 4",
-        }),
-      );
-      expect(pdfFieldsAddress1And2[pdfKey]).toEqual("55 Cherry St Apt 4");
-    });
-
-    it.each([
-      {
-        description: "mail to address city",
-        pdfKey: "fd425mailtoaddresscity" as const,
-        formData: {
-          city: "Newark",
-        },
-        expected: "Newark",
-      },
-      {
-        description: "mail to address state",
-        pdfKey: "fd425mailtoaddressstate" as const,
-        formData: {
-          state: AddressState.NJ,
-        },
-        expected: "NJ",
-      },
-      {
-        description: "mail to address zip",
-        pdfKey: "fd425mailtoaddresszip" as const,
-        formData: {
-          zip: "08609",
         },
         expected: "08609",
       },

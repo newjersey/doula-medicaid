@@ -1,4 +1,8 @@
 import {
+  getPage10Fields,
+  type PdfFfsIndividualPage10,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page10";
+import {
   getPage12Fields,
   type PdfFfsIndividualPage12,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page12";
@@ -40,6 +44,10 @@ import {
   type PdfFfsIndividualPage3,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page3";
 import {
+  getPage4Fields,
+  type PdfFfsIndividualPage4,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page4";
+import {
   getPage5Fields,
   type PdfFfsIndividualPage5,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page5";
@@ -54,8 +62,10 @@ export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
 
 export interface PdfFfsIndividual
   extends PdfFfsIndividualPage3,
+    PdfFfsIndividualPage4,
     PdfFfsIndividualPage5,
     PdfFfsIndividualPage7,
+    PdfFfsIndividualPage10,
     PdfFfsIndividualPage12,
     PdfFfsIndividualPage16,
     PdfFfsIndividualPage17,
@@ -69,8 +79,10 @@ export interface PdfFfsIndividual
 export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndividual> => {
   const pdfFields = {
     ...getPage3Fields(formData),
+    ...getPage4Fields(formData),
     ...getPage5Fields(formData),
     ...getPage7Fields(formData),
+    ...getPage10Fields(formData),
     ...getPage12Fields(formData),
     ...getPage16Fields(formData),
     ...getPage17Fields(formData),
