@@ -56,8 +56,8 @@ export const progressBarSections: Array<Section> = [
 
 export const allSections: Array<Section> = [
   {
-    id: "landing",
-    name: "Landing",
+    id: "welcome",
+    name: "Welcome",
     shouldShowProgressBar: false,
     shouldShowProgressHeadingAndRequiredMessage: false,
   },

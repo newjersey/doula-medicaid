@@ -6,7 +6,6 @@ import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { FormLayout } from "@/app/form/(formSteps)/FormLayout";
 import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
 import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
-import LandingPage from "@/app/form/(formSteps)/landing/LandingPage";
 import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
 import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
 import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
@@ -14,13 +13,14 @@ import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
 import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
+import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
 import { BrowserRouter, Route, Routes } from "react-router";
 
 export const routes = (
   <Routes>
     <Route path="form">
       <Route element={<FormLayout />}>
-        <Route path="landing" element={<LandingPage />} />
+        <Route path="welcome" element={<WelcomeSection />} />
         <Route path="screening">
           <Route path="1" element={<ScreeningStep1 />} />
           <Route path="2" element={<ScreeningStep2 />} />

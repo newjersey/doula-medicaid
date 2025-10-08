@@ -4,7 +4,7 @@ import {
 } from "@/app/form/_utils/formProgressRouting";
 import { NavLink } from "react-router";
 
-const LandingPage = () => {
+const WelcomeSection = () => {
   const formProgressPosition = useFormProgressPosition();
 
   if (formProgressPosition.next === null) {
@@ -25,4 +25,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default WelcomeSection;

@@ -5,8 +5,8 @@ import { screen } from "@testing-library/react";
 
 describe("<FormLayout />", () => {
   it("does not show progress bar when shouldShowProgressBar is false", async () => {
-    const name = "Landing";
-    renderWithProviders(routes, "/form/landing");
+    const name = "Welcome";
+    renderWithProviders(routes, "/form/welcome");
     await waitFor(() => expect(document.title).toBe(`${name} | Doula Common App`));
     expect(screen.queryByRole("generic", { name: /progress/i })).not.toBeInTheDocument();
   });
