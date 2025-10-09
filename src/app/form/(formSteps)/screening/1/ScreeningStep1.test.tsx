@@ -50,5 +50,6 @@ describe("<ScreeningStep1 />", () => {
       screen,
       yesIsSoleProprietor,
     );
+    expect(true).toEqual(false);
   });
 });
