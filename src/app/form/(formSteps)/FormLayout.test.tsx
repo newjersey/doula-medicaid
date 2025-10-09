@@ -7,14 +7,14 @@ describe("<FormLayout />", () => {
   it("does not show progress bar when shouldShowProgressBar is false", async () => {
     const name = "Welcome";
     renderWithProviders(routes, "/form/welcome");
-    await waitFor(() => expect(document.title).toBe(`${name} | Doula Common App`));
+    await waitFor(() => expect(document.title).toBe(`${name} | NJ Doula Assistant`));
     expect(screen.queryByRole("generic", { name: /progress/i })).not.toBeInTheDocument();
   });
 
   it("shows the progress bar when shouldShowProgressBar is true", async () => {
     const name = "Finish";
     renderWithProviders(routes, "/form/finish");
-    await waitFor(() => expect(document.title).toBe(`${name} | Doula Common App`));
+    await waitFor(() => expect(document.title).toBe(`${name} | NJ Doula Assistant`));
     expect(screen.queryByRole("generic", { name: /progress/i })).toBeInTheDocument();
   });
 
@@ -22,7 +22,9 @@ describe("<FormLayout />", () => {
     renderWithProviders(routes, "/form/personal-details/2");
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).toHaveTextContent("2 of 3 Personal details");
-    await waitFor(() => expect(document.title).toBe("Personal details 2 of 3 | Doula Common App"));
+    await waitFor(() =>
+      expect(document.title).toBe("Personal details 2 of 3 | NJ Doula Assistant"),
+    );
   });
 
   it("shows required field indicator text with an asterisk", () => {

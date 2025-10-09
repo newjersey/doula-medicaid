@@ -32,7 +32,7 @@ describe("<ProgressBar />", () => {
       .getAllByRole("listitem")
       .map((section) => section.textContent);
     expect(names.includes(name)).toBe(true);
-    await waitFor(() => expect(document.title).toBe(`${name} | Doula Common App`));
+    await waitFor(() => expect(document.title).toBe(`${name} | NJ Doula Assistant`));
 
     const heading1 = screen.getByRole("heading", { level: 1 });
     expect(heading1).not.toHaveTextContent(name);
