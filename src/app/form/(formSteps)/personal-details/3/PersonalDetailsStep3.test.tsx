@@ -1,9 +1,13 @@
 import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
+import {
+  doulaProviderIdentificationFields,
+  npiNumberField,
+  otherIdentificationFields,
+  testFields,
+} from "@/app/form/(formSteps)/personal-details/3/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
-  createTestField,
-  createTestFields,
   type TestField,
   testFillFromDataStore,
   testInvalidField,
@@ -13,34 +17,6 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-const npiNumberField = createTestField({
-  name: "National Provider Identifier (NPI) *",
-  required: true,
-  alternateRequiredFieldError:
-    "To be an NJ FamilyCare doula, you need a NPI. You can get yours via https://nppes.cms.hhs.gov/ . Enter your 10-digit NPI number.",
-  dataStoreKey: "npiNumber",
-  testValue: "1111111111",
-});
-
-const doulaProviderIdentificationFields = [npiNumberField];
-
-const otherIdentificationFields = createTestFields([
-  {
-    name: "UPIN number (optional)",
-    required: false,
-    dataStoreKey: "upinNumber",
-    testValue: "12345",
-  },
-  {
-    name: "Medicare provider ID (optional)",
-    required: false,
-    dataStoreKey: "medicareProviderId",
-    testValue: "ABC12345",
-  },
-]);
-
-const allTestFields = [...doulaProviderIdentificationFields, ...otherIdentificationFields];
-
 describe("<PersonalDetailsStep3 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
     renderWithProviders(<PersonalDetailsStep3 />, "/form/personal-details/3", dataStore);
@@ -49,7 +25,7 @@ describe("<PersonalDetailsStep3 />", () => {
     it("saves fields to the data store on submit", async () => {
       await testSaveFieldsToDataStore(
         doulaProviderIdentificationFields,
-        allTestFields,
+        testFields,
         renderFunction,
         screen,
       );
@@ -58,7 +34,7 @@ describe("<PersonalDetailsStep3 />", () => {
     it.each(doulaProviderIdentificationFields.filter((field) => field.required))(
       "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderFunction, screen);
+        await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
@@ -73,7 +49,7 @@ describe("<PersonalDetailsStep3 />", () => {
       await testInvalidField(
         { ...npiNumberField, testValue: "1" },
         "National Provider Identifier (NPI) must have 10 digits",
-        allTestFields,
+        testFields,
         renderFunction,
         screen,
       );
@@ -97,7 +73,7 @@ describe("<PersonalDetailsStep3 />", () => {
     it("saves fields to the data store on submit", async () => {
       await testSaveFieldsToDataStore(
         otherIdentificationFields,
-        allTestFields,
+        testFields,
         renderFunction,
         screen,
       );

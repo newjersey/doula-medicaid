@@ -1,0 +1,128 @@
+import {
+  createTestField,
+  createTestFields,
+  type TestField,
+} from "@/app/form/_utils/testUtils/sharedTests";
+
+export const mailingAddressQuestion =
+  "Mailing address We will send official mail here. It can be your home address.";
+const billingAddressQuestion = "What is your billing address?";
+
+export const mailingAddressFields = createTestFields([
+  {
+    name: "Street address *",
+    dataStoreKey: "streetAddress1",
+    required: true,
+    testValue: "Test address 1",
+    withinGroupName: mailingAddressQuestion,
+  },
+  {
+    name: "Street address line 2",
+    dataStoreKey: "streetAddress2",
+    required: false,
+    testValue: "Test address 2",
+    withinGroupName: mailingAddressQuestion,
+  },
+  {
+    name: "City *",
+    dataStoreKey: "city",
+    required: true,
+    testValue: "Test city",
+    withinGroupName: mailingAddressQuestion,
+  },
+  {
+    name: "State *",
+    dataStoreKey: "state",
+    required: false,
+    role: "combobox",
+    testValue: "PA",
+    withinGroupName: mailingAddressQuestion,
+  },
+  {
+    name: "ZIP code *",
+    dataStoreKey: "zip",
+    required: true,
+    testValue: "12345",
+    withinGroupName: mailingAddressQuestion,
+  },
+]);
+
+export const yesSameBillingMailingAddress: TestField = {
+  name: "Yes",
+  dataStoreKey: "hasSameBillingMailingAddress",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "true",
+  expectedValue: "true",
+  withinGroupName: "Are your billing and residential addresses the same? Select one *",
+};
+export const noSameBillingMailingAddress: TestField = {
+  name: "No",
+  dataStoreKey: "hasSameBillingMailingAddress",
+  required: true,
+  requiredErrorMessage: "This question is required",
+  role: "radio",
+  testValue: "false",
+  expectedValue: "false",
+  withinGroupName: "Are your billing and residential addresses the same? Select one *",
+};
+
+export const minimalTestFields = [...mailingAddressFields, yesSameBillingMailingAddress];
+
+export const zipCodeField = createTestField({
+  name: "ZIP code *",
+  dataStoreKey: "billingZip",
+  required: true,
+  testValue: "12345",
+  withinGroupName: billingAddressQuestion,
+  alternateRequiredFieldError: "Billing zip code is required",
+  prerequisiteField: noSameBillingMailingAddress,
+});
+
+export const billingAddressFields = [
+  ...createTestFields([
+    {
+      name: "Street address *",
+      dataStoreKey: "billingStreetAddress1",
+      required: true,
+      testValue: "Test address 1",
+      withinGroupName: billingAddressQuestion,
+      alternateRequiredFieldError: "Billing street address is required",
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+    {
+      name: "Street address line 2",
+      dataStoreKey: "billingStreetAddress2",
+      required: false,
+      testValue: "Test address 2",
+      withinGroupName: billingAddressQuestion,
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+    {
+      name: "City *",
+      dataStoreKey: "billingCity",
+      required: true,
+      testValue: "Houston",
+      withinGroupName: billingAddressQuestion,
+      alternateRequiredFieldError: "Billing city is required",
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+    {
+      name: "State *",
+      dataStoreKey: "billingState",
+      required: false,
+      role: "combobox",
+      testValue: "TX",
+      withinGroupName: billingAddressQuestion,
+      prerequisiteField: noSameBillingMailingAddress,
+    },
+  ]),
+  zipCodeField,
+];
+
+export const testFields = [
+  ...mailingAddressFields,
+  noSameBillingMailingAddress,
+  ...billingAddressFields,
+];
