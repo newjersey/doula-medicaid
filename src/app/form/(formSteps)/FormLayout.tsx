@@ -18,8 +18,12 @@ export const FormLayout = () => {
     <>
       <DataStoreProvider>
         <title>{formatTitle(pageTitle)}</title>
-        {currentSection.shouldShowProgressBar === true && <ProgressBar />}
-        <HorizontalDivider />
+        {currentSection.shouldShowProgressBar === true && (
+          <>
+            <ProgressBar />
+            <HorizontalDivider />
+          </>
+        )}
         <Outlet />
       </DataStoreProvider>
     </>
