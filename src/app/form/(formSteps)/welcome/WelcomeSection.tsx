@@ -45,7 +45,8 @@ const WelcomeSection = () => {
                 <Icon.CheckCircle aria-hidden="true" />
               </IconListIcon>
               <IconListContent>
-                Be an individual doula operating as a Sole Proprietor.
+                Be an individual doula operating as a{" "}
+                <span className="text-bold">Sole Proprietor</span>.
               </IconListContent>
             </IconListItem>
             <IconListItem>
@@ -53,7 +54,23 @@ const WelcomeSection = () => {
                 <Icon.CheckCircle aria-hidden="true" />
               </IconListIcon>
               <IconListContent>
-                Proof of CPR (adult/infant), HIPAA, and doula training completion.
+                Proof of{" "}
+                <a href="https://cpr.heart.org/en" target="_blank" rel="noopener">
+                  CPR (adult/infant)
+                </a>
+                ,{" "}
+                <a href="https://www.snjpc.org/doulaentrypage" target="_blank" rel="noopener">
+                  HIPAA
+                </a>
+                , and{" "}
+                <a
+                  href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Approved_Doula_Trainings.pdf"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  doula training
+                </a>{" "}
+                completion.
               </IconListContent>
             </IconListItem>
             <IconListItem>
@@ -61,14 +78,25 @@ const WelcomeSection = () => {
                 <Icon.CheckCircle aria-hidden="true" />
               </IconListIcon>
               <IconListContent>
-                Your NPI number: must be Type 1, using the doula taxonomy code: 374J00000X.
+                Your NPI number: must be <span className="text-bold">Type 1</span>, using the doula{" "}
+                <span className="text-bold">taxonomy code: 374J00000X</span>.
               </IconListContent>
             </IconListItem>
             <IconListItem>
               <IconListIcon className="text-green">
                 <Icon.CheckCircle aria-hidden="true" />
               </IconListIcon>
-              <IconListContent>Proof of your active doula liability insurance.</IconListContent>
+              <IconListContent>
+                Proof of your active{" "}
+                <a
+                  href="https://www.nj.gov/humanservices/dmahs/info/Newsletter_31-04_Doula.pdf"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  doula liability insurance
+                </a>
+                .
+              </IconListContent>
             </IconListItem>
           </IconList>
           <NavLink
@@ -95,16 +123,33 @@ const WelcomeSection = () => {
           <ProcessListItem>
             <ProcessListHeading type="h4">Complete your FFS application packet</ProcessListHeading>
             <p>
-              Gather the required documents, we&apos;ll guide you through the FFS application on
-              this website.
+              Gather the{" "}
+              <a
+                href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Doula_Steps.pdf"
+                target="_blank"
+                rel="noopener"
+              >
+                required documents
+              </a>
+              , we&apos;ll guide you through the FFS application on this website.
             </p>
           </ProcessListItem>
           <ProcessListItem>
             <ProcessListHeading type="h4">Email your FFS application packet</ProcessListHeading>
             <p>
-              Send forms to mahs.doulaguide@dhs.nj.gov and
-              njmmisproviderenrollment@gainwelltechnologies.com simultaneously. Keep an eye on your
-              inbox!
+              Send forms to{" "}
+              <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
+                mahs.doulaguide@dhs.nj.gov
+              </a>{" "}
+              and{" "}
+              <a
+                href="mailto:njmmisproviderenrollment@gainwelltechnologies.com"
+                target="_blank"
+                rel="noopener"
+              >
+                njmmisproviderenrollment@gainwelltechnologies.com
+              </a>{" "}
+              simultaneously. Keep an eye on your inbox!
             </p>
           </ProcessListItem>
           <ProcessListItem>
