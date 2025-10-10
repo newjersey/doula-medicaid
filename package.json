@@ -11,6 +11,7 @@
     "prettier:check": "prettier . --check",
     "prepare": "husky",
     "cypress:run": "cypress run",
+    "cypress:gui": "cypress open",
     "test": "jest",
     "typecheck": "tsc --noemit"
   },
