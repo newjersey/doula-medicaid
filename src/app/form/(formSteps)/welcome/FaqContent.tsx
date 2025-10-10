@@ -71,7 +71,7 @@ export const faqContent: AccordionItemProps[] = [
           Services.
         </p>
         <p>
-          You can get yours visiting the National Plan and Provider Enumeration System (NPPES) site:
+          You can get yours visiting the National Plan and Provider Enumeration System (NPPES) site:{" "}
           <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
             https://nppes.cms.hhs.gov/
           </a>
@@ -201,7 +201,7 @@ export const faqContent: AccordionItemProps[] = [
     content: (
       <p>
         You&apos;re welcome to re-apply anytime. For questions, please email the Doula Guides team
-        at
+        at{" "}
         <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
           mahs.doulaguide@dhs.nj.gov
         </a>
