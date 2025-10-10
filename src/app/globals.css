@@ -20,11 +20,27 @@ abbr[title] {
   left: -56px;
 }
 
+.welcome-page .usa-process-list__heading {
+  position: relative;
+  top: -40px;
+}
+
+.welcome-page .usa-process-list__item > :last-child {
+  position: relative;
+  top: -40px;
+}
+
 .welcome-page #how-it-works-process-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0em, max-content));
   grid-template-rows: repeat(3, 1fr);
   grid-auto-flow: column;
+}
+
+@media all and (min-width: 0px) and (max-width: 1024px) {
+  .welcome-page #how-it-works-process-list {
+    display: block;
+  }
 }
 
 .usa-accordion .usa-accordion__button {
@@ -48,6 +64,7 @@ abbr[title] {
 .h2-margin-top {
   margin-top: 0.83em;
 }
+
 @media (max-width: 1023px) {
   .form-explainer {
     margin-top: 20px;
