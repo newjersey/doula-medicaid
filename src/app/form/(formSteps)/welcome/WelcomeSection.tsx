@@ -134,6 +134,7 @@ const WelcomeSection = () => {
               </a>{" "}
               and{" "}
               <a
+                id="njmmisEmail"
                 href="mailto:njmmisproviderenrollment@gainwelltechnologies.com"
                 target="_blank"
                 rel="noopener"

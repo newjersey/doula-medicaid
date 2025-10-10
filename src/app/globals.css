@@ -17,7 +17,6 @@ abbr[title] {
 
 .welcome-page .usa-process-list__item {
   padding-bottom: 0;
-  height: 9rem;
 }
 
 .welcome-page .usa-process-list__item::before {
@@ -48,6 +47,10 @@ abbr[title] {
     grid-template-columns: repeat(auto-fit, 1fr);
     grid-template-rows: repeat(5, 1fr);
     grid-auto-flow: column;
+  }
+
+  .welcome-page #njmmisEmail {
+    word-break: break-all;
   }
 }
 
