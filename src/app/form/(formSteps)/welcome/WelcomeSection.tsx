@@ -22,7 +22,7 @@ const WelcomeSection = () => {
   }
 
   return (
-    <div className="grid-container">
+    <div className="grid-container welcome-page">
       <div className="grid-row">
         <div className="tablet:grid-col bg-primary-lightest padding-6">
           <h1 className="text-primary-darkest font-heading-2xl margin-bottom-0">
@@ -110,14 +110,7 @@ const WelcomeSection = () => {
       <h3 className="font-heading-xl">How it works</h3>
 
       <div className="grid-row">
-        <ProcessList
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(0em, max-content))",
-            gridTemplateRows: "repeat(3, 1fr)",
-            gridAutoFlow: "column",
-          }}
-        >
+        <ProcessList id="how-it-works-process-list">
           <ProcessListItem>
             <ProcessListHeading type="h4">Complete your FFS application packet</ProcessListHeading>
             <p>

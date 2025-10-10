@@ -15,9 +15,16 @@ abbr[title] {
   margin-top: 0;
 }
 
-.usa-process-list__item::before {
-  position: relative !important;
-  left: -56px !important;
+.welcome-page .usa-process-list__item::before {
+  position: relative;
+  left: -56px;
+}
+
+.welcome-page #how-it-works-process-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0em, max-content));
+  grid-template-rows: repeat(3, 1fr);
+  grid-auto-flow: column;
 }
 
 .usa-accordion .usa-accordion__button {
