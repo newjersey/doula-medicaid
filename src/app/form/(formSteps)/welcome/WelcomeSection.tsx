@@ -84,53 +84,52 @@ const WelcomeSection = () => {
       <h3 className="font-heading-xl">How it works</h3>
 
       <div className="grid-row">
-        <div className="tablet:grid-col-6">
-          <ProcessList>
-            <ProcessListItem>
-              <ProcessListHeading type="h4">
-                Complete your FFS application packet
-              </ProcessListHeading>
-              <p>
-                Gather the required documents, we'll guide you through the FFS application on this
-                website.
-              </p>
-            </ProcessListItem>
-            <ProcessListItem>
-              <ProcessListHeading type="h4">Email your FFS application packet</ProcessListHeading>
-              <p>
-                Send forms to mahs.doulaguide@dhs.nj.gov and
-                njmmisproviderenrollment@gainwelltechnologies.com simultaneously. Keep an eye on
-                your inbox!
-              </p>
-            </ProcessListItem>
-            <ProcessListItem>
-              <ProcessListHeading type="h4">
-                Free background check and fingerprinting
-              </ProcessListHeading>
-              <p>
-                After you submit your FFS application, a Doula Guide will email instructions to
-                complete this step in a local office and submit your receipt.
-              </p>
-            </ProcessListItem>
-          </ProcessList>
-        </div>
-        <div className="tablet:grid-col-6">
-          <ProcessList>
-            <ProcessListItem>
-              <ProcessListHeading type="h4">Receive your NJ Medicaid ID</ProcessListHeading>
-              <p>
-                Once we approve your FFS application, we will send you a letter with your NJ
-                Medicaid ID.
-              </p>
-            </ProcessListItem>
-            <ProcessListItem>
-              <ProcessListHeading type="h4">
-                Apply to Managed Care Organizations (MCOs)
-              </ProcessListHeading>
-              <p>Once you receive your NJ Medicaid ID, you can apply to the MCOs.</p>
-            </ProcessListItem>
-          </ProcessList>
-        </div>
+        <ProcessList
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(0em, max-content))",
+            gridTemplateRows: "repeat(3, 1fr)",
+            gridAutoFlow: "column",
+          }}
+        >
+          <ProcessListItem>
+            <ProcessListHeading type="h4">Complete your FFS application packet</ProcessListHeading>
+            <p>
+              Gather the required documents, we&apos;ll guide you through the FFS application on
+              this website.
+            </p>
+          </ProcessListItem>
+          <ProcessListItem>
+            <ProcessListHeading type="h4">Email your FFS application packet</ProcessListHeading>
+            <p>
+              Send forms to mahs.doulaguide@dhs.nj.gov and
+              njmmisproviderenrollment@gainwelltechnologies.com simultaneously. Keep an eye on your
+              inbox!
+            </p>
+          </ProcessListItem>
+          <ProcessListItem>
+            <ProcessListHeading type="h4">
+              Free background check and fingerprinting
+            </ProcessListHeading>
+            <p>
+              After you submit your FFS application, a Doula Guide will email instructions to
+              complete this step in a local office and submit your receipt.
+            </p>
+          </ProcessListItem>
+          <ProcessListItem>
+            <ProcessListHeading type="h4">Receive your NJ Medicaid ID</ProcessListHeading>
+            <p>
+              Once we approve your FFS application, we will send you a letter with your NJ Medicaid
+              ID.
+            </p>
+          </ProcessListItem>
+          <ProcessListItem>
+            <ProcessListHeading type="h4">
+              Apply to Managed Care Organizations (MCOs)
+            </ProcessListHeading>
+            <p>Once you receive your NJ Medicaid ID, you can apply to the MCOs.</p>
+          </ProcessListItem>
+        </ProcessList>
       </div>
     </div>
   );

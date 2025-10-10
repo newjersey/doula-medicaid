@@ -15,6 +15,11 @@ abbr[title] {
   margin-top: 0;
 }
 
+.usa-process-list__item::before {
+  position: relative !important;
+  left: -56px !important;
+}
+
 .usa-accordion .usa-accordion__button {
   background-color: #ffbc78;
 }
