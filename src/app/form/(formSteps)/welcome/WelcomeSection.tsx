@@ -1,8 +1,10 @@
+import { faqContent } from "@/app/form/(formSteps)/welcome/FaqContent";
 import {
   formatFormProgressUrl,
   useFormProgressPosition,
 } from "@/app/form/_utils/formProgressRouting";
 import {
+  Accordion,
   Icon,
   IconList,
   IconListContent,
@@ -168,6 +170,9 @@ const WelcomeSection = () => {
           </ProcessListItem>
         </ProcessList>
       </div>
+
+      <h3 className="font-heading-xl">FAQs</h3>
+      <Accordion items={faqContent} multiselectable={true} />
     </div>
   );
 };

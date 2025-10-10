@@ -42,7 +42,19 @@ abbr[title] {
   grid-auto-flow: column;
 }
 
-@media all and (min-width: 0px) and (max-width: 1110px) {
+.welcome-page .usa-accordion .usa-accordion__button {
+  background-color: #f0f0f0;
+}
+
+.welcome-page .usa-accordion .usa-accordion__button:hover {
+  background-color: #f0f0f0;
+}
+
+.welcome-page .usa-accordion__content > p {
+  max-width: fit-content;
+}
+
+@media all and (min-width: 0px) and (max-width: 1024px) {
   .welcome-page .usa-process-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, 1fr);
