@@ -1,4 +1,11 @@
 import BusinessDetailsStep2 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
+import {
+  einField,
+  maximalTestFields,
+  minimalTestFields,
+  noHasEin,
+  yesHasEin,
+} from "@/app/form/(formSteps)/business-details/2/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { fillField, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
@@ -13,42 +20,6 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-const yesHasEin: TestField = {
-  name: "Yes",
-  dataStoreKey: "hasEin",
-  required: true,
-  requiredErrorMessage: "This question is required",
-  role: "radio",
-  testValue: "true",
-  expectedValue: "true",
-  withinGroupName: "Do you have an Employee Identification Number (EIN)? Select one *",
-};
-const noHasEin: TestField = {
-  name: "No",
-  dataStoreKey: "hasEin",
-  required: true,
-  requiredErrorMessage: "This question is required",
-  role: "radio",
-  testValue: "false",
-  expectedValue: "false",
-  withinGroupName: "Do you have an Employee Identification Number (EIN)? Select one *",
-};
-
-const minimalTestFields = [noHasEin];
-
-const einField: TestField = {
-  name: "EIN *",
-  dataStoreKey: "ein",
-  required: true,
-  requiredErrorMessage: "EIN is required",
-  role: "textbox",
-  testValue: "111111111",
-  expectedValue: "11-1111111",
-  prerequisiteField: yesHasEin,
-};
-
-const allTestFields = [yesHasEin, einField];
-
 describe("<BusinessDetailsStep2 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
     renderWithProviders(<BusinessDetailsStep2 />, "/form/business-details/2", dataStore);
@@ -58,7 +29,7 @@ describe("<BusinessDetailsStep2 />", () => {
       await testSaveFieldsToDataStore(minimalTestFields, minimalTestFields, renderFunction, screen);
     });
     it("when the user does has an EIN", async () => {
-      await testSaveFieldsToDataStore(allTestFields, allTestFields, renderFunction, screen);
+      await testSaveFieldsToDataStore(maximalTestFields, maximalTestFields, renderFunction, screen);
     });
   });
   describe("marks fields as required and displays an error message", () => {
@@ -67,11 +38,11 @@ describe("<BusinessDetailsStep2 />", () => {
     });
 
     it("when the user has an EIN and EIN is not filled in", async () => {
-      await testRequiredField(einField, allTestFields, renderFunction, screen);
+      await testRequiredField(einField, maximalTestFields, renderFunction, screen);
     });
   });
 
-  it.each(allTestFields)(
+  it.each(maximalTestFields)(
     "fills $dataStoreKey from the data store when page is loaded",
     async (field: TestField) => {
       await testFillFromDataStore(field, renderFunction, screen);
@@ -86,7 +57,7 @@ describe("<BusinessDetailsStep2 />", () => {
     await testInvalidField(
       { ...einField, testValue: "111" },
       "Entered value does not match the EIN format",
-      allTestFields,
+      maximalTestFields,
       renderFunction,
       screen,
     );

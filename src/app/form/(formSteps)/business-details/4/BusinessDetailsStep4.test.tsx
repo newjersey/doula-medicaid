@@ -1,72 +1,16 @@
 import BusinessDetailsStep4 from "@/app/form/(formSteps)/business-details/4/BusinessDetailsStep4";
+import {
+  maximalTestFields,
+  minimalTestFields,
+} from "@/app/form/(formSteps)/business-details/4/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   testFillFromDataStore,
   testRequiredField,
   testSaveFieldsToDataStore,
-  type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
-
-const noHasBeenExcludedFromMedicaid: TestField = {
-  name: "No",
-  dataStoreKey: "hasBeenExcludedFromMedicaid",
-  required: true,
-  requiredErrorMessage: "This question is required",
-  role: "radio",
-  testValue: "false",
-  expectedValue: "false",
-  withinGroupName:
-    "Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP? Select one *",
-};
-
-const yesHasBeenExcludedFromMedicaid: TestField = {
-  name: "Yes",
-  dataStoreKey: "hasBeenExcludedFromMedicaid",
-  required: true,
-  requiredErrorMessage: "This question is required",
-  role: "radio",
-  testValue: "true",
-  expectedValue: "true",
-  withinGroupName:
-    "Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP? Select one *",
-};
-
-const noHasBeenSuspendedFromMedicaid: TestField = {
-  name: "No",
-  dataStoreKey: "hasBeenSuspendedFromMedicaid",
-  required: true,
-  requiredErrorMessage: "This question is required",
-  role: "radio",
-  testValue: "false",
-  expectedValue: "false",
-  withinGroupName:
-    "Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated? Select one *",
-};
-
-const yesHasBeenSuspendedFromMedicaid: TestField = {
-  name: "Yes",
-  dataStoreKey: "hasBeenSuspendedFromMedicaid",
-  required: true,
-  requiredErrorMessage: "This question is required",
-  role: "radio",
-  testValue: "true",
-  expectedValue: "true",
-  withinGroupName:
-    "Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated? Select one *",
-};
-
-const minimalTestFields: Array<TestField> = [
-  yesHasBeenExcludedFromMedicaid,
-  yesHasBeenSuspendedFromMedicaid,
-];
-const allTestFields: Array<TestField> = [
-  noHasBeenExcludedFromMedicaid,
-  noHasBeenSuspendedFromMedicaid,
-  yesHasBeenExcludedFromMedicaid,
-  yesHasBeenSuspendedFromMedicaid,
-];
 
 describe("<BusinessDetailsStep4 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
@@ -83,7 +27,7 @@ describe("<BusinessDetailsStep4 />", () => {
     },
   );
 
-  it.each(allTestFields)(
+  it.each(maximalTestFields)(
     "fills $dataStoreKey from the data store when page is loaded",
     async (field) => {
       await testFillFromDataStore(field, renderFunction, screen);

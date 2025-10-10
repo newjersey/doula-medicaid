@@ -1,9 +1,17 @@
 import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
+import {
+  contactInformationFields,
+  dateOfBirthDayField,
+  dateOfBirthYearField,
+  emailField,
+  personalIdentificationFields,
+  phoneNumberField,
+  socialSecurityNumberField,
+  testFields,
+} from "@/app/form/(formSteps)/personal-details/1/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
-  createTestField,
-  createTestFields,
   type TestField,
   testFillFromDataStore,
   testInvalidField,
@@ -13,85 +21,6 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-const dateOfBirthDayField = createTestField({
-  name: "Day *",
-  dataStoreKey: "dateOfBirthDay",
-  required: true,
-  testValue: "6",
-});
-const dateOfBirthMonthField = createTestField({
-  name: "Month *",
-  dataStoreKey: "dateOfBirthMonth",
-  required: true,
-  testValue: "07 - July",
-  expectedValue: "7",
-  role: "combobox",
-});
-const dateOfBirthYearField = createTestField({
-  name: "Year *",
-  dataStoreKey: "dateOfBirthYear",
-  required: true,
-  testValue: "1988",
-});
-
-const socialSecurityNumberField = createTestField({
-  name: "Social security number *",
-  dataStoreKey: "socialSecurityNumber",
-  required: true,
-  testValue: "123456789",
-  expectedValue: "123-45-6789",
-  role: "textbox",
-});
-
-const personalIdentificationFields: Array<TestField> = [
-  ...createTestFields([
-    {
-      name: "First name *",
-      dataStoreKey: "firstName",
-      required: true,
-      testValue: "Test first name",
-    },
-    {
-      name: "Middle name",
-      dataStoreKey: "middleName",
-      required: false,
-      testValue: "Test middle name",
-    },
-    {
-      name: "Last name *",
-      dataStoreKey: "lastName",
-      required: true,
-      testValue: "Test last name",
-    },
-  ]),
-  dateOfBirthDayField,
-  dateOfBirthMonthField,
-  dateOfBirthYearField,
-  socialSecurityNumberField,
-];
-
-const emailField = createTestField({
-  name: "Email address *",
-  dataStoreKey: "email",
-  testValue: "test@test.com",
-  required: true,
-});
-
-const phoneNumberField = createTestField({
-  name: "Phone number *",
-  dataStoreKey: "phoneNumber",
-  testValue: "3211234567",
-  expectedValue: "321-123-4567",
-  required: true,
-});
-
-const contactInformationFields: Array<TestField> = [emailField, phoneNumberField];
-
-const allTestFields: Array<TestField> = [
-  ...personalIdentificationFields,
-  ...contactInformationFields,
-];
-
 describe("<PersonalDetailsStep1 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
     renderWithProviders(<PersonalDetailsStep1 />, "/form/personal-details/1", dataStore);
@@ -100,7 +29,7 @@ describe("<PersonalDetailsStep1 />", () => {
     it("saves fields to the data store on submit", async () => {
       await testSaveFieldsToDataStore(
         personalIdentificationFields,
-        allTestFields,
+        testFields,
         renderFunction,
         screen,
       );
@@ -109,7 +38,7 @@ describe("<PersonalDetailsStep1 />", () => {
     it.each(personalIdentificationFields.filter((field) => field.required))(
       "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderFunction, screen);
+        await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
@@ -130,7 +59,7 @@ describe("<PersonalDetailsStep1 />", () => {
         await testInvalidField(
           { ...dateOfBirthDayField, testValue: invalidTestValue },
           expectedErrorMessage,
-          allTestFields,
+          testFields,
           renderFunction,
           screen,
         );
@@ -146,7 +75,7 @@ describe("<PersonalDetailsStep1 />", () => {
         await testInvalidField(
           { ...dateOfBirthYearField, testValue: invalidTestValue },
           expectedErrorMessage,
-          allTestFields,
+          testFields,
           renderFunction,
           screen,
         );
@@ -156,18 +85,13 @@ describe("<PersonalDetailsStep1 />", () => {
 
   describe("contact info fields", () => {
     it("saves fields to the data store on submit", async () => {
-      await testSaveFieldsToDataStore(
-        contactInformationFields,
-        allTestFields,
-        renderFunction,
-        screen,
-      );
+      await testSaveFieldsToDataStore(contactInformationFields, testFields, renderFunction, screen);
     });
 
     it.each(contactInformationFields.filter((field) => field.required))(
       "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, allTestFields, renderFunction, screen);
+        await testRequiredField(field, testFields, renderFunction, screen);
       },
     );
 
@@ -182,7 +106,7 @@ describe("<PersonalDetailsStep1 />", () => {
       await testInvalidField(
         { ...phoneNumberField, testValue: "123" },
         "Entered value does not match phone number format",
-        allTestFields,
+        testFields,
         renderFunction,
         screen,
       );
@@ -192,7 +116,7 @@ describe("<PersonalDetailsStep1 />", () => {
       await testInvalidField(
         { ...socialSecurityNumberField, testValue: "123" },
         "Entered value does not match social security number format",
-        allTestFields,
+        testFields,
         renderFunction,
         screen,
       );
@@ -204,7 +128,7 @@ describe("<PersonalDetailsStep1 />", () => {
         await testInvalidField(
           { ...emailField, testValue: invalidTestValue },
           "Entered value does not match email format",
-          allTestFields,
+          testFields,
           renderFunction,
           screen,
         );
