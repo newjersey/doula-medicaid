@@ -17,6 +17,7 @@ abbr[title] {
 
 .welcome-page .usa-process-list__item {
   padding-bottom: 0;
+  padding-right: 20px;
 }
 
 .welcome-page .usa-process-list__item::before {
@@ -41,7 +42,7 @@ abbr[title] {
   grid-auto-flow: column;
 }
 
-@media all and (min-width: 0px) and (max-width: 1024px) {
+@media all and (min-width: 0px) and (max-width: 1110px) {
   .welcome-page .usa-process-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, 1fr);
