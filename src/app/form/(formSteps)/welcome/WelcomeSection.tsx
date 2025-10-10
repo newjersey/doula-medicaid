@@ -110,7 +110,7 @@ const WelcomeSection = () => {
       <h3 className="font-heading-xl">How it works</h3>
 
       <div className="grid-row">
-        <ProcessList id="how-it-works-process-list">
+        <ProcessList>
           <ProcessListItem>
             <ProcessListHeading type="h4">Complete your FFS application packet</ProcessListHeading>
             <p>
