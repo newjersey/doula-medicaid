@@ -85,6 +85,11 @@ abbr[title] {
   color: gray;
 }
 
+svg[role="img"].footer__mail-icon {
+  height: 1rem;
+  width: 1rem;
+}
+
 .h2-margin-top {
   margin-top: 0.83em;
 }
