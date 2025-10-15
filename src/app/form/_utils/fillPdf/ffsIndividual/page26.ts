@@ -6,8 +6,8 @@ import {
 import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
-// Page 25 - W-9 Request for Taxpayer Identification Number and Certification
-export interface PdfFfsIndividualPage25 {
+// Page 26 - W-9 Request for Taxpayer Identification Number and Certification
+export interface PdfFfsIndividualPage26 {
   "W9_Name See Specific Instructions on page 2": string;
   "W9_Business name if different from above See Specific Instructions on page 2": string;
   "W9_IndividualSole proprietor": boolean;
@@ -44,7 +44,7 @@ export interface PdfFfsIndividualPage25 {
 
 const fontSize10 = { fontSize: 10 };
 
-export const pdfFfsIndividualPage25FieldOptions = {
+export const pdfFfsIndividualPage26FieldOptions = {
   "W9_Social security number1": fontSize10,
   "W9_Social security number2": fontSize10,
   "W9_Social security number3": fontSize10,
@@ -101,7 +101,7 @@ const getTaxNumberFields = (formData: FormData) => {
   }
 };
 
-export const getPage25Fields = (formData: FormData): Partial<PdfFfsIndividualPage25> => {
+export const getPage26Fields = (formData: FormData): Partial<PdfFfsIndividualPage26> => {
   if (formData.isSupportedSoleProprietor === true) {
     return {
       "W9_Name See Specific Instructions on page 2": formatName(formData),

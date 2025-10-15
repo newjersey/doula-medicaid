@@ -3,48 +3,46 @@ import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 20 - disclosure of ownership and control interest statement
 export interface PdfFfsIndividualPage20 {
-  fd452ownershiphealthcareprovideryes: boolean;
-  fd452ownershiphealthcareproviderno: boolean;
-  fd452healthcareproviderownershipprovidernumnpiline1: string;
-  fd452healthcareproviderownershipnameandtitleline1: string;
-  fd452healthcareproviderownershipownershipcontrolpercentline1: string;
-  fd452healthcareproviderownershipnameaddressline1: string;
-  fd452healthcareproviderownershipprovidernumnpiline2: string;
-  fd452healthcareproviderownershipnameandtitleline2: string;
-  fd452healthcareproviderownershipownershipcontrolpercentline2: string;
-  fd452healthcareproviderownershipnameaddressline2: string;
-  fd452healthcareproviderownershipprovidernumnpiline3: string;
-  fd452healthcareproviderownershipnameandtitleline3: string;
-  fd452healthcareproviderownershipownershipcontrolpercentline3: string;
-  fd452healthcareproviderownershipnameaddressline3: string;
-  fd452healthcareproviderownershipprovidernumnpiline4: string;
-  fd452healthcareproviderownershipnameandtitleline4: string;
-  fd452healthcareproviderownershipownershipcontrolpercentline4: string;
-  fd452healthcareproviderownershipnameaddressline4: string;
-  fd452ownershipchangeyes: boolean;
-  fd452ownershipchangeno: boolean;
-  fd452ownershipchangedate: string;
-  fd452ownershipchangeyesdescribe: string;
-  fd452ownershipchangewithinyearyes: boolean;
-  fd452ownershipchangewithinyearno: boolean;
-  fd452ownershipchangewithinyeardate: string;
-  fd452ownershipchangewithinyearyesdescribe: string;
-  fd452filedbankruptcypastsevenyearsyes: boolean;
-  fd452filedbankruptcypastsevenyearsno: boolean;
-  fd452filedbankruptcypastsevenyearsdate: string;
-  fd452filedbankruptcywithinyearyes: boolean;
-  fd452filedbankruptcywithinyearno: boolean;
-  fd452filedbankruptcywithinyeardate: string;
+  fd452significanttransactionsprevious5yearsline1: string;
+  fd452significanttransactionsprevious5yearsline2: string;
+  fd452significanttransactionsprevious5yearsline3: string;
+  fd452significanttransactionsprevious5yearsline4: string;
+  fd452significanttransactionsprevious5yearsline5: string;
+  fd452affiliatesindividualentitywithaffiliationline1: string;
+  fd452affiliatesindividualentitysroleline1: string;
+  fd452affiliatesssownershiporcontrolpercentline1: string;
+  fd452affiliatesssnortaxidline1: string;
+  fd452affiliatesaffiliatedprovidersupplierline1: string;
+  fd452affiliatesnpiline1: string;
+  fd452affiliatesdobline1: string;
+  fd452affiliatesindividualentitywithaffiliationline2: string;
+  fd452affiliatesindividualentitysroleline2: string;
+  fd452affiliatesssownershiporcontrolpercentline2: string;
+  fd452affiliatesssnortaxidline2: string;
+  fd452affiliatesaffiliatedprovidersupplierline2: string;
+  fd452affiliatesnpiline2: string;
+  fd452affiliatesdobline2: string;
+  fd452affiliatesindividualentitywithaffiliationline3: string;
+  fd452affiliatesindividualentitysroleline3: string;
+  fd452affiliatesssownershiporcontrolpercentline3: string;
+  fd452affiliatesssnortaxidline3: string;
+  fd452affiliatesaffiliatedprovidersupplierline3: string;
+  fd452affiliatesnpiline3: string;
+  fd452affiliatesdobline3: string;
+  fd452affiliatesindividualentitywithaffiliationline4: string;
+  fd452affiliatesindividualentitysroleline4: string;
+  fd452affiliatesssownershiporcontrolpercentline4: string;
+  fd452affiliatesssnortaxidline4: string;
+  fd452affiliatesaffiliatedprovidersupplierline4: string;
+  fd452affiliatesnpiline4: string;
+  fd452affiliatesdobline4: string;
 }
 
 export const getPage20Fields = (formData: FormData): Partial<PdfFfsIndividualPage20> => {
   if (formData.isSupportedSoleProprietor === true) {
     return {
-      fd452ownershiphealthcareproviderno: true,
-      fd452ownershipchangeno: true,
-      fd452ownershipchangewithinyearno: true,
-      fd452filedbankruptcypastsevenyearsno: true,
-      fd452filedbankruptcywithinyearno: true,
+      fd452significanttransactionsprevious5yearsline1: "N/A",
+      fd452affiliatesaffiliatedprovidersupplierline1: "N/A",
     };
   }
   throw new UnexpectedFormDataError(

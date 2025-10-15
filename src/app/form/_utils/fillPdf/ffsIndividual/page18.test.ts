@@ -17,22 +17,37 @@ describe("Page 18 - disclosure of ownership and control interest statement", () 
     expect(testFunction).toThrow("Expected isSupportedSoleProprietor to be true, is instead false");
   });
 
-  it.each([
-    {
-      description: "other entity with ownership",
-      pdfKey: "fd452nameofotherentitywithownershipinteresline1" as const,
-    },
-    {
-      description: "business transactions more than $25,000",
-      pdfKey: "fd452businesstransactions25000ormoreline1" as const,
-    },
-  ])("fills in N/A for $description", ({ pdfKey }) => {
-    expectNoDuplicateTest<PdfFfsIndividualPage18>(pdfKey, testedPdfKeys);
-    const pdfFields = mapFfsIndividualFields(
-      generateFormData({
-        isSupportedSoleProprietor: true,
-      }),
-    );
-    expect(pdfFields[pdfKey]).toEqual("N/A");
+  describe("Part II", () => {
+    it("fills in no employees", () => {
+      const pdfKey = "fd452affliatedprevious12monthsno";
+      expectNoDuplicateTest<PdfFfsIndividualPage18>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          isSupportedSoleProprietor: true,
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual(true);
+    });
+  });
+
+  describe("Part III", () => {
+    it.each([
+      {
+        description: "owner relationship",
+        pdfKey: "fd452ownerreleationshipline1" as const,
+      },
+      {
+        description: "owner relationship subcontractor",
+        pdfKey: "fd452ownerreleationshipsubcontractorline1" as const,
+      },
+    ])("fills in N/A for $description", ({ pdfKey }) => {
+      expectNoDuplicateTest<PdfFfsIndividualPage18>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          isSupportedSoleProprietor: true,
+        }),
+      );
+      expect(pdfFields[pdfKey]).toEqual("N/A");
+    });
   });
 });

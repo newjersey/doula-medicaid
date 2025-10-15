@@ -1,15 +1,11 @@
 import {
-  getPage10Fields,
-  type PdfFfsIndividualPage10,
-} from "@/app/form/_utils/fillPdf/ffsIndividual/page10";
+  getPage11Fields,
+  type PdfFfsIndividualPage11,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page11";
 import {
-  getPage12Fields,
-  type PdfFfsIndividualPage12,
-} from "@/app/form/_utils/fillPdf/ffsIndividual/page12";
-import {
-  getPage16Fields,
-  type PdfFfsIndividualPage16,
-} from "@/app/form/_utils/fillPdf/ffsIndividual/page16";
+  getPage13Fields,
+  type PdfFfsIndividualPage13,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page13";
 import {
   getPage17Fields,
   type PdfFfsIndividualPage17,
@@ -35,14 +31,14 @@ import {
   type PdfFfsIndividualPage22,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page22";
 import {
-  getPage25Fields,
-  pdfFfsIndividualPage25FieldOptions,
-  type PdfFfsIndividualPage25,
-} from "@/app/form/_utils/fillPdf/ffsIndividual/page25";
+  getPage23Fields,
+  type PdfFfsIndividualPage23,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page23";
 import {
-  getPage3Fields,
-  type PdfFfsIndividualPage3,
-} from "@/app/form/_utils/fillPdf/ffsIndividual/page3";
+  getPage26Fields,
+  pdfFfsIndividualPage26FieldOptions,
+  type PdfFfsIndividualPage26,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page26";
 import {
   getPage4Fields,
   type PdfFfsIndividualPage4,
@@ -52,52 +48,56 @@ import {
   type PdfFfsIndividualPage5,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page5";
 import {
-  getPage7Fields,
-  type PdfFfsIndividualPage7,
-} from "@/app/form/_utils/fillPdf/ffsIndividual/page7";
+  getPage6Fields,
+  type PdfFfsIndividualPage6,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page6";
+import {
+  getPage8Fields,
+  type PdfFfsIndividualPage8,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page8";
 import { fillForm, type FormData } from "@form/_utils/fillPdf/form";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
 
 export interface PdfFfsIndividual
-  extends PdfFfsIndividualPage3,
-    PdfFfsIndividualPage4,
+  extends PdfFfsIndividualPage4,
     PdfFfsIndividualPage5,
-    PdfFfsIndividualPage7,
-    PdfFfsIndividualPage10,
-    PdfFfsIndividualPage12,
-    PdfFfsIndividualPage16,
+    PdfFfsIndividualPage6,
+    PdfFfsIndividualPage8,
+    PdfFfsIndividualPage11,
+    PdfFfsIndividualPage13,
     PdfFfsIndividualPage17,
     PdfFfsIndividualPage18,
     PdfFfsIndividualPage19,
     PdfFfsIndividualPage20,
     PdfFfsIndividualPage21,
     PdfFfsIndividualPage22,
-    PdfFfsIndividualPage25 {}
+    PdfFfsIndividualPage23,
+    PdfFfsIndividualPage26 {}
 
 export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndividual> => {
   const pdfFields = {
-    ...getPage3Fields(formData),
     ...getPage4Fields(formData),
     ...getPage5Fields(formData),
-    ...getPage7Fields(formData),
-    ...getPage10Fields(formData),
-    ...getPage12Fields(formData),
-    ...getPage16Fields(formData),
+    ...getPage6Fields(formData),
+    ...getPage8Fields(formData),
+    ...getPage11Fields(formData),
+    ...getPage13Fields(formData),
     ...getPage17Fields(formData),
     ...getPage18Fields(formData),
     ...getPage19Fields(formData),
     ...getPage20Fields(formData),
     ...getPage21Fields(formData),
     ...getPage22Fields(formData),
-    ...getPage25Fields(formData),
+    ...getPage23Fields(formData),
+    ...getPage26Fields(formData),
   };
   return pdfFields;
 };
 
 export const fillFfsIndividualForm = (formData: FormData) => {
-  const fieldOptions = { ...pdfFfsIndividualPage25FieldOptions };
+  const fieldOptions = { ...pdfFfsIndividualPage26FieldOptions };
   return fillForm(
     mapFfsIndividualFields(formData),
     fieldOptions,

@@ -1,6 +1,7 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import {
   formatDate,
+  formatEinOrSsn,
   formatMultilineAddress,
   formatName,
 } from "@/app/form/_utils/fillPdf/formatters";
@@ -8,53 +9,54 @@ import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 18 - disclosure of ownership and control interest statement
 export interface PdfFfsIndividualPage18 {
-  fd452nameofotherentitywithownershipinteresline1: string;
-  fd452nameofotherentitywithownershipinteresline2: string;
-  fd452nameofotherentitywithownershipinteresline3: string;
-  fd452nameofotherentitywithownershipinteresline4: string;
-  fd452nameofotherentitywithownershipinteresline5: string;
-  fd452managingagentsdateofbirthine1: string;
-  fd452managingagentsssnline1: string;
-  fd452managingagentsnametitleline1: string;
-  fd452managingagentsaddressline1: string;
-  fd452fd452managingagentsdateofbirthine2: string;
-  fd452managingagentsssnline2: string;
-  fd452managingagentsnametitleline2: string;
-  fd452managingagentsaddressline2: string;
-  fd452managingagentsdateofbirthine3: string;
-  fd452managingagentsssnline3: string;
-  fd452managingagentsnametitleline3: string;
-  fd452managingagentsaddressline3: string;
-  fd452fd452managingagentsdateofbirthine4: string;
-  fd452managingagentsssnline4: string;
-  fd452managingagentsnametitleline4: string;
-  fd452managingagentsaddressline4: string;
-  fd452managingagentsdateofbirthine5: string;
-  fd452managingagentsssnline5: string;
-  fd452managingagentsnametitleline5: string;
-  fd452managingagentsaddressline5: string;
-  fd452businesstransactions25000ormoreline1: string;
-  fd452businesstransactions25000ormoreline2: string;
-  fd452businesstransactions25000ormoreline3: string;
-  fd452businesstransactions25000ormoreline4: string;
-  fd452businesstransactions25000ormoreline5: string;
+  fd452affliatedprevious12monthsyes: boolean;
+  fd452affliatedprevious12monthsno: boolean;
+  fd452ownershipinterestnameline1: string;
+  fd452ownershipinterestDateofBirthline1: string;
+  fd452ownershipinterestcontrolpercentline1: string;
+  fd452ownershipinterestssnortaxidline1: string;
+  fd452ownershipinterestaddressline1: string;
+  fd452ownershipinterestnpiline1: string;
+  fd452ownershipinterestnameline2: string;
+  fd452ownershipinterestDateofBirthline2: string;
+  fd452ownershipinterestcontrolpercentline2: string;
+  fd452ownershipinterestssnortaxidline2: string;
+  fd452ownershipinterestaddressline2: string;
+  fd452ownershipinterestnpiline2: string;
+  fd452ownershipinterestnameline3: string;
+  fd452ownershipinterestDateofBirthline3: string;
+  fd452ownershipinterestcontrolpercentline3: string;
+  fd452ownershipinterestssnortaxidline3: string;
+  fd452ownershipinterestaddressline3: string;
+  fd452ownershipinterestnpiline3: string;
+  fd452ownerreleationshipline1: string;
+  fd452ownerreleationshipline2: string;
+  fd452ownerreleationshipline3: string;
+  fd452ownerreleationshipline4: string;
+  fd452ownerreleationshipsubcontractorline1: string;
+  fd452ownerreleationshipsubcontractorline2: string;
+  fd452ownerreleationshipsubcontractorline3: string;
+  fd452ownerreleationshipsubcontractorline4: string;
 }
 
 export const getPage18Fields = (formData: FormData): Partial<PdfFfsIndividualPage18> => {
   if (formData.isSupportedSoleProprietor === true) {
     return {
-      fd452nameofotherentitywithownershipinteresline1: "N/A",
-      fd452managingagentsdateofbirthine1: formatDate(formData.dateOfBirth),
-      fd452managingagentsssnline1: formData.socialSecurityNumber,
-      fd452managingagentsnametitleline1: `${formatName(formData)}, doula`,
-      fd452managingagentsaddressline1: formatMultilineAddress(
+      fd452affliatedprevious12monthsno: true,
+      fd452ownershipinterestnameline1: formatName(formData),
+      fd452ownershipinterestDateofBirthline1: formatDate(formData.dateOfBirth),
+      fd452ownershipinterestcontrolpercentline1: "100",
+      fd452ownershipinterestssnortaxidline1: formatEinOrSsn(formData),
+      fd452ownershipinterestaddressline1: formatMultilineAddress(
         formData.businessStreetAddress1,
         formData.businessStreetAddress2,
         formData.businessCity,
         formData.businessState,
         formData.businessZip,
       ),
-      fd452businesstransactions25000ormoreline1: "N/A",
+      fd452ownershipinterestnpiline1: formData.npiNumber,
+      fd452ownerreleationshipline1: "N/A",
+      fd452ownerreleationshipsubcontractorline1: "N/A",
     };
   }
   throw new UnexpectedFormDataError(

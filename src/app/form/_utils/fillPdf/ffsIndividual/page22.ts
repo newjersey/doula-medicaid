@@ -3,55 +3,50 @@ import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 22 - disclosure of ownership and control interest statement
 export interface PdfFfsIndividualPage22 {
-  fd452increasedbedcapacityyyes: boolean;
-  fd452increasedbedcapacityno: boolean;
-  fd452increasedbedcapacityyear: string;
-  fd452currentnumberofbeds: string;
-  fd452priornumberofbeds: string;
-  fd452disclosableeventyyes: boolean;
-  fd452disclosableeventno: boolean;
-  fd452disclosabledateline1: string;
-  fd452disclosableindividualentityinvolvedline1: string;
-  fd452disclosablenpiline1: string;
-  fd452disclosableeventline1: string;
-  fd452disclosabledebtowedline1: string;
-  fd452disclosableresolutionline1: string;
-  fd452disclosabledateline2: string;
-  fd452disclosableindividualentityinvolvedline2: string;
-  fd452disclosablenpiline2: string;
-  fd452disclosableeventline2: string;
-  fd452disclosabledebtowedline2: string;
-  fd452disclosableresolutionline2: string;
-  fd452disclosabledateline3: string;
-  fd452disclosableindividualentityinvolvedline3: string;
-  fd452disclosablenpiline3: string;
-  fd452disclosableeventline3: string;
-  fd452disclosabledebtowedline3: string;
-  fd452disclosableresolutionline3: string;
-  fd452disclosabledateline4: string;
-  fd452disclosableindividualentityinvolvedline4: string;
-  fd452disclosablenpiline4: string;
-  fd452disclosableeventline4: string;
-  fd452disclosabledebtowedline4: string;
-  fd452disclosableresolutionline4: string;
-  fd452disclosabledateline5: string;
-  fd452disclosableindividualentityinvolvedline5: string;
-  fd452disclosablenpiline5: string;
-  fd452disclosableeventline5: string;
-  fd452disclosabledebtowedline5: string;
-  fd452disclosableresolutionline5: string;
+  fd452operatedorfiscallymanagedyes: boolean;
+  fd452operatedorfiscallymanagedno: boolean;
+  fd452operatedorfiscallymanagedyesline1: string;
+  fd452operatedorfiscallymanagedyesline2: string;
+  fd452operatedorfiscallymanagedyesline3: string;
+  fd452operatedorfiscallymanagedyesline4: string;
+  fd452operatedorfiscallymanagedyesline5: string;
+  fd452operatedorfiscallymanagedyesline6: string;
+  fd452changeinmanagingyes: boolean;
+  fd452changeinmanagingno: boolean;
+  fd452changeinmanagingyesline1: string;
+  fd452changeinmanagingyesline2: string;
+  fd452changeinmanagingyesline3: string;
+  fd452changeinmanagingyesline4: string;
+  fd452changeinmanagingyesline5: string;
+  fd452changeinmanagingyesline6: string;
+  fd452subsidiaryofparentcompanyyes: boolean;
+  fd452subsidiaryofparentcompanyno: boolean;
+  fd452subsidiaryofparentcompanyyesline1: string;
+  fd452subsidiaryofparentcompanyyesline2: string;
+  fd452subsidiaryofparentcompanyyesline3: string;
+  fd452subsidiaryofparentcompanyyesline4: string;
+  fd452subsidiaryofparentcompanyyesline5: string;
+  fd452subsidiaryofparentcompanyyesline6: string;
+  fd452affiliatedwithparentcompanyyes: boolean;
+  fd452affiliatedwithparentcompanyno: boolean;
+  fd452affiliatedwithparentcompanyyesline1: string;
+  fd452affiliatedwithparentcompanyyesline2: string;
+  fd452affiliatedwithparentcompanyyesline3: string;
+  fd452affiliatedwithparentcompanyyesline4: string;
+  fd452affiliatedwithparentcompanyyesline5: string;
+  fd452affiliatedwithparentcompanyyesline6: string;
 }
 
 export const getPage22Fields = (formData: FormData): Partial<PdfFfsIndividualPage22> => {
   if (formData.isSupportedSoleProprietor === true) {
     return {
-      fd452increasedbedcapacityno: true,
-      fd452disclosableeventyyes: formData.hasDisclosableEvent,
-      fd452disclosableeventno: !formData.hasDisclosableEvent,
+      fd452operatedorfiscallymanagedno: true,
+      fd452changeinmanagingno: true,
+      fd452subsidiaryofparentcompanyno: true,
+      fd452affiliatedwithparentcompanyno: true,
     };
-  } else {
-    throw new UnexpectedFormDataError(
-      `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
-    );
   }
+  throw new UnexpectedFormDataError(
+    `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
+  );
 };

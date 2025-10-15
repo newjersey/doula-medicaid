@@ -1,8 +1,8 @@
 import { formatDate, formatNaIfBlank, formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
-// Page 7 - individual doula provider application section I provider identification
-export interface PdfFfsIndividualPage7 {
+// Page 8 - individual doula provider application section I provider identification
+export interface PdfFfsIndividualPage8 {
   fd425legalname: string;
   fd452dobfdate_af_date: string;
   fd425socialsecuritynumber: string;
@@ -27,7 +27,7 @@ export interface PdfFfsIndividualPage7 {
   fd425previousownertaxid: string;
 }
 
-export const getPage7Fields = (formData: FormData): Partial<PdfFfsIndividualPage7> => {
+export const getPage8Fields = (formData: FormData): Partial<PdfFfsIndividualPage8> => {
   return {
     fd425legalname: formatName(formData),
     fd452dobfdate_af_date: formatDate(formData.dateOfBirth),
