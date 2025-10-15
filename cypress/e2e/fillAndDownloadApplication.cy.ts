@@ -86,7 +86,7 @@ it("should fill and download the application", () => {
 
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
     async (file: typeof Cypress.Buffer) => {
-      /** ;
+      /**
         Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
         by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more.
         I simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer
