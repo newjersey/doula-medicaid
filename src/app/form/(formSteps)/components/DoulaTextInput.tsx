@@ -5,17 +5,22 @@ import {
 import { Hint } from "@/app/form/(formSteps)/components/Hint";
 import { formatDescribedBy } from "@/app/form/(formSteps)/components/utils/doulaInput";
 import {
+  InputGroup,
+  InputPrefix,
   Label,
   TextInput,
   type TextInputProps,
   type ValidationStatus,
 } from "@trussworks/react-uswds";
 import type {
+  ChangeHandler,
   FieldErrors,
   FieldPath,
   FieldValues,
+  Path,
   RegisterOptions,
   UseFormRegister,
+  UseFormRegisterReturn,
 } from "react-hook-form";
 
 type wrappedAttributes = "type" | "name" | "required";
@@ -26,8 +31,10 @@ interface DoulaTextInputProps<T extends FieldValues>
   name: FieldPath<T>;
   label: React.ReactNode;
   hint?: string;
+  inputPrefix?: string;
   type?: TextInputProps["type"];
   required?: boolean;
+  numericOnly?: boolean;
   hideErrorMessage?: boolean;
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
@@ -35,14 +42,35 @@ interface DoulaTextInputProps<T extends FieldValues>
   customErrorMessages?: Array<CustomErrorMessage>;
 }
 
+const wrapRegisterProps = <T extends FieldValues>(
+  registerProps: UseFormRegisterReturn<Path<T>>,
+  numericOnly: boolean | undefined,
+): UseFormRegisterReturn<Path<T>> => {
+  if (numericOnly === true) {
+    const { onChange, ...otherRegisterProps } = registerProps;
+    const wrappedOnChange: ChangeHandler = (e) => {
+      e.target.value = e.target.value.replace(/\D/g, "");
+      return onChange?.(e);
+    };
+    return {
+      ...otherRegisterProps,
+      onChange: wrappedOnChange,
+    };
+  }
+
+  return registerProps;
+};
+
 const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) => {
   const {
     name,
     label,
     hint,
+    inputPrefix,
     type,
     "aria-describedby": ariaDescribedby,
     required,
+    numericOnly,
     errors,
     hideErrorMessage,
     register,
@@ -64,6 +92,25 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
     internallySetProps.validationStatus = errors[name] ? validationStatusError : undefined;
     internallySetProps["aria-invalid"] = errors[name] ? ("true" as const) : ("false" as const);
   }
+  let input = (
+    <TextInput
+      id={name}
+      type={type ?? "text"}
+      required={required}
+      {...internallySetProps}
+      {...otherProps}
+      {...wrapRegisterProps(register(name, registerOptions), numericOnly)}
+    />
+  );
+
+  if (inputPrefix) {
+    input = (
+      <InputGroup error={hasError}>
+        <InputPrefix>{inputPrefix}</InputPrefix>
+        {input}
+      </InputGroup>
+    );
+  }
 
   return (
     <>
@@ -71,14 +118,7 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
         {label}
       </Label>
       {hint !== undefined && <Hint name={name} hint={hint} />}
-      <TextInput
-        id={name}
-        type={type ?? "text"}
-        required={required}
-        {...internallySetProps}
-        {...otherProps}
-        {...register(name, registerOptions)}
-      />
+      {input}
       {hasError && hideErrorMessage !== true && (
         <ErrorMessage name={name} errors={errors} customErrorMessages={customErrorMessages} />
       )}

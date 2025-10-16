@@ -133,7 +133,6 @@ describe("<InsuranceStep1 />", () => {
     );
 
     it.each([
-      { invalidTestValue: "test", expectedErrorMessage: "Amount per occurrence must be a number" },
       {
         invalidTestValue: "999999",
         expectedErrorMessage:
@@ -153,7 +152,6 @@ describe("<InsuranceStep1 />", () => {
     );
 
     it.each([
-      { invalidTestValue: "test", expectedErrorMessage: "Amount per aggregate must be a number" },
       {
         invalidTestValue: "2999999",
         expectedErrorMessage:
@@ -169,6 +167,22 @@ describe("<InsuranceStep1 />", () => {
           renderFunction,
           screen,
         );
+      },
+    );
+
+    it.each([amountPerOccurrenceField, amountPerAggregateField])(
+      "prevents non-numeric inputs in $dataStoreKey",
+      async (testField) => {
+        const user = userEvent.setup();
+        renderFunction();
+        const input = await getInputField(screen, testField);
+
+        await user.type(input, "aaa");
+        expect(input).toHaveValue("");
+        await user.type(input, "!!");
+        expect(input).toHaveValue("");
+        await user.type(input, "11");
+        expect(input).toHaveValue("11");
       },
     );
   });
