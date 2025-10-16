@@ -296,21 +296,17 @@ const InsuranceStep1 = () => {
               required
               label={`${orderedInputNameToLabel["insuranceOccurenceAmount"]}`}
               hint={"Minimum should be $1,000,000"}
+              numericOnly
+              inputPrefix="$"
               register={register}
               errors={errors}
               inputMode="numeric"
               registerOptions={{
-                valueAsNumber: true,
                 required: `${orderedInputNameToLabel["insuranceOccurenceAmount"]} is required`,
                 min: {
                   value: 1000000,
                   message:
                     "Your coverage is not enough. You need $1,000,000 minimum coverage per occurrence to qualify.",
-                },
-                validate: (value) => {
-                  if (Number.isNaN(value) || typeof value === "string") {
-                    return `${orderedInputNameToLabel["insuranceOccurenceAmount"]} must be a number`;
-                  }
                 },
               }}
             />
@@ -319,6 +315,8 @@ const InsuranceStep1 = () => {
               required
               label={`${orderedInputNameToLabel["insuranceAggregateAmount"]}`}
               hint={"Minimum should be $3,000,000"}
+              numericOnly
+              inputPrefix="$"
               register={register}
               errors={errors}
               inputMode="numeric"
@@ -328,12 +326,6 @@ const InsuranceStep1 = () => {
                   value: 3000000,
                   message:
                     "Your coverage is not enough. You need a minimum aggregate coverage of $3,000,000 to qualify.",
-                },
-                valueAsNumber: true,
-                validate: (value) => {
-                  if (Number.isNaN(value) || typeof value === "string") {
-                    return `${orderedInputNameToLabel["insuranceAggregateAmount"]} must be a number`;
-                  }
                 },
               }}
             />

@@ -66,6 +66,8 @@ describe("<PersonalDetailsStep3 />", () => {
       expect(input).toHaveValue("");
       await user.type(input, "!!");
       expect(input).toHaveValue("");
+      await user.type(input, "11");
+      expect(input).toHaveValue("11");
     });
   });
 

@@ -1,5 +1,9 @@
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
+import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { useForm } from "react-hook-form";
 
 describe("DoulaTextInput", () => {
   it("renders the input with a label", () => {
@@ -11,6 +15,40 @@ describe("DoulaTextInput", () => {
     expect(input).toBeInTheDocument();
     expect(input).not.toHaveAttribute("aria-invalid");
     expect(input).not.toHaveAttribute("aria-describedby");
+  });
+
+  it("describes the input with a string hint", () => {
+    render(
+      <DoulaTextInput name="testInput" label="Test label" hint="Test hint" register={jest.fn()} />,
+    );
+    const input = screen.getByRole("textbox", { name: "Test label" });
+    expect(input).toHaveAccessibleDescription("Test hint");
+  });
+
+  it("describes the input with the provided describedby", () => {
+    render(
+      <>
+        <DoulaTextInput
+          name="testInput"
+          label="Test label"
+          aria-describedby="anotherDescriptonID"
+          register={jest.fn()}
+        />
+        <span id="anotherDescriptonID">Additional description</span>
+      </>,
+    );
+    const input = screen.getByRole("textbox", { name: "Test label" });
+    expect(input).toHaveAccessibleDescription("Additional description");
+  });
+
+  it("includes both the input and provided input prefix", () => {
+    render(
+      <DoulaTextInput name="testInput" label="Test label" inputPrefix="$" register={jest.fn()} />,
+    );
+    const input = screen.getByRole("textbox", { name: "Test label" });
+    expect(input).toBeInTheDocument();
+    const inputPrefix = screen.getByText("$", { exact: false });
+    expect(inputPrefix).toAppearBefore(input);
   });
 
   it("sets appropriate attributes when the input is required", () => {
@@ -35,28 +73,41 @@ describe("DoulaTextInput", () => {
     expect(input).not.toHaveAttribute("aria-describedby");
   });
 
-  it("describes the input with a string hint", () => {
-    render(
-      <DoulaTextInput name="testInput" label="Test label" hint="Test hint" register={jest.fn()} />,
-    );
-    const input = screen.getByRole("textbox", { name: "Test label" });
-    expect(input).toHaveAccessibleDescription("Test hint");
-  });
+  it("only allows numeric inputs when numericOnly is set", async () => {
+    interface TestFormData {
+      testInput: string;
+    }
+    const TestForm = () => {
+      const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm<TestFormData>({
+        defaultValues: {
+          testInput: "",
+        },
+      });
+      return (
+        <DoulaForm<TestFormData>
+          errors={errors}
+          handleSubmit={handleSubmit}
+          mayHaveThreeOrMoreErrors={false}
+        >
+          <DoulaTextInput name="testInput" label="Test label" numericOnly register={register} />
+        </DoulaForm>
+      );
+    };
 
-  it("it describes the input with the provided describedby", () => {
-    render(
-      <>
-        <DoulaTextInput
-          name="testInput"
-          label="Test label"
-          aria-describedby="anotherDescriptonID"
-          register={jest.fn()}
-        />
-        <span id="anotherDescriptonID">Additional description</span>
-      </>,
-    );
+    const user = userEvent.setup();
+    renderWithProviders(<TestForm />, "/form/personal-details/1");
+
     const input = screen.getByRole("textbox", { name: "Test label" });
-    expect(input).toHaveAccessibleDescription("Additional description");
+    await user.type(input, "aaa");
+    expect(input).toHaveValue("");
+    await user.type(input, "!!");
+    expect(input).toHaveValue("");
+    await user.type(input, "11");
+    expect(input).toHaveValue("11");
   });
 
   it("shows an error message and sets appropriate attributes when there is an error for the input", () => {
