@@ -1,7 +1,9 @@
 import { APPLICATION_NAME } from "@/app/_utils/title";
+import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
 import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
+import { Footer, Logo } from "@trussworks/react-uswds";
 import type { Metadata } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -66,6 +68,40 @@ export default function RootLayout({
             <div className="grid-container">{children}</div>
           </div>
         </main>
+        <HorizontalDivider />
+        <Footer
+          size="slim"
+          primary={null}
+          secondary={
+            <Logo
+              size="slim"
+              image={<Image src="/svg/DHS_logo.svg" width={210} height={107} alt="DHS logo" />}
+              heading={
+                <div className="grid-row flex-align-center">
+                  <div className="tablet:grid-col-auto tablet:border-right tablet:margin-right-2 tablet:padding-right-2">
+                    <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
+                      <svg
+                        className="usa-icon bottom-neg-05 margin-right-05 footer__mail-icon"
+                        aria-hidden="true"
+                        focusable="false"
+                        role="img"
+                      >
+                        <use href={"/svg/sprite.svg#mail"}></use>
+                      </svg>
+                      mahs.doulaguide@dhs.nj.gov
+                    </a>{" "}
+                    for assistance
+                  </div>
+                  <div className="tablet:grid-col-auto">
+                    <a href="https://www.nj.gov/nj/privacy.shtml" target="_blank" rel="noopener">
+                      Privacy Policy
+                    </a>
+                  </div>
+                </div>
+              }
+            />
+          }
+        />
       </body>
     </html>
   );

@@ -1,8 +1,4 @@
-import {
-  createTestField,
-  createTestFields,
-  type TestField,
-} from "@/app/form/_utils/testUtils/sharedTests";
+import { createTestField, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 
 export const dateOfBirthDayField = createTestField({
   name: "Day *",
@@ -34,27 +30,29 @@ export const socialSecurityNumberField = createTestField({
   role: "textbox",
 });
 
+export const firstNameField = createTestField({
+  name: "First name *",
+  dataStoreKey: "firstName",
+  required: true,
+  testValue: "Test first name",
+});
+export const middleNameField = createTestField({
+  name: "Middle name",
+  dataStoreKey: "middleName",
+  required: false,
+  testValue: "Test middle name",
+});
+export const lastNameField = createTestField({
+  name: "Last name *",
+  dataStoreKey: "lastName",
+  required: true,
+  testValue: "Test last name",
+});
+
 export const personalIdentificationFields: Array<TestField> = [
-  ...createTestFields([
-    {
-      name: "First name *",
-      dataStoreKey: "firstName",
-      required: true,
-      testValue: "Test first name",
-    },
-    {
-      name: "Middle name",
-      dataStoreKey: "middleName",
-      required: false,
-      testValue: "Test middle name",
-    },
-    {
-      name: "Last name *",
-      dataStoreKey: "lastName",
-      required: true,
-      testValue: "Test last name",
-    },
-  ]),
+  firstNameField,
+  middleNameField,
+  lastNameField,
   dateOfBirthDayField,
   dateOfBirthMonthField,
   dateOfBirthYearField,

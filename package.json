@@ -11,6 +11,7 @@
     "prettier:check": "prettier . --check",
     "prepare": "husky",
     "cypress:run": "cypress run",
+    "cypress:gui": "cypress open",
     "test": "jest",
     "typecheck": "tsc --noemit"
   },
@@ -28,8 +29,8 @@
     "pdf-lib": "1.17.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-hook-form": "7.64.0",
-    "react-router": "7.9.3",
+    "react-hook-form": "7.65.0",
+    "react-router": "7.9.4",
     "tesseract.js": "6.0.1"
   },
   "devDependencies": {
@@ -40,11 +41,11 @@
     "@testing-library/react": "16.3.0",
     "@testing-library/user-event": "14.6.1",
     "@types/jest": "30.0.0",
-    "@types/node": "22.18.8",
+    "@types/node": "22.18.10",
     "@types/nodemailer": "7.0.2",
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.1",
-    "cypress": "15.3.0",
+    "cypress": "15.4.0",
     "eslint": "9.37.0",
     "eslint-config-next": "15.5.4",
     "eslint-import-resolver-typescript": "4.4.4",
@@ -57,7 +58,7 @@
     "prettier": "latest",
     "prettier-plugin-jsdoc": "latest",
     "prettier-plugin-organize-imports": "latest",
-    "ts-jest": "29.4.4",
+    "ts-jest": "29.4.5",
     "typescript": "5.9.3",
     "typescript-eslint": "8.46.0"
   },
