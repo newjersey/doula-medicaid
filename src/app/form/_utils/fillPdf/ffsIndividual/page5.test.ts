@@ -1,69 +1,22 @@
-import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import type { PdfFfsIndividualPage5 } from "@/app/form/_utils/fillPdf/ffsIndividual/page5";
 import {
   expectNoDuplicateTest,
+  testLegalName,
   testNpiNumber,
-  testPhoneNumber,
 } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
-import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
-describe("Page 5 - authorization agreement for automated deposits of state payments", () => {
+describe("Page 5 - signature authorization form", () => {
   const testedPdfKeys = new Set<keyof PdfFfsIndividualPage5>([]);
 
-  it("fills telephone number", () => {
-    const pdfKey = "fd443telephoneno";
+  it("fills in provider name", () => {
+    const pdfKey = "fd444Providername";
     expectNoDuplicateTest<PdfFfsIndividualPage5>(pdfKey, testedPdfKeys);
-    testPhoneNumber(pdfKey);
+    testLegalName(pdfKey);
   });
 
-  it("fills NPI number", () => {
-    const pdfKey = "fd443npino";
+  it("fills in NPI number", () => {
+    const pdfKey = "fd444providerNPINumber";
     expectNoDuplicateTest<PdfFfsIndividualPage5>(pdfKey, testedPdfKeys);
     testNpiNumber(pdfKey);
-  });
-
-  it("fills in pay to address", () => {
-    const line1Key = "fd443paytoaddressline1" as const;
-    const line2Key = "fd443paytoaddressline2" as const;
-    const line3Key = "fd443paytoaddressline3" as const;
-    const pdfKeys = [line1Key, line2Key, line3Key];
-    for (const pdfKey of pdfKeys) {
-      expectNoDuplicateTest<PdfFfsIndividualPage5>(pdfKey, testedPdfKeys);
-    }
-
-    const testCases = [
-      {
-        description: "has streetAddress2",
-        formData: {
-          billingStreetAddress1: "456 Test St",
-          billingStreetAddress2: "Suite Test",
-          billingCity: "Newark",
-          billingState: AddressState.NJ,
-          billingZip: "22222",
-        },
-        expectedLine1Key: "456 Test St",
-        expectedLine2Key: "Suite Test",
-        expectedLine3Key: "Newark, NJ 22222",
-      },
-      {
-        description: "no streetAddress2",
-        formData: {
-          billingStreetAddress1: "456 Test St",
-          billingCity: "Newark",
-          billingState: AddressState.NJ,
-          billingZip: "22222",
-        },
-        expectedLine1Key: "456 Test St",
-        expectedLine2Key: "Newark, NJ 22222",
-        expectedLine3Key: "",
-      },
-    ];
-    for (const testCase of testCases) {
-      const pdfFields = mapFfsIndividualFields(generateFormData(testCase.formData));
-      expect(pdfFields[line1Key]).toEqual(testCase.expectedLine1Key);
-      expect(pdfFields[line2Key]).toEqual(testCase.expectedLine2Key);
-      expect(pdfFields[line3Key]).toEqual(testCase.expectedLine3Key);
-    }
   });
 });

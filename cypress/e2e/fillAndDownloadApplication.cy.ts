@@ -42,18 +42,18 @@ const formPages = [
  */
 const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
 const expectedFields: Partial<PdfFfsIndividual> = {
-  fd427LegalName: legalName, // page 3
-  fd443telephoneno: phoneNumberField.expectedValue, // page 5
-  fd425legalname: legalName, // page 7
-  "fd455aREQPAPER_Provider Name": legalName, // page 12
-  "fd452disclosingentitySole Proprietorship": true, // page 16
-  fd452affliatedprevious12monthsno: true, // page 17
-  fd452nameofotherentitywithownershipinteresline1: "N/A", // page 18
-  fd452significanttransactionsprevious5yearsline1: "N/A", // page 19
-  fd452ownershiphealthcareproviderno: true, // page 20
-  fd452operatedorfiscallymanagedno: true, // page 21
-  fd452increasedbedcapacityno: true, // page 22
-  "W9_Name See Specific Instructions on page 2": legalName, // page 25
+  fd427LegalName: legalName, // page 4
+  fd443telephoneno: phoneNumberField.expectedValue, // page 6
+  fd425legalname: legalName, // page 8
+  "fd455aREQPAPER_Provider Name": legalName, // page 13
+  "fd452disclosingentitySole Proprietorship": true, // page 17
+  fd452affliatedprevious12monthsno: true, // page 18
+  fd452nameofotherentitywithownershipinteresline1: "N/A", // page 19
+  fd452significanttransactionsprevious5yearsline1: "N/A", // page 20
+  fd452ownershiphealthcareproviderno: true, // page 21
+  fd452operatedorfiscallymanagedno: true, // page 22
+  fd452increasedbedcapacityno: true, // page 23
+  "W9_Name See Specific Instructions on page 2": legalName, // page 26
 };
 
 it("should fill and download the application", () => {
@@ -100,7 +100,7 @@ it("should fill and download the application", () => {
       const form = pdfDoc.getForm();
 
       const pageCount = pdfDoc.getPageCount();
-      expect(pageCount).to.equal(38);
+      expect(pageCount).to.equal(39);
 
       for (const [key, value] of Object.entries(expectedFields)) {
         const field = form.getField(key);

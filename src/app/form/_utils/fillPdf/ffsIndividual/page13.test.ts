@@ -1,5 +1,5 @@
 import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
-import type { PdfFfsIndividualPage12 } from "@/app/form/_utils/fillPdf/ffsIndividual/page12";
+import type { PdfFfsIndividualPage13 } from "@/app/form/_utils/fillPdf/ffsIndividual/page13";
 import {
   expectNoDuplicateTest,
   testLegalName,
@@ -9,24 +9,24 @@ import {
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
-describe("Page 12 - request for paper updates", () => {
-  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage12>([]);
+describe("Page 13 - request for paper updates", () => {
+  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage13>([]);
 
   it("fills in legal name", () => {
     const pdfKey = "fd455aREQPAPER_Provider Name";
-    expectNoDuplicateTest<PdfFfsIndividualPage12>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage13>(pdfKey, testedPdfKeys);
     testLegalName(pdfKey);
   });
 
   it("fills in provider number", () => {
     const pdfKey = "fd455aREQPAPER_Provider Number";
-    expectNoDuplicateTest<PdfFfsIndividualPage12>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage13>(pdfKey, testedPdfKeys);
     testNpiNumber(pdfKey);
   });
 
   it("fills in telephone number", () => {
     const pdfKey = "fd455aREQPAPER_Telephone Number";
-    expectNoDuplicateTest<PdfFfsIndividualPage12>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage13>(pdfKey, testedPdfKeys);
     testPhoneNumber(pdfKey);
   });
 
@@ -36,7 +36,7 @@ describe("Page 12 - request for paper updates", () => {
     const line3Key = "fd455aREQPAPER_Mail To Address 3" as const;
     const pdfKeys = [line1Key, line2Key, line3Key];
     for (const pdfKey of pdfKeys) {
-      expectNoDuplicateTest<PdfFfsIndividualPage12>(pdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage13>(pdfKey, testedPdfKeys);
     }
 
     const testCases = [

@@ -19,12 +19,12 @@ describe("Page 19 - disclosure of ownership and control interest statement", () 
 
   it.each([
     {
-      description: "significant transactions in previous 5 years",
-      pdfKey: "fd452significanttransactionsprevious5yearsline1" as const,
+      description: "other entity with ownership",
+      pdfKey: "fd452nameofotherentitywithownershipinteresline1" as const,
     },
     {
-      description: "affiliates affiliated provider or supplier",
-      pdfKey: "fd452affiliatesaffiliatedprovidersupplierline1" as const,
+      description: "business transactions more than $25,000",
+      pdfKey: "fd452businesstransactions25000ormoreline1" as const,
     },
   ])("fills in N/A for $description", ({ pdfKey }) => {
     expectNoDuplicateTest<PdfFfsIndividualPage19>(pdfKey, testedPdfKeys);

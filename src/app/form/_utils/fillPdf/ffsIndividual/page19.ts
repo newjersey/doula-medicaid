@@ -1,48 +1,60 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
+import {
+  formatDate,
+  formatMultilineAddress,
+  formatName,
+} from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 19 - disclosure of ownership and control interest statement
 export interface PdfFfsIndividualPage19 {
-  fd452significanttransactionsprevious5yearsline1: string;
-  fd452significanttransactionsprevious5yearsline2: string;
-  fd452significanttransactionsprevious5yearsline3: string;
-  fd452significanttransactionsprevious5yearsline4: string;
-  fd452significanttransactionsprevious5yearsline5: string;
-  fd452affiliatesindividualentitywithaffiliationline1: string;
-  fd452affiliatesindividualentitysroleline1: string;
-  fd452affiliatesssownershiporcontrolpercentline1: string;
-  fd452affiliatesssnortaxidline1: string;
-  fd452affiliatesaffiliatedprovidersupplierline1: string;
-  fd452affiliatesnpiline1: string;
-  fd452affiliatesdobline1: string;
-  fd452affiliatesindividualentitywithaffiliationline2: string;
-  fd452affiliatesindividualentitysroleline2: string;
-  fd452affiliatesssownershiporcontrolpercentline2: string;
-  fd452affiliatesssnortaxidline2: string;
-  fd452affiliatesaffiliatedprovidersupplierline2: string;
-  fd452affiliatesnpiline2: string;
-  fd452affiliatesdobline2: string;
-  fd452affiliatesindividualentitywithaffiliationline3: string;
-  fd452affiliatesindividualentitysroleline3: string;
-  fd452affiliatesssownershiporcontrolpercentline3: string;
-  fd452affiliatesssnortaxidline3: string;
-  fd452affiliatesaffiliatedprovidersupplierline3: string;
-  fd452affiliatesnpiline3: string;
-  fd452affiliatesdobline3: string;
-  fd452affiliatesindividualentitywithaffiliationline4: string;
-  fd452affiliatesindividualentitysroleline4: string;
-  fd452affiliatesssownershiporcontrolpercentline4: string;
-  fd452affiliatesssnortaxidline4: string;
-  fd452affiliatesaffiliatedprovidersupplierline4: string;
-  fd452affiliatesnpiline4: string;
-  fd452affiliatesdobline4: string;
+  fd452nameofotherentitywithownershipinteresline1: string;
+  fd452nameofotherentitywithownershipinteresline2: string;
+  fd452nameofotherentitywithownershipinteresline3: string;
+  fd452nameofotherentitywithownershipinteresline4: string;
+  fd452nameofotherentitywithownershipinteresline5: string;
+  fd452managingagentsdateofbirthine1: string;
+  fd452managingagentsssnline1: string;
+  fd452managingagentsnametitleline1: string;
+  fd452managingagentsaddressline1: string;
+  fd452fd452managingagentsdateofbirthine2: string;
+  fd452managingagentsssnline2: string;
+  fd452managingagentsnametitleline2: string;
+  fd452managingagentsaddressline2: string;
+  fd452managingagentsdateofbirthine3: string;
+  fd452managingagentsssnline3: string;
+  fd452managingagentsnametitleline3: string;
+  fd452managingagentsaddressline3: string;
+  fd452fd452managingagentsdateofbirthine4: string;
+  fd452managingagentsssnline4: string;
+  fd452managingagentsnametitleline4: string;
+  fd452managingagentsaddressline4: string;
+  fd452managingagentsdateofbirthine5: string;
+  fd452managingagentsssnline5: string;
+  fd452managingagentsnametitleline5: string;
+  fd452managingagentsaddressline5: string;
+  fd452businesstransactions25000ormoreline1: string;
+  fd452businesstransactions25000ormoreline2: string;
+  fd452businesstransactions25000ormoreline3: string;
+  fd452businesstransactions25000ormoreline4: string;
+  fd452businesstransactions25000ormoreline5: string;
 }
 
 export const getPage19Fields = (formData: FormData): Partial<PdfFfsIndividualPage19> => {
   if (formData.isSupportedSoleProprietor === true) {
     return {
-      fd452significanttransactionsprevious5yearsline1: "N/A",
-      fd452affiliatesaffiliatedprovidersupplierline1: "N/A",
+      fd452nameofotherentitywithownershipinteresline1: "N/A",
+      fd452managingagentsdateofbirthine1: formatDate(formData.dateOfBirth),
+      fd452managingagentsssnline1: formData.socialSecurityNumber,
+      fd452managingagentsnametitleline1: `${formatName(formData)}, doula`,
+      fd452managingagentsaddressline1: formatMultilineAddress(
+        formData.businessStreetAddress1,
+        formData.businessStreetAddress2,
+        formData.businessCity,
+        formData.businessState,
+        formData.businessZip,
+      ),
+      fd452businesstransactions25000ormoreline1: "N/A",
     };
   }
   throw new UnexpectedFormDataError(

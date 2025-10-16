@@ -1,5 +1,5 @@
 import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
-import type { PdfFfsIndividualPage7 } from "@/app/form/_utils/fillPdf/ffsIndividual/page7";
+import type { PdfFfsIndividualPage8 } from "@/app/form/_utils/fillPdf/ffsIndividual/page8";
 import {
   expectNoDuplicateTest,
   testDateOfBirth,
@@ -11,30 +11,30 @@ import {
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
-describe("Page 7 - individual doula provider application section I provider identification", () => {
-  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage7>([]);
+describe("Page 8 - individual doula provider application section I provider identification", () => {
+  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage8>([]);
 
   it("fills in legal name", () => {
     const pdfKey = "fd425legalname";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     testLegalName(pdfKey);
   });
 
   it("fills in Social Security Number", () => {
     const pdfKey = "fd425socialsecuritynumber";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     testSocialSecurityNumber(pdfKey);
   });
 
   it("fills in DOB", () => {
     const pdfKey = "fd452dobfdate_af_date";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     testDateOfBirth(pdfKey);
   });
 
   it("fills in Medicare provider no.", () => {
     const pdfKey = "fd452medicareprovnumber";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     const pdfFields = mapFfsIndividualFields(
       generateFormData({
         medicareProviderId: "111111",
@@ -45,7 +45,7 @@ describe("Page 7 - individual doula provider application section I provider iden
 
   it("fills in UPIN number", () => {
     const pdfKey = "fd425upinno";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
 
     const pdfFieldsWithUpinPopulated = mapFfsIndividualFields(
       generateFormData({
@@ -66,19 +66,19 @@ describe("Page 7 - individual doula provider application section I provider iden
 
   it("fills in NPI number", () => {
     const pdfKey = "fd425npinumber";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     testNpiNumber(pdfKey);
   });
 
   it("fills in telephone number", () => {
     const pdfKey = "fd425telephoneno";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     testPhoneNumber(pdfKey);
   });
 
   it("fills in e-mail address", () => {
     const pdfKey = "fd425emailaddress";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     const pdfFields = mapFfsIndividualFields(
       generateFormData({
         email: "test@test.com",
@@ -90,7 +90,7 @@ describe("Page 7 - individual doula provider application section I provider iden
   describe("mail to address", () => {
     it("fills in mail to address line 1", () => {
       const pdfKey = "fd425mailtoaddressstreet";
-      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
       const pdfFieldsOnlyAddress1 = mapFfsIndividualFields(
         generateFormData({
           streetAddress1: "55 Cherry St",
@@ -133,7 +133,7 @@ describe("Page 7 - individual doula provider application section I provider iden
         expected: "08609",
       },
     ])("fills in $description", ({ pdfKey, formData, expected }) => {
-      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
       const pdfFields = mapFfsIndividualFields(generateFormData(formData));
       expect(pdfFields[pdfKey]).toEqual(expected);
     });
@@ -141,7 +141,7 @@ describe("Page 7 - individual doula provider application section I provider iden
 
   it("fills in transfer of ownership no", () => {
     const pdfKey = "fd425transfercbno";
-    expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+    expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
     const pdfFields = mapFfsIndividualFields(generateFormData({}));
     expect(pdfFields[pdfKey]).toEqual(true);
   });
@@ -149,7 +149,7 @@ describe("Page 7 - individual doula provider application section I provider iden
   describe("pay to address", () => {
     it("fills in pay to address line 1", () => {
       const pdfKey = "fd425paytoaddressstreet";
-      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
       const pdfFieldsOnlyAddress1 = mapFfsIndividualFields(
         generateFormData({
           billingStreetAddress1: "55 Cherry St",
@@ -192,7 +192,7 @@ describe("Page 7 - individual doula provider application section I provider iden
         expected: "08609",
       },
     ])("fills in $description", ({ pdfKey, formData, expected }) => {
-      expectNoDuplicateTest<PdfFfsIndividualPage7>(pdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
       const pdfFields = mapFfsIndividualFields(generateFormData(formData));
       expect(pdfFields[pdfKey]).toEqual(expected);
     });

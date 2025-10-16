@@ -17,8 +17,24 @@ describe("Page 22 - disclosure of ownership and control interest statement", () 
     expect(testFunction).toThrow("Expected isSupportedSoleProprietor to be true, is instead false");
   });
 
-  it("checks no bed capacity increase", () => {
-    const pdfKey = "fd452increasedbedcapacityno";
+  it.each([
+    {
+      description: "no operator or fiscally managed",
+      pdfKey: "fd452operatedorfiscallymanagedno" as const,
+    },
+    {
+      description: "no change in managing",
+      pdfKey: "fd452changeinmanagingno" as const,
+    },
+    {
+      description: "no subsidiary of a parent company",
+      pdfKey: "fd452subsidiaryofparentcompanyno" as const,
+    },
+    {
+      description: "no affiliation with a parent company",
+      pdfKey: "fd452affiliatedwithparentcompanyno" as const,
+    },
+  ])("checks $description", ({ pdfKey }) => {
     expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
     const pdfFields = mapFfsIndividualFields(
       generateFormData({
@@ -26,33 +42,5 @@ describe("Page 22 - disclosure of ownership and control interest statement", () 
       }),
     );
     expect(pdfFields[pdfKey]).toEqual(true);
-  });
-
-  describe("hasDisclosableEvent", () => {
-    it("checks the No checkbox when formData.hasDisclosableEvent is false", () => {
-      const pdfKey = "fd452disclosableeventno";
-      const oppositePdfKey = "fd452disclosableeventyyes";
-      expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
-      const pdfFields = mapFfsIndividualFields(
-        generateFormData({
-          hasDisclosableEvent: false,
-        }),
-      );
-      expect(pdfFields[pdfKey]).toEqual(true);
-      expect(pdfFields[oppositePdfKey]).toEqual(false);
-    });
-
-    it("checks the Yes checkbox when formData.hasDisclosableEvent is true", () => {
-      const pdfKey = "fd452disclosableeventyyes";
-      const oppositePdfKey = "fd452disclosableeventno";
-      expectNoDuplicateTest<PdfFfsIndividualPage22>(pdfKey, testedPdfKeys);
-      const pdfFields = mapFfsIndividualFields(
-        generateFormData({
-          hasDisclosableEvent: true,
-        }),
-      );
-      expect(pdfFields[pdfKey]).toEqual(true);
-      expect(pdfFields[oppositePdfKey]).toEqual(false);
-    });
   });
 });

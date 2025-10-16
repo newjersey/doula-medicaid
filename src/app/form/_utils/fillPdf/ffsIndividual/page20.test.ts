@@ -19,32 +19,20 @@ describe("Page 20 - disclosure of ownership and control interest statement", () 
 
   it.each([
     {
-      description: "no participating provider ownership",
-      pdfKey: "fd452ownershiphealthcareproviderno" as const,
+      description: "significant transactions in previous 5 years",
+      pdfKey: "fd452significanttransactionsprevious5yearsline1" as const,
     },
     {
-      description: "no ownership change",
-      pdfKey: "fd452ownershipchangeno" as const,
+      description: "affiliates affiliated provider or supplier",
+      pdfKey: "fd452affiliatesaffiliatedprovidersupplierline1" as const,
     },
-    {
-      description: "no ownership change within the next year",
-      pdfKey: "fd452ownershipchangewithinyearno" as const,
-    },
-    {
-      description: "no bankruptcy in the last 7 years",
-      pdfKey: "fd452filedbankruptcypastsevenyearsno" as const,
-    },
-    {
-      description: "no possibility of filing bankruptcy in the next year",
-      pdfKey: "fd452filedbankruptcywithinyearno" as const,
-    },
-  ])("checks $description", ({ pdfKey }) => {
+  ])("fills in N/A for $description", ({ pdfKey }) => {
     expectNoDuplicateTest<PdfFfsIndividualPage20>(pdfKey, testedPdfKeys);
     const pdfFields = mapFfsIndividualFields(
       generateFormData({
         isSupportedSoleProprietor: true,
       }),
     );
-    expect(pdfFields[pdfKey]).toEqual(true);
+    expect(pdfFields[pdfKey]).toEqual("N/A");
   });
 });

@@ -1,11 +1,11 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
-import type { PdfFfsIndividualPage25 } from "@/app/form/_utils/fillPdf/ffsIndividual/page25";
+import type { PdfFfsIndividualPage26 } from "@/app/form/_utils/fillPdf/ffsIndividual/page26";
 import { expectNoDuplicateTest } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 
-describe("Page 25 - W-9 Request for Taxpayer Identification Number and Certification", () => {
-  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage25>([]);
+describe("Page 26 - W-9 Request for Taxpayer Identification Number and Certification", () => {
+  const testedPdfKeys = new Set<keyof PdfFfsIndividualPage26>([]);
 
   describe("isSupportedSoleProprietor", () => {
     it("throws an UnexpectedFormDataError when isSupportedSoleProprietor is not true", () => {
@@ -22,7 +22,7 @@ describe("Page 25 - W-9 Request for Taxpayer Identification Number and Certifica
     });
     it("checks individual or sole proprietor", () => {
       const pdfKey = "W9_IndividualSole proprietor";
-      expectNoDuplicateTest<PdfFfsIndividualPage25>(pdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage26>(pdfKey, testedPdfKeys);
       const pdfFields = mapFfsIndividualFields(
         generateFormData({
           isSupportedSoleProprietor: true,
@@ -43,7 +43,7 @@ describe("Page 25 - W-9 Request for Taxpayer Identification Number and Certifica
     });
 
     it("fills EIN if hasEin is true", () => {
-      const pdfKeys: Array<keyof PdfFfsIndividualPage25> = [
+      const pdfKeys: Array<keyof PdfFfsIndividualPage26> = [
         "W9_EIN1",
         "W9_EIN2",
         "W9_EIN3",
@@ -55,7 +55,7 @@ describe("Page 25 - W-9 Request for Taxpayer Identification Number and Certifica
         "W9_EIN9",
       ];
       for (const pdfKey of pdfKeys) {
-        expectNoDuplicateTest<PdfFfsIndividualPage25>(pdfKey, testedPdfKeys);
+        expectNoDuplicateTest<PdfFfsIndividualPage26>(pdfKey, testedPdfKeys);
       }
       const pdfFields = mapFfsIndividualFields(
         generateFormData({
@@ -80,7 +80,7 @@ describe("Page 25 - W-9 Request for Taxpayer Identification Number and Certifica
     });
 
     it("fills SSN if hasEin is false", () => {
-      const pdfKeys: Array<keyof PdfFfsIndividualPage25> = [
+      const pdfKeys: Array<keyof PdfFfsIndividualPage26> = [
         "W9_Social security number1",
         "W9_Social security number2",
         "W9_Social security number3",
@@ -92,7 +92,7 @@ describe("Page 25 - W-9 Request for Taxpayer Identification Number and Certifica
         "W9_Social security number9",
       ];
       for (const pdfKey of pdfKeys) {
-        expectNoDuplicateTest<PdfFfsIndividualPage25>(pdfKey, testedPdfKeys);
+        expectNoDuplicateTest<PdfFfsIndividualPage26>(pdfKey, testedPdfKeys);
       }
       const pdfFields = mapFfsIndividualFields(
         generateFormData({

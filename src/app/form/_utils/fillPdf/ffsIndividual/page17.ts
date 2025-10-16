@@ -1,62 +1,50 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
-import {
-  formatDate,
-  formatEinOrSsn,
-  formatMultilineAddress,
-  formatName,
-} from "@/app/form/_utils/fillPdf/formatters";
+import { formatEinOrSsn, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 17 - disclosure of ownership and control interest statement
 export interface PdfFfsIndividualPage17 {
-  fd452affliatedprevious12monthsyes: boolean;
-  fd452affliatedprevious12monthsno: boolean;
-  fd452ownershipinterestnameline1: string;
-  fd452ownershipinterestDateofBirthline1: string;
-  fd452ownershipinterestcontrolpercentline1: string;
-  fd452ownershipinterestssnortaxidline1: string;
-  fd452ownershipinterestaddressline1: string;
-  fd452ownershipinterestnpiline1: string;
-  fd452ownershipinterestnameline2: string;
-  fd452ownershipinterestDateofBirthline2: string;
-  fd452ownershipinterestcontrolpercentline2: string;
-  fd452ownershipinterestssnortaxidline2: string;
-  fd452ownershipinterestaddressline2: string;
-  fd452ownershipinterestnpiline2: string;
-  fd452ownershipinterestnameline3: string;
-  fd452ownershipinterestDateofBirthline3: string;
-  fd452ownershipinterestcontrolpercentline3: string;
-  fd452ownershipinterestssnortaxidline3: string;
-  fd452ownershipinterestaddressline3: string;
-  fd452ownershipinterestnpiline3: string;
-  fd452ownerreleationshipline1: string;
-  fd452ownerreleationshipline2: string;
-  fd452ownerreleationshipline3: string;
-  fd452ownerreleationshipline4: string;
-  fd452ownerreleationshipsubcontractorline1: string;
-  fd452ownerreleationshipsubcontractorline2: string;
-  fd452ownerreleationshipsubcontractorline3: string;
-  fd452ownerreleationshipsubcontractorline4: string;
+  "fd452disclosingentitySole Proprietorship": boolean;
+  fd452disclosingentityPaternship: boolean;
+  fd452disclosingentityCorporation: boolean;
+  fd452disclosingentitylimitedliabilitycompany: boolean;
+  fd452disclosingentityNonprofitorganization: boolean;
+  fd452disclosingentityUnincorporatedAssociation: boolean;
+  fd452disclosingentityOther: boolean;
+  fd452disclosingentityOtherSpecifytext: string;
+  fd452nameofdisclosingentity: string;
+  fd452tradenameanddba: string;
+  fd452businessstreetline1: string;
+  fd452businessstreetline2: string;
+  fd452businessstreetline3: string;
+  fd452telephonenumber: string;
+  fd452providernumbandornpi: string;
+  fd452einorothertaxidnumber: string;
+  fd452ownershipoffivepercentormoreyes: boolean;
+  fd452ownershipoffivepercentormoreno: boolean;
+  fd452convictedofcrimeyes: boolean;
+  fd452convictedofcrimeno: boolean;
 }
 
 export const getPage17Fields = (formData: FormData): Partial<PdfFfsIndividualPage17> => {
   if (formData.isSupportedSoleProprietor === true) {
+    const addressLine3 = formatAddressLine3(
+      formData.businessCity,
+      formData.businessState,
+      formData.businessZip,
+    );
     return {
-      fd452affliatedprevious12monthsno: true,
-      fd452ownershipinterestnameline1: formatName(formData),
-      fd452ownershipinterestDateofBirthline1: formatDate(formData.dateOfBirth),
-      fd452ownershipinterestcontrolpercentline1: "100",
-      fd452ownershipinterestssnortaxidline1: formatEinOrSsn(formData),
-      fd452ownershipinterestaddressline1: formatMultilineAddress(
-        formData.businessStreetAddress1,
-        formData.businessStreetAddress2,
-        formData.businessCity,
-        formData.businessState,
-        formData.businessZip,
-      ),
-      fd452ownershipinterestnpiline1: formData.npiNumber,
-      fd452ownerreleationshipline1: "N/A",
-      fd452ownerreleationshipsubcontractorline1: "N/A",
+      "fd452disclosingentitySole Proprietorship": true,
+      fd452nameofdisclosingentity: formatName(formData),
+      fd452telephonenumber: formData.phoneNumber ?? "",
+      fd452providernumbandornpi: formData.npiNumber ?? "",
+      fd452einorothertaxidnumber: formatEinOrSsn(formData),
+      fd452ownershipoffivepercentormoreno: true,
+      fd452convictedofcrimeno: true,
+      fd452businessstreetline1: formData.businessStreetAddress1,
+      fd452businessstreetline2: formData.businessStreetAddress2 ?? addressLine3,
+      fd452businessstreetline3: formData.businessStreetAddress2 ? addressLine3 : "",
     };
   }
   throw new UnexpectedFormDataError(

@@ -2,8 +2,8 @@ import { formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
-// Page 12 - request for paper updates
-export interface PdfFfsIndividualPage12 {
+// Page 13 - request for paper updates
+export interface PdfFfsIndividualPage13 {
   "fd455aREQPAPER_Provider Name": string;
   "fd455aREQPAPER_Provider Number": string;
   "fd455aREQPAPER_Contact Name": string;
@@ -16,7 +16,7 @@ export interface PdfFfsIndividualPage12 {
   fd455aREQPAPER_Date1_af_date: string;
 }
 
-export const getPage12Fields = (formData: FormData): Partial<PdfFfsIndividualPage12> => {
+export const getPage13Fields = (formData: FormData): Partial<PdfFfsIndividualPage13> => {
   const addressLine3 = formatAddressLine3(formData.city, formData.state, formData.zip);
   return {
     "fd455aREQPAPER_Provider Name": formatName(formData),

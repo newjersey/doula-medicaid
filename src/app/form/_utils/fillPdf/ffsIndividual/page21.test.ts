@@ -19,20 +19,24 @@ describe("Page 21 - disclosure of ownership and control interest statement", () 
 
   it.each([
     {
-      description: "no operator or fiscally managed",
-      pdfKey: "fd452operatedorfiscallymanagedno" as const,
+      description: "no participating provider ownership",
+      pdfKey: "fd452ownershiphealthcareproviderno" as const,
     },
     {
-      description: "no change in managing",
-      pdfKey: "fd452changeinmanagingno" as const,
+      description: "no ownership change",
+      pdfKey: "fd452ownershipchangeno" as const,
     },
     {
-      description: "no subsidiary of a parent company",
-      pdfKey: "fd452subsidiaryofparentcompanyno" as const,
+      description: "no ownership change within the next year",
+      pdfKey: "fd452ownershipchangewithinyearno" as const,
     },
     {
-      description: "no affiliation with a parent company",
-      pdfKey: "fd452affiliatedwithparentcompanyno" as const,
+      description: "no bankruptcy in the last 7 years",
+      pdfKey: "fd452filedbankruptcypastsevenyearsno" as const,
+    },
+    {
+      description: "no possibility of filing bankruptcy in the next year",
+      pdfKey: "fd452filedbankruptcywithinyearno" as const,
     },
   ])("checks $description", ({ pdfKey }) => {
     expectNoDuplicateTest<PdfFfsIndividualPage21>(pdfKey, testedPdfKeys);
