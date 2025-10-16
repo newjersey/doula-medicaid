@@ -1,5 +1,6 @@
 import { APPLICATION_NAME } from "@/app/_utils/title";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import WipBanner from "@/app/form/(formSteps)/welcome/WipBanner";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
 import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
@@ -66,6 +67,7 @@ export default function RootLayout({
           </div>
         </header>
         <main id="main-content">
+          <WipBanner />
           <div className="usa-section">
             <div className="grid-container">{children}</div>
           </div>
