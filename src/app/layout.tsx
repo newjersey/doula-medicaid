@@ -3,7 +3,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
 import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
-import { Footer, Logo } from "@trussworks/react-uswds";
+import { Alert, Footer, Logo } from "@trussworks/react-uswds";
 import type { Metadata } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -63,6 +63,14 @@ export default function RootLayout({
             </div>
           </div>
         </header>
+        <Alert className="margin-top-0" type="warning" headingLevel="h3" role="status">
+          This site is in beta and may not cover every doula&apos;s unique situation. <br /> If you
+          are not covered by this tool, please use the standard{" "}
+          <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+            Medicaid Fee-for-Service application
+          </a>
+          .
+        </Alert>
         <main id="main-content">
           <div className="usa-section">
             <div className="grid-container">{children}</div>

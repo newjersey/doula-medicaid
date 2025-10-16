@@ -54,6 +54,10 @@ abbr[title] {
   max-width: fit-content;
 }
 
+.usa-alert__text {
+  max-width: fit-content;
+}
+
 @media all and (min-width: 0px) and (max-width: 1024px) {
   .welcome-page .usa-process-list {
     display: grid;
