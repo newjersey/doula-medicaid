@@ -37,8 +37,8 @@ const formPages = [
 ];
 
 /**
-  Test one field per page, and one of every type of field
-  Leaving unit individual-page tests to test that every field within the page is filled under different circumstances
+ * Test one field per page, and one of every type of field. Leaving unit individual-page tests to
+ * test that every field within the page is filled under different circumstances
  */
 const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
 const expectedFields: Partial<PdfFfsIndividual> = {
@@ -87,14 +87,16 @@ it("should fill and download the application", () => {
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
     async (file: typeof Cypress.Buffer) => {
       /**
-        Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
-        by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more.
-        I simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer
-        to an ArrayBuffer.
-        I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
-        does seem to indicate that the return is indeed Cypress.Buffer
-        However, the codes does run.
-      @ts-expect-error see above */
+       * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
+       * by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I
+       * simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to
+       * an ArrayBuffer.
+       *
+       * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
+       * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does
+       * run.
+       */
+      //  @ts-expect-error see above
       const uint8Array = new Uint8Array(file);
       const pdfDoc = await PDFDocument.load(uint8Array);
       const form = pdfDoc.getForm();

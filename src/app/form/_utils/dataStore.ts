@@ -90,7 +90,8 @@ export function getBoolean(
 export const getDefaultValue = (dataStore: DataStore, key: DataStoreKey) =>
   getValue(dataStore, key, false);
 /**
-  getDefaultBoolean returns a string because it's used to populate the `defaultValues` in useForm. Even though our two options are yes/no, radio button values require a string.
+ * GetDefaultBoolean returns a string because it's used to populate the `defaultValues` in useForm.
+ * Even though our two options are yes/no, radio button values require a string.
  */
 export const getDefaultBoolean = (
   dataStore: DataStore,
