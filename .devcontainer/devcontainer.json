@@ -1,15 +1,12 @@
 {
   "name": "Doula Preview Environment",
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {
-      "version": "latest"
-    },
     "ghcr.io/devcontainers/features/node:1": {
       "version": "lts",
       "installPnpm": true
     }
   },
-  "postCreateCommand": "nvm install 18.18.0 && npm install && npm run dev",
+  "postCreateCommand": "npm install && npm run dev",
   "forwardPorts": [
     3000
   ],
