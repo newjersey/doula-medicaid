@@ -1,6 +1,5 @@
 {
-  "name": "Codespaces: Documentation Preview",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "name": "Doula Preview Environment",
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {
       "version": "latest"
