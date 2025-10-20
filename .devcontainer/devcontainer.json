@@ -17,10 +17,5 @@
     "3000": {
       "label": "Application"
     }
-  },
-  "hostRequirements": {
-    "cpus": 16,
-    "memory": "32gb",
-    "storage": "128gb"
   }
 }
