@@ -5,6 +5,12 @@ import { usePathname } from "next/navigation";
 
 const WipBanner = () => {
   const pathname = usePathname();
+  const pathParts = pathname.split("/");
+
+  if (pathParts.length !== 3) {
+    return <></>;
+  }
+
   const { section: currentSection } = getCurrentFormProgress(pathname);
 
   return (
