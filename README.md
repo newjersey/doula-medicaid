@@ -27,3 +27,14 @@ npm run cypress:run -- --spec <path to file>
 # Open the cypress GUI to debug
 npm run cypress:gui
 ```
+
+# Building a Docker Image
+
+```sh
+# Start Colima (Docker Daemon replacement)
+colima start
+
+# Navigate to root of repo
+# Build Docker image
+docker build -t doula-test .
+```
