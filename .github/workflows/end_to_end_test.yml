@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: "22"
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npm exec next -- --version
       - name: Build the application
         run: npm run build
       - name: Start the application
