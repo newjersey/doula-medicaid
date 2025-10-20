@@ -96,10 +96,12 @@ export const fillForm = async (
 };
 
 /**
-  Issues/difficulty with parsing
-  - User might upload pdf not as a fillable pdf, or even non-filllable typed-out pdf, but as a scan of handwriting
-  - FFS might have "full legal name", but MCO wants separate first and last names
-  - User might input date in any number of formats (we can likely overcome this)
+ * Issues/difficulty with parsing
+ *
+ * - User might upload pdf not as a fillable pdf, or even non-filllable typed-out pdf, but as a scan
+ *   of handwriting
+ * - FFS might have "full legal name", but MCO wants separate first and last names
+ * - User might input date in any number of formats (we can likely overcome this)
  */
 // export const parseForm = async (
 //   file: File,
