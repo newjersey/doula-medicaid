@@ -1,0 +1,16 @@
+{
+  "name": "Doula Preview Environment",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts",
+      "installPnpm": true
+    }
+  },
+  "postCreateCommand": "npm install && npm run dev",
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "Application"
+    }
+  }
+}

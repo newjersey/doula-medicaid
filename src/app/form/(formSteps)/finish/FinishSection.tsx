@@ -24,7 +24,11 @@ const FinishSection = () => {
         const filledFfsIndividualForm = await fillFfsIndividualForm(formData);
         setDownloadData({
           /**
-            `filledFfsIndividualForm.bytes` is a `Uint8Array<ArrayBufferLike>`. Wrapping it in another `new Uint8Array()` is needed to convert it to a `Uint8Array<ArrayBuffer>` (no "Like"), which the Blob constructor wants. https://github.com/microsoft/TypeScript/pull/59417
+           * `filledFfsIndividualForm.bytes` is a `Uint8Array<ArrayBufferLike>`.
+           *
+           * Wrapping it in another `new Uint8Array()` is needed to convert it to a
+           * `Uint8Array<ArrayBuffer>` (no "Like"), which the Blob constructor wants.
+           * https://github.com/microsoft/TypeScript/pull/59417
            */
           url: URL.createObjectURL(new Blob([new Uint8Array(filledFfsIndividualForm.bytes)])),
           filename: filledFfsIndividualForm.filename,
