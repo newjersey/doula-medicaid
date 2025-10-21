@@ -3,6 +3,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
 import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { Footer, Logo } from "@trussworks/react-uswds";
 import type { Metadata } from "next";
 import Head from "next/head";
@@ -25,6 +26,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </Head>
+      <GoogleTagManager gtmId="G-H21NZ18V1E" />
       <body>
         <a className="usa-skipnav" href="#main-content">
           Skip to main content
