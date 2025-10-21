@@ -45,6 +45,9 @@ LABEL build.revision="${REVISION}"
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
+# Install curl for health check
+RUN apk add --no-cache curl
+
 # copy all the files and run next
 COPY --from=builder /app/public ./public
 
@@ -61,10 +64,9 @@ USER nextjs
 
 EXPOSE 3000
 
-# Health check
+# Health check using curl
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "const http = require('http'); http.get('http://localhost:3000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }).on('error', () => { process.exit(1); });"
-
+  CMD curl -f http://localhost:3000/api/health || exit 1
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
