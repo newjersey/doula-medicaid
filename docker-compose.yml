@@ -1,0 +1,59 @@
+services:
+  doula-medicaid:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # optional build-time metadata; populate via .env or CI
+        VERSION: ${VERSION:-dev}
+        BUILDTIME: ${BUILDTIME:-unknown}
+        REVISION: ${REVISION:-unknown}
+    image: newjersey/doula-medicaid:${VERSION:-dev}
+    container_name: doula-medicaid
+    restart: "${RESTART_POLICY:-unless-stopped}"
+    networks:
+      - doula-medicaid-network
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - HOSTNAME=${HOSTNAME:-0.0.0.0}
+      - PORT=${PORT:-3000}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    volumes:
+      # Fast tmpfs for Next.js cache
+      - doula-next-cache:/app/.next/cache
+      # Optional: persistent volume for any data that needs to survive restarts
+      - doula-data:/app/data
+
+networks:
+  doula-medicaid-network:
+    driver: bridge
+    name: doula-medicaid-network
+
+volumes:
+  doula-next-cache:
+    # tmpfs for Next.js cache - faster builds, cleaner restarts
+    name: doula-next-cache
+    driver: local
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: "size=1024m"
+  doula-data:
+    # persistent volume for any data that needs to survive restarts
+    name: doula-data
+    driver: local
