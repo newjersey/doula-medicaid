@@ -8,14 +8,16 @@ COPY package.json package-lock.json* ./
 RUN npm ci
 COPY . .
 
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
 # Production image
 FROM node:lts-alpine AS runtime
 WORKDIR /app
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
 
 # Build arguments
 ARG BUILDTIME
@@ -42,8 +44,8 @@ LABEL version="${VERSION}"
 LABEL build.date="${BUILDTIME}"
 LABEL build.revision="${REVISION}"
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN addgroup --system --gid 1001 nodejs \
+  && adduser --system --uid 1001 --ingroup nodejs nextjs
 
 # Install curl for health check
 RUN apk add --no-cache curl
@@ -66,7 +68,7 @@ EXPOSE 3000
 
 # Health check using curl
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/api/health || exit 1
+  CMD curl -f http://127.0.0.1:3000/api/health || exit 1
 
 # server.js is created by next build from the standalone output
 # https://nextjs.org/docs/pages/api-reference/next-config-js/output
