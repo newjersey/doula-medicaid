@@ -53,6 +53,13 @@ export class CdkStack extends cdk.Stack {
       ECR_REPOSITORY_NAME,
     );
 
+    // Security Group for Fargate tasks
+    const fargateSecurityGroup = ec2.SecurityGroup.fromLookupById(
+      this,
+      "FargateTaskSecurityGroup",
+      "sg-0d99483e4cadc4db8",
+    );
+
     // Create Fargate service with internal HTTP ALB
     const fargateService = new ecsPatterns.ApplicationLoadBalancedFargateService(
       this,
@@ -71,6 +78,7 @@ export class CdkStack extends cdk.Stack {
             LOG_LEVEL: "info",
           },
         },
+        securityGroups: [fargateSecurityGroup],
         desiredCount: 1,
         minHealthyPercent: 100,
         publicLoadBalancer: false, // Internal ALB due to no public subnets
@@ -83,7 +91,7 @@ export class CdkStack extends cdk.Stack {
 
     // Configure health check to use dedicated health endpoint
     fargateService.targetGroup.configureHealthCheck({
-      path: "/",
+      path: "/api/health",
       port: "3000",
       protocol: Protocol.HTTP,
       healthyHttpCodes: "200",

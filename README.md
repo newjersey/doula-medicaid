@@ -38,3 +38,21 @@ colima start
 # Build Docker image
 docker build -t doula-test .
 ```
+
+# Deploying with CDK
+
+```sh
+# set up AWS credentials
+f
+# Bootstrap (once per account)
+npx cdk bootstrap
+
+# Check differences
+npx cdk diff
+
+# Synthesize resources
+npx cdk deploy DoulaCommonAppStack
+
+# Destroy resources
+npx cdk destroy DoulaCommonAppStack
+```
