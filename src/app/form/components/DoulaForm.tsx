@@ -2,6 +2,7 @@ import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import {} from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
+import { sendGAEvent } from "@next/third-parties/google";
 import { Form } from "@trussworks/react-uswds";
 import { useEffect, useRef, useState } from "react";
 import type {
@@ -32,7 +33,6 @@ type DoulaFormProps<T extends FieldValues> =
     };
 
 export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
-  let onSubmitHandler;
   const navigate = useNavigate();
   const formProgressPosition = useFormProgressPosition();
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
@@ -55,9 +55,14 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
       navigate(formatFormProgressUrl(formProgressPosition.next));
     }
   };
-
-  if (props.mayHaveThreeOrMoreErrors) {
-    const onError = (errors: FieldErrors<T>) => {
+  const onError = (errors: FieldErrors<T>) => {
+    for (const name of Object.keys(errors)) {
+      sendGAEvent("event", "formValidationError", {
+        fieldName: name,
+        type: errors[name]?.type,
+      });
+    }
+    if (props.mayHaveThreeOrMoreErrors) {
       if (Object.keys(errors).length >= 3) {
         setShouldSummarizeErrors(true);
         errorSummaryRef.current?.focus();
@@ -71,12 +76,9 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
           }
         }
       }
-    };
-
-    onSubmitHandler = props.handleSubmit(onSubmit, onError);
-  } else {
-    onSubmitHandler = props.handleSubmit(onSubmit);
-  }
+    }
+  };
+  const onSubmitHandler = props.handleSubmit(onSubmit, onError);
 
   return (
     <div>

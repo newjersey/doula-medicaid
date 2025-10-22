@@ -7,6 +7,7 @@ import {
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
+import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Label, TextInput } from "@trussworks/react-uswds";
@@ -146,6 +147,7 @@ const doulaTestFormFields: TestField[] = createTestFields([
 ]);
 
 const mockNavigate = jest.fn();
+const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
 
 describe("submission behavior", () => {
   beforeEach(() => {
@@ -181,12 +183,23 @@ describe("submission behavior", () => {
     await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
     await user.click(screen.getByRole("button", { name: "Next" }));
 
+    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+      fieldName: "field1",
+      type: "required",
+    });
+    expect(mockSendGAEvent).not.toHaveBeenCalledWith("event", "formValidationError", {
+      fieldName: "field2",
+      type: "required",
+    });
     expect(mockUpdateDataStore).not.toHaveBeenCalled();
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 });
 
 describe("error summary", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
       const user = userEvent.setup();
@@ -211,6 +224,19 @@ describe("error summary", () => {
       for (const errorMessage of expectedErrorMessages) {
         expect(focusedElement).toHaveTextContent(errorMessage);
       }
+
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+        fieldName: "field1",
+        type: "required",
+      });
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+        fieldName: "field2",
+        type: "required",
+      });
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+        fieldName: "field3",
+        type: "required",
+      });
     });
 
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
@@ -237,6 +263,19 @@ describe("error summary", () => {
       const errorMessage = "Label 2 is required";
       const focusedElement = document.activeElement as HTMLElement;
       expect(focusedElement).toHaveAccessibleDescription(errorMessage);
+
+      expect(mockSendGAEvent).not.toHaveBeenCalledWith("event", "formValidationError", {
+        fieldName: "field1",
+        type: "required",
+      });
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+        fieldName: "field2",
+        type: "required",
+      });
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+        fieldName: "field3",
+        type: "required",
+      });
     });
   });
 

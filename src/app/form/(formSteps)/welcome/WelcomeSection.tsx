@@ -3,6 +3,7 @@ import {
   formatFormProgressUrl,
   useFormProgressPosition,
 } from "@/app/form/_utils/formProgressRouting";
+import { sendGAEvent } from "@next/third-parties/google";
 import {
   Accordion,
   Icon,
@@ -109,6 +110,7 @@ const WelcomeSection = () => {
             key="start"
             to={formatFormProgressUrl(formProgressPosition.next)}
             className="usa-button margin-top-0"
+            onClick={() => sendGAEvent("event", "buttonClicked", { name: "startNow" })}
           >
             Start now
           </NavLink>
