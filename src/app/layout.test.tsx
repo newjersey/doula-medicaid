@@ -1,5 +1,6 @@
+import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import RootLayout from "@/app/layout";
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 global.performance.mark = jest.fn();
@@ -7,10 +8,11 @@ global.performance.mark = jest.fn();
 describe("<RootLayout />", () => {
   it("it has a skip nav that is the first item in the body and skips to main content when clicked", async () => {
     const user = userEvent.setup();
-    render(
+    renderWithProviders(
       <RootLayout>
         <div>Test child</div>
       </RootLayout>,
+      "/form/welcome",
     );
     await user.tab();
     const skipNavigationButton = screen.getByRole("link", { name: "Skip to main content" });
