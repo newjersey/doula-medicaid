@@ -53,10 +53,17 @@ export enum AddressState {
 }
 
 export enum StateApprovedTraining {
-  "CHS" = "Children's Home Society of NJ (Trenton)",
-  "CF" = "Children's Futures (Trenton)",
-  "STS" = "Sister to Sister Community Doulas of Essex County (Newark)",
+  "CHSNJ" = "Children's Home Society of NJ (Trenton)",
+  "childrensFutures" = "Children's Futures (Trenton)",
+  "CDOSJ" = "Community Doulas of South Jersey (Camden)",
+  "sisterToSister" = "Sister to Sister Community Doulas of Essex County (Newark)",
   "NJDLC" = "New Jersey Doula Learning Collaborative (NJDLC)",
   "PMCH" = "The Partnership for Maternal and Child Health of Northern New Jersey (Paterson, Newark)",
+  "NJMIHIA" = "NJMIHIA (NJ Maternal and Infant Health Innovation Authority)",
+  "ancientSong" = "Ancient Song",
+  "healthConnectOne" = "HealthConnectOne",
+  "uzaziVillage" = "Uzazi Village",
+  "CAPPA" = "CAPPA (Childbirth and Postpartum Professional Association)",
+  "DONA" = "DONA International",
   "NONE" = "None of these",
 }
