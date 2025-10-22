@@ -40,7 +40,9 @@ export default function RootLayout({
                   <Image className="nj-banner__header-seal" src={njStateSeal} alt="NJ flag"></Image>
                 </div>
                 <div className="grid-col-fill">
-                  <a href="https://nj.gov">Official Site of the State of New Jersey</a>
+                  <a href="https://nj.gov" target="_blank" rel="noopener">
+                    Official Site of the State of New Jersey
+                  </a>
                 </div>
                 <div className="grid-col-auto">
                   <div className="text-white">
