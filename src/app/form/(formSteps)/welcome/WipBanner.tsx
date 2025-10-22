@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 const WipBanner = () => {
   const pathname = usePathname();
   const pathParts = pathname.split("/");
+  const sectionsIdsWithBanner = ["welcome"];
 
   const [pageIsLoaded, setPageIsLoaded] = useState(false);
 
@@ -22,7 +23,7 @@ const WipBanner = () => {
 
   return (
     <>
-      {currentSection.id === "welcome" && (
+      {sectionsIdsWithBanner.includes(currentSection.id) && (
         <div className="usa-alert usa-alert--warning" id="wipBanner">
           <div className="usa-alert__body">
             <p className="usa-alert__text">
