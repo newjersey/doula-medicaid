@@ -28,8 +28,8 @@ import { Construct } from "constructs";
  *   });
  *   ```;
  */
-const VPC_ID = "vpc-03f3b82f39dcbf175";
-const ECR_REPOSITORY_NAME = "doula-test";
+const VPC_ID = "vpc-0c56aa28eca92ed0b";
+const ECR_REPOSITORY_NAME = "doula-app";
 
 export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
