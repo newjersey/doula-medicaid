@@ -28,7 +28,7 @@ const BusinessDetailsStep2 = () => {
   const isSubjectToPaymentSuspension = watch("isSubjectToPaymentSuspension");
 
   return (
-    <DoulaForm<object>
+    <DoulaForm<BusinessDetails2Data>
       errors={errors}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}

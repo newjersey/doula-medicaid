@@ -28,7 +28,7 @@ const BusinessDetailsStep3 = () => {
   const hasBeenSuspendedFromMedicaid = watch("hasBeenSuspendedFromMedicaid");
 
   return (
-    <DoulaForm<object>
+    <DoulaForm<BusinessDetails3Data>
       errors={errors}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
