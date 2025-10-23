@@ -15,7 +15,7 @@ const FormProgressButtons = (props: { overrideClassNames?: string }) => {
         key="previous"
         to={formatFormProgressUrl(formProgressPosition.previous)}
         className="usa-button usa-button--outline margin-top-0"
-        onClick={() => sendGAEvent("event", "buttonClicked", { name: "previous" })}
+        onClick={() => sendGAEvent("event", "progressPrevious")}
       >
         Previous
       </NavLink>,
@@ -27,7 +27,7 @@ const FormProgressButtons = (props: { overrideClassNames?: string }) => {
         key="next"
         type="submit"
         className="margin-top-0"
-        onClick={() => sendGAEvent("event", "buttonClicked", { name: "next" })}
+        onClick={() => sendGAEvent("event", "progressNext")}
       >
         Next
       </Button>,

@@ -13,6 +13,6 @@ describe("<WelcomeSection />", () => {
   it("sends a GA event when Start Now is clicked", async () => {
     renderWithProviders(<WelcomeSection />, "/form/welcome");
     await screen.getByRole("link", { name: "Start now" }).click();
-    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "buttonClicked", { name: "startNow" });
+    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressStart");
   });
 });

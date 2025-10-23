@@ -68,12 +68,12 @@ describe("<FormProgressButtons />", () => {
     it("when Next is clicked", async () => {
       renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
       await screen.getByRole("button", { name: "Next" }).click();
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "buttonClicked", { name: "next" });
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressNext");
     });
     it("when Previous is clicked", async () => {
       renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
       await screen.getByRole("link", { name: "Previous" }).click();
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "buttonClicked", { name: "previous" });
+      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressPrevious");
     });
   });
 });

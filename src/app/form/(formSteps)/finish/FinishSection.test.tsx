@@ -42,9 +42,7 @@ describe("<FinishSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "Fee For Service Application.pdf");
 
     await downloadLink.click();
-    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "buttonClicked", {
-      name: "downloadApplication",
-    });
+    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "downloadApplication");
   });
 
   it("shows a message if not all required fields have been filled", async () => {

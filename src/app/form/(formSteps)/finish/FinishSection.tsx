@@ -70,7 +70,7 @@ const FinishSection = () => {
               href={downloadData.url}
               download={downloadData.filename}
               className="usa-button margin-right-0 margin-top-4"
-              onClick={() => sendGAEvent("event", "buttonClicked", { name: "downloadApplication" })}
+              onClick={() => sendGAEvent("event", "downloadApplication")}
             >
               Download your application
             </a>

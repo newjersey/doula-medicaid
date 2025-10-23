@@ -110,7 +110,7 @@ const WelcomeSection = () => {
             key="start"
             to={formatFormProgressUrl(formProgressPosition.next)}
             className="usa-button margin-top-0"
-            onClick={() => sendGAEvent("event", "buttonClicked", { name: "startNow" })}
+            onClick={() => sendGAEvent("event", "progressStart")}
           >
             Start now
           </NavLink>
