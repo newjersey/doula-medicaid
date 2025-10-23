@@ -4,14 +4,6 @@ import {
   type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 
-export const insuranceStartDateDayField = createTestField({
-  name: "Day *",
-  dataStoreKey: "insuranceStartDateDay",
-  required: true,
-  testValue: "6",
-  withinGroupName: "Start date *",
-});
-
 const insuranceStartDateMonthField = createTestField({
   name: "Month *",
   dataStoreKey: "insuranceStartDateMonth",
@@ -19,23 +11,25 @@ const insuranceStartDateMonthField = createTestField({
   testValue: "07 - July",
   expectedValue: "7",
   role: "combobox",
-  withinGroupName: "Start date *",
+  withinGroupName: "Start date * For example: April 28 2025",
+  alternateRequiredFieldError: "Start month is required",
 });
 
+export const insuranceStartDateDayField = createTestField({
+  name: "Day *",
+  dataStoreKey: "insuranceStartDateDay",
+  required: true,
+  testValue: "6",
+  withinGroupName: "Start date * For example: April 28 2025",
+  alternateRequiredFieldError: "Start day is required",
+});
 export const insuranceStartDateYearField = createTestField({
   name: "Year *",
   dataStoreKey: "insuranceStartDateYear",
   required: true,
   testValue: "1988",
-  withinGroupName: "Start date *",
-});
-
-export const insuranceEndDateDayField = createTestField({
-  name: "Day *",
-  dataStoreKey: "insuranceEndDateDay",
-  required: true,
-  testValue: "30",
-  withinGroupName: "End date *",
+  withinGroupName: "Start date * For example: April 28 2025",
+  alternateRequiredFieldError: "Start year is required",
 });
 
 const insuranceEndDateMonthField = createTestField({
@@ -45,7 +39,17 @@ const insuranceEndDateMonthField = createTestField({
   testValue: "02 - February",
   expectedValue: "2",
   role: "combobox",
-  withinGroupName: "End date *",
+  withinGroupName: "End date * For example: April 28 2030",
+  alternateRequiredFieldError: "End month is required",
+});
+
+export const insuranceEndDateDayField = createTestField({
+  name: "Day *",
+  dataStoreKey: "insuranceEndDateDay",
+  required: true,
+  testValue: "30",
+  withinGroupName: "End date * For example: April 28 2030",
+  alternateRequiredFieldError: "End day is required",
 });
 
 export const insuranceEndDateYearField = createTestField({
@@ -53,17 +57,18 @@ export const insuranceEndDateYearField = createTestField({
   dataStoreKey: "insuranceEndDateYear",
   required: true,
   testValue: "2025",
-  withinGroupName: "End date *",
+  withinGroupName: "End date * For example: April 28 2030",
+  alternateRequiredFieldError: "End year is required",
 });
 
-export const insuranceCoverageFields: Array<TestField> = createTestFields([
+export const insuranceCoverageFields: Array<TestField> = [
   insuranceStartDateDayField,
   insuranceStartDateMonthField,
   insuranceStartDateYearField,
   insuranceEndDateDayField,
   insuranceEndDateMonthField,
   insuranceEndDateYearField,
-]);
+];
 
 export const amountPerOccurrenceField: TestField = {
   name: "Amount per occurrence *",
