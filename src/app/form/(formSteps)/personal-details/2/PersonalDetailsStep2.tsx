@@ -9,7 +9,7 @@ import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldPath } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
   streetAddress1: "Street address",
@@ -58,7 +58,9 @@ const PersonalDetailsStep2 = () => {
 
   return (
     <DoulaForm<PersonalDetails2Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={
+        Object.keys(orderedInputNameToLabel) as Array<FieldPath<PersonalDetails2Data>>
+      }
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}

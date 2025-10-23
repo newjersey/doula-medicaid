@@ -17,7 +17,7 @@ import {
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldPath } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } = {
   businessAddressSameAsOtherAddress: "Is your business address the same as a previous address?",
@@ -76,7 +76,9 @@ const BusinessDetailsStep1 = () => {
 
   return (
     <DoulaForm<BusinessDetails1Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={
+        Object.keys(orderedInputNameToLabel) as Array<FieldPath<BusinessDetails1Data>>
+      }
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}

@@ -11,7 +11,7 @@ import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Label, TextInput } from "@trussworks/react-uswds";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldPath } from "react-hook-form";
 import * as router from "react-router";
 
 interface DoulaFormTestData {
@@ -43,7 +43,9 @@ const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
 
   return (
     <DoulaForm<DoulaFormTestData>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={
+        Object.keys(orderedInputNameToLabel) as Array<FieldPath<DoulaFormTestData>>
+      }
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}

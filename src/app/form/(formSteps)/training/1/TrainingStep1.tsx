@@ -63,7 +63,7 @@ const TrainingStep1 = () => {
 
   return (
     <DoulaForm<TrainingData>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={Object.keys(orderedInputNameToLabel) as Array<FieldPath<TrainingData>>}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}

@@ -8,9 +8,9 @@ import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldPath } from "react-hook-form";
 
-const orderedInputNameToLabel = {
+const orderedInputNameToLabel: { [key in keyof Insurance2Data]: string } = {
   insuranceCarrierName: "Name of your insurance carrier",
   insurancePolicyNumber: "Policy number",
   insuranceStreetAddress1: "Street address",
@@ -46,7 +46,7 @@ const InsuranceStep2 = () => {
 
   return (
     <DoulaForm<Insurance2Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Insurance2Data>>}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}

@@ -16,9 +16,7 @@ import { useNavigate } from "react-router";
 
 type DoulaFormProps<T extends FieldValues> =
   | {
-      orderedInputNameToLabel: {
-        [key in FieldPath<T>]: string;
-      };
+      orderedInputNames: Array<FieldPath<T>>;
       errors: FieldErrors<T>;
       setFocus: UseFormSetFocus<T>;
       handleSubmit: UseFormHandleSubmit<T, T>;
@@ -68,7 +66,7 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
         errorSummaryRef.current?.focus();
       } else {
         setShouldSummarizeErrors(false);
-        for (const inputName of Object.keys(props.orderedInputNameToLabel) as Array<FieldPath<T>>) {
+        for (const inputName of props.orderedInputNames) {
           const fieldPath = inputName as FieldPath<T>;
           if (errors[fieldPath] !== undefined) {
             props.setFocus(fieldPath);
