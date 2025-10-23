@@ -43,16 +43,17 @@ docker build -t doula-test .
 
 ```sh
 # set up AWS credentials
-f
+aws configure sso
+
 # Bootstrap (once per account)
 npx cdk bootstrap
 
 # Check differences
-npx cdk diff
+npx cdk diff --profile AWSAdministratorAccess-625512666954
 
 # Synthesize resources
-npx cdk deploy DoulaCommonAppStack
+npx cdk deploy DoulaCommonAppStack --profile AWSAdministratorAccess-625512666954
 
 # Destroy resources
-npx cdk destroy DoulaCommonAppStack
+npx cdk destroy DoulaCommonAppStack --profile AWSAdministratorAccess-625512666954
 ```
