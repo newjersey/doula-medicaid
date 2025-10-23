@@ -8,7 +8,7 @@ import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProvi
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldPath } from "react-hook-form";
 
 interface TestFormData {
   testStreetAddress1: string;
@@ -72,7 +72,9 @@ const TestForm = (
   const testZip = watch("testZip");
   return (
     <DoulaForm<TestFormData>
-      orderedInputNameToLabel={testFormOrderedInputNameToLabel}
+      orderedInputNames={
+        Object.keys(testFormOrderedInputNameToLabel) as Array<FieldPath<TestFormData>>
+      }
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}

@@ -10,7 +10,7 @@ const dateOfBirthMonthField = createTestField({
   name: "Month *",
   dataStoreKey: "dateOfBirthMonth",
   required: true,
-  testValue: "07 - July",
+  testValue: "July",
   expectedValue: "7",
   role: "combobox",
 });

@@ -12,16 +12,21 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof Insurance1Data]: string } = {
-  insuranceStartDateMonth: "Month",
-  insuranceStartDateDay: "Day",
-  insuranceStartDateYear: "Year",
-  insuranceEndDateMonth: "Month",
-  insuranceEndDateDay: "Day",
-  insuranceEndDateYear: "Year",
+const inputNameToLabel = {
   insuranceOccurenceAmount: "Amount per occurrence",
   insuranceAggregateAmount: "Amount per aggregate",
-};
+} as const;
+
+const orderedInputNames: Array<keyof Insurance1Data> = [
+  "insuranceStartDateMonth",
+  "insuranceStartDateDay",
+  "insuranceStartDateYear",
+  "insuranceEndDateMonth",
+  "insuranceEndDateDay",
+  "insuranceEndDateYear",
+  "insuranceOccurenceAmount",
+  "insuranceAggregateAmount",
+];
 
 const InsuranceStep1 = () => {
   const mayHaveThreeOrMoreErrors = true;
@@ -47,7 +52,7 @@ const InsuranceStep1 = () => {
 
   return (
     <DoulaForm<Insurance1Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={orderedInputNames}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
@@ -104,7 +109,7 @@ const InsuranceStep1 = () => {
             <DoulaTextInput
               name="insuranceOccurenceAmount"
               required
-              label={`${orderedInputNameToLabel["insuranceOccurenceAmount"]}`}
+              label={`${inputNameToLabel["insuranceOccurenceAmount"]}`}
               hint={"Minimum should be $1,000,000"}
               numericOnly
               inputPrefix="$"
@@ -112,7 +117,7 @@ const InsuranceStep1 = () => {
               errors={errors}
               inputMode="numeric"
               registerOptions={{
-                required: `${orderedInputNameToLabel["insuranceOccurenceAmount"]} is required`,
+                required: `${inputNameToLabel["insuranceOccurenceAmount"]} is required`,
                 min: {
                   value: 1000000,
                   message:
@@ -123,7 +128,7 @@ const InsuranceStep1 = () => {
             <DoulaTextInput
               name="insuranceAggregateAmount"
               required
-              label={`${orderedInputNameToLabel["insuranceAggregateAmount"]}`}
+              label={`${inputNameToLabel["insuranceAggregateAmount"]}`}
               hint={"Minimum should be $3,000,000"}
               numericOnly
               inputPrefix="$"
@@ -131,7 +136,7 @@ const InsuranceStep1 = () => {
               errors={errors}
               inputMode="numeric"
               registerOptions={{
-                required: `${orderedInputNameToLabel["insuranceAggregateAmount"]} is required`,
+                required: `${inputNameToLabel["insuranceAggregateAmount"]} is required`,
                 min: {
                   value: 3000000,
                   message:

@@ -30,11 +30,7 @@ const TestForm = (props: Omit<DoulaDateInputProps<TestFormData>, "errors" | "reg
   });
   return (
     <DoulaForm<TestFormData>
-      orderedInputNameToLabel={{
-        testMonth: "doesn't matter",
-        testDay: "doesn't matter",
-        testYear: "doesn't matter",
-      }}
+      orderedInputNames={["testMonth", "testDay", "testYear"]}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
@@ -102,7 +98,7 @@ describe("<DoulaDateInput />", () => {
       await fillField(screen, user, {
         name: "Month *",
         role: "combobox",
-        testValue: "02 - February",
+        testValue: "February",
       });
       await fillField(screen, user, {
         name: "Year *",
@@ -136,7 +132,7 @@ describe("<DoulaDateInput />", () => {
       await fillField(screen, user, {
         name: "Month *",
         role: "combobox",
-        testValue: "02 - February",
+        testValue: "February",
       });
       await fillField(screen, user, {
         name: "Day *",

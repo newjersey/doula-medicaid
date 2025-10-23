@@ -12,17 +12,26 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { Fieldset } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } = {
+const inputNameToLabel = {
   firstName: "First name",
   middleName: "Middle name",
   lastName: "Last name",
-  dateOfBirthMonth: "Month",
-  dateOfBirthDay: "Day",
-  dateOfBirthYear: "Year",
   socialSecurityNumber: "Social security number",
   email: "Email address",
   phoneNumber: "Phone number",
-};
+} as const;
+
+const orderedInputNames: Array<keyof PersonalDetails1Data> = [
+  "firstName",
+  "middleName",
+  "lastName",
+  "dateOfBirthMonth",
+  "dateOfBirthDay",
+  "dateOfBirthYear",
+  "socialSecurityNumber",
+  "email",
+  "phoneNumber",
+];
 
 const mayHaveThreeOrMoreErrors = true;
 const PersonalDetailsStep1 = () => {
@@ -53,7 +62,7 @@ const PersonalDetailsStep1 = () => {
 
   return (
     <DoulaForm<PersonalDetails1Data>
-      orderedInputNameToLabel={orderedInputNameToLabel}
+      orderedInputNames={orderedInputNames}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
@@ -66,31 +75,31 @@ const PersonalDetailsStep1 = () => {
             <div className="tablet:grid-col-4">
               <DoulaTextInput
                 name="firstName"
-                label={orderedInputNameToLabel["firstName"]}
+                label={inputNameToLabel["firstName"]}
                 required
                 errors={errors}
                 register={register}
                 registerOptions={{
-                  required: `${orderedInputNameToLabel["firstName"]} is required`,
+                  required: `${inputNameToLabel["firstName"]} is required`,
                 }}
               />
             </div>
             <div className="tablet:grid-col-4">
               <DoulaTextInput
                 name="middleName"
-                label={orderedInputNameToLabel["middleName"]}
+                label={inputNameToLabel["middleName"]}
                 register={register}
               />
             </div>
             <div className="tablet:grid-col-4">
               <DoulaTextInput
                 name="lastName"
-                label={orderedInputNameToLabel["lastName"]}
+                label={inputNameToLabel["lastName"]}
                 required
                 errors={errors}
                 register={register}
                 registerOptions={{
-                  required: `${orderedInputNameToLabel["lastName"]} is required`,
+                  required: `${inputNameToLabel["lastName"]} is required`,
                 }}
               />
             </div>
@@ -107,7 +116,7 @@ const PersonalDetailsStep1 = () => {
           />
           <DoulaTextInputMask
             name="socialSecurityNumber"
-            label={orderedInputNameToLabel["socialSecurityNumber"]}
+            label={inputNameToLabel["socialSecurityNumber"]}
             hint="Format XXX-XX-XXXX"
             inputMode="numeric"
             value={socialSecurityNumber ?? ""}
@@ -117,7 +126,7 @@ const PersonalDetailsStep1 = () => {
             errors={errors}
             register={register}
             registerOptions={{
-              required: `${orderedInputNameToLabel["socialSecurityNumber"]} is required`,
+              required: `${inputNameToLabel["socialSecurityNumber"]} is required`,
               pattern: {
                 value: /\d{3}-\d{2}-\d{4}/,
                 message: "Entered value does not match social security number format",
@@ -133,7 +142,7 @@ const PersonalDetailsStep1 = () => {
           <p>We&apos;ll send official updates here.</p>
           <DoulaTextInput
             name="email"
-            label={orderedInputNameToLabel["email"]}
+            label={inputNameToLabel["email"]}
             type="email"
             autoCorrect="off"
             autoCapitalize="off"
@@ -141,7 +150,7 @@ const PersonalDetailsStep1 = () => {
             errors={errors}
             register={register}
             registerOptions={{
-              required: `${orderedInputNameToLabel["email"]} is required`,
+              required: `${inputNameToLabel["email"]} is required`,
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "Entered value does not match email format",
@@ -150,7 +159,7 @@ const PersonalDetailsStep1 = () => {
           />
           <DoulaTextInputMask
             name="phoneNumber"
-            label={orderedInputNameToLabel["phoneNumber"]}
+            label={inputNameToLabel["phoneNumber"]}
             type="tel"
             value={phoneNumber ?? ""}
             inputMode="numeric"
@@ -160,7 +169,7 @@ const PersonalDetailsStep1 = () => {
             errors={errors}
             register={register}
             registerOptions={{
-              required: `${orderedInputNameToLabel["phoneNumber"]} is required`,
+              required: `${inputNameToLabel["phoneNumber"]} is required`,
               pattern: {
                 value: /\d{3}-\d{3}-\d{4}/,
                 message: "Entered value does not match phone number format",
