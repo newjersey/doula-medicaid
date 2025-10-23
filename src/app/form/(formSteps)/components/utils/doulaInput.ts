@@ -26,3 +26,10 @@ export const formatDescribedBy = <T extends FieldValues>(
   }
   return describedbys.join(" ");
 };
+
+export const formatInputErrorLabel = (label: string, errorLabelPrefix: string | undefined) => {
+  if (errorLabelPrefix !== undefined) {
+    return `${errorLabelPrefix} ${label.toLowerCase()}`;
+  }
+  return label;
+};

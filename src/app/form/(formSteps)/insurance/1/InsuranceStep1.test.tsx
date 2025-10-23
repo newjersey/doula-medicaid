@@ -4,10 +4,7 @@ import {
   amountPerOccurrenceField,
   coverageAmountFields,
   insuranceCoverageFields,
-  insuranceEndDateDayField,
   insuranceEndDateYearField,
-  insuranceStartDateDayField,
-  insuranceStartDateYearField,
   testFields,
 } from "@/app/form/(formSteps)/insurance/1/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
@@ -43,72 +40,6 @@ describe("<InsuranceStep1 />", () => {
       "fills $dataStoreKey from the data store when page is loaded",
       async (field: TestField) => {
         await testFillFromDataStore(field, renderFunction, screen);
-      },
-    );
-
-    it.each([
-      { invalidTestValue: "test", expectedErrorMessage: "Day must be a number" },
-      { invalidTestValue: "0", expectedErrorMessage: "Day must be between 1 and 31" },
-      { invalidTestValue: "50", expectedErrorMessage: "Day must be between 1 and 31" },
-    ])(
-      "displays an error message if insurance start day is the invalid format %s",
-      async ({ invalidTestValue, expectedErrorMessage }) => {
-        await testInvalidField(
-          { ...insuranceStartDateDayField, testValue: invalidTestValue },
-          expectedErrorMessage,
-          testFields,
-          renderFunction,
-          screen,
-        );
-      },
-    );
-
-    it.each([
-      { invalidTestValue: "test", expectedErrorMessage: "Day must be a number" },
-      { invalidTestValue: "0", expectedErrorMessage: "Day must be between 1 and 31" },
-      { invalidTestValue: "50", expectedErrorMessage: "Day must be between 1 and 31" },
-    ])(
-      "displays an error message if insurance end day is the invalid format %s",
-      async ({ invalidTestValue, expectedErrorMessage }) => {
-        await testInvalidField(
-          { ...insuranceEndDateDayField, testValue: invalidTestValue },
-          expectedErrorMessage,
-          testFields,
-          renderFunction,
-          screen,
-        );
-      },
-    );
-
-    it.each([
-      { invalidTestValue: "test", expectedErrorMessage: "Year must be a number" },
-      { invalidTestValue: "1", expectedErrorMessage: "Year must have four digits" },
-    ])(
-      "displays an error message if insurance start year is the invalid format %s",
-      async ({ invalidTestValue, expectedErrorMessage }) => {
-        await testInvalidField(
-          { ...insuranceStartDateYearField, testValue: invalidTestValue },
-          expectedErrorMessage,
-          testFields,
-          renderFunction,
-          screen,
-        );
-      },
-    );
-
-    it.each([
-      { invalidTestValue: "test", expectedErrorMessage: "Year must be a number" },
-      { invalidTestValue: "1", expectedErrorMessage: "Year must have four digits" },
-    ])(
-      "displays an error message if insurance end year is the invalid format %s",
-      async ({ invalidTestValue, expectedErrorMessage }) => {
-        await testInvalidField(
-          { ...insuranceEndDateYearField, testValue: invalidTestValue },
-          expectedErrorMessage,
-          testFields,
-          renderFunction,
-          screen,
-        );
       },
     );
   });

@@ -44,6 +44,9 @@ export const fillField = async (screen: Screen, user: UserEvent, fieldToFill: Fi
     case "textbox":
       await user.type(inputField, fieldToFill.testValue);
       break;
+    case undefined:
+      await user.type(inputField, fieldToFill.testValue);
+      break;
     case "combobox":
       await user.selectOptions(inputField, fieldToFill.testValue);
       break;
@@ -51,7 +54,7 @@ export const fillField = async (screen: Screen, user: UserEvent, fieldToFill: Fi
       await user.click(inputField);
       break;
     default:
-      throw new Error(`Role ${fieldToFill.role} not implemented`);
+      throw new Error("Role not implemented");
   }
 };
 

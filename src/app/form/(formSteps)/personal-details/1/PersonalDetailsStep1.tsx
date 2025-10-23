@@ -1,15 +1,15 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import { DoulaDateInput } from "@/app/form/(formSteps)/components/DoulaDateInput";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
-import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
 import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import { DateInputGroup, Fieldset, FormGroup, Label, Select } from "@trussworks/react-uswds";
+import { Fieldset } from "@trussworks/react-uswds";
 import { useForm } from "react-hook-form";
 
 const orderedInputNameToLabel: { [key in keyof PersonalDetails1Data]: string } = {
@@ -95,110 +95,16 @@ const PersonalDetailsStep1 = () => {
               />
             </div>
           </Fieldset>
-
-          <Fieldset legend="Date of birth" className="margin-top-3" requiredMarker>
-            <span className="usa-hint" id="dateOfBirthHint">
-              For example: April 28 1986
-            </span>
-            <DateInputGroup aria-describedby="dateOfBirthHint">
-              <FormGroup className="usa-form-group--month usa-form-group--select">
-                <Label htmlFor="dateOfBirthMonth" requiredMarker>
-                  {orderedInputNameToLabel["dateOfBirthMonth"]}
-                </Label>
-                <Select
-                  id="dateOfBirthMonth"
-                  required
-                  validationStatus={errors.dateOfBirthMonth ? "error" : undefined}
-                  aria-invalid={errors.dateOfBirthMonth ? "true" : "false"}
-                  aria-describedby={errors.dateOfBirthMonth ? "dateOfBirthMonthErrorMessage" : ""}
-                  {...register("dateOfBirthMonth", {
-                    required: `${orderedInputNameToLabel["dateOfBirthMonth"]} is required`,
-                  })}
-                >
-                  <option value="1">01 - January</option>
-                  <option value="2">02 - February</option>
-                  <option value="3">03 - March</option>
-                  <option value="4">04 - April</option>
-                  <option value="5">05 - May</option>
-                  <option value="6">06 - June</option>
-                  <option value="7">07 - July</option>
-                  <option value="8">08 - August</option>
-                  <option value="9">09 - September</option>
-                  <option value="10">10 - October</option>
-                  <option value="11">11 - November</option>
-                  <option value="12">12 - December</option>
-                </Select>
-              </FormGroup>
-              <FormGroup className="usa-form-group--day">
-                <DoulaTextInput
-                  name="dateOfBirthDay"
-                  label={orderedInputNameToLabel["dateOfBirthDay"]}
-                  pattern="[0-9]*"
-                  inputMode="numeric"
-                  maxLength={2}
-                  minLength={2}
-                  required
-                  hideErrorMessage
-                  errors={errors}
-                  register={register}
-                  registerOptions={{
-                    required: `${orderedInputNameToLabel["dateOfBirthDay"]} is required`,
-                    valueAsNumber: true,
-                    min: {
-                      value: 1,
-                      message: `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`,
-                    },
-                    max: {
-                      value: 31,
-                      message: `${orderedInputNameToLabel["dateOfBirthDay"]} must be between 1 and 31`,
-                    },
-                    validate: (value) => {
-                      if (value === null) {
-                        return `${orderedInputNameToLabel["dateOfBirthDay"]} is required`;
-                      }
-                      if (Number.isNaN(value) || typeof value === "string") {
-                        return `${orderedInputNameToLabel["dateOfBirthDay"]} must be a number`;
-                      }
-                      return true;
-                    },
-                  }}
-                />
-              </FormGroup>
-              <FormGroup className="usa-form-group--year">
-                <DoulaTextInput
-                  name="dateOfBirthYear"
-                  label={orderedInputNameToLabel["dateOfBirthYear"]}
-                  maxLength={4}
-                  minLength={4}
-                  pattern="[0-9]*"
-                  inputMode="numeric"
-                  required
-                  hideErrorMessage
-                  errors={errors}
-                  register={register}
-                  registerOptions={{
-                    required: `${orderedInputNameToLabel["dateOfBirthYear"]} is required`,
-                    valueAsNumber: true,
-                    validate: (value) => {
-                      if (value === null) {
-                        return `${orderedInputNameToLabel["dateOfBirthYear"]} is required`;
-                      }
-                      if (Number.isNaN(value) || typeof value === "string") {
-                        return `${orderedInputNameToLabel["dateOfBirthYear"]} must be a number`;
-                      }
-                      if ((value as number).toString().length !== 4) {
-                        return `${orderedInputNameToLabel["dateOfBirthYear"]} must have four digits`;
-                      }
-                      return true;
-                    },
-                  }}
-                />
-              </FormGroup>
-            </DateInputGroup>
-            <ErrorMessage name="dateOfBirthMonth" errors={errors} />
-            <ErrorMessage name="dateOfBirthDay" errors={errors} />
-            <ErrorMessage name="dateOfBirthYear" errors={errors} />
-          </Fieldset>
+          <DoulaDateInput
+            name="dateOfBirth"
+            label="Date of birth"
+            hint="For example: April 28 1986"
+            monthName="dateOfBirthMonth"
+            dayName="dateOfBirthDay"
+            yearName="dateOfBirthYear"
+            errors={errors}
+            register={register}
+          />
           <DoulaTextInputMask
             name="socialSecurityNumber"
             label={orderedInputNameToLabel["socialSecurityNumber"]}

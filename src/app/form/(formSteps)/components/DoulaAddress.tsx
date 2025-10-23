@@ -1,5 +1,6 @@
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
+import { formatInputErrorLabel } from "@/app/form/(formSteps)/components/utils/doulaInput";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 import { typecheckAutocomplete } from "@/app/form/_utils/types/autocomplete";
 import { Fieldset, Label, Select, type FieldsetProps } from "@trussworks/react-uswds";
@@ -23,12 +24,6 @@ export interface DoulaAddressProps<T extends FieldValues> {
   errors: FieldErrors<T>;
   register: UseFormRegister<T>;
 }
-const formatInputErrorLabel = (label: string, errorLabelPrefix: string | undefined) => {
-  if (errorLabelPrefix !== undefined) {
-    return `${errorLabelPrefix} ${label.toLowerCase()}`;
-  }
-  return label;
-};
 
 export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>) => {
   return (
