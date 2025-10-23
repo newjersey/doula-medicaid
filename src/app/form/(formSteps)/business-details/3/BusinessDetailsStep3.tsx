@@ -19,13 +19,13 @@ const BusinessDetailsStep3 = () => {
     watch,
   } = useForm<BusinessDetails3Data>({
     defaultValues: {
-      hasUncollectedDebt: getDefaultBoolean(dataStore, "hasUncollectedDebt"),
-      isSubjectToPaymentSuspension: getDefaultBoolean(dataStore, "isSubjectToPaymentSuspension"),
+      hasBeenExcludedFromMedicaid: getDefaultBoolean(dataStore, "hasBeenExcludedFromMedicaid"),
+      hasBeenSuspendedFromMedicaid: getDefaultBoolean(dataStore, "hasBeenSuspendedFromMedicaid"),
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
-  const hasUncollectedDebt = watch("hasUncollectedDebt");
-  const isSubjectToPaymentSuspension = watch("isSubjectToPaymentSuspension");
+  const hasBeenExcludedFromMedicaid = watch("hasBeenExcludedFromMedicaid");
+  const hasBeenSuspendedFromMedicaid = watch("hasBeenSuspendedFromMedicaid");
 
   return (
     <DoulaForm<object>
@@ -44,9 +44,9 @@ const BusinessDetailsStep3 = () => {
               questions.
             </p>
             <DoulaYesNoRadio
-              name="hasUncollectedDebt"
-              value={hasUncollectedDebt}
-              label="Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)?"
+              name="hasBeenExcludedFromMedicaid"
+              value={hasBeenExcludedFromMedicaid}
+              label="Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP?"
               required
               register={register}
               errors={errors}
@@ -58,9 +58,9 @@ const BusinessDetailsStep3 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <DoulaYesNoRadio
-            name="isSubjectToPaymentSuspension"
-            value={isSubjectToPaymentSuspension}
-            label="Have you ever been subject to a payment suspension under a federal health care program?"
+            name="hasBeenSuspendedFromMedicaid"
+            value={hasBeenSuspendedFromMedicaid}
+            label="Have you ever had Medicare, Medicaid/NJ FamilyCare, or CHIP enrollment/participation suspended, denied, revoked, or terminated?"
             required
             register={register}
             errors={errors}

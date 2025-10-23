@@ -1,5 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
-import { formatEinOrSsn, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
@@ -39,7 +39,7 @@ export const getPage17Fields = (formData: FormData): Partial<PdfFfsIndividualPag
       fd452nameofdisclosingentity: formatName(formData),
       fd452telephonenumber: formData.phoneNumber ?? "",
       fd452providernumbandornpi: formData.npiNumber ?? "",
-      fd452einorothertaxidnumber: formatEinOrSsn(formData),
+      fd452einorothertaxidnumber: formData.socialSecurityNumber,
       fd452ownershipoffivepercentormoreno: true,
       fd452convictedofcrimeno: true,
       fd452businessstreetline1: formData.businessStreetAddress1,

@@ -1,7 +1,6 @@
 import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
 import BusinessDetailsStep2 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
 import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/3/BusinessDetailsStep3";
-import BusinessDetailsStep4 from "@/app/form/(formSteps)/business-details/4/BusinessDetailsStep4";
 import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { FormLayout } from "@/app/form/(formSteps)/FormLayout";
 import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
@@ -42,7 +41,6 @@ export const routes = (
           <Route path="1" element={<BusinessDetailsStep1 />} />
           <Route path="2" element={<BusinessDetailsStep2 />} />
           <Route path="3" element={<BusinessDetailsStep3 />} />
-          <Route path="4" element={<BusinessDetailsStep4 />} />
         </Route>
         <Route path="finish" element={<FinishSection />} />
       </Route>

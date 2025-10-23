@@ -19,16 +19,11 @@ export interface BusinessDetails1Data {
 }
 
 export interface BusinessDetails2Data {
-  hasEin: "true" | "false" | "";
-  ein: string;
-}
-
-export interface BusinessDetails3Data {
   hasUncollectedDebt: "true" | "false" | "";
   isSubjectToPaymentSuspension: "true" | "false" | "";
 }
 
-export interface BusinessDetails4Data {
+export interface BusinessDetails3Data {
   hasBeenExcludedFromMedicaid: "true" | "false" | "";
   hasBeenSuspendedFromMedicaid: "true" | "false" | "";
 }
@@ -39,9 +34,6 @@ export interface BusinessDetailsFormData {
   businessCity: string;
   businessState: AddressState;
   businessZip: string;
-  hasEin: boolean;
-  ein: string | null;
-
   hasDisclosableEvent: boolean;
 }
 
@@ -79,13 +71,6 @@ const getBusinessDetails1Data = (dataStore: DataStore) => {
   }
 };
 
-const getBusinessDetails2Data = (dataStore: DataStore) => {
-  return {
-    hasEin: getBoolean(dataStore, "hasEin", true),
-    ein: getValue(dataStore, "ein", false),
-  };
-};
-
 export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetailsFormData => {
   const hasUncollectedDebt = getBoolean(dataStore, "hasUncollectedDebt", true);
   const isSubjectToPaymentSuspension = getBoolean(dataStore, "isSubjectToPaymentSuspension", true);
@@ -103,7 +88,6 @@ export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetail
   }
   return {
     ...getBusinessDetails1Data(dataStore),
-    ...getBusinessDetails2Data(dataStore),
     hasDisclosableEvent: hasDisclosableEvent,
   };
 };

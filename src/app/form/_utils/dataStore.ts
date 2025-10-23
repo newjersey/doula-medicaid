@@ -14,7 +14,6 @@ import type {
   BusinessDetails1Data,
   BusinessDetails2Data,
   BusinessDetails3Data,
-  BusinessDetails4Data,
 } from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
   PersonalDetails1Data,
@@ -34,8 +33,7 @@ export type DataStoreKey =
   | keyof PersonalDetails3Data
   | keyof BusinessDetails1Data
   | keyof BusinessDetails2Data
-  | keyof BusinessDetails3Data
-  | keyof BusinessDetails4Data;
+  | keyof BusinessDetails3Data;
 
 export type DataStore = { [key: string]: string };
 

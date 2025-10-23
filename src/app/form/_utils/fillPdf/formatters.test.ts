@@ -1,11 +1,8 @@
-import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import {
-  formatEinOrSsn,
   formatMultilineAddress,
   formatNaIfBlank,
   formatNumericStringAsIndividualFields,
 } from "@/app/form/_utils/fillPdf/formatters";
-import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/enums";
 
 describe("formatNaIfBlank", () => {
@@ -63,32 +60,5 @@ Newark, NJ 99999`);
     expect(formatMultilineAddress("Street 1", null, "Newark", AddressState.NJ, "99999"))
       .toEqual(`Street 1
 Newark, NJ 99999`);
-  });
-});
-
-describe("formatEinOrSsn", () => {
-  it("returns the EIN if hasEin is true", () => {
-    expect(
-      formatEinOrSsn(
-        generateFormData({ hasEin: true, ein: "11-1111111", socialSecurityNumber: "555-55-5555" }),
-      ),
-    ).toEqual("11-1111111");
-  });
-
-  it("returns the SSN if hasEin is false", () => {
-    expect(
-      formatEinOrSsn(
-        generateFormData({ hasEin: false, ein: "11-1111111", socialSecurityNumber: "555-55-5555" }),
-      ),
-    ).toEqual("555-55-5555");
-  });
-
-  it("throws an UnexpectedFormDataError if hasEin is true but EIN is null", () => {
-    const testFunction = () =>
-      formatEinOrSsn(
-        generateFormData({ hasEin: true, ein: null, socialSecurityNumber: "555-55-5555" }),
-      );
-    expect(testFunction).toThrow(UnexpectedFormDataError);
-    expect(testFunction).toThrow("hasEin is true but ein is null");
   });
 });

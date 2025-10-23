@@ -1,11 +1,9 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
-import EinExplainer from "@/app/form/(formSteps)/business-details/2/EinExplainer";
-import type { BusinessDetails2Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
-import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
+import { type BusinessDetails2Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -21,55 +19,52 @@ const BusinessDetailsStep2 = () => {
     watch,
   } = useForm<BusinessDetails2Data>({
     defaultValues: {
-      hasEin: getDefaultBoolean(dataStore, "hasEin") ?? "",
-      ein: getDefaultValue(dataStore, "ein") ?? "",
+      hasUncollectedDebt: getDefaultBoolean(dataStore, "hasUncollectedDebt"),
+      isSubjectToPaymentSuspension: getDefaultBoolean(dataStore, "isSubjectToPaymentSuspension"),
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
-  const hasEin = watch("hasEin");
-  const ein = watch("ein");
+  const hasUncollectedDebt = watch("hasUncollectedDebt");
+  const isSubjectToPaymentSuspension = watch("isSubjectToPaymentSuspension");
 
   return (
-    <DoulaForm<BusinessDetails2Data>
+    <DoulaForm<object>
       errors={errors}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
-          <h2 className="font-heading-md">Tax ID</h2>
+          <div>
+            <h2 className="font-heading-md">
+              Mark Yes if these apply to your business, otherwise mark No.
+            </h2>
+            <p className="usa-hint">
+              Most individual doulas with a Sole Proprietorship business answer “No” to these
+              questions.
+            </p>
+            <DoulaYesNoRadio
+              name="hasUncollectedDebt"
+              value={hasUncollectedDebt}
+              label="Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)?"
+              required
+              register={register}
+              errors={errors}
+            />
+          </div>
+        </div>
+      </div>
+      <HorizontalDivider />
+      <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+        <div className="desktop:grid-col-8">
           <DoulaYesNoRadio
-            name="hasEin"
-            value={hasEin}
-            label="Do you have an Employee Identification Number (EIN)?"
+            name="isSubjectToPaymentSuspension"
+            value={isSubjectToPaymentSuspension}
+            label="Have you ever been subject to a payment suspension under a federal health care program?"
             required
             register={register}
             errors={errors}
           />
-          {hasEin === "true" && (
-            <DoulaTextInputMask
-              name="ein"
-              label="EIN"
-              hint="The EIN is a 9-digit number."
-              inputMode="numeric"
-              value={ein ?? ""}
-              mask="__-_______"
-              pattern="\d{2}-\d{7}"
-              required
-              errors={errors}
-              register={register}
-              registerOptions={{
-                required: `EIN is required`,
-                pattern: {
-                  value: /\d{2}-\d{7}/,
-                  message: "Entered value does not match the EIN format",
-                },
-              }}
-            />
-          )}
-        </div>
-        <div className="form-explainer desktop:grid-col-4">
-          <EinExplainer />
         </div>
       </div>
       <HorizontalDivider />
