@@ -36,5 +36,5 @@ colima start
 
 # Navigate to root of repo
 # Build Docker image
-docker build -t doula-test .
+docker build -t doula-app .
 ```
