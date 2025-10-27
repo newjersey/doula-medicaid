@@ -66,39 +66,21 @@ export const pdfFfsIndividualPage26FieldOptions = {
 };
 
 const getTaxNumberFields = (formData: FormData) => {
-  if (formData.hasEin === true) {
-    if (formData.ein === null) {
-      throw new UnexpectedFormDataError(`hasEin is ${formData.hasEin} but ein is ${formData.ein}`);
-    }
-    const einKeys = [
-      "W9_EIN1",
-      "W9_EIN2",
-      "W9_EIN3",
-      "W9_EIN4",
-      "W9_EIN5",
-      "W9_EIN6",
-      "W9_EIN7",
-      "W9_EIN8",
-      "W9_EIN9",
-    ];
-    return formatNumericStringAsIndividualFields(formData.ein.replaceAll("-", ""), einKeys);
-  } else {
-    const ssnKeys = [
-      "W9_Social security number1",
-      "W9_Social security number2",
-      "W9_Social security number3",
-      "W9_Social security number4",
-      "W9_Social security number5",
-      "W9_Social security number6",
-      "W9_Social security number7",
-      "W9_Social security number8",
-      "W9_Social security number9",
-    ];
-    return formatNumericStringAsIndividualFields(
-      formData.socialSecurityNumber.replaceAll("-", ""),
-      ssnKeys,
-    );
-  }
+  const ssnKeys = [
+    "W9_Social security number1",
+    "W9_Social security number2",
+    "W9_Social security number3",
+    "W9_Social security number4",
+    "W9_Social security number5",
+    "W9_Social security number6",
+    "W9_Social security number7",
+    "W9_Social security number8",
+    "W9_Social security number9",
+  ];
+  return formatNumericStringAsIndividualFields(
+    formData.socialSecurityNumber.replaceAll("-", ""),
+    ssnKeys,
+  );
 };
 
 export const getPage26Fields = (formData: FormData): Partial<PdfFfsIndividualPage26> => {

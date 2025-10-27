@@ -1,7 +1,6 @@
 import { minimalTestFields as businessDetails1TestFields } from "@/app/form/(formSteps)/business-details/1/testFields";
 import { minimalTestFields as businessDetails2TestFields } from "@/app/form/(formSteps)/business-details/2/testFields";
 import { minimalTestFields as businessDetails3TestFields } from "@/app/form/(formSteps)/business-details/3/testFields";
-import { minimalTestFields as businessDetails4TestFields } from "@/app/form/(formSteps)/business-details/4/testFields";
 import { testFields as insurance1TestFields } from "@/app/form/(formSteps)/insurance/1/testFields";
 import { testFields as insurance2TestFields } from "@/app/form/(formSteps)/insurance/2/testFields";
 import {
@@ -33,7 +32,6 @@ const formPages = [
   { url: "/form/business-details/1", fields: businessDetails1TestFields },
   { url: "/form/business-details/2", fields: businessDetails2TestFields },
   { url: "/form/business-details/3", fields: businessDetails3TestFields },
-  { url: "/form/business-details/4", fields: businessDetails4TestFields },
 ];
 
 /**

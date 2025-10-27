@@ -83,8 +83,6 @@ const testBusinessDetailsFormData: BusinessDetailsFormData = {
   businessCity: "Default business city",
   businessState: AddressState.NJ,
   businessZip: "08000",
-  hasEin: false,
-  ein: null,
   hasDisclosableEvent: false,
 };
 

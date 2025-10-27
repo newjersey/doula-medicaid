@@ -1,4 +1,3 @@
-import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import { formatAddressLine3 } from "@/app/form/_utils/formatters";
 import type { AddressState } from "@/app/form/_utils/inputFields/enums";
 import { type FormData } from "@form/_utils/fillPdf/form";
@@ -53,13 +52,4 @@ export const formatMultilineAddress = (
     state,
     zip,
   )}`;
-};
-
-export const formatEinOrSsn = (formData: FormData): string => {
-  if (formData.hasEin === true) {
-    if (formData.ein === null)
-      throw new UnexpectedFormDataError(`hasEin is ${formData.hasEin} but ein is ${formData.ein}`);
-    return formData.ein;
-  }
-  return formData.socialSecurityNumber;
 };
