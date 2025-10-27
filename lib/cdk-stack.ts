@@ -6,6 +6,7 @@ import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { Protocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import * as iam from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 
 /**
@@ -150,6 +151,120 @@ export class CdkStack extends cdk.Stack {
     //     method: apigatewayv2.HttpMethod.ANY,
     //   },
     // );
+
+    // Create security group for VPC endpoints
+    const vpcEndpointSecurityGroup = new ec2.SecurityGroup(this, "VpcEndpointSecurityGroup", {
+      vpc,
+      description: "Security group for VPC endpoints",
+      allowAllOutbound: false,
+    });
+
+    // Allow HTTPS inbound from entire VPC CIDR
+    vpcEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.tcp(443),
+      "Allow HTTPS from VPC",
+    );
+
+    // S3 Gateway Endpoint (works without private DNS)
+    vpc.addGatewayEndpoint("S3Endpoint", {
+      service: ec2.GatewayVpcEndpointAwsService.S3,
+    });
+
+    // ECS VPC Endpoint (required for ECS agent communication)
+    vpc.addInterfaceEndpoint("EcsEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.ECS,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    // ECS Agent VPC Endpoint
+    vpc.addInterfaceEndpoint("EcsAgentEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.ECS_AGENT,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    // ECS Telemetry VPC Endpoint
+    vpc.addInterfaceEndpoint("EcsTelemetryEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.ECS_TELEMETRY,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    // ECR Interface Endpoints (required for ECS to pull images)
+    vpc.addInterfaceEndpoint("EcrEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.ECR,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    vpc.addInterfaceEndpoint("EcrDockerEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    // STS VPC Endpoint (required for ECR token authentication)
+    vpc.addInterfaceEndpoint("StsEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.STS,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    // CloudWatch Logs endpoint
+    vpc.addInterfaceEndpoint("CloudWatchLogsEndpoint", {
+      service: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,
+      privateDnsEnabled: false,
+      securityGroups: [vpcEndpointSecurityGroup],
+      subnets: {
+        subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
+      },
+    });
+
+    // Allow ECS service to communicate with VPC endpoints
+    fargateService.service.connections.allowTo(
+      vpcEndpointSecurityGroup,
+      ec2.Port.tcp(443),
+      "Allow ECS service to access VPC endpoints",
+    );
+
+    // Add explicit ECR permissions to task execution role
+    fargateService.taskDefinition.executionRole?.addManagedPolicy(
+      iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
+    );
+
+    // Add explicit ECR permissions
+    fargateService.taskDefinition.executionRole?.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          "ecr:GetAuthorizationToken",
+          "ecr:BatchCheckLayerAvailability",
+          "ecr:GetDownloadUrlForLayer",
+          "ecr:BatchGetImage",
+        ],
+        resources: ["*"],
+      }),
+    );
 
     // CloudFormation Outputs
     new cdk.CfnOutput(this, "LoadBalancerUrl", {
