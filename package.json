@@ -14,7 +14,8 @@
     "cypress:gui": "cypress open",
     "test": "jest",
     "typecheck": "tsc --noemit",
-    "configureVpc": "npx tsx scripts/configureVpc.ts"
+    "configureVpc": "npx tsx scripts/configureVpc.ts",
+    "cdk:deploy": "npx cdk deploy DoulaAssistantStack"
   },
   "author": {
     "name": "New Jersey State Office of Innovation",
