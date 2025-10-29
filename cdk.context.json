@@ -54,5 +54,57 @@
         ]
       }
     ]
+  },
+  "vpc-provider:account=625512666954:filter.tag:Name=DHS-DMAHS-DoulaApp-*:region=us-east-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0c56aa28eca92ed0b",
+    "vpcCidrBlock": "10.43.70.0/24",
+    "ownerAccountId": "625512666954",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-0d2ff682976a2645a",
+            "cidr": "10.43.70.0/26",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-03c46bbed2fdaf4da"
+          },
+          {
+            "subnetId": "subnet-00ccf4f22c2f8ed58",
+            "cidr": "10.43.70.64/26",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-03c46bbed2fdaf4da"
+          }
+        ]
+      }
+    ]
+  },
+  "vpc-provider:account=859037108237:filter.tag:Name=DHS-DMAHS-DoulaApp-*:region=us-east-1:returnAsymmetricSubnets=true": {
+    "vpcId": "vpc-0c3abf550ebb5fd07",
+    "vpcCidrBlock": "10.43.71.0/24",
+    "ownerAccountId": "859037108237",
+    "availabilityZones": [],
+    "subnetGroups": [
+      {
+        "name": "Private",
+        "type": "Private",
+        "subnets": [
+          {
+            "subnetId": "subnet-0ede2623aa706f30a",
+            "cidr": "10.43.71.0/26",
+            "availabilityZone": "us-east-1a",
+            "routeTableId": "rtb-0e1ad3889ca02df0d"
+          },
+          {
+            "subnetId": "subnet-00d6856fb9c33dcdb",
+            "cidr": "10.43.71.64/26",
+            "availabilityZone": "us-east-1b",
+            "routeTableId": "rtb-0e1ad3889ca02df0d"
+          }
+        ]
+      }
+    ]
   }
 }

@@ -8,7 +8,7 @@ import {
 const client = new EC2Client({});
 const { Vpcs } = await client.send(
   new DescribeVpcsCommand({
-    Filters: [{ Name: "tag:Name", Values: ["DHS-DMAHS-DoulaApp-Dev-VPC"] }],
+    Filters: [{ Name: "tag:Name", Values: ["DHS-DMAHS-DoulaApp-*"] }],
   }),
 );
 
@@ -23,7 +23,6 @@ const { EnableDnsSupport } = await client.send(
     VpcId: vpcId,
   }),
 );
-
 const { EnableDnsHostnames } = await client.send(
   new DescribeVpcAttributeCommand({
     Attribute: "enableDnsHostnames",
@@ -32,18 +31,28 @@ const { EnableDnsHostnames } = await client.send(
 );
 
 if (EnableDnsSupport?.Value !== true || EnableDnsHostnames?.Value !== true) {
-  await client.send(
-    new ModifyVpcAttributeCommand({
-      EnableDnsHostnames: {
-        Value: true,
-      },
-      EnableDnsSupport: {
-        Value: true,
-      },
-      VpcId: vpcId,
-    }),
-  );
-  console.log("Set EnableDnsSupport and EnableDnsHostnames to true");
+  if (EnableDnsSupport?.Value !== true) {
+    await client.send(
+      new ModifyVpcAttributeCommand({
+        EnableDnsSupport: {
+          Value: true,
+        },
+        VpcId: vpcId,
+      }),
+    );
+    console.log("Set EnableDnsSupport to true");
+  }
+  if (EnableDnsHostnames?.Value !== true) {
+    await client.send(
+      new ModifyVpcAttributeCommand({
+        EnableDnsHostnames: {
+          Value: true,
+        },
+        VpcId: vpcId,
+      }),
+    );
+    console.log("Set EnableDnsHostnames to true");
+  }
 } else {
   console.log("VPC already correctly configured");
 }

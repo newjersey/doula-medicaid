@@ -28,13 +28,6 @@ npm run cypress:run -- --spec <path to file>
 npm run cypress:gui
 ```
 
-# Building a Docker Image
+## Deployment
 
-```sh
-# Start Colima (Docker Daemon replacement)
-colima start
-
-# Navigate to root of repo
-# Build Docker image
-docker build -t doula-app .
-```
+See [deployment.md](./docs/deployment.md).

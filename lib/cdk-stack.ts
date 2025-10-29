@@ -27,7 +27,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
  *   ```;
  */
 
-const VPC_NAME = "DHS-DMAHS-DoulaApp-Dev-VPC";
+const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
 
 export class CdkStack extends cdk.Stack {
@@ -51,6 +51,7 @@ export class CdkStack extends cdk.Stack {
       "DoulaAssistantFargateService",
       {
         cluster,
+        serviceName: "doula-assistant-service",
         memoryLimitMiB: 512,
         cpu: 256,
         desiredCount: 1, // Single instance as requested
