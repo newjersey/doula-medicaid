@@ -14,6 +14,21 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml@${{ github.ref }}
+
+  typecheck:
+    uses: ./.github/workflows/typecheck.yml@${{ github.ref }}
+
+  prettier:
+    uses: ./.github/workflows/prettier.yml@${{ github.ref }}
+
+  unit-tests:
+    uses: ./.github/workflows/unit-tests.yml@${{ github.ref }}
+
+  end-to-end-test:
+    uses: ./.github/workflows/end-to-end-test.yml@${{ github.ref }}
+
   deploy-dev:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
     runs-on: ubuntu-latest
