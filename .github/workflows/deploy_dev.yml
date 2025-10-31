@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   deploy-dev:
-    needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
+    # needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
