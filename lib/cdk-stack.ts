@@ -180,8 +180,7 @@ export class CdkStack extends cdk.Stack {
             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
           },
           StringLike: {
-            "token.actions.githubusercontent.com:sub":
-              "repo:newjersey/doula-medicaid:ref:refs/heads/*",
+            "token.actions.githubusercontent.com:sub": "repo:newjersey/doula-medicaid:*",
           },
         },
       ),
