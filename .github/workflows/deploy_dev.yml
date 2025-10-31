@@ -15,19 +15,19 @@ permissions:
 
 jobs:
   lint:
-    uses: ./.github/workflows/lint.yml@${{ github.ref }}
+    uses: ./.github/workflows/lint.yml
 
   typecheck:
-    uses: ./.github/workflows/typecheck.yml@${{ github.ref }}
+    uses: ./.github/workflows/typecheck.yml
 
   prettier:
-    uses: ./.github/workflows/prettier.yml@${{ github.ref }}
+    uses: ./.github/workflows/prettier.yml
 
   unit-tests:
-    uses: ./.github/workflows/unit-tests.yml@${{ github.ref }}
+    uses: ./.github/workflows/unit-tests.yml
 
   end-to-end-test:
-    uses: ./.github/workflows/end-to-end-test.yml@${{ github.ref }}
+    uses: ./.github/workflows/end-to-end-test.yml
 
   deploy-dev:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
