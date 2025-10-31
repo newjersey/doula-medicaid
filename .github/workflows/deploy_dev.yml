@@ -24,10 +24,10 @@ jobs:
     uses: ./.github/workflows/prettier.yml
 
   unit-tests:
-    uses: ./.github/workflows/unit-tests.yml
+    uses: ./.github/workflows/unit_tests.yml
 
   end-to-end-test:
-    uses: ./.github/workflows/end-to-end-test.yml
+    uses: ./.github/workflows/end_to_end_test.yml
 
   deploy-dev:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
