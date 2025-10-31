@@ -9,7 +9,13 @@ Then, install node v20:
 nvm install 20
 ```
 
-Run the development server:
+First, install npm packages
+
+```sh
+npm install
+```
+
+Second, run the development server:
 
 ```sh
 npm run dev

@@ -22,7 +22,7 @@ export const dateOfBirthYearField = createTestField({
 });
 
 export const socialSecurityNumberField = createTestField({
-  name: "Social security number *",
+  name: "Social Security number *",
   dataStoreKey: "socialSecurityNumber",
   required: true,
   testValue: "123456789",
