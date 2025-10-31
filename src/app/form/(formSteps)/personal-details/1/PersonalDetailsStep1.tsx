@@ -16,7 +16,7 @@ const inputNameToLabel = {
   firstName: "First name",
   middleName: "Middle name",
   lastName: "Last name",
-  socialSecurityNumber: "Social security number",
+  socialSecurityNumber: "Social Security number",
   email: "Email address",
   phoneNumber: "Phone number",
 } as const;
