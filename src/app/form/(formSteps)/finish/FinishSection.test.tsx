@@ -13,10 +13,6 @@ jest.mock("@form/_utils/fillPdf/form", () => ({
   }),
 }));
 
-const mockCreateObjectURL = jest.fn();
-(global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
-const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
-
 const renderFunction = (dataStore: DataStore) =>
   renderWithProviders(<FinishSection />, "/form/finish/1", dataStore);
 
@@ -26,8 +22,11 @@ describe("<FinishSection />", () => {
   });
 
   it("builds form, renders download link, and previous buttons", async () => {
+    const mockCreateObjectURL = jest.fn().mockReturnValue("mock-blob-url");
+    (global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
+    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+
     const dataStore = generateDataStoreWithRequiredFields();
-    mockCreateObjectURL.mockReturnValue("mock-blob-url");
     renderFunction(dataStore);
 
     expect(screen.getByRole("link", { name: "Previous" })).toBeInTheDocument();

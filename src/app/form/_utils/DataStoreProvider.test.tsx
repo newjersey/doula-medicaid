@@ -1,5 +1,6 @@
 import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
 import { DataStoreProvider, useDataStore } from "@/app/form/_utils/DataStoreProvider";
+import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -31,5 +32,43 @@ describe("<DataStoreProvider /> and useDataStore", () => {
     screen.getByRole("heading", { name: "The value of isSoleProprietor is ." });
     await user.click(screen.getByRole("button", { name: "Set to true" }));
     screen.getByRole("heading", { name: "The value of isSoleProprietor is true." });
+  });
+
+  it("asks the user for confirmation before leaving the page if the data store contains data", async () => {
+    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+
+    const Child = () => {
+      const { updateDataStore } = useDataStore();
+      return (
+        <button
+          onClick={() => {
+            updateDataStore({ isSoleProprietor: "true" });
+          }}
+        >
+          Add data to store
+        </button>
+      );
+    };
+    const user = userEvent.setup();
+    render(
+      <DataStoreProvider>
+        <Child />
+      </DataStoreProvider>,
+    );
+
+    const beforeUnloadEvent = new Event("beforeunload", { cancelable: true });
+    const preventDefaultSpy = jest.spyOn(beforeUnloadEvent, "preventDefault");
+
+    window.dispatchEvent(beforeUnloadEvent);
+
+    expect(preventDefaultSpy).not.toHaveBeenCalled();
+    expect(beforeUnloadEvent.defaultPrevented).toBe(false);
+    expect(mockSendGAEvent).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole("button", { name: "Add data to store" }));
+    window.dispatchEvent(beforeUnloadEvent);
+    expect(preventDefaultSpy).toHaveBeenCalled();
+    expect(beforeUnloadEvent.defaultPrevented).toBe(true);
+    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "leavePageConfirmationShown");
   });
 });
