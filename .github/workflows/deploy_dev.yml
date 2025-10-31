@@ -1,0 +1,41 @@
+name: deploy-dev
+
+on:
+  pull_request: # temporarily including this to test the branch
+    branches:
+      - "main"
+  push:
+    branches:
+      - "main"
+
+# Included in the example on https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-dev:
+    needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5.1.0
+        with:
+          role-to-assume:
+            arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID_DEV }}:role/GitHubAction-PushEcrUpdateEcs
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: us-east-1
+          mask-aws-account-id: true
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ secrets.AWS_ACCOUNT_ID_DEV }}.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest

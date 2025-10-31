@@ -12,10 +12,11 @@
 
 ## First-time AWS account setup
 
-Create the ECR repository
+Create the ECR repository, and OIDC provider for GitHub
 
 ```sh
 aws ecr create-repository --repository-name doula-app --region us-east-1
+aws iam create-open-id-connect-provider --url "https://token.actions.githubusercontent.com" --thumbprint-list "6938fd4d98bab03faadb97b34396831e3780aea1" --client-id-list "sts.amazonaws.com"
 ```
 
 Bootstrap cdk, replacing `<profile name>`
