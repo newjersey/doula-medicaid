@@ -148,10 +148,8 @@ const doulaTestFormFields: TestField[] = createTestFields([
   },
 ]);
 
-const mockNavigate = jest.fn();
-const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
-
 describe("submission behavior", () => {
+  const mockNavigate = jest.fn();
   beforeEach(() => {
     jest.spyOn(router, "useNavigate").mockImplementation(() => mockNavigate);
   });
@@ -177,6 +175,7 @@ describe("submission behavior", () => {
   });
 
   it("does not save fields to the data store and does not route on error", async () => {
+    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
     const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
       "/form/personal-details/2",
@@ -204,6 +203,7 @@ describe("error summary", () => {
   });
   describe("when mayHaveThreeOrMoreErrors is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
+      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       const user = userEvent.setup();
       renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
@@ -242,6 +242,7 @@ describe("error summary", () => {
     });
 
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
+      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       const user = userEvent.setup();
       renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,

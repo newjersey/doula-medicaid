@@ -4,8 +4,6 @@ import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
 
-const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
-
 const getFormProgressButtonsList = () => {
   const allLists = screen.getAllByRole("list");
   const formProgressButtonsList = allLists.find((list) => {
@@ -66,11 +64,13 @@ describe("<FormProgressButtons />", () => {
       jest.clearAllMocks();
     });
     it("when Next is clicked", async () => {
+      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
       await screen.getByRole("button", { name: "Next" }).click();
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressNext");
     });
     it("when Previous is clicked", async () => {
+      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
       await screen.getByRole("link", { name: "Previous" }).click();
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressPrevious");
