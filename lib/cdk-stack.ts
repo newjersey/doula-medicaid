@@ -173,14 +173,18 @@ export class CdkStack extends cdk.Stack {
     // Create GitHub Actions IAM role for OIDC federation
     const githubActionsRole = new iam.Role(this, "GitHubActionsRole", {
       roleName: "GitHubAction-PushEcrUpdateEcs",
-      assumedBy: new iam.WebIdentityPrincipal("token.actions.githubusercontent.com", {
-        StringEquals: {
-          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+      assumedBy: new iam.WebIdentityPrincipal(
+        `arn:aws:iam::${this.account}:oidc-provider/token.actions.githubusercontent.com`,
+        {
+          StringEquals: {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          },
+          StringLike: {
+            "token.actions.githubusercontent.com:sub":
+              "repo:newjersey/doula-medicaid:ref:refs/heads/*",
+          },
         },
-        StringLike: {
-          "token.actions.githubusercontent.com:sub": `repo:newjersey/doula-medicaid:*`,
-        },
-      }),
+      ),
     });
 
     // Grant ECR push/pull to the role for the 'doula-app' repository

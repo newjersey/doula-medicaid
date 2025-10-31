@@ -8,16 +8,15 @@ on:
     branches:
       - "main"
 
+# Included in the example on https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy-dev:
     # needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
     runs-on: ubuntu-latest
-
-    # Included in the example on https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
-    permissions:
-      id-token: write
-      contents: read
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
