@@ -55,6 +55,8 @@ export class CdkStack extends cdk.Stack {
         memoryLimitMiB: 512,
         cpu: 256,
         desiredCount: 1, // Single instance as requested
+        minHealthyPercent: 0,
+        maxHealthyPercent: 200,
         loadBalancerName: "doula-assistant-alb",
         taskImageOptions: {
           image: ecs.ContainerImage.fromEcrRepository(
@@ -165,6 +167,35 @@ export class CdkStack extends cdk.Stack {
           "ecr:BatchGetImage",
         ],
         resources: ["*"],
+      }),
+    );
+
+    // Create GitHub Actions IAM role for OIDC federation
+    const githubActionsRole = new iam.Role(this, "GitHubActionsRole", {
+      roleName: "GitHubAction-PushEcrUpdateEcs",
+      assumedBy: new iam.WebIdentityPrincipal(
+        `arn:aws:iam::${this.account}:oidc-provider/token.actions.githubusercontent.com`,
+        {
+          StringEquals: {
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
+          },
+          StringLike: {
+            "token.actions.githubusercontent.com:sub": "repo:newjersey/doula-medicaid:*",
+          },
+        },
+      ),
+    });
+
+    // Grant ECR push/pull to the role for the 'doula-app' repository
+    const doulaRepo = ecr.Repository.fromRepositoryName(this, "DoulaEcrRepo", ECR_REPOSITORY_NAME);
+    doulaRepo.grantPullPush(githubActionsRole);
+
+    // Allow GitHub Actions role to update the ECS service (force new deployment)
+    githubActionsRole.addToPolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["ecs:UpdateService", "ecs:DescribeServices", "ecs:DescribeClusters"],
+        resources: [fargateService.service.serviceArn, cluster.clusterArn],
       }),
     );
 

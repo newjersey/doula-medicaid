@@ -12,10 +12,27 @@
 
 ## First-time AWS account setup
 
-Create the ECR repository
+Create the ECR repository, and OIDC provider for GitHub
 
 ```sh
 aws ecr create-repository --repository-name doula-app --region us-east-1
+aws ecr put-lifecycle-policy --repository-name doula-app --lifecycle-policy-text '{
+  "rules": [
+    {
+      "rulePriority": 1,
+      "description": "Keep max 2 untagged images",
+      "selection": {
+        "tagStatus": "untagged",
+        "countType": "imageCountMoreThan",
+        "countNumber": 2
+      },
+      "action": {
+        "type": "expire"
+      }
+    }
+  ]
+}'
+aws iam create-open-id-connect-provider --url "https://token.actions.githubusercontent.com" --thumbprint-list "6938fd4d98bab03faadb97b34396831e3780aea1" --client-id-list "sts.amazonaws.com"
 ```
 
 Bootstrap cdk, replacing `<profile name>`
