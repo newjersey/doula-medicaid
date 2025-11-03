@@ -16,13 +16,13 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } =
   streetAddress2: "Street address line 2",
   city: "City",
   state: "State",
-  zip: "ZIP code",
+  zip: "ZIP Code",
   hasSameBillingMailingAddress: "Are your billing and residential addresses the same?",
   billingStreetAddress1: "Street address",
   billingStreetAddress2: "Street address line 2",
   billingCity: "City",
   billingState: "State",
-  billingZip: "ZIP code",
+  billingZip: "ZIP Code",
 };
 
 const mayHaveThreeOrMoreErrors = true;
