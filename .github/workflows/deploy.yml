@@ -1,0 +1,40 @@
+name: deploy
+
+on:
+  workflow_call:
+    secrets:
+      aws_account_id:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v5.1.0
+        with:
+          role-to-assume:
+            arn:aws:iam::${{ secrets.aws_account_id }}:role/GitHubAction-PushEcrUpdateEcs
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: us-east-1
+          mask-aws-account-id: true
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ secrets.aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest
+
+      - name: Deploy image on ECS
+        run: |
+          aws ecs update-service \
+            --cluster doula-assistant-cluster \
+            --service doula-assistant-service \
+            --force-new-deployment
