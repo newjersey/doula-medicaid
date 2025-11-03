@@ -1,4 +1,7 @@
-import { formatDescribedBy } from "@/app/form/(formSteps)/components/utils/doulaInput";
+import {
+  formatDescribedBy,
+  formatInputErrorLabel,
+} from "@/app/form/(formSteps)/components/utils/doulaInput";
 
 describe("formatDescribedBy", () => {
   const inputName = "testId";
@@ -74,4 +77,15 @@ describe("formatDescribedBy", () => {
       ).toEqual(expected);
     },
   );
+});
+
+describe("formatInputErrorLabel", () => {
+  it("correctly formats the input error label", () => {
+    expect(formatInputErrorLabel("Hi", "Prefix", true)).toEqual("Prefix Hi");
+    expect(formatInputErrorLabel("Hi", "Prefix", false)).toEqual("Prefix hi");
+    expect(formatInputErrorLabel("Hi", undefined, true)).toEqual("Hi");
+    expect(formatInputErrorLabel("Hi", undefined, false)).toEqual("Hi");
+    expect(formatInputErrorLabel("Hi", "Prefix")).toEqual("Prefix hi");
+    expect(formatInputErrorLabel("Hi", undefined)).toEqual("Hi");
+  });
 });

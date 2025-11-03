@@ -103,7 +103,7 @@ describe("<PersonalDetailsStep1 />", () => {
 
   it.each([
     {
-      name: "Social Security number *",
+      name: "Social Security Number *",
       lowercaseName: "social security number",
     },
     {
