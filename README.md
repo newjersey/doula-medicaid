@@ -2,7 +2,14 @@
 
 ## Getting Started
 
-First, run the development server:
+Follow https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating to install `nvm`.
+Then, install node v20:
+
+```sh
+nvm install 20
+```
+
+Run the development server:
 
 ```sh
 npm run dev
@@ -10,7 +17,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-To test:
+## Running tests
 
 ```sh
 # Run all unit tests
