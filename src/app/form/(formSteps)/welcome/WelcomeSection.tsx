@@ -1,11 +1,10 @@
-import { faqContent } from "@/app/form/(formSteps)/welcome/FaqContent";
+import { WelcomeFaq } from "@/app/form/(formSteps)/welcome/WelcomeFaq";
 import {
   formatFormProgressUrl,
   useFormProgressPosition,
 } from "@/app/form/_utils/formProgressRouting";
 import { sendGAEvent } from "@next/third-parties/google";
 import {
-  Accordion,
   Icon,
   IconList,
   IconListContent,
@@ -28,24 +27,22 @@ const WelcomeSection = () => {
     <div className="grid-container welcome-page">
       <div className="grid-row">
         <div className="tablet:grid-col bg-primary-lightest padding-6">
-          <h1 className="text-primary-darkest font-heading-2xl margin-bottom-0">
+          <h1 className="text-primary-darkest font-heading-2xl">
             Welcome to the NJ Doula Assistant
+            <span className="display-block text-primary font-heading-2xl margin-top-0">
+              Focus on care, not paperwork
+            </span>
           </h1>
-          <h2 className="text-primary font-heading-2xl margin-top-0">
-            Focus on care, not paperwork
-          </h2>
           <div className="grid-row flex-no-wrap">
             <div className="padding-right-1">
               <Icon.Alarm aria-hidden="true" size={3} />
             </div>
-            <div>
-              <h3 className="font-body-lg text-normal margin-top-0 margin-bottom-6">
-                Take 20 minutes to start your Fee-for-Service (FFS) application to become an NJ
-                FamilyCare community doula.
-              </h3>
+            <div className="font-body-lg text-normal margin-top-0 margin-bottom-6">
+              Take 20 minutes to start your Fee-for-Service (FFS) application to become an NJ
+              FamilyCare community doula.
             </div>
           </div>
-          <h3 className="font-body-small">What you need to use this tool</h3>
+          <h2 className="font-heading-md">What you need to use this tool</h2>
           <IconList className="usa-icon-list--size-sm margin-bottom-6">
             <IconListItem>
               <IconListIcon className="text-green">
@@ -117,12 +114,12 @@ const WelcomeSection = () => {
         </div>
       </div>
 
-      <h3 className="font-heading-xl">How it works</h3>
+      <h2 className="font-heading-xl">How it works</h2>
 
       <div className="grid-row">
         <ProcessList>
           <ProcessListItem>
-            <ProcessListHeading type="h4">Complete your FFS application packet</ProcessListHeading>
+            <ProcessListHeading type="h3">Complete your FFS application packet</ProcessListHeading>
             <p>
               Gather the{" "}
               <a
@@ -136,7 +133,7 @@ const WelcomeSection = () => {
             </p>
           </ProcessListItem>
           <ProcessListItem>
-            <ProcessListHeading type="h4">Email your FFS application packet</ProcessListHeading>
+            <ProcessListHeading type="h3">Email your FFS application packet</ProcessListHeading>
             <p>
               Send forms to{" "}
               <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
@@ -155,7 +152,7 @@ const WelcomeSection = () => {
             </p>
           </ProcessListItem>
           <ProcessListItem>
-            <ProcessListHeading type="h4">
+            <ProcessListHeading type="h3">
               Free background check and fingerprinting
             </ProcessListHeading>
             <p>
@@ -164,14 +161,14 @@ const WelcomeSection = () => {
             </p>
           </ProcessListItem>
           <ProcessListItem>
-            <ProcessListHeading type="h4">Receive your NJ Medicaid ID</ProcessListHeading>
+            <ProcessListHeading type="h3">Receive your NJ Medicaid ID</ProcessListHeading>
             <p>
               Once we approve your FFS application, we will send you a letter with your NJ Medicaid
               ID.
             </p>
           </ProcessListItem>
           <ProcessListItem>
-            <ProcessListHeading type="h4">
+            <ProcessListHeading type="h3">
               Apply to Managed Care Organizations (MCOs)
             </ProcessListHeading>
             <p>Once you receive your NJ Medicaid ID, you can apply to the MCOs.</p>
@@ -179,8 +176,8 @@ const WelcomeSection = () => {
         </ProcessList>
       </div>
 
-      <h3 className="font-heading-xl">FAQs</h3>
-      <Accordion items={faqContent} multiselectable={true} />
+      <h2 className="font-heading-xl">FAQs</h2>
+      <WelcomeFaq headingLevel="h3" />
     </div>
   );
 };
