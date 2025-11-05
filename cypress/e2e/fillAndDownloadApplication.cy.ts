@@ -61,6 +61,8 @@ it("should fill and download the application", () => {
 
   for (const formPage of formPages) {
     cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
+    cy.window().its("scrollY").should("equal", 0); // The page view should be at the top
+
     cy.get("form").within(() => {
       for (const field of formPage.fields) {
         if (field.role === "textbox") {
@@ -76,6 +78,34 @@ it("should fill and download the application", () => {
         }
       }
     });
+    cy.contains("Next").click();
+  }
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/finish`);
+
+  // Test clicking previous, and prepopulation
+  for (const formPage of formPages.reverse()) {
+    cy.contains("Previous").click();
+    cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
+    cy.window().its("scrollY").should("equal", 0);
+
+    cy.get("form").within(() => {
+      for (const field of formPage.fields) {
+        if (field.role === "textbox") {
+          cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
+        } else if (field.role === "radio") {
+          cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).should(
+            "be.checked",
+          );
+        } else if (field.role === "combobox") {
+          cy.get(`select[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
+        } else {
+          throw new Error(`Unexpected type ${field.role}`);
+        }
+      }
+    });
+  }
+
+  for (const _ of formPages) {
     cy.contains("Next").click();
   }
 
