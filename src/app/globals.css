@@ -21,7 +21,6 @@ abbr[title] {
 
 .welcome-page .usa-process-list__item {
   padding-bottom: 0;
-  padding-right: 20px;
 }
 
 .welcome-page .usa-process-list__item::before {
@@ -44,6 +43,7 @@ abbr[title] {
   grid-template-columns: repeat(auto-fit, minmax(0em, max-content));
   grid-template-rows: repeat(3, 1fr);
   grid-auto-flow: column;
+  column-gap: 50px;
 }
 
 .welcome-page .usa-accordion .usa-accordion__button {
