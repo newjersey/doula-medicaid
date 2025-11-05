@@ -1,6 +1,7 @@
 "use client";
 
 import { getCurrentFormProgress } from "@/app/form/_utils/formProgress";
+import { Alert } from "@trussworks/react-uswds";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -24,24 +25,20 @@ const WipBanner = () => {
   return (
     <>
       {sectionsIdsWithBanner.includes(currentSection.id) && (
-        <div className="usa-alert usa-alert--warning" id="wipBanner">
-          <div className="usa-alert__body">
-            <p className="usa-alert__text">
-              This site is in beta and may not cover every doula&apos;s unique situation.
-            </p>
-            <p className="usa-alert__text">
-              If you are not covered by this tool, please use the standard{" "}
-              <a
-                href="https://www.njmmis.com/providerEnrollment.aspx"
-                target="_blank"
-                rel="noopener"
-              >
-                Medicaid Fee-for-Service application
-              </a>
-              .
-            </p>
-          </div>
-        </div>
+        // headingLevel doesn't matter, see https://github.com/trussworks/react-uswds/issues/3244
+        <Alert type="warning" headingLevel="h1">
+          <>
+            This tool is a work in progress and{" "}
+            <strong>
+              is intended exclusively for individual doulas operating as Sole Proprietors.
+            </strong>{" "}
+            If you don’t fall into this category, please use the standard{" "}
+            <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+              Medicaid Fee-for-Service application
+            </a>
+            . You are not eligible for this tool if you have an EIN or an LLC.
+          </>
+        </Alert>
       )}
     </>
   );
