@@ -6,12 +6,7 @@ describe("WipBanner", () => {
   it("renders the banner when on the welcome section", () => {
     renderWithProviders(<WipBanner />, "/form/welcome");
 
-    expect(
-      screen.getByText(/This site is in beta and may not cover every doula's unique situation/),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/If you are not covered by this tool, please use the standard/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/This tool is a work in progress/)).toBeInTheDocument();
 
     const link = screen.getByRole("link", { name: "Medicaid Fee-for-Service application" });
     expect(link).toBeInTheDocument();
@@ -22,9 +17,6 @@ describe("WipBanner", () => {
 
   it("does not render the banner when not on the welcome section", () => {
     renderWithProviders(<WipBanner />, "/form/screening/1");
-
-    expect(
-      screen.queryByText(/This site is in beta and may not cover every doula's unique situation/),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/This tool is a work in progress/)).not.toBeInTheDocument();
   });
 });
