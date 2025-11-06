@@ -92,9 +92,9 @@ export const trainingAddressFields: TestField[] = createTestFields([
     prerequisiteField: yesDoulaTrainingInPerson,
   },
   {
-    name: "ZIP code *",
+    name: "ZIP Code *",
     required: true,
-    alternateRequiredFieldError: "Training zip code is required",
+    alternateRequiredFieldError: "Training ZIP Code is required",
     dataStoreKey: "trainingZip",
     testValue: "12345",
     withinGroupName: trainingAddressGroupName,

@@ -69,10 +69,10 @@ describe("<PersonalDetailsStep2 />", () => {
       expect(combobox).toHaveValue("PA");
     });
 
-    it("displays an error message if zip has less than five digits", async () => {
+    it("displays an error message if ZIP has less than five digits", async () => {
       await testInvalidField(
         { ...zipCodeField, testValue: "1" },
-        "Billing zip code must have five digits",
+        "Billing ZIP Code must have five digits",
         testFields,
         renderFunction,
         screen,
@@ -83,7 +83,7 @@ describe("<PersonalDetailsStep2 />", () => {
       const user = userEvent.setup();
       renderFunction();
       const input = screen.getByRole("textbox", {
-        name: "ZIP code *",
+        name: "ZIP Code *",
       });
 
       await user.type(input, "aaa");

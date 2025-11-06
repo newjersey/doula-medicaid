@@ -22,7 +22,7 @@ const orderedInputNameToLabel: { [key in FieldPath<TrainingData>]: string } = {
   trainingStreetAddress2: "Street address line 2",
   trainingCity: "City",
   trainingState: "State",
-  trainingZip: "ZIP code",
+  trainingZip: "ZIP Code",
   isDoulaTrainingInPerson: "Did you attend your doula training classes in person?",
   instructorFirstName: "First name",
   instructorLastName: "Last name",
