@@ -49,7 +49,7 @@ export const insuranceAddressFields: TestField[] = createTestFields([
     withinGroupName: insuranceAddressGroupName,
   },
   {
-    name: "ZIP code *",
+    name: "ZIP Code *",
     required: true,
     dataStoreKey: "insuranceZip",
     testValue: "12345",
