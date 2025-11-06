@@ -113,7 +113,25 @@ const BusinessDetailsStep1 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <h2 className="font-heading-md">Business address</h2>
-          <p className="usa-hint">Many doulas use their home address as their business address.</p>
+          <div className="usa-hint">
+            <p>
+              Medicaid wants to help clients find your services easily.{" "}
+              <span className="text-bold">
+                Many doulas use their home address as their business address.
+              </span>
+            </p>
+            <p>
+              If you use a PO box or a Private Mail Box, ensure the address matches the area where
+              you work, and excludes the words “PO Box”. For example:
+            </p>
+            <div className="margin-top-0">
+              <div>123 Main St</div>
+              <div>
+                <span className="text-bold">#456</span>
+              </div>
+              <div>Trenton, NJ 08601</div>
+            </div>
+          </div>
           <DoulaRadio
             name="businessAddressSameAsOtherAddress"
             value={businessAddressSameAsOtherAddress}
