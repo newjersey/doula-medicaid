@@ -39,7 +39,7 @@ export const mailingAddressFields = createTestFields([
     withinGroupName: mailingAddressQuestion,
   },
   {
-    name: "ZIP code *",
+    name: "ZIP Code *",
     dataStoreKey: "zip",
     required: true,
     testValue: "12345",
@@ -71,12 +71,12 @@ export const noSameBillingMailingAddress: TestField = {
 export const minimalTestFields = [...mailingAddressFields, yesSameBillingMailingAddress];
 
 export const zipCodeField = createTestField({
-  name: "ZIP code *",
+  name: "ZIP Code *",
   dataStoreKey: "billingZip",
   required: true,
   testValue: "12345",
   withinGroupName: billingAddressQuestion,
-  alternateRequiredFieldError: "Billing zip code is required",
+  alternateRequiredFieldError: "Billing ZIP Code is required",
   prerequisiteField: noSameBillingMailingAddress,
 });
 

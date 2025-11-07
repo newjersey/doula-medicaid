@@ -17,7 +17,7 @@ export const expectAddressHasAutocomplete = (
     { name: "Street address line 2", role: "textbox", autocompleteToken: "address-line2" },
     { name: "City *", role: "textbox", autocompleteToken: "address-level2" },
     { name: "State *", role: "combobox", autocompleteToken: "address-level1" },
-    { name: "ZIP code *", role: "textbox", autocompleteToken: "postal-code" },
+    { name: "ZIP Code *", role: "textbox", autocompleteToken: "postal-code" },
   ];
   for (const addressInput of addressInputs) {
     expect(

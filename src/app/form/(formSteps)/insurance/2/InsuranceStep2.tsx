@@ -17,7 +17,7 @@ const orderedInputNameToLabel: { [key in keyof Insurance2Data]: string } = {
   insuranceStreetAddress2: "Street address line 2",
   insuranceCity: "City",
   insuranceState: "State",
-  insuranceZip: "ZIP code",
+  insuranceZip: "ZIP Code",
 };
 
 const mayHaveThreeOrMoreErrors = true;
