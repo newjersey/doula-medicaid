@@ -39,7 +39,13 @@ const allInputFields = [
     testValue: "Apt 4",
   },
   { name: "City *", dataStoreKey: "testCity", role: "textbox" as const, testValue: "Newark" },
-  { name: "State *", dataStoreKey: "testState", role: "combobox" as const, testValue: "PA" },
+  {
+    name: "State *",
+    dataStoreKey: "testState",
+    role: "combobox" as const,
+    testValue: "Pennsylvania",
+    expectedValue: "PA",
+  },
   {
     name: "ZIP Code *",
     dataStoreKey: "testZip",
@@ -218,6 +224,32 @@ describe("DoulaAddress", () => {
     await user.click(screen.getByRole("button", { name: "Next" }));
 
     expect(zipInput).toHaveAccessibleDescription("ZIP Code must have five digits");
+  });
+
+  it("prevents non-numeric inputs in ZIP Code", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(
+      <TestForm
+        fieldsetProps={{
+          legend: "What is your address?",
+        }}
+        addressKeys={{
+          streetAddress1: "testStreetAddress1",
+          streetAddress2: "testStreetAddress2",
+          city: "testCity",
+          state: "testState",
+          zip: "testZip",
+        }}
+      />,
+      "/form/personal-details/2",
+    );
+    const zipInput = await getInputField(screen, { name: "ZIP Code *" });
+    await user.type(zipInput, "aaa");
+    expect(zipInput).toHaveValue("");
+    await user.type(zipInput, "!!");
+    expect(zipInput).toHaveValue("");
+    await user.type(zipInput, "11");
+    expect(zipInput).toHaveValue("11");
   });
 
   it("displays error messages that includes a prefix if provided", async () => {

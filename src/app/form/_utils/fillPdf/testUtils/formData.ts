@@ -4,7 +4,7 @@ import type { PersonalDetailsFormData } from "@/app/form/(formSteps)/personal-de
 import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
 import type { DataStore, DataStoreKey } from "@/app/form/_utils/dataStore";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 const testinsuranceEndDateDay = "31";

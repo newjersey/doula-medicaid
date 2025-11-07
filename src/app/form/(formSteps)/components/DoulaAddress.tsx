@@ -1,7 +1,7 @@
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import { formatInputErrorLabel } from "@/app/form/(formSteps)/components/utils/doulaInput";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState, addressStateToName } from "@/app/form/_utils/inputFields/addressState";
 import { typecheckAutocomplete } from "@/app/form/_utils/types/autocomplete";
 import { Fieldset, Label, Select, type FieldsetProps } from "@trussworks/react-uswds";
 import type { FieldErrors, FieldPath, FieldValues, UseFormRegister } from "react-hook-form";
@@ -88,7 +88,7 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
           >
             {Object.keys(AddressState).map((state) => (
               <option key={state} value={state}>
-                {state}
+                {addressStateToName[state as keyof typeof AddressState]}
               </option>
             ))}
           </Select>

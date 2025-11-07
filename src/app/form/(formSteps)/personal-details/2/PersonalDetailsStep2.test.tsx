@@ -1,23 +1,27 @@
 import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
 import {
   billingAddressFields,
+  billingStateField,
   mailingAddressFields,
   mailingAddressQuestion,
   minimalTestFields,
   noSameBillingMailingAddress,
+  stateField,
   testFields,
   yesSameBillingMailingAddress,
-  zipCodeField,
 } from "@/app/form/(formSteps)/personal-details/2/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
-import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
+import {
+  fillAllInputsExcept,
+  fillField,
+  getInputField,
+} from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   testConditionalRender,
   type TestField,
   testFillFromDataStore,
-  testInvalidField,
   testRequiredField,
   testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
@@ -57,41 +61,17 @@ describe("<PersonalDetailsStep2 />", () => {
       },
     );
 
-    it("defaults address state to NJ and updates it", async () => {
+    it("defaults address state to New Jersey", async () => {
       const user = userEvent.setup();
-      renderFunction();
-      const combobox = screen.getByRole("combobox", {
-        name: "State *",
-      });
-      expect(combobox).toHaveValue("NJ");
+      const { mockUpdateDataStore } = renderFunction();
+      const stateInput = await getInputField(screen, stateField);
+      expect(stateInput).toHaveDisplayValue("New Jersey");
+      expect(stateInput).toHaveValue("NJ");
 
-      await user.selectOptions(combobox, "PA");
-      expect(combobox).toHaveValue("PA");
-    });
+      await fillAllInputsExcept(screen, user, minimalTestFields, new Set(["state"]));
+      await user.click(screen.getByRole("button", { name: "Next" }));
 
-    it("displays an error message if ZIP has less than five digits", async () => {
-      await testInvalidField(
-        { ...zipCodeField, testValue: "1" },
-        "Billing ZIP Code must have five digits",
-        testFields,
-        renderFunction,
-        screen,
-      );
-    });
-
-    it("prevents non-numeric inputs in ZIP Code", async () => {
-      const user = userEvent.setup();
-      renderFunction();
-      const input = screen.getByRole("textbox", {
-        name: "ZIP Code *",
-      });
-
-      await user.type(input, "aaa");
-      expect(input).toHaveValue("");
-      await user.type(input, "!!");
-      expect(input).toHaveValue("");
-      await user.type(input, "11");
-      expect(input).toHaveValue("11");
+      expect(mockUpdateDataStore).toHaveBeenCalledWith(expect.objectContaining({ state: "NJ" }));
     });
   });
 
@@ -146,6 +126,23 @@ describe("<PersonalDetailsStep2 />", () => {
         await testConditionalRender(field, yesSameBillingMailingAddress, renderFunction, screen);
       },
     );
+
+    it("defaults address state to New Jersey", async () => {
+      const user = userEvent.setup();
+      const { mockUpdateDataStore } = renderFunction();
+
+      await fillField(screen, user, noSameBillingMailingAddress);
+      const billingStateInput = await getInputField(screen, billingStateField);
+      expect(billingStateInput).toHaveDisplayValue("New Jersey");
+      expect(billingStateInput).toHaveValue("NJ");
+
+      await fillAllInputsExcept(screen, user, testFields, new Set(["billingState"]));
+      await user.click(screen.getByRole("button", { name: "Next" }));
+
+      expect(mockUpdateDataStore).toHaveBeenCalledWith(
+        expect.objectContaining({ billingState: "NJ" }),
+      );
+    });
   });
 
   describe("Public information explainer", () => {

@@ -3,8 +3,7 @@
 ## What was done?
 
 - Explain the implementation goals being solved or the feature with the reviewer in mind
-- Mention any relevant issues or insights to be shared with the reviewer.
-- Alternatives considered
+- Mention any relevant issues, insights, or alternatives considered to be shared with the reviewer.
 
 ## Accessibility
 
@@ -13,7 +12,7 @@
 
 ## How should a reviewer test?
 
-- Describe the testing approach taken to verify the changes, including:
+- Describe how a reviewer should test the changes, including:
   - Unit/integration/manual tests
   - Test data used
 

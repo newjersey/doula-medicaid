@@ -1,6 +1,6 @@
 import { getTrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("getTrainingFormData", () => {
   describe("isDoulaTrainingInPerson", () => {

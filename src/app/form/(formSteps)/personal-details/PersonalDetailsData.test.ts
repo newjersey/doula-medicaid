@@ -1,6 +1,6 @@
 import { getPersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("getPersonalDetailsFormData", () => {
   describe("hasSameBillingMailingAddress handling", () => {

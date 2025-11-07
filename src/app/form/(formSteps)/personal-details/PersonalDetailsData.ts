@@ -1,6 +1,6 @@
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/dataStore";
-import type { AddressState } from "@/app/form/_utils/inputFields/enums";
+import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 export interface PersonalDetails1Data {
   firstName: string;

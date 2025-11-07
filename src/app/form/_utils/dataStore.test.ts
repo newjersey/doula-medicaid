@@ -5,7 +5,7 @@ import {
   getDefaultBoolean,
   getValue,
 } from "@/app/form/_utils/dataStore";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("getValue", () => {
   it("returns the value in the data store", () => {

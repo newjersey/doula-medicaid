@@ -5,7 +5,7 @@ import {
   getValue,
   type DataStore,
 } from "@/app/form/_utils/dataStore";
-import { type AddressState } from "@/app/form/_utils/inputFields/enums";
+import { type AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 export type BusinessAddressSameAsOtherAddressOptions = "mailing" | "billing" | "different" | "";
 

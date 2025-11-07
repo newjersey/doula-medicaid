@@ -1,6 +1,6 @@
 import { getBusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("getBusinessDetailsFormData", () => {
   describe("businessAddressSameAsOtherAddress handling", () => {

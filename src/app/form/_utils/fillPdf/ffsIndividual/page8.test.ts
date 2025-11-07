@@ -9,7 +9,7 @@ import {
   testSocialSecurityNumber,
 } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("Page 8 - individual doula provider application section I provider identification", () => {
   const testedPdfKeys = new Set<keyof PdfFfsIndividualPage8>([]);

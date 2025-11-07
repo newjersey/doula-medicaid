@@ -3,7 +3,7 @@ import {
   formatNaIfBlank,
   formatNumericStringAsIndividualFields,
 } from "@/app/form/_utils/fillPdf/formatters";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("formatNaIfBlank", () => {
   it("returns the value if the value is not blank", () => {
