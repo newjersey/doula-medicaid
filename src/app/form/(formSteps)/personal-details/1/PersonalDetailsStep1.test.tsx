@@ -80,7 +80,7 @@ describe("<PersonalDetailsStep1 />", () => {
     it("displays an error message if socialSecurityNumber has too few digits", async () => {
       await testInvalidField(
         { ...socialSecurityNumberField, testValue: "123" },
-        "Entered value does not match social security number format",
+        "Entered value does not match Social Security Number format",
         testFields,
         renderFunction,
         screen,
@@ -103,7 +103,7 @@ describe("<PersonalDetailsStep1 />", () => {
 
   it.each([
     {
-      name: "Social security number *",
+      name: "Social Security Number *",
       lowercaseName: "social security number",
     },
     {

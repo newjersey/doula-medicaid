@@ -16,7 +16,7 @@ const inputNameToLabel = {
   firstName: "First name",
   middleName: "Middle name",
   lastName: "Last name",
-  socialSecurityNumber: "Social security number",
+  socialSecurityNumber: "Social Security Number",
   email: "Email address",
   phoneNumber: "Phone number",
 } as const;
@@ -129,7 +129,7 @@ const PersonalDetailsStep1 = () => {
               required: `${inputNameToLabel["socialSecurityNumber"]} is required`,
               pattern: {
                 value: /\d{3}-\d{2}-\d{4}/,
-                message: "Entered value does not match social security number format",
+                message: "Entered value does not match Social Security Number format",
               },
             }}
           />

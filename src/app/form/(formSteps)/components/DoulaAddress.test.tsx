@@ -22,7 +22,7 @@ const testFormOrderedInputNameToLabel = {
   testStreetAddress2: "Street address line 2",
   testCity: "City",
   testState: "State",
-  testZip: "ZIP code",
+  testZip: "ZIP Code",
 };
 
 const allInputFields = [
@@ -41,7 +41,7 @@ const allInputFields = [
   { name: "City *", dataStoreKey: "testCity", role: "textbox" as const, testValue: "Newark" },
   { name: "State *", dataStoreKey: "testState", role: "combobox" as const, testValue: "PA" },
   {
-    name: "ZIP code *",
+    name: "ZIP Code *",
     dataStoreKey: "testZip",
     role: "textbox" as const,
     testValue: "08609",
@@ -112,7 +112,7 @@ describe("DoulaAddress", () => {
           testStreetAddress2: "Street address line 2",
           testCity: "City",
           testState: "State",
-          testZip: "ZIP code",
+          testZip: "ZIP Code",
         }}
         errors={{}}
         register={jest.fn()}
@@ -137,7 +137,7 @@ describe("DoulaAddress", () => {
       withinGroupName: "What is your address?",
     });
     const zipInput = await getInputField(screen, {
-      name: "ZIP code *",
+      name: "ZIP Code *",
       withinGroupName: "What is your address?",
     });
 
@@ -166,7 +166,7 @@ describe("DoulaAddress", () => {
           testStreetAddress2: "Street address line 2",
           testCity: "City",
           testState: "State",
-          testZip: "ZIP code",
+          testZip: "ZIP Code",
         }}
         autocomplete="shipping"
         errors={{}}
@@ -189,7 +189,7 @@ describe("DoulaAddress", () => {
       "autocomplete",
       "shipping address-level1",
     );
-    expect(screen.getByRole("textbox", { name: "ZIP code *" })).toHaveAttribute(
+    expect(screen.getByRole("textbox", { name: "ZIP Code *" })).toHaveAttribute(
       "autocomplete",
       "shipping postal-code",
     );
@@ -213,11 +213,11 @@ describe("DoulaAddress", () => {
       "/form/personal-details/2",
     );
     await fillAllInputsExcept(screen, user, allInputFields, new Set(["testZip"]));
-    const zipInput = await getInputField(screen, { name: "ZIP code *" });
+    const zipInput = await getInputField(screen, { name: "ZIP Code *" });
     await user.type(zipInput, "1");
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(zipInput).toHaveAccessibleDescription("ZIP code must have five digits");
+    expect(zipInput).toHaveAccessibleDescription("ZIP Code must have five digits");
   });
 
   it("displays error messages that includes a prefix if provided", async () => {
@@ -245,19 +245,19 @@ describe("DoulaAddress", () => {
       name: "City *",
     });
     const zipInput = await getInputField(screen, {
-      name: "ZIP code *",
+      name: "ZIP Code *",
     });
     await user.click(screen.getByRole("button", { name: "Next" }));
 
     for (const testCase of [
       { input: streetAddress1Input, expectedErrorMessage: "Test street address is required" },
       { input: cityInput, expectedErrorMessage: "Test city is required" },
-      { input: zipInput, expectedErrorMessage: "Test zip code is required" },
+      { input: zipInput, expectedErrorMessage: "Test ZIP Code is required" },
     ]) {
       expect(testCase.input).toHaveAccessibleDescription(testCase.expectedErrorMessage);
     }
 
     await user.type(zipInput, "1");
-    expect(zipInput).toHaveAccessibleDescription("Test zip code must have five digits");
+    expect(zipInput).toHaveAccessibleDescription("Test ZIP Code must have five digits");
   });
 });

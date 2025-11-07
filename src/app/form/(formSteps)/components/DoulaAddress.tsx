@@ -108,10 +108,10 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
             errors={props.errors}
             register={props.register}
             registerOptions={{
-              required: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix)} is required`,
+              required: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix, true)} is required`,
               minLength: {
                 value: 5,
-                message: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix)} must have five digits`,
+                message: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix, true)} must have five digits`,
               },
             }}
           />
