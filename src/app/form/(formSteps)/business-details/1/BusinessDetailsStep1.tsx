@@ -25,7 +25,7 @@ const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } =
   businessStreetAddress2: "Street address line 2",
   businessCity: "City",
   businessState: "State",
-  businessZip: "ZIP code",
+  businessZip: "ZIP Code",
 };
 
 const mayHaveThreeOrMoreErrors = true;

@@ -66,7 +66,7 @@ export const businessAddressFields = createTestFields([
     prerequisiteField: differentBusinessAddressSameAsOtherAddress,
   },
   {
-    name: "ZIP code *",
+    name: "ZIP Code *",
     dataStoreKey: "businessZip",
     required: true,
     testValue: "12345",
