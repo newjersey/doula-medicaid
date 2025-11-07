@@ -1,5 +1,5 @@
 import { formatAddressLabel } from "@/app/form/(formSteps)/business-details/1/_utils/formatAddressLabel";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import { render, screen } from "@testing-library/react";
 
 describe("formatAddressLabel", () => {

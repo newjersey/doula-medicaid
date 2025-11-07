@@ -1,5 +1,5 @@
 import { formatAddressLine3 } from "@/app/form/_utils/formatters";
-import type { AddressState } from "@/app/form/_utils/inputFields/enums";
+import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 export const formatAddressLabel = (
   streetAddress1: string,

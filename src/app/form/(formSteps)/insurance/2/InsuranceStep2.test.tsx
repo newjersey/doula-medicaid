@@ -2,10 +2,11 @@ import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
 import {
   insuranceAddressFields,
   insuranceDetailsFields,
+  insuranceStateField,
   testFields,
 } from "@/app/form/(formSteps)/insurance/2/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
-import { fillAllInputsExcept } from "@/app/form/_utils/testUtils/fillInputs";
+import { fillAllInputsExcept, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   testFillFromDataStore,
@@ -58,15 +59,14 @@ describe("<InsuranceStep2 />", () => {
       },
     );
 
-    it("defaults address state to NJ", async () => {
+    it("defaults address state to New Jersey", async () => {
       const user = userEvent.setup();
       const { mockUpdateDataStore } = renderFunction();
-      const combobox = screen.getByRole("combobox", {
-        name: "State *",
-      });
-      expect(combobox).toHaveValue("NJ");
+      const insuranceStateInput = await getInputField(screen, insuranceStateField);
+      expect(insuranceStateInput).toHaveDisplayValue("New Jersey");
+      expect(insuranceStateInput).toHaveValue("NJ");
 
-      await fillAllInputsExcept(screen, user, testFields, new Set("insuranceState"));
+      await fillAllInputsExcept(screen, user, testFields, new Set(["insuranceState"]));
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       expect(mockUpdateDataStore).toHaveBeenCalledWith(

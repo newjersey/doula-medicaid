@@ -8,7 +8,7 @@ import type {
   Screening3Data,
 } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingData } from "@/app/form/(formSteps)/training/TrainingData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import type {
   BusinessAddressSameAsOtherAddressOptions,
   BusinessDetails1Data,

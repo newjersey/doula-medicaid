@@ -7,7 +7,7 @@ import {
   testPhoneNumber,
 } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import { AddressState } from "@/app/form/_utils/inputFields/enums";
+import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 describe("Page 13 - request for paper updates", () => {
   const testedPdfKeys = new Set<keyof PdfFfsIndividualPage13>([]);

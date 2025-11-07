@@ -1,5 +1,5 @@
 import { formatAddressLine3 } from "@/app/form/_utils/formatters";
-import type { AddressState } from "@/app/form/_utils/inputFields/enums";
+import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 export const formatNaIfBlank = (value: string | null) => {
