@@ -1,4 +1,4 @@
-import { formatAddressLine3 } from "@/app/form/_utils/formatters";
+import { formatCityStateZipAddressSingleField } from "@/app/form/_utils/formatters";
 import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 export const formatAddressLabel = (
@@ -12,7 +12,10 @@ export const formatAddressLabel = (
   if (streetAddress2 !== null) {
     addressParts.push({ key: "addressLine2", value: streetAddress2 });
   }
-  addressParts.push({ key: "addressLine3", value: formatAddressLine3(city, state, zip) });
+  addressParts.push({
+    key: "addressLine3",
+    value: formatCityStateZipAddressSingleField(city, state, zip),
+  });
 
   return (
     <div className="usa-hint">

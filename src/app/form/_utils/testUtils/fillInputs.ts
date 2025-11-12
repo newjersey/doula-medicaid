@@ -42,7 +42,9 @@ export const fillField = async (screen: Screen, user: UserEvent, fieldToFill: Fi
   const inputField = await getInputField(screen, fieldToFill);
   switch (fieldToFill.role) {
     case "textbox":
-      await user.type(inputField, fieldToFill.testValue);
+      if (fieldToFill.testValue !== "") {
+        await user.type(inputField, fieldToFill.testValue);
+      }
       break;
     case undefined:
       await user.type(inputField, fieldToFill.testValue);

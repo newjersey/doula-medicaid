@@ -1,7 +1,9 @@
 import {
-  formatMultilineAddress,
+  formatFullAddressSingleField,
+  formatFullAddressThreeFields,
   formatNaIfBlank,
   formatNumericStringAsIndividualFields,
+  formatStreetAddressSingleField,
 } from "@/app/form/_utils/fillPdf/formatters";
 import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
@@ -48,17 +50,49 @@ describe("formatNumericStringAsIndividualFields", () => {
   });
 });
 
-describe("formatMultilineAddress", () => {
+describe("formatStreetAddressSingleField", () => {
   it("includes street address 2 if present", () => {
-    expect(formatMultilineAddress("Street 1", "Apt 2", "Newark", AddressState.NJ, "99999"))
+    expect(formatStreetAddressSingleField("Street 1", "Apt 2")).toEqual("Street 1 Apt 2");
+  });
+
+  it("excludes street address 2 if absent", () => {
+    expect(formatStreetAddressSingleField("Street 1", null)).toEqual("Street 1");
+  });
+});
+
+describe("formatFullAddressSingleField", () => {
+  it("includes street address 2 if present", () => {
+    expect(formatFullAddressSingleField("Street 1", "Apt 2", "Newark", AddressState.NJ, "99999"))
       .toEqual(`Street 1
 Apt 2
 Newark, NJ 99999`);
   });
 
-  it("excludes street address 2 if present", () => {
-    expect(formatMultilineAddress("Street 1", null, "Newark", AddressState.NJ, "99999"))
+  it("excludes street address 2 if absent", () => {
+    expect(formatFullAddressSingleField("Street 1", null, "Newark", AddressState.NJ, "99999"))
       .toEqual(`Street 1
 Newark, NJ 99999`);
+  });
+});
+
+describe("formatFullAddressThreeFields", () => {
+  it("includes street address 2 if present", () => {
+    expect(
+      formatFullAddressThreeFields("Street 1", "Apt 2", "Newark", AddressState.NJ, "99999"),
+    ).toEqual({
+      line1: "Street 1",
+      line2: "Apt 2",
+      line3: "Newark, NJ 99999",
+    });
+  });
+
+  it("excludes street address 2 if absent", () => {
+    expect(
+      formatFullAddressThreeFields("Street 1", null, "Newark", AddressState.NJ, "99999"),
+    ).toEqual({
+      line1: "Street 1",
+      line2: "Newark, NJ 99999",
+      line3: "",
+    });
   });
 });

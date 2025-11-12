@@ -57,6 +57,7 @@ describe("Page 13 - request for paper updates", () => {
         description: "no streetAddress2",
         formData: {
           streetAddress1: "456 Test St",
+          streetAddress2: "",
           city: "Newark",
           state: AddressState.NJ,
           zip: "22222",

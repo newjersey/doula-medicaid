@@ -1,6 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
-import { formatName } from "@/app/form/_utils/fillPdf/formatters";
-import { formatAddressLine3 } from "@/app/form/_utils/formatters";
+import { formatFullAddressThreeFields, formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 17 - disclosure of ownership and control interest statement
@@ -29,7 +28,9 @@ export interface PdfFfsIndividualPage17 {
 
 export const getPage17Fields = (formData: FormData): Partial<PdfFfsIndividualPage17> => {
   if (formData.isSupportedSoleProprietor === true) {
-    const addressLine3 = formatAddressLine3(
+    const businessAddress = formatFullAddressThreeFields(
+      formData.businessStreetAddress1,
+      formData.businessStreetAddress2,
       formData.businessCity,
       formData.businessState,
       formData.businessZip,
@@ -42,9 +43,9 @@ export const getPage17Fields = (formData: FormData): Partial<PdfFfsIndividualPag
       fd452einorothertaxidnumber: formData.socialSecurityNumber,
       fd452ownershipoffivepercentormoreno: true,
       fd452convictedofcrimeno: true,
-      fd452businessstreetline1: formData.businessStreetAddress1,
-      fd452businessstreetline2: formData.businessStreetAddress2 ?? addressLine3,
-      fd452businessstreetline3: formData.businessStreetAddress2 ? addressLine3 : "",
+      fd452businessstreetline1: businessAddress.line1,
+      fd452businessstreetline2: businessAddress.line2,
+      fd452businessstreetline3: businessAddress.line3,
     };
   }
   throw new UnexpectedFormDataError(

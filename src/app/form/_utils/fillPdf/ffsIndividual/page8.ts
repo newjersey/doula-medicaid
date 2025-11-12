@@ -1,4 +1,9 @@
-import { formatDate, formatNaIfBlank, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import {
+  formatDate,
+  formatNaIfBlank,
+  formatName,
+  formatStreetAddressSingleField,
+} from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 8 - individual doula provider application section I provider identification
@@ -38,7 +43,10 @@ export const getPage8Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     fd425telephoneno: formData.phoneNumber ?? "",
     fd425emailaddress: formData.email ?? "",
 
-    fd425mailtoaddressstreet: `${formData.streetAddress1}${formData.streetAddress2 ? ` ${formData.streetAddress2}` : ""}`,
+    fd425mailtoaddressstreet: formatStreetAddressSingleField(
+      formData.streetAddress1,
+      formData.streetAddress2,
+    ),
     fd425mailtoaddressstate: formData.state ?? "",
     fd425mailtoaddresscity: formData.city ?? "",
     fd425mailtoaddresszip: formData.zip ?? "",

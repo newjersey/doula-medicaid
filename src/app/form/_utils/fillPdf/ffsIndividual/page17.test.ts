@@ -69,6 +69,7 @@ describe("Page 17 - disclosure of ownership and control interest statement", () 
           description: "no streetAddress2",
           formData: {
             businessStreetAddress1: "456 Test St",
+            businessStreetAddress2: "",
             businessCity: "Newark",
             businessState: AddressState.NJ,
             businessZip: "22222",

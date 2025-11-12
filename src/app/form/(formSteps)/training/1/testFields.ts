@@ -68,7 +68,7 @@ export const trainingAddressFields: TestField[] = createTestFields([
     name: "Street address line 2",
     required: false,
     dataStoreKey: "trainingStreetAddress2",
-    testValue: "Test address 2",
+    testValue: "", // Test this address field not having a line 2
     withinGroupName: trainingAddressGroupName,
     prerequisiteField: yesDoulaTrainingInPerson,
   },
