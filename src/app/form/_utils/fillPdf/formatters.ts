@@ -1,4 +1,4 @@
-import { formatAddressLine3 } from "@/app/form/_utils/formatters";
+import { formatCityStateZipAddressSingleField } from "@/app/form/_utils/formatters";
 import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
@@ -40,16 +40,39 @@ export const formatDate = (date: Date): string => {
   });
 };
 
-export const formatMultilineAddress = (
+export const formatStreetAddressSingleField = (
+  streetAddress1: string,
+  streetAddress2: string | null,
+): string => {
+  return `${streetAddress1}${streetAddress2 ? ` ${streetAddress2}` : ""}`;
+};
+
+export const formatFullAddressSingleField = (
   streetAddress1: string,
   streetAddress2: string | null,
   city: string,
   state: AddressState,
   zip: string,
 ): string => {
-  return `${streetAddress1}${streetAddress2 ? `\n${streetAddress2}` : ""}\n${formatAddressLine3(
+  return `${streetAddress1}${streetAddress2 ? `\n${streetAddress2}` : ""}\n${formatCityStateZipAddressSingleField(
     city,
     state,
     zip,
   )}`;
+};
+
+export const formatFullAddressThreeFields = (
+  streetAddress1: string,
+  streetAddress2: string | null,
+  city: string,
+  state: AddressState,
+  zip: string,
+): { line1: string; line2: string; line3: string } => {
+  const addressLine3 = formatCityStateZipAddressSingleField(city, state, zip);
+  const hasStreetAddress2 = streetAddress2 && streetAddress2 !== "";
+  return {
+    line1: streetAddress1,
+    line2: hasStreetAddress2 === true ? streetAddress2 : addressLine3,
+    line3: hasStreetAddress2 === true ? addressLine3 : "",
+  };
 };

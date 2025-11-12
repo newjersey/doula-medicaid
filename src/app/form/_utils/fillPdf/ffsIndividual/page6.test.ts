@@ -50,6 +50,7 @@ describe("Page 6 - authorization agreement for automated deposits of state payme
         description: "no streetAddress2",
         formData: {
           billingStreetAddress1: "456 Test St",
+          billingStreetAddress2: "",
           billingCity: "Newark",
           billingState: AddressState.NJ,
           billingZip: "22222",

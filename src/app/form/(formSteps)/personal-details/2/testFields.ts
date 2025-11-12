@@ -113,7 +113,7 @@ export const billingAddressFields = [
       name: "Street address line 2",
       dataStoreKey: "billingStreetAddress2",
       required: false,
-      testValue: "Test address 2",
+      testValue: "", // Test this address field not having a line 2
       withinGroupName: billingAddressQuestion,
       prerequisiteField: noSameBillingMailingAddress,
     },

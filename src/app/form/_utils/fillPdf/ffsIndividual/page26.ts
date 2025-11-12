@@ -3,7 +3,7 @@ import {
   formatName,
   formatNumericStringAsIndividualFields,
 } from "@/app/form/_utils/fillPdf/formatters";
-import { formatAddressLine3 } from "@/app/form/_utils/formatters";
+import { formatCityStateZipAddressSingleField } from "@/app/form/_utils/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 26 - W-9 Request for Taxpayer Identification Number and Certification
@@ -89,7 +89,7 @@ export const getPage26Fields = (formData: FormData): Partial<PdfFfsIndividualPag
       "W9_Name See Specific Instructions on page 2": formatName(formData),
       "W9_IndividualSole proprietor": true,
       "W9_Address number street and apt or suite no": `${formData.businessStreetAddress1}${formData.businessStreetAddress2 ? ` ${formData.businessStreetAddress2}` : ""}`,
-      "W9_City state and ZIP code": formatAddressLine3(
+      "W9_City state and ZIP code": formatCityStateZipAddressSingleField(
         formData.businessCity,
         formData.businessState,
         formData.businessZip,

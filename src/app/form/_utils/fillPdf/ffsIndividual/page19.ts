@@ -1,7 +1,7 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import {
   formatDate,
-  formatMultilineAddress,
+  formatFullAddressSingleField,
   formatName,
 } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
@@ -47,7 +47,7 @@ export const getPage19Fields = (formData: FormData): Partial<PdfFfsIndividualPag
       fd452managingagentsdateofbirthine1: formatDate(formData.dateOfBirth),
       fd452managingagentsssnline1: formData.socialSecurityNumber,
       fd452managingagentsnametitleline1: `${formatName(formData)}, doula`,
-      fd452managingagentsaddressline1: formatMultilineAddress(
+      fd452managingagentsaddressline1: formatFullAddressSingleField(
         formData.businessStreetAddress1,
         formData.businessStreetAddress2,
         formData.businessCity,
