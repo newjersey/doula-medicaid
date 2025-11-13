@@ -41,7 +41,7 @@ const ScreeningStep1 = () => {
             <a
               href="https://www.njmmis.com/providerEnrollment.aspx"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
               className="usa-link usa-link--external"
             >
               Medicaid Fee-for-Service application

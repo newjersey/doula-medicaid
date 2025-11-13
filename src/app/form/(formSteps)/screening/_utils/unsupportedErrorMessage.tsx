@@ -4,7 +4,7 @@ export const unsupportedErrorMessage = (
     <a
       href="https://www.njmmis.com/providerEnrollment.aspx "
       target="_blank"
-      rel="noopener"
+      rel="noopener noreferrer"
       className="usa-link use-link--external"
     >
       standard FFS application
