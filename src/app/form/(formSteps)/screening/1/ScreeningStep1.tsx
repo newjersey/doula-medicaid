@@ -42,7 +42,7 @@ const ScreeningStep1 = () => {
               href="https://www.njmmis.com/providerEnrollment.aspx"
               target="_blank"
               rel="noopener"
-              className="usa-link--external"
+              className="usa-link usa-link--external"
             >
               Medicaid Fee-for-Service application
             </a>
@@ -67,7 +67,7 @@ const ScreeningStep1 = () => {
                     href="https://www.njmmis.com/providerEnrollment.aspx "
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="usa-link--external"
+                    className="usa-link usa-link--external"
                   >
                     standard FFS application
                   </a>

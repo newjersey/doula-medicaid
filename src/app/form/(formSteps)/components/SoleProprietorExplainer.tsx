@@ -32,7 +32,7 @@ const soleProprietorExplainerItems: AccordionItemProps[] = [
             href="https://www.njmmis.com/providerEnrollment.aspx"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             Medicaid Fee-for-Service application
           </a>

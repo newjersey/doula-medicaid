@@ -21,7 +21,7 @@ const publicInformationExplainerItems: AccordionItemProps[] = [
             href="https://www.njmmis.com/"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             www.njmmis.com
           </a>

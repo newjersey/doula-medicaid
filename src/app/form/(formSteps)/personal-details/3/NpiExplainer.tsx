@@ -25,7 +25,7 @@ const npiExplainerItems: AccordionItemProps[] = [
             href="https://nppes.cms.hhs.gov/"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             https://nppes.cms.hhs.gov/
           </a>
@@ -55,7 +55,7 @@ const npiExplainerItems: AccordionItemProps[] = [
             href="https://nppes.cms.hhs.gov/"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             NPPES website
           </a>

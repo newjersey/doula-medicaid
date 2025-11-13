@@ -63,7 +63,7 @@ const WelcomeSection = () => {
                   href="https://cpr.heart.org/en"
                   target="_blank"
                   rel="noreferrer noreferrer"
-                  className="usa-link--external"
+                  className="usa-link usa-link--external"
                 >
                   CPR (adult/infant)
                 </a>
@@ -72,7 +72,7 @@ const WelcomeSection = () => {
                   href="https://www.snjpc.org/doulaentrypage"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="usa-link--external"
+                  className="usa-link usa-link--external"
                 >
                   HIPAA
                 </a>

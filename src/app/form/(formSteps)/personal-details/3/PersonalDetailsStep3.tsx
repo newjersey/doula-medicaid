@@ -77,7 +77,7 @@ const PersonalDetailsStep3 = () => {
                         href="https://nppes.cms.hhs.gov/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="usa-link--external"
+                        className="usa-link usa-link--external"
                       >
                         https://nppes.cms.hhs.gov/
                       </a>

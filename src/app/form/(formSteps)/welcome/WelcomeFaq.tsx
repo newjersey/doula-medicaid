@@ -37,7 +37,7 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
             href="https://www.redcross.org/take-a-class/cpr/cpr-training/cpr-certification?srsltid=AfmBOoo7HKuiYPQEFBAYRiU_O-cVB8ZjF4dd5H-4JT1JHpw-HrrSc_Gu"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             American Red Cross
           </a>{" "}
@@ -46,7 +46,7 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
             href="https://cpr.heart.org/en/"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             American Heart Association
           </a>
@@ -86,7 +86,7 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
               href="https://nppes.cms.hhs.gov/"
               target="_blank"
               rel="noopener noreferrer"
-              className="usa-link--external"
+              className="usa-link usa-link--external"
             >
               https://nppes.cms.hhs.gov/
             </a>
@@ -146,7 +146,7 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
             href="https://www.njmmis.com/providerEnrollment.aspx"
             target="_blank"
             rel="noopener noreferrer"
-            className="usa-link--external"
+            className="usa-link usa-link--external"
           >
             Medicaid Fee-for-Service application
           </a>
@@ -253,7 +253,7 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
               href="https://www.njmmis.com/providerDirectory.aspx?nonBilling=False"
               target="_blank"
               rel="noopener noreferrer"
-              className="usa-link--external"
+              className="usa-link usa-link--external"
             >
               www.njmmis.com
             </a>
