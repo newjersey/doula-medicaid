@@ -17,7 +17,12 @@ const publicInformationExplainerItems: AccordionItemProps[] = [
         <p>
           NJ FamilyCare doesn&apos;t control NPPES listings. Once enrolled, you&apos;ll also appear
           on the NJ FamilyCare FFS Provider Directory (
-          <a href="https://www.njmmis.com/" target="_blank" rel="noopener">
+          <a
+            href="https://www.njmmis.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="usa-link--external"
+          >
             www.njmmis.com
           </a>
           ), where street addresses are removed, but city, state, and zip remain. MCOs also list

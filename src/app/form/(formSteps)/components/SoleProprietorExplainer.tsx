@@ -28,7 +28,12 @@ const soleProprietorExplainerItems: AccordionItemProps[] = [
         <p>This beta site is for doulas operating as Sole Proprietors.</p>
         <p>
           If you have an LLC or another business type, use the standard{" "}
-          <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+          <a
+            href="https://www.njmmis.com/providerEnrollment.aspx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="usa-link--external"
+          >
             Medicaid Fee-for-Service application
           </a>
           .

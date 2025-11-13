@@ -38,7 +38,12 @@ const ScreeningStep1 = () => {
           <h2 className="font-heading-md">This beta site is currently for Sole Proprietors</h2>
           <p className="usa-hint">
             If you have an LLC or another business type, use the standard{" "}
-            <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+            <a
+              href="https://www.njmmis.com/providerEnrollment.aspx"
+              target="_blank"
+              rel="noopener"
+              className="usa-link--external"
+            >
               Medicaid Fee-for-Service application
             </a>
             .
@@ -61,7 +66,8 @@ const ScreeningStep1 = () => {
                   <a
                     href="https://www.njmmis.com/providerEnrollment.aspx "
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
+                    className="usa-link--external"
                   >
                     standard FFS application
                   </a>

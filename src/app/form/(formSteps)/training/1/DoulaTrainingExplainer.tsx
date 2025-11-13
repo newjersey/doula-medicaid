@@ -26,6 +26,7 @@ const doulaExplainerItems: AccordionItemProps[] = [
           href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Approved_Doula_Trainings.pdf"
           target="_blank"
           rel="noopener"
+          className="usa-link"
         >
           NJ Family Care doula trainings
         </a>{" "}

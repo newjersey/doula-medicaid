@@ -33,7 +33,12 @@ const WipBanner = () => {
               is intended exclusively for individual doulas operating as Sole Proprietors.
             </strong>{" "}
             If you don’t fall into this category, please use the standard{" "}
-            <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+            <a
+              href="https://www.njmmis.com/providerEnrollment.aspx"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="usa-link--external"
+            >
               Medicaid Fee-for-Service application
             </a>
             . You are not eligible for this tool if you have an EIN or an LLC.

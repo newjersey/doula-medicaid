@@ -59,11 +59,21 @@ const WelcomeSection = () => {
               </IconListIcon>
               <IconListContent>
                 Proof of{" "}
-                <a href="https://cpr.heart.org/en" target="_blank" rel="noopener">
+                <a
+                  href="https://cpr.heart.org/en"
+                  target="_blank"
+                  rel="noreferrer noreferrer"
+                  className="usa-link--external"
+                >
                   CPR (adult/infant)
                 </a>
                 ,{" "}
-                <a href="https://www.snjpc.org/doulaentrypage" target="_blank" rel="noopener">
+                <a
+                  href="https://www.snjpc.org/doulaentrypage"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="usa-link--external"
+                >
                   HIPAA
                 </a>
                 , and{" "}
@@ -71,6 +81,7 @@ const WelcomeSection = () => {
                   href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Approved_Doula_Trainings.pdf"
                   target="_blank"
                   rel="noopener"
+                  className="usa-link"
                 >
                   doula training
                 </a>{" "}
@@ -96,6 +107,7 @@ const WelcomeSection = () => {
                   href="https://www.nj.gov/humanservices/dmahs/info/Newsletter_31-04_Doula.pdf"
                   target="_blank"
                   rel="noopener"
+                  className="usa-link"
                 >
                   doula liability insurance
                 </a>
@@ -126,6 +138,7 @@ const WelcomeSection = () => {
                 href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Doula_Steps.pdf"
                 target="_blank"
                 rel="noopener"
+                className="usa-link"
               >
                 required documents
               </a>
