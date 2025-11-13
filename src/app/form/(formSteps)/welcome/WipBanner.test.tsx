@@ -12,7 +12,7 @@ describe("WipBanner", () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveAttribute("href", "https://www.njmmis.com/providerEnrollment.aspx");
     expect(link).toHaveAttribute("target", "_blank");
-    expect(link).toHaveAttribute("rel", "noopener");
+    expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 
   it("does not render the banner when not on the welcome section", () => {
