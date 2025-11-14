@@ -1,6 +1,9 @@
 name: deploy-staging
 
-on: workflow_dispatch
+on:
+  push:
+    branches:
+      - "staging"
 
 # Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 permissions:
@@ -25,6 +28,6 @@ jobs:
 
   deploy-staging:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
-    uses: ./.github/workflows/deploy.yml
+    uses: ./.github/workflows/_deploy.yml
     secrets:
       aws_account_id: ${{ secrets.AWS_ACCOUNT_ID_DEV }}

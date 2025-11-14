@@ -1,0 +1,16 @@
+name: merge-main-into-demo
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 9 * * 1" # Every Monday at 9am
+
+permissions:
+  contents: write
+
+jobs:
+  merge-main-into-demo:
+    uses: ./.github/workflows/_merge_branch.yml
+    with:
+      from_branch: main
+      into_branch: demo
