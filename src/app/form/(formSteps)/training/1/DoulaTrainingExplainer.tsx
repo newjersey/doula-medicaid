@@ -28,6 +28,7 @@ const doulaExplainerItems: AccordionItemProps[] = [
           rel="noopener"
           className="usa-link"
         >
+          <span className="usa-sr-only">opens in a new tab.</span>
           NJ Family Care doula trainings
         </a>{" "}
         on the State of New Jersey Department of Human Services website.

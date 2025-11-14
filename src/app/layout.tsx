@@ -40,6 +40,7 @@ export default function RootLayout({
                 </div>
                 <div className="grid-col-fill">
                   <a href="https://nj.gov" target="_blank" rel="noopener" className="usa-link">
+                    <span className="usa-sr-only">opens in a new tab.</span>
                     Official Site of the State of New Jersey
                   </a>
                 </div>
@@ -62,6 +63,7 @@ export default function RootLayout({
                           >
                             <use href={"/svg/sprite.svg#mail"}></use>
                           </svg>
+                          <span className="usa-sr-only">opens in a new tab.</span>
                           Get Updates
                         </a>
                       </li>
@@ -98,6 +100,7 @@ export default function RootLayout({
                       >
                         <use href={"/svg/sprite.svg#mail"}></use>
                       </svg>
+                      <span className="usa-sr-only">opens in mail app.</span>
                       mahs.doulaguide@dhs.nj.gov
                     </a>{" "}
                     for assistance
@@ -109,6 +112,7 @@ export default function RootLayout({
                       rel="noopener"
                       className="usa-link"
                     >
+                      <span className="usa-sr-only">opens in a new tab.</span>
                       Privacy Policy
                     </a>
                   </div>

@@ -83,6 +83,7 @@ const WelcomeSection = () => {
                   rel="noopener"
                   className="usa-link"
                 >
+                  <span className="usa-sr-only">opens in a new tab.</span>
                   doula training
                 </a>{" "}
                 completion.
@@ -109,6 +110,7 @@ const WelcomeSection = () => {
                   rel="noopener"
                   className="usa-link"
                 >
+                  <span className="usa-sr-only">opens in a new tab.</span>
                   doula liability insurance
                 </a>
                 .
@@ -140,6 +142,7 @@ const WelcomeSection = () => {
                 rel="noopener"
                 className="usa-link"
               >
+                <span className="usa-sr-only">opens in a new tab.</span>
                 required documents
               </a>
               , we&apos;ll guide you through the FFS application on this website.
@@ -150,6 +153,7 @@ const WelcomeSection = () => {
             <p>
               Send forms to{" "}
               <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
+                <span className="usa-sr-only">opens in mail app.</span>
                 mahs.doulaguide@dhs.nj.gov
               </a>{" "}
               and{" "}
@@ -159,6 +163,7 @@ const WelcomeSection = () => {
                 target="_blank"
                 rel="noopener"
               >
+                <span className="usa-sr-only">opens in mail app.</span>
                 njmmisproviderenrollment@gainwelltechnologies.com
               </a>{" "}
               simultaneously. Keep an eye on your inbox!
