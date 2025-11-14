@@ -34,56 +34,64 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const envName = this.node.tryGetContext("env");
+
     // Use an existing VPC by name
     const vpc = ec2.Vpc.fromLookup(this, "ExistingVpc", {
       vpcName: VPC_NAME,
     });
 
-    // Create ECS cluster
     const cluster = new ecs.Cluster(this, "DoulaAssistantCluster", {
       vpc,
       clusterName: "doula-assistant-cluster",
     });
 
-    // Create Fargate service with internal HTTP ALB
+    // Use an existing bucket with the environment file already deployed
+    const bucket = cdk.aws_s3.Bucket.fromBucketName(
+      this,
+      "DoulaAssistantBucket",
+      `doula-assistant-${this.account}`,
+    );
+
+    const taskDefinition = new ecs.FargateTaskDefinition(this, "DoulaTaskDefinition", {
+      cpu: 256,
+      memoryLimitMiB: 512,
+    });
+
+    const appContainer = taskDefinition.addContainer("DoulaAppContainer", {
+      image: ecs.ContainerImage.fromEcrRepository(
+        ecr.Repository.fromRepositoryName(this, "DoulaAssistantRepo", ECR_REPOSITORY_NAME),
+        "latest",
+      ),
+      environment: {
+        NODE_ENV: "production",
+        PORT: "3000",
+        HOST: "0.0.0.0",
+        LOG_LEVEL: "info",
+      },
+      environmentFiles: [ecs.EnvironmentFile.fromBucket(bucket, `configuration/.env`)],
+    });
+
+    appContainer.addPortMappings({ containerPort: 3000 });
+
+    // Create Fargate service with internal HTTP ALB using the prepared task definition
     const fargateService = new ecsPatterns.ApplicationLoadBalancedFargateService(
       this,
       "DoulaAssistantFargateService",
       {
         cluster,
+        taskDefinition,
         serviceName: "doula-assistant-service",
-        memoryLimitMiB: 512,
-        cpu: 256,
-        desiredCount: 1, // Single instance as requested
+        desiredCount: 1,
         minHealthyPercent: 0,
         maxHealthyPercent: 200,
         loadBalancerName: "doula-assistant-alb",
-        taskImageOptions: {
-          image: ecs.ContainerImage.fromEcrRepository(
-            ecr.Repository.fromRepositoryName(this, "DoulaAssistantRepo", ECR_REPOSITORY_NAME),
-            "latest",
-          ),
-          containerPort: 3000,
-          environment: {
-            NODE_ENV: "production",
-            PORT: "3000",
-            HOST: "0.0.0.0",
-            LOG_LEVEL: "info",
-          },
-        },
-        publicLoadBalancer: false, // Internal ALB due to no public subnets
-        listenerPort: 80, // HTTP port - API Gateway handles HTTPS termination
-        taskSubnets: {
-          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
-        },
+        publicLoadBalancer: false, // Internal ALB
+        listenerPort: 80,
+        taskSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
       },
     );
 
-    // Set minHealthyPercent to avoid deployment issues (override ECS service properties)
-    const cfnService = fargateService.service.node.defaultChild as ecs.CfnService;
-    cfnService.addPropertyOverride("DeploymentConfiguration", { MinimumHealthyPercent: 100 });
-
-    // Configure health check to use dedicated health endpoint
     fargateService.targetGroup.configureHealthCheck({
       path: "/api/health",
       port: "3000",
@@ -109,12 +117,10 @@ export class CdkStack extends cdk.Stack {
       "Allow HTTPS from VPC",
     );
 
-    // S3 Gateway Endpoint (works without private DNS)
     vpc.addGatewayEndpoint("S3Endpoint", {
       service: ec2.GatewayVpcEndpointAwsService.S3,
     });
 
-    // ECR Interface Endpoints (required for ECS to pull images)
     vpc.addInterfaceEndpoint("EcrEndpoint", {
       service: ec2.InterfaceVpcEndpointAwsService.ECR,
       privateDnsEnabled: true,
@@ -133,7 +139,6 @@ export class CdkStack extends cdk.Stack {
       },
     });
 
-    // CloudWatch Logs endpoint
     vpc.addInterfaceEndpoint("CloudWatchLogsEndpoint", {
       service: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_LOGS,
       privateDnsEnabled: true,
@@ -143,21 +148,25 @@ export class CdkStack extends cdk.Stack {
       },
     });
 
-    // Allow ECS service to communicate with VPC endpoints
     fargateService.service.connections.allowTo(
       vpcEndpointSecurityGroup,
       ec2.Port.tcp(443),
       "Allow ECS service to access VPC endpoints",
     );
 
-    // Add explicit ECR permissions to task execution role
     fargateService.taskDefinition.executionRole?.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
     );
 
-    // Add explicit ECR permissions
-    // @ts-expect-error: Seems related to https://github.com/aws/aws-cdk/issues/24195 ? But mostly, just ignoring this because it works.
-    fargateService.taskDefinition.executionRole?.addToPolicy(
+    fargateService.taskDefinition.addToExecutionRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["s3:GetObject", "s3:GetBucketLocation"],
+        resources: [bucket.bucketArn, bucket.arnForObjects("configuration/.env")],
+      }),
+    );
+
+    fargateService.taskDefinition.addToExecutionRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: [
@@ -165,6 +174,21 @@ export class CdkStack extends cdk.Stack {
           "ecr:BatchCheckLayerAvailability",
           "ecr:GetDownloadUrlForLayer",
           "ecr:BatchGetImage",
+        ],
+        resources: ["*"],
+      }),
+    );
+
+    // Add ECS Exec / Session Manager permissions to debug the container on ECS
+    fargateService.taskDefinition.addToTaskRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: [
+          "ssm:StartSession",
+          "ssmmessages:CreateControlChannel",
+          "ssmmessages:CreateDataChannel",
+          "ssmmessages:OpenControlChannel",
+          "ssmmessages:OpenDataChannel",
         ],
         resources: ["*"],
       }),
@@ -208,7 +232,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, "HealthCheckUrl", {
-      value: `http://${fargateService.loadBalancer.loadBalancerDnsName}/health`,
+      value: `http://${fargateService.loadBalancer.loadBalancerDnsName}/api/health`,
       description: "HTTP URL for the health check endpoint (accessible from within VPC)",
       exportName: "DoulaAssistantHealthCheckUrl",
     });
@@ -227,7 +251,7 @@ export class CdkStack extends cdk.Stack {
 
     // Tags for all resources
     cdk.Tags.of(this).add("Project", "DoulaAssistantService");
-    cdk.Tags.of(this).add("Environment", props?.env ? "Production" : "Development");
+    cdk.Tags.of(this).add("Environment", envName);
     cdk.Tags.of(this).add("ManagedBy", "CDK");
   }
 }
