@@ -100,7 +100,6 @@ export default function RootLayout({
                       >
                         <use href={"/svg/sprite.svg#mail"}></use>
                       </svg>
-                      <span className="usa-sr-only">opens in mail app.</span>
                       mahs.doulaguide@dhs.nj.gov
                     </a>{" "}
                     for assistance

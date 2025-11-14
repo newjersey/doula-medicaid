@@ -229,7 +229,6 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
           You&apos;re welcome to re-apply anytime. For questions, please email the Doula Guides team
           at{" "}
           <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
-            <span className="usa-sr-only">opens in mail app.</span>
             mahs.doulaguide@dhs.nj.gov
           </a>
           .
@@ -277,7 +276,6 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
         <p>
           You can contact the Doula Guides team via email at{" "}
           <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
-            <span className="usa-sr-only">opens in mail app.</span>
             mahs.doulaguide@dhs.nj.gov
           </a>
         </p>
