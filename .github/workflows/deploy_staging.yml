@@ -1,9 +1,6 @@
-name: deploy-dev
+name: deploy-staging
 
-on:
-  push:
-    branches:
-      - "main"
+on: workflow_dispatch
 
 # Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 permissions:
@@ -26,7 +23,7 @@ jobs:
   end-to-end-test:
     uses: ./.github/workflows/end_to_end_test.yml
 
-  deploy-dev:
+  deploy-staging:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
     uses: ./.github/workflows/deploy.yml
     secrets:
