@@ -1,0 +1,25 @@
+name: merge-branch
+
+on:
+  workflow_call:
+    inputs:
+      from_branch:
+        required: true
+        type: string
+      into_branch:
+        required: true
+        type: string
+
+jobs:
+  merge-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ inputs.into_branch }}
+      - name: Merge from_branch
+        run: |
+          git fetch origin ${{ inputs.from_branch }}
+          git merge origin/${{ inputs.from_branch }}
+          git push
