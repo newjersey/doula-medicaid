@@ -73,7 +73,12 @@ const PersonalDetailsStep3 = () => {
                   message: (
                     <span>
                       To be an NJ FamilyCare doula, you need a NPI. You can get yours via{" "}
-                      <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
+                      <a
+                        href="https://nppes.cms.hhs.gov/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="usa-link usa-link--external"
+                      >
                         https://nppes.cms.hhs.gov/
                       </a>
                       .

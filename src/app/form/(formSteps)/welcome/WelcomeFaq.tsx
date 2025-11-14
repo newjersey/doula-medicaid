@@ -28,19 +28,27 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
             href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Approved_Doula_Trainings.pdf"
             target="_blank"
             rel="noopener"
+            className="usa-link"
           >
+            <span className="usa-sr-only">opens in a new tab.</span>
             the NJ FamilyCare doula trainings
           </a>{" "}
           and the adult/infant CPR certification from the{" "}
           <a
             href="https://www.redcross.org/take-a-class/cpr/cpr-training/cpr-certification?srsltid=AfmBOoo7HKuiYPQEFBAYRiU_O-cVB8ZjF4dd5H-4JT1JHpw-HrrSc_Gu"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
+            className="usa-link usa-link--external"
           >
             American Red Cross
           </a>{" "}
           or{" "}
-          <a href="https://cpr.heart.org/en/" target="_blank" rel="noopener">
+          <a
+            href="https://cpr.heart.org/en/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="usa-link usa-link--external"
+          >
             American Heart Association
           </a>
           . 
@@ -75,7 +83,12 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
           <p>
             You can get yours visiting the National Plan and Provider Enumeration System (NPPES)
             site:{" "}
-            <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
+            <a
+              href="https://nppes.cms.hhs.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="usa-link usa-link--external"
+            >
               https://nppes.cms.hhs.gov/
             </a>
             . For doulas, the NPI has to be Type 1 and the doula taxonomy code is 374J00000X.
@@ -130,7 +143,12 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
         <p>
           This site is currently for individual doulas operating as Sole Proprietors. If you have an
           LLC or another business type, please use the standard{" "}
-          <a href="https://www.njmmis.com/providerEnrollment.aspx" target="_blank" rel="noopener">
+          <a
+            href="https://www.njmmis.com/providerEnrollment.aspx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="usa-link usa-link--external"
+          >
             Medicaid Fee-for-Service application
           </a>
           .
@@ -177,7 +195,9 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
               href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Doula_4Contracting.pdf"
               target="_blank"
               rel="noopener"
+              className="usa-link"
             >
+              <span className="usa-sr-only">opens in a new tab.</span>
               all five Managed Care Organizations (MCOs)
             </a>
             .
@@ -189,7 +209,9 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
               href="https://www.nj.gov/humanservices/dmahs/info/resources/care/"
               target="_blank"
               rel="noopener"
+              className="usa-link"
             >
+              <span className="usa-sr-only">opens in a new tab.</span>
               Department of Human Services website
             </a>
             .
@@ -233,7 +255,8 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
             <a
               href="https://www.njmmis.com/providerDirectory.aspx?nonBilling=False"
               target="_blank"
-              rel="noopener"
+              rel="noopener noreferrer"
+              className="usa-link usa-link--external"
             >
               www.njmmis.com
             </a>

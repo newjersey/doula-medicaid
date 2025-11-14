@@ -21,7 +21,12 @@ const npiExplainerItems: AccordionItemProps[] = [
       <>
         <p>
           Visit the National Plan and Provider Enumeration System (NPPES) site:{" "}
-          <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
+          <a
+            href="https://nppes.cms.hhs.gov/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="usa-link usa-link--external"
+          >
             https://nppes.cms.hhs.gov/
           </a>
           .
@@ -46,7 +51,12 @@ const npiExplainerItems: AccordionItemProps[] = [
       <ol>
         <li>
           Register or log in to the{" "}
-          <a href="https://nppes.cms.hhs.gov/" target="_blank" rel="noopener">
+          <a
+            href="https://nppes.cms.hhs.gov/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="usa-link usa-link--external"
+          >
             NPPES website
           </a>
           .
