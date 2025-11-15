@@ -47,7 +47,7 @@
     "@types/node": "22.19.1",
     "@types/nodemailer": "7.0.3",
     "@types/react": "19.2.3",
-    "@types/react-dom": "19.2.2",
+    "@types/react-dom": "19.2.3",
     "aws-cdk": "2.1031.2",
     "aws-cdk-lib": "2.223.0",
     "cypress": "15.6.0",
