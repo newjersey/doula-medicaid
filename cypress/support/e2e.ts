@@ -18,3 +18,14 @@
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+const isRelevantSuite = (): boolean => {
+  const isFlagsOffTest = Cypress.currentTest.title.includes("[flagsOff]");
+  return Cypress.env("FLAGS_OFF") === true ? isFlagsOffTest : !isFlagsOffTest;
+};
+
+beforeEach(function () {
+  if (!isRelevantSuite()) {
+    this.skip();
+  }
+});

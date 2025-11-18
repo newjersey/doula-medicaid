@@ -25,6 +25,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Running tests
 
+### Unit tests
+
 ```sh
 # Run all unit tests
 npm test
@@ -32,13 +34,51 @@ npm test
 npm test -- --runTestsByPath "<path to file>" -t "<included in test block name>"
 # e.g.
 npm test -- --runTestsByPath "src/app/form/(formSteps)/personal-information/PersonalInformationStep1.test.tsx" -t "updates first name"
+```
 
-# Run all e2e tests
+### End to end tests
+
+First, start the development server, using env vars in the .env.test file
+
+```sh
+npm run dev:test
+```
+
+To run all e2e tests that are not labelled `[flagsOff]`
+
+```sh
 npm run cypress:run
+
 # Run cypress tests in a specific file path
 npm run cypress:run -- --spec <path to file>
+
 # Open the cypress GUI to debug
 npm run cypress:gui
+```
+
+To run e2e tests that _are_ labelled `[flagsOff]`, we need to turn environment favorable flags off.
+
+When running with `NODE_ENV=test` (as is done with `npm run dev:test`, NextJS will first check for a
+`.env.test.local` file (gitignored), then `.env.test` (not gitignored). The local file enables us to
+make any changes and test with them locally, without having to reset any changes before git
+committing.
+
+```sh
+cp .env.test-flags-off .env.test.local
+
+# Restart the NextJS process
+npm run dev:test
+
+# Then run cypress tests with `[flagsOff]` in their name
+npm run cypress:run:flagsOff
+
+# cypress:gui can be run normally, and the GUI lets you select which test to run
+```
+
+The local file may need to be updated if you want to turn flags back on again
+
+```sh
+cp .env.test .env.test.local
 ```
 
 ## Deployment

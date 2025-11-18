@@ -37,7 +37,7 @@ aws iam create-open-id-connect-provider --url "https://token.actions.githubuserc
 ```
 
 Create a bucket then upload the .env file (".staging.env" or ".production.env") for that
-environment, replacing `<account number>`. See `.env-template` for an example env file.
+environment, replacing `<account number>`. See `.env.test` for an example env file.
 
 ```sh
 aws s3api create-bucket --bucket doula-assistant-<account number> --region us-east-1

@@ -1,4 +1,4 @@
-name: end-to-end-tests
+name: end-to-end-tests-flags-off
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
   workflow_call:
 
 jobs:
-  end-to-end-tests:
+  end-to-end-tests-flags-off:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -18,11 +18,11 @@ jobs:
           node-version: "22"
       - name: Install dependencies
         run: npm ci
+      - name: Use .env.test-flags-off
+        run: mv .env.test-flags-off .env.test
       - name: Build the application
         run: NODE_ENV=test npm run build
       - name: Start the application
-        run:
-          NODE_ENV=test npm start & npx wait-on
-          http://localhost:3000/humanservices/dmahs/info/doulahelp
+        run: NODE_ENV=test npm start & npx wait-on http://localhost:3000
       - name: Run cypress tests
-        run: npm run cypress:run
+        run: npm run cypress:run:flagsOff

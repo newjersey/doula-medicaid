@@ -7,7 +7,7 @@ export const GET = async () => {
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
       environment: process.env.NODE_ENV || "development",
-      featureFlags: { NEXT_PUBLIC_TEST_FLAG: process.env.NEXT_PUBLIC_TEST_FLAG },
+      featureFlags: { NEXT_PUBLIC_FLAG_TEST: process.env.NEXT_PUBLIC_FLAG_TEST },
     };
 
     return NextResponse.json(healthCheck, { status: 200 });

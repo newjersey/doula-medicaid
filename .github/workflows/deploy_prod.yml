@@ -26,6 +26,9 @@ jobs:
   end-to-end-test:
     uses: ./.github/workflows/end_to_end_test.yml
 
+  end-to-end-test-flags-off:
+    uses: ./.github/workflows/end_to_end_test_flags_off.yml
+
   deploy-prod:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
     uses: ./.github/workflows/_deploy.yml
