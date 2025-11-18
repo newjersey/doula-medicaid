@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecr from "aws-cdk-lib/aws-ecr";
 import * as ecs from "aws-cdk-lib/aws-ecs";
@@ -6,35 +7,17 @@ import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { Protocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as iam from "aws-cdk-lib/aws-iam";
 
-/**
- * AWS CDK Stack for deploying the Doula Assistant Service to ECS with Fargate
- *
- * This stack creates a production-ready infrastructure for the Doula Assistant service following
- * AWS best practices for security, scalability, and reliability. The architecture includes:
- *
- * - ECS cluster with Fargate for serverless container execution
- * - Application Load Balancer for public access and health checks
- * - Single task configuration (no auto-scaling) as requested
- * - Security Groups implementing least-privilege access
- * - CloudWatch monitoring and logging
- *
- * @example
- *   ```typescript
- *   const app = new cdk.App();
- *   new DoulaAssistantStack(app, 'DoulaAssistantStack', {
- *     env: { account: '123456789012', region: 'us-east-1' }
- *   });
- *   ```;
- */
-
 const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
 
+/** See docs/deployment.md */
 export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     const envName = this.node.tryGetContext("env");
+    const isHttps = this.node.tryGetContext("https") == "true";
+    const certificateArn = this.node.tryGetContext("certificateArn");
 
     // Use an existing VPC by name
     const vpc = ec2.Vpc.fromLookup(this, "ExistingVpc", {
@@ -74,7 +57,7 @@ export class CdkStack extends cdk.Stack {
 
     appContainer.addPortMappings({ containerPort: 3000 });
 
-    // Create Fargate service with internal HTTP ALB using the prepared task definition
+    // Create Fargate service with internal HTTP/HTTPS ALB using the prepared task definition
     const fargateService = new ecsPatterns.ApplicationLoadBalancedFargateService(
       this,
       "DoulaAssistantFargateService",
@@ -87,7 +70,10 @@ export class CdkStack extends cdk.Stack {
         maxHealthyPercent: 200,
         loadBalancerName: "doula-assistant-alb",
         publicLoadBalancer: false, // Internal ALB
-        listenerPort: 80,
+        listenerPort: isHttps ? 443 : 80,
+        ...(isHttps && {
+          certificate: acm.Certificate.fromCertificateArn(this, "Certificate", certificateArn),
+        }),
         taskSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
       },
     );
@@ -113,7 +99,7 @@ export class CdkStack extends cdk.Stack {
     // Allow HTTPS inbound from entire VPC CIDR
     vpcEndpointSecurityGroup.addIngressRule(
       ec2.Peer.ipv4(vpc.vpcCidrBlock),
-      ec2.Port.tcp(443),
+      ec2.Port.tcp(isHttps ? 443 : 80),
       "Allow HTTPS from VPC",
     );
 
@@ -225,15 +211,14 @@ export class CdkStack extends cdk.Stack {
 
     // CloudFormation Outputs
     new cdk.CfnOutput(this, "LoadBalancerUrl", {
-      value: `http://${fargateService.loadBalancer.loadBalancerDnsName}`,
-      description:
-        "HTTP URL of the Internal Application Load Balancer (accessible from within VPC)",
+      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}`,
+      description: "URL of the Internal Application Load Balancer (accessible from within VPC)",
       exportName: "DoulaAssistantLoadBalancerUrl",
     });
 
     new cdk.CfnOutput(this, "HealthCheckUrl", {
-      value: `http://${fargateService.loadBalancer.loadBalancerDnsName}/api/health`,
-      description: "HTTP URL for the health check endpoint (accessible from within VPC)",
+      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}/api/health`,
+      description: "URL for the health check endpoint (accessible from within VPC)",
       exportName: "DoulaAssistantHealthCheckUrl",
     });
 
@@ -245,7 +230,7 @@ export class CdkStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, "InternalAccessNote", {
       value:
-        "Service accessible via API Gateway (public HTTPS) or internal HTTP load balancer (VPC only). API Gateway provides HTTPS termination and public access.",
+        "Service accessible via API Gateway (public HTTPS) or internal HTTP/HTTPS load balancer (VPC only). API Gateway provides HTTPS termination and public access.",
       description: "Service accessibility options",
     });
 
