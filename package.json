@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
+    "dev:test": "NODE_ENV=test NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,6 +12,7 @@
     "prettier:check": "prettier . --check",
     "prepare": "husky",
     "cypress:run": "cypress run",
+    "cypress:run:flagsOff": "cypress run --env FLAGS_OFF=true",
     "cypress:gui": "cypress open",
     "test": "jest",
     "typecheck": "tsc --noemit",
