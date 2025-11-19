@@ -1,6 +1,8 @@
+import { BASE_PATH } from "@/app/basePath";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  basePath: BASE_PATH,
   output: "standalone",
   webpack: (config) => {
     config.resolve.alias.canvas = false;

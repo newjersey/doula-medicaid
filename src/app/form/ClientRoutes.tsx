@@ -1,3 +1,4 @@
+import { BASE_PATH } from "@/app/basePath";
 import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
 import BusinessDetailsStep2 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
 import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/3/BusinessDetailsStep3";
@@ -49,5 +50,5 @@ export const routes = (
 );
 
 export default function ClientRoutes() {
-  return <BrowserRouter>{routes}</BrowserRouter>;
+  return <BrowserRouter basename={BASE_PATH}>{routes}</BrowserRouter>;
 }
