@@ -55,7 +55,7 @@ const expectedFields: Partial<PdfFfsIndividual> = {
 };
 
 it("should fill and download the application", () => {
-  cy.visit("/form/welcome");
+  cy.visit("/");
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
   cy.contains("Start now").click();
 
