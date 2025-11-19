@@ -1,3 +1,4 @@
+import { BASE_PATH } from "@/app/basePath";
 import {
   getBusinessDetailsFormData,
   type BusinessDetailsFormData,
@@ -63,7 +64,7 @@ export const fillForm = async (
   pdfPath: string,
   filename: string,
 ): Promise<FilledPDFData> => {
-  const unfilledPdfFile = await fetch(pdfPath);
+  const unfilledPdfFile = await fetch(`${BASE_PATH}${pdfPath}`);
   const unfilledPdfBytes = await unfilledPdfFile.arrayBuffer();
   const pdfDoc = await PDFDocument.load(unfilledPdfBytes);
   const form = pdfDoc.getForm();

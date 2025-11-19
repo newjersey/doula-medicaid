@@ -1,4 +1,5 @@
 import { APPLICATION_NAME } from "@/app/_utils/title";
+import { BASE_PATH } from "@/app/basePath";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import WipBanner from "@/app/form/(formSteps)/welcome/WipBanner";
 import "@/app/globals.css";
@@ -61,7 +62,7 @@ export default function RootLayout({
                             focusable="false"
                             role="img"
                           >
-                            <use href={"/svg/sprite.svg#mail"}></use>
+                            <use href={`${BASE_PATH}/svg/sprite.svg#mail`}></use>
                           </svg>
                           <span className="usa-sr-only">opens in a new tab.</span>
                           Get Updates
@@ -87,7 +88,14 @@ export default function RootLayout({
           secondary={
             <Logo
               size="slim"
-              image={<Image src="/svg/DHS_logo.svg" width={210} height={107} alt="DHS logo" />}
+              image={
+                <Image
+                  src={`${BASE_PATH}/svg/DHS_logo.svg`}
+                  width={210}
+                  height={107}
+                  alt="DHS logo"
+                />
+              }
               heading={
                 <div className="grid-row flex-align-center">
                   <div className="tablet:grid-col-auto tablet:border-right tablet:margin-right-2 tablet:padding-right-2">
@@ -98,7 +106,7 @@ export default function RootLayout({
                         focusable="false"
                         role="img"
                       >
-                        <use href={"/svg/sprite.svg#mail"}></use>
+                        <use href={`${BASE_PATH}/svg/sprite.svg#mail`}></use>
                       </svg>
                       mahs.doulaguide@dhs.nj.gov
                     </a>{" "}
