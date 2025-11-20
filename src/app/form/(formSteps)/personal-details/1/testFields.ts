@@ -1,11 +1,5 @@
 import { createTestField, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 
-export const dateOfBirthDayField = createTestField({
-  name: "Day *",
-  dataStoreKey: "dateOfBirthDay",
-  required: true,
-  testValue: "6",
-});
 const dateOfBirthMonthField = createTestField({
   name: "Month *",
   dataStoreKey: "dateOfBirthMonth",
@@ -14,7 +8,13 @@ const dateOfBirthMonthField = createTestField({
   expectedValue: "7",
   role: "combobox",
 });
-export const dateOfBirthYearField = createTestField({
+const dateOfBirthDayField = createTestField({
+  name: "Day *",
+  dataStoreKey: "dateOfBirthDay",
+  required: true,
+  testValue: "6",
+});
+const dateOfBirthYearField = createTestField({
   name: "Year *",
   dataStoreKey: "dateOfBirthYear",
   required: true,

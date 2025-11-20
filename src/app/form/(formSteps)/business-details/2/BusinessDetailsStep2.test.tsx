@@ -1,7 +1,7 @@
 import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
 import {
-  maximalTestFields,
-  minimalTestFields,
+  firstRadioOptionTestFields,
+  testFields,
 } from "@/app/form/(formSteps)/business-details/2/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
@@ -17,17 +17,17 @@ describe("<BusinessDetailsStep3 />", () => {
     renderWithProviders(<BusinessDetailsStep3 />, "/form/business-details/3", dataStore);
 
   it("saves fields to the data store on submit", async () => {
-    await testSaveFieldsToDataStore(minimalTestFields, minimalTestFields, renderFunction, screen);
+    await testSaveFieldsToDataStore(testFields, testFields, renderFunction, screen);
   });
 
-  it.each(minimalTestFields.filter((field) => field.required === true))(
+  it.each(firstRadioOptionTestFields.filter((field) => field.required === true))(
     "marks $dataStoreKey as required and displays an error message if it is not filed in",
     async (field) => {
-      await testRequiredField(field, minimalTestFields, renderFunction, screen);
+      await testRequiredField(field, testFields, renderFunction, screen);
     },
   );
 
-  it.each(maximalTestFields)(
+  it.each(testFields)(
     "fills $dataStoreKey from the data store when page is loaded",
     async (field) => {
       await testFillFromDataStore(field, renderFunction, screen);

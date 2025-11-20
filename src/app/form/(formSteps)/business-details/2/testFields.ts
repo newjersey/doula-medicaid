@@ -1,60 +1,47 @@
-import { type TestField } from "@/app/form/_utils/testUtils/sharedTests";
+import { createTestField, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 
-const noHasUncollectedDebt: TestField = {
+const noHasUncollectedDebt: TestField = createTestField({
   name: "No",
   dataStoreKey: "hasUncollectedDebt",
   required: true,
-  requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
-  expectedValue: "false",
   withinGroupName:
     "Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)? Select one *",
-};
+});
 
-const yesHasUncollectedDebt: TestField = {
+const yesHasUncollectedDebt: TestField = createTestField({
   name: "Yes",
   dataStoreKey: "hasUncollectedDebt",
   required: true,
-  requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
-  expectedValue: "true",
   withinGroupName:
     "Do you have any uncollected debt to Medicare, Medicaid/NJ FamilyCare, or CHIP (Children's Health Insurance Program)? Select one *",
-};
+});
 
-const noIsSubjectToPaymentSuspension: TestField = {
+const noIsSubjectToPaymentSuspension: TestField = createTestField({
   name: "No",
   dataStoreKey: "isSubjectToPaymentSuspension",
   required: true,
-  requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
-  expectedValue: "false",
   withinGroupName:
     "Have you ever been subject to a payment suspension under a federal health care program? Select one *",
-};
+});
 
-const yesIsSubjectToPaymentSuspension: TestField = {
+const yesIsSubjectToPaymentSuspension: TestField = createTestField({
   name: "Yes",
   dataStoreKey: "isSubjectToPaymentSuspension",
   required: true,
-  requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
-  expectedValue: "true",
   withinGroupName:
     "Have you ever been subject to a payment suspension under a federal health care program? Select one *",
-};
+});
 
-export const minimalTestFields: Array<TestField> = [
-  yesHasUncollectedDebt,
-  yesIsSubjectToPaymentSuspension,
-];
-export const maximalTestFields: Array<TestField> = [
-  noHasUncollectedDebt,
-  noIsSubjectToPaymentSuspension,
+export const testFields: Array<TestField> = [noHasUncollectedDebt, noIsSubjectToPaymentSuspension];
+export const firstRadioOptionTestFields: Array<TestField> = [
   yesHasUncollectedDebt,
   yesIsSubjectToPaymentSuspension,
 ];

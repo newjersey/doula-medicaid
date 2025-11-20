@@ -1,10 +1,10 @@
 import {
   childrensFuturesTrainingOrganization,
-  maximalTestFields,
-  minimalTestFields,
   nameOfTrainingOrganization,
   noDoulaTrainingInPerson,
   noneTrainingOrganization,
+  path1TestFields,
+  path2TestFields,
   trainingAddressFields,
   trainingInstructorFields,
   yesDoulaTrainingInPerson,
@@ -32,7 +32,7 @@ describe("<TrainingStep1 />", () => {
       it("when a state-approved training organization is selected", async () => {
         await testSaveFieldsToDataStore(
           [childrensFuturesTrainingOrganization],
-          minimalTestFields,
+          path1TestFields,
           renderFunction,
           screen,
         );
@@ -41,7 +41,7 @@ describe("<TrainingStep1 />", () => {
       it("when 'None of these' is selected and the training organization name is provided", async () => {
         await testSaveFieldsToDataStore(
           [noneTrainingOrganization, nameOfTrainingOrganization],
-          maximalTestFields,
+          path2TestFields,
           renderFunction,
           screen,
         );
@@ -52,7 +52,7 @@ describe("<TrainingStep1 />", () => {
       it("when a stateApprovedTraining is not filled in", async () => {
         await testRequiredField(
           childrensFuturesTrainingOrganization,
-          minimalTestFields,
+          path1TestFields,
           renderFunction,
           screen,
         );
@@ -60,7 +60,7 @@ describe("<TrainingStep1 />", () => {
       it("when None of the these is selected and nameOfTrainingOrganization is not filled in", async () => {
         await testRequiredField(
           nameOfTrainingOrganization,
-          maximalTestFields,
+          path2TestFields,
           renderFunction,
           screen,
         );
@@ -102,7 +102,7 @@ describe("<TrainingStep1 />", () => {
       it("when training was virtual", async () => {
         await testSaveFieldsToDataStore(
           [noDoulaTrainingInPerson],
-          minimalTestFields,
+          path1TestFields,
           renderFunction,
           screen,
         );
@@ -111,7 +111,7 @@ describe("<TrainingStep1 />", () => {
       it("when training was in person or hybrid", async () => {
         await testSaveFieldsToDataStore(
           [yesDoulaTrainingInPerson, ...trainingAddressFields],
-          maximalTestFields,
+          path2TestFields,
           renderFunction,
           screen,
         );
@@ -120,17 +120,12 @@ describe("<TrainingStep1 />", () => {
 
     describe("marks fields as required and displays an error message", () => {
       it("when a isDoulaTrainingInPerson is not filled in", async () => {
-        await testRequiredField(
-          yesDoulaTrainingInPerson,
-          minimalTestFields,
-          renderFunction,
-          screen,
-        );
+        await testRequiredField(yesDoulaTrainingInPerson, path1TestFields, renderFunction, screen);
       });
       it.each(trainingAddressFields.filter((field) => field.required))(
         "when training was in person or hybrid and $dataStoreKey is not filled in",
         async (field: TestField) => {
-          await testRequiredField(field, maximalTestFields, renderFunction, screen);
+          await testRequiredField(field, path2TestFields, renderFunction, screen);
         },
       );
     });
@@ -138,7 +133,7 @@ describe("<TrainingStep1 />", () => {
     it.each(trainingAddressFields.filter((field) => field.required))(
       "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, maximalTestFields, renderFunction, screen);
+        await testRequiredField(field, path2TestFields, renderFunction, screen);
       },
     );
 
@@ -161,7 +156,7 @@ describe("<TrainingStep1 />", () => {
     it("saves fields to the data store on submit", async () => {
       await testSaveFieldsToDataStore(
         trainingInstructorFields,
-        minimalTestFields,
+        path1TestFields,
         renderFunction,
         screen,
       );
@@ -170,7 +165,7 @@ describe("<TrainingStep1 />", () => {
     it.each(trainingInstructorFields.filter((field) => field.required))(
       "marks $dataStoreKey as required and displays an error message if it is not filled in",
       async (field: TestField) => {
-        await testRequiredField(field, minimalTestFields, renderFunction, screen);
+        await testRequiredField(field, path1TestFields, renderFunction, screen);
       },
     );
 

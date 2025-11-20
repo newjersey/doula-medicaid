@@ -1,6 +1,6 @@
-import { minimalTestFields as businessDetails1TestFields } from "@/app/form/(formSteps)/business-details/1/testFields";
-import { minimalTestFields as businessDetails2TestFields } from "@/app/form/(formSteps)/business-details/2/testFields";
-import { minimalTestFields as businessDetails3TestFields } from "@/app/form/(formSteps)/business-details/3/testFields";
+import { path1TestFields as businessDetails1TestFields } from "@/app/form/(formSteps)/business-details/1/testFields";
+import { testFields as businessDetails2TestFields } from "@/app/form/(formSteps)/business-details/2/testFields";
+import { testFields as businessDetails3TestFields } from "@/app/form/(formSteps)/business-details/3/testFields";
 import { testFields as insurance1TestFields } from "@/app/form/(formSteps)/insurance/1/testFields";
 import { testFields as insurance2TestFields } from "@/app/form/(formSteps)/insurance/2/testFields";
 import {
@@ -15,7 +15,7 @@ import { testFields as personalDetails3TestFields } from "@/app/form/(formSteps)
 import { testFields as screening1TestFields } from "@/app/form/(formSteps)/screening/1/testFields";
 import { testFields as screening2TestFields } from "@/app/form/(formSteps)/screening/2/testFields";
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
-import { minimalTestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
+import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
