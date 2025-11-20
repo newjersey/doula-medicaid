@@ -42,7 +42,7 @@ export const progressBarSections: Array<Section> = [
   {
     id: "business-details",
     name: "Business details",
-    numSteps: 3,
+    numSteps: 4,
     shouldShowProgressBar: true,
     shouldShowProgressHeadingAndRequiredMessage: true,
   },

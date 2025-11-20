@@ -50,6 +50,8 @@ const InsuranceStep1 = () => {
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
 
+  const currentYear: number = new Date().getFullYear();
+
   return (
     <DoulaForm<Insurance1Data>
       orderedInputNames={orderedInputNames}
@@ -77,7 +79,7 @@ const InsuranceStep1 = () => {
           <DoulaDateInput
             name="insuranceStartDate"
             label="Start date"
-            hint="For example: April 28 2025"
+            hint={`For example: April 28 ${currentYear - 1}`}
             monthName="insuranceStartDateMonth"
             dayName="insuranceStartDateDay"
             yearName="insuranceStartDateYear"
@@ -88,7 +90,7 @@ const InsuranceStep1 = () => {
           <DoulaDateInput
             name="insuranceEndDate"
             label="End date"
-            hint="For example: April 28 2030"
+            hint={`For example: April 28 ${currentYear + 3}`}
             monthName="insuranceEndDateMonth"
             dayName="insuranceEndDateDay"
             yearName="insuranceEndDateYear"

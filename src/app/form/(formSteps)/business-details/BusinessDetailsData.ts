@@ -28,6 +28,18 @@ export interface BusinessDetails3Data {
   hasBeenSuspendedFromMedicaid: "true" | "false" | "";
 }
 
+export interface BusinessDetails4Data {
+  hasFiledForBankruptcyPast7Years: "true" | "false" | "";
+  past7YearsBankruptcyMonth: string;
+  past7YearsBankruptcyDay: string;
+  past7YearsBankruptcyYear: string;
+
+  mightFileForBankruptcyNextYear: "true" | "false" | "";
+  nextYearBankruptcyMonth: string;
+  nextYearBankruptcyDay: string;
+  nextYearBankruptcyYear: string;
+}
+
 export interface BusinessDetailsFormData {
   businessStreetAddress1: string;
   businessStreetAddress2: string | null;
@@ -35,6 +47,10 @@ export interface BusinessDetailsFormData {
   businessState: AddressState;
   businessZip: string;
   hasDisclosableEvent: boolean;
+  hasFiledForBankruptcyPast7Years: boolean;
+  past7YearsBankruptcyDate: Date | null;
+  mightFileForBankruptcyNextYear: boolean;
+  nextYearBankruptcyDate: Date | null;
 }
 
 const getBusinessDetails1Data = (dataStore: DataStore) => {
@@ -70,8 +86,7 @@ const getBusinessDetails1Data = (dataStore: DataStore) => {
       );
   }
 };
-
-export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetailsFormData => {
+const getBusinessDetails2And3Data = (dataStore: DataStore) => {
   const hasUncollectedDebt = getBoolean(dataStore, "hasUncollectedDebt", true);
   const isSubjectToPaymentSuspension = getBoolean(dataStore, "isSubjectToPaymentSuspension", true);
   const hasBeenExcludedFromMedicaid = getBoolean(dataStore, "hasBeenExcludedFromMedicaid", true);
@@ -86,8 +101,45 @@ export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetail
   ) {
     hasDisclosableEvent = true;
   }
+  return { hasDisclosableEvent };
+};
+
+const getBusinessDetails4Data = (dataStore: DataStore) => {
+  const hasFiledForBankruptcyPast7Years = getBoolean(
+    dataStore,
+    "hasFiledForBankruptcyPast7Years",
+    true,
+  );
+  const past7YearsBankruptcyDate = hasFiledForBankruptcyPast7Years
+    ? new Date(
+        `${getValue(dataStore, "past7YearsBankruptcyMonth", true)}/${getValue(dataStore, "past7YearsBankruptcyDay", true)}/${getValue(dataStore, "past7YearsBankruptcyYear", true)}`,
+      )
+    : null;
+
+  const mightFileForBankruptcyNextYear = getBoolean(
+    dataStore,
+    "mightFileForBankruptcyNextYear",
+    true,
+  );
+
+  const nextYearBankruptcyDate = mightFileForBankruptcyNextYear
+    ? new Date(
+        `${getValue(dataStore, "nextYearBankruptcyMonth", true)}/${getValue(dataStore, "nextYearBankruptcyDay", true)}/${getValue(dataStore, "nextYearBankruptcyYear", true)}`,
+      )
+    : null;
+
+  return {
+    hasFiledForBankruptcyPast7Years,
+    past7YearsBankruptcyDate,
+    mightFileForBankruptcyNextYear,
+    nextYearBankruptcyDate,
+  };
+};
+
+export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetailsFormData => {
   return {
     ...getBusinessDetails1Data(dataStore),
-    hasDisclosableEvent: hasDisclosableEvent,
+    ...getBusinessDetails2And3Data(dataStore),
+    ...getBusinessDetails4Data(dataStore),
   };
 };

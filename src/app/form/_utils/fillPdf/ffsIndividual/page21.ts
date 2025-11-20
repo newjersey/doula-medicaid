@@ -1,4 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
+import { formatDate } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 21 - disclosure of ownership and control interest statement
@@ -37,17 +38,52 @@ export interface PdfFfsIndividualPage21 {
   fd452filedbankruptcywithinyeardate: string;
 }
 
-export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPage21> => {
-  if (formData.isSupportedSoleProprietor === true) {
+const getPast7YearsBankruptcyFields = (formData: FormData) => {
+  if (formData.hasFiledForBankruptcyPast7Years === true) {
+    if (formData.past7YearsBankruptcyDate === null) {
+      throw new UnexpectedFormDataError(
+        `hasFiledForBankruptcyPast7Years true, but past7YearsBankruptcyDate is ${formData.past7YearsBankruptcyDate}.`,
+      );
+    }
     return {
-      fd452ownershiphealthcareproviderno: true,
-      fd452ownershipchangeno: true,
-      fd452ownershipchangewithinyearno: true,
-      fd452filedbankruptcypastsevenyearsno: true,
-      fd452filedbankruptcywithinyearno: true,
+      fd452filedbankruptcypastsevenyearsyes: true,
+      fd452filedbankruptcypastsevenyearsdate: formatDate(formData.past7YearsBankruptcyDate),
     };
   }
-  throw new UnexpectedFormDataError(
-    `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
-  );
+  return {
+    fd452filedbankruptcypastsevenyearsno: true,
+  };
+};
+
+const getNextYearBankruptcyFields = (formData: FormData) => {
+  if (formData.mightFileForBankruptcyNextYear === true) {
+    if (formData.nextYearBankruptcyDate === null) {
+      throw new UnexpectedFormDataError(
+        `mightFileForBankruptcyNextYear true, but nextYearBankruptcyDate is ${formData.nextYearBankruptcyDate}.`,
+      );
+    }
+    return {
+      fd452filedbankruptcywithinyearyes: true,
+      fd452filedbankruptcywithinyeardate: formatDate(formData.nextYearBankruptcyDate),
+    };
+  }
+  return {
+    fd452filedbankruptcywithinyearno: true,
+  };
+};
+
+export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPage21> => {
+  if (formData.isSupportedSoleProprietor !== true) {
+    throw new UnexpectedFormDataError(
+      `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
+    );
+  }
+
+  return {
+    fd452ownershiphealthcareproviderno: true,
+    fd452ownershipchangeno: true,
+    fd452ownershipchangewithinyearno: true,
+    ...getPast7YearsBankruptcyFields(formData),
+    ...getNextYearBankruptcyFields(formData),
+  };
 };
