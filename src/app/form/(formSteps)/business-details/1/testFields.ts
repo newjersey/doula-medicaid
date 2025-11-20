@@ -10,7 +10,6 @@ export const mailingBusinessAddressSameAsOtherAddress: TestField = createTestFie
   name: /Mailing address/i,
   dataStoreKey: "businessAddressSameAsOtherAddress",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "mailing",
 });
@@ -18,7 +17,6 @@ export const billingBusinessAddressSameAsOtherAddress: TestField = createTestFie
   name: /Billing address/i,
   dataStoreKey: "businessAddressSameAsOtherAddress",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "billing",
 });
@@ -26,7 +24,6 @@ export const differentBusinessAddressSameAsOtherAddress: TestField = createTestF
   name: "I wish to enter a new address",
   dataStoreKey: "businessAddressSameAsOtherAddress",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "different",
 });
@@ -76,8 +73,8 @@ export const businessAddressFields = createTestFields([
   },
 ]);
 
-export const minimalTestFields = [mailingBusinessAddressSameAsOtherAddress];
-export const maximalTestFields = [
+export const path1TestFields = [mailingBusinessAddressSameAsOtherAddress];
+export const path2TestFields = [
   differentBusinessAddressSameAsOtherAddress,
   ...businessAddressFields,
 ];

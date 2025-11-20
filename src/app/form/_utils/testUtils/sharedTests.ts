@@ -46,7 +46,10 @@ export const createTestField = (field: TestFieldParameters): TestField => {
     expectedValue: field.expectedValue ?? field.testValue,
     role: field.role ?? "textbox",
     requiredErrorMessage:
-      field.alternateRequiredFieldError ?? `${field.name.toString().replace(" *", "")} is required`,
+      field.alternateRequiredFieldError ??
+      (field.role === "radio"
+        ? "This question is required"
+        : `${field.name.toString().replace(" *", "")} is required`),
     withinGroupName: field.withinGroupName,
     prerequisiteField: field.prerequisiteField,
   };

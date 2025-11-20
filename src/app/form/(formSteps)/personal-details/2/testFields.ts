@@ -54,26 +54,22 @@ export const mailingAddressFields = [
   zipCodeField,
 ];
 
-export const yesSameBillingMailingAddress: TestField = {
+export const yesSameBillingMailingAddress: TestField = createTestField({
   name: "Yes",
   dataStoreKey: "hasSameBillingMailingAddress",
   required: true,
-  requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "true",
-  expectedValue: "true",
   withinGroupName: "Are your billing and residential addresses the same? Select one *",
-};
-export const noSameBillingMailingAddress: TestField = {
+});
+export const noSameBillingMailingAddress: TestField = createTestField({
   name: "No",
   dataStoreKey: "hasSameBillingMailingAddress",
   required: true,
-  requiredErrorMessage: "This question is required",
   role: "radio",
   testValue: "false",
-  expectedValue: "false",
   withinGroupName: "Are your billing and residential addresses the same? Select one *",
-};
+});
 
 export const minimalTestFields = [...mailingAddressFields, yesSameBillingMailingAddress];
 
