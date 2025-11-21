@@ -63,8 +63,8 @@ export const fillAndDownloadApplication = (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
 ) => {
   /**
-   * Test one field per page, and one of every type of field. Leaving unit individual-page tests
-   * to test that every field within the page is filled under different circumstances
+   * Test one field per page, and one of every type of field. Leaving unit individual-page tests to
+   * test that every field within the page is filled under different circumstances
    */
   const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
   const expectedFields: Partial<PdfFfsIndividual> = {
@@ -90,7 +90,6 @@ export const fillAndDownloadApplication = (
   cy.contains("Start now").click();
 
   for (const formPage of formPages) {
-    console.log("formPage.url", formPage.url);
     cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
     cy.window().its("scrollY").should("equal", 0); // The page view should be at the top
     cy.title().should("eq", `${formPage.titleName + titleEnding}`);
@@ -149,14 +148,14 @@ export const fillAndDownloadApplication = (
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
     async (file: typeof Cypress.Buffer) => {
       /**
-       * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type
-       * returned by cypress lacks properties like slice, maxByteLength, resizable, resize,
-       * and 4 more. I simply could not figure out how to convert
-       * https://docs.cypress.io/api/utilities/buffer to an ArrayBuffer.
+       * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
+       * by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I
+       * simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to
+       * an ArrayBuffer.
        *
-       * I don't know if I'm typing file incorrectly.
-       * https://docs.cypress.io/api/commands/readfile does seem to indicate that the return
-       * is indeed Cypress.Buffer However, the codes does run.
+       * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
+       * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does
+       * run.
        */
       //  @ts-expect-error see above
       const uint8Array = new Uint8Array(file);
