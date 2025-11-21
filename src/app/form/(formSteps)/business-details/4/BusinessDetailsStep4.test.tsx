@@ -35,7 +35,7 @@ describe("<BusinessDetailsStep4 />", () => {
     );
 
     it.each(
-      [...past7YearsBankruptcyDateFields, ...past7YearsBankruptcyDateFields].filter(
+      [...past7YearsBankruptcyDateFields, ...nextYearBankruptcyDateFields].filter(
         (field) => field.required === true,
       ),
     )(
@@ -46,13 +46,12 @@ describe("<BusinessDetailsStep4 />", () => {
     );
   });
 
-  it.each([
-    ...path1TestFields,
-    ...past7YearsBankruptcyDateFields,
-    ...past7YearsBankruptcyDateFields,
-  ])("fills $dataStoreKey from the data store when page is loaded", async (field) => {
-    await testFillFromDataStore(field, renderFunction, screen);
-  });
+  it.each([...path1TestFields, ...past7YearsBankruptcyDateFields, ...nextYearBankruptcyDateFields])(
+    "fills $dataStoreKey from the data store when page is loaded",
+    async (field) => {
+      await testFillFromDataStore(field, renderFunction, screen);
+    },
+  );
 
   it.each(past7YearsBankruptcyDateFields)(
     "conditionally renders $dataStoreKey based on hasFiledForBankruptcyPast7Years",

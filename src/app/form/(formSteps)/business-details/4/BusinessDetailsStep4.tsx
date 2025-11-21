@@ -52,6 +52,8 @@ const BusinessDetailsStep4 = () => {
   const hasFiledForBankruptcyPast7Years = watch("hasFiledForBankruptcyPast7Years");
   const mightFileForBankruptcyNextYear = watch("mightFileForBankruptcyNextYear");
 
+  const currentYear: number = new Date().getFullYear();
+
   return (
     <DoulaForm<BusinessDetails4Data>
       orderedInputNames={orderedInputNames}
@@ -77,7 +79,7 @@ const BusinessDetailsStep4 = () => {
             <DoulaDateInput
               name="past7YearsBankruptcy"
               label="When did you file for bankruptcy?"
-              hint={`For example: January 1 ${new Date().getFullYear() - 2}`}
+              hint={`For example: January 1 ${currentYear - 2}`}
               monthName="past7YearsBankruptcyMonth"
               dayName="past7YearsBankruptcyDay"
               yearName="past7YearsBankruptcyYear"
@@ -102,8 +104,8 @@ const BusinessDetailsStep4 = () => {
           {mightFileForBankruptcyNextYear === "true" && (
             <DoulaDateInput
               name="nextYearBankruptcy"
-              label="When will you file for bankruptcy? "
-              hint={`For example: January 1 ${new Date().getFullYear() + 1}`}
+              label="When will you file for bankruptcy?"
+              hint={`For example: January 1 ${currentYear + 1}`}
               monthName="nextYearBankruptcyMonth"
               dayName="nextYearBankruptcyDay"
               yearName="nextYearBankruptcyYear"
