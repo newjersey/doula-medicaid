@@ -16,6 +16,9 @@ import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
 import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
 import { BrowserRouter, Route, Routes } from "react-router";
+import LegalStep1 from "./(formSteps)/legal/1/LegalStep1";
+import LegalStep2 from "./(formSteps)/legal/2/LegalStep2";
+import LegalStep3 from "./(formSteps)/legal/3/LegalStep3";
 
 export const routes = (
   <Routes>
@@ -45,6 +48,13 @@ export const routes = (
           <Route path="3" element={<BusinessDetailsStep3 />} />
           <Route path="4" element={<BusinessDetailsStep4 />} />
         </Route>
+        {process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" ? (
+          <Route path="legal">
+            <Route path="1" element={<LegalStep1 />} />
+            <Route path="2" element={<LegalStep2 />} />
+            <Route path="3" element={<LegalStep3 />} />
+          </Route>
+        ) : null}
         <Route path="finish" element={<FinishSection />} />
       </Route>
     </Route>
