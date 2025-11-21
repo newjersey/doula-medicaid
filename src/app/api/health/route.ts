@@ -10,6 +10,7 @@ export const GET = async () => {
       featureFlags: { NEXT_PUBLIC_FLAG_TEST: process.env.NEXT_PUBLIC_FLAG_TEST },
     };
 
+    console.log(process.env.NEXT_PUBLIC_FLAG_TEST);
     return NextResponse.json(healthCheck, { status: 200 });
   } catch {
     const errorResponse = {
