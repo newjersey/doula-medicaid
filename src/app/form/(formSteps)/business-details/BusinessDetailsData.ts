@@ -29,15 +29,15 @@ export interface BusinessDetails3Data {
 }
 
 export interface BusinessDetails4Data {
-  hasFiledForBankruptcyPast7Years: "true" | "false" | "";
-  past7YearsBankruptcyMonth: string;
-  past7YearsBankruptcyDay: string;
-  past7YearsBankruptcyYear: string;
+  hasFiledBankruptcy: "true" | "false" | "";
+  pastBankruptcyMonth: string;
+  pastBankruptcyDay: string;
+  pastBankruptcyYear: string;
 
-  mightFileForBankruptcyNextYear: "true" | "false" | "";
-  nextYearBankruptcyMonth: string;
-  nextYearBankruptcyDay: string;
-  nextYearBankruptcyYear: string;
+  mightFileBankruptcy: "true" | "false" | "";
+  futureBankruptcyMonth: string;
+  futureBankruptcyDay: string;
+  futureBankruptcyYear: string;
 }
 
 export interface BusinessDetailsFormData {
@@ -47,10 +47,10 @@ export interface BusinessDetailsFormData {
   businessState: AddressState;
   businessZip: string;
   hasDisclosableEvent: boolean;
-  hasFiledForBankruptcyPast7Years: boolean;
-  past7YearsBankruptcyDate: Date | null;
-  mightFileForBankruptcyNextYear: boolean;
-  nextYearBankruptcyDate: Date | null;
+  hasFiledBankruptcy: boolean;
+  pastBankruptcyDate: Date | null;
+  mightFileBankruptcy: boolean;
+  futureBankruptcyDate: Date | null;
 }
 
 const getBusinessDetails1Data = (dataStore: DataStore) => {
@@ -105,34 +105,26 @@ const getBusinessDetails2And3Data = (dataStore: DataStore) => {
 };
 
 const getBusinessDetails4Data = (dataStore: DataStore) => {
-  const hasFiledForBankruptcyPast7Years = getBoolean(
-    dataStore,
-    "hasFiledForBankruptcyPast7Years",
-    true,
-  );
-  const past7YearsBankruptcyDate = hasFiledForBankruptcyPast7Years
+  const hasFiledBankruptcy = getBoolean(dataStore, "hasFiledBankruptcy", true);
+  const pastBankruptcyDate = hasFiledBankruptcy
     ? new Date(
-        `${getValue(dataStore, "past7YearsBankruptcyMonth", true)}/${getValue(dataStore, "past7YearsBankruptcyDay", true)}/${getValue(dataStore, "past7YearsBankruptcyYear", true)}`,
+        `${getValue(dataStore, "pastBankruptcyMonth", true)}/${getValue(dataStore, "pastBankruptcyDay", true)}/${getValue(dataStore, "pastBankruptcyYear", true)}`,
       )
     : null;
 
-  const mightFileForBankruptcyNextYear = getBoolean(
-    dataStore,
-    "mightFileForBankruptcyNextYear",
-    true,
-  );
+  const mightFileBankruptcy = getBoolean(dataStore, "mightFileBankruptcy", true);
 
-  const nextYearBankruptcyDate = mightFileForBankruptcyNextYear
+  const futureBankruptcyDate = mightFileBankruptcy
     ? new Date(
-        `${getValue(dataStore, "nextYearBankruptcyMonth", true)}/${getValue(dataStore, "nextYearBankruptcyDay", true)}/${getValue(dataStore, "nextYearBankruptcyYear", true)}`,
+        `${getValue(dataStore, "futureBankruptcyMonth", true)}/${getValue(dataStore, "futureBankruptcyDay", true)}/${getValue(dataStore, "futureBankruptcyYear", true)}`,
       )
     : null;
 
   return {
-    hasFiledForBankruptcyPast7Years,
-    past7YearsBankruptcyDate,
-    mightFileForBankruptcyNextYear,
-    nextYearBankruptcyDate,
+    hasFiledBankruptcy,
+    pastBankruptcyDate,
+    mightFileBankruptcy,
+    futureBankruptcyDate,
   };
 };
 

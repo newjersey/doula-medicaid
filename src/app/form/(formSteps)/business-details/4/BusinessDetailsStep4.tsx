@@ -11,14 +11,14 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { useForm } from "react-hook-form";
 
 const orderedInputNames: Array<keyof BusinessDetails4Data> = [
-  "hasFiledForBankruptcyPast7Years",
-  "past7YearsBankruptcyMonth",
-  "past7YearsBankruptcyDay",
-  "past7YearsBankruptcyYear",
-  "mightFileForBankruptcyNextYear",
-  "nextYearBankruptcyMonth",
-  "nextYearBankruptcyDay",
-  "nextYearBankruptcyYear",
+  "hasFiledBankruptcy",
+  "pastBankruptcyMonth",
+  "pastBankruptcyDay",
+  "pastBankruptcyYear",
+  "mightFileBankruptcy",
+  "futureBankruptcyMonth",
+  "futureBankruptcyDay",
+  "futureBankruptcyYear",
 ];
 
 const mayHaveThreeOrMoreErrors = true;
@@ -32,25 +32,19 @@ const BusinessDetailsStep4 = () => {
     watch,
   } = useForm<BusinessDetails4Data>({
     defaultValues: {
-      hasFiledForBankruptcyPast7Years: getDefaultBoolean(
-        dataStore,
-        "hasFiledForBankruptcyPast7Years",
-      ),
-      past7YearsBankruptcyMonth: getDefaultValue(dataStore, "past7YearsBankruptcyMonth") ?? "",
-      past7YearsBankruptcyDay: getDefaultValue(dataStore, "past7YearsBankruptcyDay") ?? "",
-      past7YearsBankruptcyYear: getDefaultValue(dataStore, "past7YearsBankruptcyYear") ?? "",
-      mightFileForBankruptcyNextYear: getDefaultBoolean(
-        dataStore,
-        "mightFileForBankruptcyNextYear",
-      ),
-      nextYearBankruptcyMonth: getDefaultValue(dataStore, "nextYearBankruptcyMonth") ?? "",
-      nextYearBankruptcyDay: getDefaultValue(dataStore, "nextYearBankruptcyDay") ?? "",
-      nextYearBankruptcyYear: getDefaultValue(dataStore, "nextYearBankruptcyYear") ?? "",
+      hasFiledBankruptcy: getDefaultBoolean(dataStore, "hasFiledBankruptcy"),
+      pastBankruptcyMonth: getDefaultValue(dataStore, "pastBankruptcyMonth") ?? "",
+      pastBankruptcyDay: getDefaultValue(dataStore, "pastBankruptcyDay") ?? "",
+      pastBankruptcyYear: getDefaultValue(dataStore, "pastBankruptcyYear") ?? "",
+      mightFileBankruptcy: getDefaultBoolean(dataStore, "mightFileBankruptcy"),
+      futureBankruptcyMonth: getDefaultValue(dataStore, "futureBankruptcyMonth") ?? "",
+      futureBankruptcyDay: getDefaultValue(dataStore, "futureBankruptcyDay") ?? "",
+      futureBankruptcyYear: getDefaultValue(dataStore, "futureBankruptcyYear") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
-  const hasFiledForBankruptcyPast7Years = watch("hasFiledForBankruptcyPast7Years");
-  const mightFileForBankruptcyNextYear = watch("mightFileForBankruptcyNextYear");
+  const hasFiledBankruptcy = watch("hasFiledBankruptcy");
+  const mightFileBankruptcy = watch("mightFileBankruptcy");
 
   const currentYear: number = new Date().getFullYear();
 
@@ -68,21 +62,21 @@ const BusinessDetailsStep4 = () => {
             Mark Yes if these apply to your business, otherwise mark No.
           </h2>
           <DoulaYesNoRadio
-            name="hasFiledForBankruptcyPast7Years"
-            value={hasFiledForBankruptcyPast7Years}
+            name="hasFiledBankruptcy"
+            value={hasFiledBankruptcy}
             label="Have you filed for bankruptcy in the past 7 years?"
             required
             register={register}
             errors={errors}
           />
-          {hasFiledForBankruptcyPast7Years === "true" && (
+          {hasFiledBankruptcy === "true" && (
             <DoulaDateInput
-              name="past7YearsBankruptcy"
+              name="pastBankruptcy"
               label="When did you file for bankruptcy?"
               hint={`For example: January 1 ${currentYear - 2}`}
-              monthName="past7YearsBankruptcyMonth"
-              dayName="past7YearsBankruptcyDay"
-              yearName="past7YearsBankruptcyYear"
+              monthName="pastBankruptcyMonth"
+              dayName="pastBankruptcyDay"
+              yearName="pastBankruptcyYear"
               errorLabelPrefix="Past bankruptcy"
               errors={errors}
               register={register}
@@ -94,21 +88,21 @@ const BusinessDetailsStep4 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <DoulaYesNoRadio
-            name="mightFileForBankruptcyNextYear"
-            value={mightFileForBankruptcyNextYear}
+            name="mightFileBankruptcy"
+            value={mightFileBankruptcy}
             label="Is there a possibility that you will file for bankruptcy in the next year?"
             required
             register={register}
             errors={errors}
           />
-          {mightFileForBankruptcyNextYear === "true" && (
+          {mightFileBankruptcy === "true" && (
             <DoulaDateInput
-              name="nextYearBankruptcy"
+              name="futureBankruptcy"
               label="When will you file for bankruptcy?"
               hint={`For example: January 1 ${currentYear + 1}`}
-              monthName="nextYearBankruptcyMonth"
-              dayName="nextYearBankruptcyDay"
-              yearName="nextYearBankruptcyYear"
+              monthName="futureBankruptcyMonth"
+              dayName="futureBankruptcyDay"
+              yearName="futureBankruptcyYear"
               errorLabelPrefix="Future bankruptcy"
               errors={errors}
               register={register}

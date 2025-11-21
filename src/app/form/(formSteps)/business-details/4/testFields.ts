@@ -6,117 +6,114 @@ import {
 
 const currentYear: number = new Date().getFullYear();
 
-export const noHasFiledForBankruptcyPast7Years: TestField = createTestField({
+export const noHasFiledBankruptcy: TestField = createTestField({
   name: "No",
-  dataStoreKey: "hasFiledForBankruptcyPast7Years",
+  dataStoreKey: "hasFiledBankruptcy",
   required: true,
   role: "radio",
   testValue: "false",
   withinGroupName: "Have you filed for bankruptcy in the past 7 years? Select one *",
 });
 
-const yesHasFiledForBankruptcyPast7Years: TestField = createTestField({
+const yesHasFiledBankruptcy: TestField = createTestField({
   name: "Yes",
-  dataStoreKey: "hasFiledForBankruptcyPast7Years",
+  dataStoreKey: "hasFiledBankruptcy",
   required: true,
   role: "radio",
   testValue: "true",
   withinGroupName: "Have you filed for bankruptcy in the past 7 years? Select one *",
 });
-export const past7YearsBankruptcyDateFields = createTestFields([
+export const pastBankruptcyDateFields = createTestFields([
   {
     name: "Month *",
-    dataStoreKey: "past7YearsBankruptcyMonth",
+    dataStoreKey: "pastBankruptcyMonth",
     required: true,
     testValue: "July",
     expectedValue: "7",
     role: "combobox",
     withinGroupName: `When did you file for bankruptcy? * For example: January 1 ${currentYear - 2}`,
-    prerequisiteField: yesHasFiledForBankruptcyPast7Years,
+    prerequisiteField: yesHasFiledBankruptcy,
     alternateRequiredFieldError: "Past bankruptcy month is required",
   },
   {
     name: "Day *",
-    dataStoreKey: "past7YearsBankruptcyDay",
+    dataStoreKey: "pastBankruptcyDay",
     required: true,
     testValue: "6",
     withinGroupName: `When did you file for bankruptcy? * For example: January 1 ${currentYear - 2}`,
-    prerequisiteField: yesHasFiledForBankruptcyPast7Years,
+    prerequisiteField: yesHasFiledBankruptcy,
     alternateRequiredFieldError: "Past bankruptcy day is required",
   },
   {
     name: "Year *",
-    dataStoreKey: "past7YearsBankruptcyYear",
+    dataStoreKey: "pastBankruptcyYear",
     required: true,
     testValue: "2024",
     withinGroupName: `When did you file for bankruptcy? * For example: January 1 ${currentYear - 2}`,
-    prerequisiteField: yesHasFiledForBankruptcyPast7Years,
+    prerequisiteField: yesHasFiledBankruptcy,
     alternateRequiredFieldError: "Past bankruptcy year is required",
   },
 ]);
 
-export const noMightFileForBankruptcyNextYear: TestField = createTestField({
+export const noMightFileBankruptcy: TestField = createTestField({
   name: "No",
-  dataStoreKey: "mightFileForBankruptcyNextYear",
+  dataStoreKey: "mightFileBankruptcy",
   required: true,
   role: "radio",
   testValue: "false",
   withinGroupName:
     "Is there a possibility that you will file for bankruptcy in the next year? Select one *",
 });
-const yesMightFileForBankruptcyNextYear: TestField = createTestField({
+const yesMightFileBankruptcy: TestField = createTestField({
   name: "Yes",
-  dataStoreKey: "mightFileForBankruptcyNextYear",
+  dataStoreKey: "mightFileBankruptcy",
   required: true,
   role: "radio",
   testValue: "true",
   withinGroupName:
     "Is there a possibility that you will file for bankruptcy in the next year? Select one *",
 });
-export const nextYearBankruptcyDateFields = createTestFields([
+export const futureBankruptcyDateFields = createTestFields([
   {
     name: "Month *",
-    dataStoreKey: "nextYearBankruptcyMonth",
+    dataStoreKey: "futureBankruptcyMonth",
     required: true,
     testValue: "July",
     expectedValue: "7",
     role: "combobox",
     withinGroupName: `When will you file for bankruptcy? * For example: January 1 ${currentYear + 1}`,
-    prerequisiteField: yesMightFileForBankruptcyNextYear,
+    prerequisiteField: yesMightFileBankruptcy,
     alternateRequiredFieldError: "Future bankruptcy month is required",
   },
   {
     name: "Day *",
-    dataStoreKey: "nextYearBankruptcyDay",
+    dataStoreKey: "futureBankruptcyDay",
     required: true,
     testValue: "6",
     withinGroupName: `When will you file for bankruptcy? * For example: January 1 ${currentYear + 1}`,
-    prerequisiteField: yesMightFileForBankruptcyNextYear,
+    prerequisiteField: yesMightFileBankruptcy,
     alternateRequiredFieldError: "Future bankruptcy day is required",
   },
   {
     name: "Year *",
-    dataStoreKey: "nextYearBankruptcyYear",
+    dataStoreKey: "futureBankruptcyYear",
     required: true,
     testValue: "2024",
     withinGroupName: `When will you file for bankruptcy? * For example: January 1 ${currentYear + 1}`,
-    prerequisiteField: yesMightFileForBankruptcyNextYear,
+    prerequisiteField: yesMightFileBankruptcy,
     alternateRequiredFieldError: "Future bankruptcy year is required",
   },
 ]);
 
-export const path1TestFields: Array<TestField> = [
-  noHasFiledForBankruptcyPast7Years,
-  noMightFileForBankruptcyNextYear,
-];
+export const path1TestFields: Array<TestField> = [noHasFiledBankruptcy, noMightFileBankruptcy];
 export const firstRadioOptionTestFields: Array<TestField> = [
-  yesHasFiledForBankruptcyPast7Years,
-  yesMightFileForBankruptcyNextYear,
+  yesHasFiledBankruptcy,
+  yesMightFileBankruptcy,
 ];
 
 export const path2TestFields: Array<TestField> = [
-  yesHasFiledForBankruptcyPast7Years,
-  ...past7YearsBankruptcyDateFields,
-  yesMightFileForBankruptcyNextYear,
-  ...nextYearBankruptcyDateFields,
+  yesHasFiledBankruptcy,
+  ...pastBankruptcyDateFields,
+  yesMightFileBankruptcy,
+  ...futureBankruptcyDateFields,
 ];

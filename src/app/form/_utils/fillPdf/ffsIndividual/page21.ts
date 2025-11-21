@@ -38,16 +38,16 @@ export interface PdfFfsIndividualPage21 {
   fd452filedbankruptcywithinyeardate: string;
 }
 
-const getPast7YearsBankruptcyFields = (formData: FormData) => {
-  if (formData.hasFiledForBankruptcyPast7Years === true) {
-    if (formData.past7YearsBankruptcyDate === null) {
+const getPastBankruptcyFields = (formData: FormData) => {
+  if (formData.hasFiledBankruptcy === true) {
+    if (formData.pastBankruptcyDate === null) {
       throw new UnexpectedFormDataError(
-        `hasFiledForBankruptcyPast7Years true, but past7YearsBankruptcyDate is ${formData.past7YearsBankruptcyDate}.`,
+        `hasFiledBankruptcy true, but pastBankruptcyDate is ${formData.pastBankruptcyDate}.`,
       );
     }
     return {
       fd452filedbankruptcypastsevenyearsyes: true,
-      fd452filedbankruptcypastsevenyearsdate: formatDate(formData.past7YearsBankruptcyDate),
+      fd452filedbankruptcypastsevenyearsdate: formatDate(formData.pastBankruptcyDate),
     };
   }
   return {
@@ -55,16 +55,16 @@ const getPast7YearsBankruptcyFields = (formData: FormData) => {
   };
 };
 
-const getNextYearBankruptcyFields = (formData: FormData) => {
-  if (formData.mightFileForBankruptcyNextYear === true) {
-    if (formData.nextYearBankruptcyDate === null) {
+const getFutureBankruptcyFields = (formData: FormData) => {
+  if (formData.mightFileBankruptcy === true) {
+    if (formData.futureBankruptcyDate === null) {
       throw new UnexpectedFormDataError(
-        `mightFileForBankruptcyNextYear true, but nextYearBankruptcyDate is ${formData.nextYearBankruptcyDate}.`,
+        `mightFileBankruptcy true, but futureBankruptcyDate is ${formData.futureBankruptcyDate}.`,
       );
     }
     return {
       fd452filedbankruptcywithinyearyes: true,
-      fd452filedbankruptcywithinyeardate: formatDate(formData.nextYearBankruptcyDate),
+      fd452filedbankruptcywithinyeardate: formatDate(formData.futureBankruptcyDate),
     };
   }
   return {
@@ -83,7 +83,7 @@ export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPag
     fd452ownershiphealthcareproviderno: true,
     fd452ownershipchangeno: true,
     fd452ownershipchangewithinyearno: true,
-    ...getPast7YearsBankruptcyFields(formData),
-    ...getNextYearBankruptcyFields(formData),
+    ...getPastBankruptcyFields(formData),
+    ...getFutureBankruptcyFields(formData),
   };
 };
