@@ -23,6 +23,8 @@ jobs:
       - name: Build the application
         run: NODE_ENV=test npm run build
       - name: Start the application
-        run: NODE_ENV=test npm start & npx wait-on http://localhost:3000
+        run:
+          NODE_ENV=test npm start & npx wait-on
+          http://localhost:3000/humanservices/dmahs/info/doulahelp
       - name: Run cypress tests
         run: npm run cypress:run:flagsOff
