@@ -20,8 +20,8 @@
 // require('./commands')
 
 const isRelevantSuite = (): boolean => {
-  const isFlagsOffTest = Cypress.currentTest.title.includes("[flagsOff]");
-  return Cypress.env("FLAGS_OFF") === true ? isFlagsOffTest : !isFlagsOffTest;
+  const isProductionFlagsTest = Cypress.currentTest.title.includes("[productionFlags]");
+  return Cypress.env("PRODUCTION_FLAGS") === true ? isProductionFlagsTest : !isProductionFlagsTest;
 };
 
 beforeEach(function () {
