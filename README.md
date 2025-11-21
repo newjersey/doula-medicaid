@@ -44,7 +44,7 @@ First, start the development server, using env vars in the .env.test file
 npm run dev:test
 ```
 
-To run all e2e tests that are not labelled `[flagsOff]`
+To run all e2e tests that are not labelled `[productionFlags]`
 
 ```sh
 npm run cypress:run
@@ -56,7 +56,8 @@ npm run cypress:run -- --spec <path to file>
 npm run cypress:gui
 ```
 
-To run e2e tests that _are_ labelled `[flagsOff]`, we need to turn environment favorable flags off.
+To run e2e tests that _are_ labelled `[productionFlags]`, we need to turn environment favorable
+flags off.
 
 When running with `NODE_ENV=test` (as is done with `npm run dev:test`, NextJS will first check for a
 `.env.test.local` file (gitignored), then `.env.test` (not gitignored). The local file enables us to
@@ -64,13 +65,13 @@ make any changes and test with them locally, without having to reset any changes
 committing.
 
 ```sh
-cp .env.test-flags-off .env.test.local
+cp .env.test-production-flags .env.test.local
 
 # Restart the NextJS process
 npm run dev:test
 
-# Then run cypress tests with `[flagsOff]` in their name
-npm run cypress:run:flagsOff
+# Then run cypress tests with `[productionFlags]` in their name
+npm run cypress:run:productionFlags
 
 # cypress:gui can be run normally, and the GUI lets you select which test to run
 ```
