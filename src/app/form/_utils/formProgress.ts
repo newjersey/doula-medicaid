@@ -46,6 +46,17 @@ export const progressBarSections: Array<Section> = [
     shouldShowProgressBar: true,
     shouldShowProgressHeadingAndRequiredMessage: true,
   },
+  ...(process.env.NEXT_PUBLIC_FLAG_LEGAL === "1"
+    ? [
+        {
+          id: "legal",
+          name: "Legal",
+          numSteps: 3,
+          shouldShowProgressBar: true,
+          shouldShowProgressHeadingAndRequiredMessage: true,
+        },
+      ]
+    : []),
   {
     id: "finish",
     name: "Finish",
