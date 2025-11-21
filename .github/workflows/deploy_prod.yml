@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "production"
+  workflow_call:
 
 # Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 permissions:
