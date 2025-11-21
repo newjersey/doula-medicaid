@@ -1,10 +1,10 @@
 import BusinessDetailsStep4 from "@/app/form/(formSteps)/business-details/4/BusinessDetailsStep4";
 import {
   firstRadioOptionTestFields,
-  nextYearBankruptcyDateFields,
-  noHasFiledForBankruptcyPast7Years,
-  noMightFileForBankruptcyNextYear,
-  past7YearsBankruptcyDateFields,
+  futureBankruptcyDateFields,
+  noHasFiledBankruptcy,
+  noMightFileBankruptcy,
+  pastBankruptcyDateFields,
   path1TestFields,
   path2TestFields,
 } from "@/app/form/(formSteps)/business-details/4/testFields";
@@ -35,7 +35,7 @@ describe("<BusinessDetailsStep4 />", () => {
     );
 
     it.each(
-      [...past7YearsBankruptcyDateFields, ...nextYearBankruptcyDateFields].filter(
+      [...pastBankruptcyDateFields, ...futureBankruptcyDateFields].filter(
         (field) => field.required === true,
       ),
     )(
@@ -46,24 +46,24 @@ describe("<BusinessDetailsStep4 />", () => {
     );
   });
 
-  it.each([...path1TestFields, ...past7YearsBankruptcyDateFields, ...nextYearBankruptcyDateFields])(
+  it.each([...path1TestFields, ...pastBankruptcyDateFields, ...futureBankruptcyDateFields])(
     "fills $dataStoreKey from the data store when page is loaded",
     async (field) => {
       await testFillFromDataStore(field, renderFunction, screen);
     },
   );
 
-  it.each(past7YearsBankruptcyDateFields)(
-    "conditionally renders $dataStoreKey based on hasFiledForBankruptcyPast7Years",
+  it.each(pastBankruptcyDateFields)(
+    "conditionally renders $dataStoreKey based on hasFiledBankruptcy",
     async (field) => {
-      await testConditionalRender(field, noHasFiledForBankruptcyPast7Years, renderFunction, screen);
+      await testConditionalRender(field, noHasFiledBankruptcy, renderFunction, screen);
     },
   );
 
-  it.each(nextYearBankruptcyDateFields)(
-    "conditionally renders $dataStoreKey based on mightFileForBankruptcyNextYear",
+  it.each(futureBankruptcyDateFields)(
+    "conditionally renders $dataStoreKey based on mightFileBankruptcy",
     async (field) => {
-      await testConditionalRender(field, noMightFileForBankruptcyNextYear, renderFunction, screen);
+      await testConditionalRender(field, noMightFileBankruptcy, renderFunction, screen);
     },
   );
 });
