@@ -13,7 +13,7 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: APPLICATION_NAME,
-  description: "Prototype",
+  description: "NJ Doula Assistant",
 };
 
 export default function RootLayout({
