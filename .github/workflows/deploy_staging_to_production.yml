@@ -19,3 +19,4 @@ jobs:
   deploy-prod:
     needs: [merge-staging-to-production]
     uses: ./.github/workflows/deploy_prod.yml
+    secrets: inherit
