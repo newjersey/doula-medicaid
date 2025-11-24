@@ -79,7 +79,7 @@ export class CdkStack extends cdk.Stack {
     );
 
     fargateService.targetGroup.configureHealthCheck({
-      path: "/api/health",
+      path: "/humanservices/dmahs/info/doulahelp/api/health",
       port: "3000",
       protocol: Protocol.HTTP,
       healthyHttpCodes: "200",
@@ -217,7 +217,7 @@ export class CdkStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, "HealthCheckUrl", {
-      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}/api/health`,
+      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}/humanservices/dmahs/info/doulahelp/api/health`,
       description: "URL for the health check endpoint (accessible from within VPC)",
       exportName: "DoulaAssistantHealthCheckUrl",
     });
