@@ -19,5 +19,3 @@ jobs:
   deploy-staging:
     needs: [merge-main-to-staging]
     uses: ./.github/workflows/deploy_staging.yml
-    secrets:
-      aws_account_id: ${{ secrets.AWS_ACCOUNT_ID_DEV }}
