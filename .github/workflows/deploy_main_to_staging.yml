@@ -2,8 +2,10 @@ name: deploy-main-to-staging
 
 on: workflow_dispatch
 
+# Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 permissions:
-  contents: write
+  id-token: write
+  contents: read
 
 jobs:
   deploy-main-to-staging:
