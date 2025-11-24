@@ -19,3 +19,4 @@ jobs:
   deploy-staging:
     needs: [merge-main-to-staging]
     uses: ./.github/workflows/deploy_staging.yml
+    secrets: inherit
