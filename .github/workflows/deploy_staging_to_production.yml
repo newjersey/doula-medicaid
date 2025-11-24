@@ -19,3 +19,5 @@ jobs:
   deploy-prod:
     needs: [merge-staging-to-production]
     uses: ./.github/workflows/deploy_prod.yml
+    secrets:
+      aws_account_id: ${{ secrets.AWS_ACCOUNT_ID_PROD }}
