@@ -48,7 +48,7 @@ def generate_self_signed_certificate(
 
     if subject_alternative_names:
         print("subject_alternative_names", subject_alternative_names)
-        builder.add_extension(
+        builder = builder.add_extension(
             x509.SubjectAlternativeName(
                 [x509.DNSName(san) for san in subject_alternative_names]
             ),
@@ -105,7 +105,7 @@ def main():
 
     args = parser.parse_args()
 
-    if not (args.san or args.common_name):
+    if not (args.subject_alternative_names or args.common_name):
         raise ValueError("common name or SAN is required")
 
     key = rsa.generate_private_key(
