@@ -6,6 +6,8 @@ import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { Protocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as route53 from "aws-cdk-lib/aws-route53";
+import * as targets from "aws-cdk-lib/aws-route53-targets";
 
 const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
@@ -180,6 +182,21 @@ export class CdkStack extends cdk.Stack {
       }),
     );
 
+    const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
+      vpc,
+      zoneName: "doula-vpc.dhs.nj.gov",
+    });
+
+    const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
+      zone: hostedZone,
+      recordName: "app",
+      target: route53.RecordTarget.fromAlias(
+        new targets.LoadBalancerTarget(fargateService.loadBalancer, {
+          evaluateTargetHealth: true,
+        }),
+      ),
+    });
+
     // Create GitHub Actions IAM role for OIDC federation
     const githubActionsRole = new iam.Role(this, "GitHubActionsRole", {
       roleName: "GitHubAction-PushEcrUpdateEcs",
@@ -211,19 +228,19 @@ export class CdkStack extends cdk.Stack {
 
     // CloudFormation Outputs
     new cdk.CfnOutput(this, "LoadBalancerUrl", {
-      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}`,
+      value: `http${isHttps ? "s" : ""}://${aRecord.domainName}`,
       description: "URL of the Internal Application Load Balancer (accessible from within VPC)",
       exportName: "DoulaAssistantLoadBalancerUrl",
     });
 
     new cdk.CfnOutput(this, "HealthCheckUrl", {
-      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}/humanservices/dmahs/info/doulahelp/api/health`,
+      value: `http${isHttps ? "s" : ""}://${aRecord.domainName}/humanservices/dmahs/info/doulahelp/api/health`,
       description: "URL for the health check endpoint (accessible from within VPC)",
       exportName: "DoulaAssistantHealthCheckUrl",
     });
 
     new cdk.CfnOutput(this, "LoadBalancerDnsName", {
-      value: fargateService.loadBalancer.loadBalancerDnsName,
+      value: aRecord.domainName,
       description: "Load Balancer DNS name for DNS configuration",
       exportName: "DoulaAssistantLoadBalancerDnsName",
     });

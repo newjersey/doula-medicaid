@@ -38,7 +38,7 @@ def generate_certificate_signing_request(
     )
 
     if subject_alternative_names:
-        builder.add_extension(
+        builder = builder.add_extension(
             x509.SubjectAlternativeName(
                 [x509.DNSName(san) for san in subject_alternative_names]
             ),
