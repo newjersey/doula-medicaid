@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import { aws_route53resolver as route53resolver } from "aws-cdk-lib";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecr from "aws-cdk-lib/aws-ecr";
@@ -142,6 +143,48 @@ export class CdkStack extends cdk.Stack {
       "Allow ECS service to access VPC endpoints",
     );
 
+    const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
+      vpc,
+      zoneName: `${envName}-doula-vpc.dhs.nj.gov`,
+    });
+
+    const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
+      zone: hostedZone,
+      recordName: "app",
+      target: route53.RecordTarget.fromAlias(
+        new targets.LoadBalancerTarget(fargateService.loadBalancer, {
+          evaluateTargetHealth: true,
+        }),
+      ),
+    });
+
+    // For inbound DNS resolution traffic
+    const route53InboundEndpointSecurityGroup = new ec2.SecurityGroup(
+      this,
+      "Route53InboundEndpointSecurityGroup",
+      {
+        vpc,
+        allowAllOutbound: true,
+        description: "Security group for Route 53 inbound endpoint",
+      },
+    );
+    route53InboundEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.tcp(53),
+    );
+    route53InboundEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.udp(53),
+    );
+
+    const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
+    new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
+      direction: "INBOUND",
+      // Two IP addresses for the endpoint are required
+      ipAddresses: [{ subnetId: subnetIds[0] }, { subnetId: subnetIds[1] }],
+      securityGroupIds: [route53InboundEndpointSecurityGroup.securityGroupId],
+    });
+
     fargateService.taskDefinition.executionRole?.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
     );
@@ -181,21 +224,6 @@ export class CdkStack extends cdk.Stack {
         resources: ["*"],
       }),
     );
-
-    const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
-      vpc,
-      zoneName: "doula-vpc.dhs.nj.gov",
-    });
-
-    const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
-      zone: hostedZone,
-      recordName: "app",
-      target: route53.RecordTarget.fromAlias(
-        new targets.LoadBalancerTarget(fargateService.loadBalancer, {
-          evaluateTargetHealth: true,
-        }),
-      ),
-    });
 
     // Create GitHub Actions IAM role for OIDC federation
     const githubActionsRole = new iam.Role(this, "GitHubActionsRole", {
