@@ -48,7 +48,7 @@
     "@types/jest": "30.0.0",
     "@types/node": "22.19.1",
     "@types/nodemailer": "7.0.4",
-    "@types/react": "19.2.6",
+    "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "aws-cdk": "2.1033.0",
     "aws-cdk-lib": "2.227.0",
