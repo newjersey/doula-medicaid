@@ -25,7 +25,7 @@ describe("ErrorMessage", () => {
         type: "required",
       },
     };
-    const customErrorMessages = [
+    const jsxErrorMessage = [
       {
         type: "required",
         message: (
@@ -36,11 +36,7 @@ describe("ErrorMessage", () => {
       },
     ];
     const element = render(
-      <ErrorMessage
-        name="testErrorMessage"
-        errors={errors}
-        customErrorMessages={customErrorMessages}
-      />,
+      <ErrorMessage name="testErrorMessage" errors={errors} jsxErrorMessage={jsxErrorMessage} />,
     );
     expect(element.container.textContent).toEqual("Fancy error message");
   });
@@ -52,7 +48,7 @@ describe("ErrorMessage", () => {
         message: "This will get overwritten",
       },
     };
-    const customErrorMessages = [
+    const jsxErrorMessage = [
       {
         type: "required",
         message: (
@@ -63,11 +59,7 @@ describe("ErrorMessage", () => {
       },
     ];
     const element = render(
-      <ErrorMessage
-        name="testErrorMessage"
-        errors={errors}
-        customErrorMessages={customErrorMessages}
-      />,
+      <ErrorMessage name="testErrorMessage" errors={errors} jsxErrorMessage={jsxErrorMessage} />,
     );
     expect(element.container.textContent).toEqual("Fancy error message");
   });
@@ -79,18 +71,14 @@ describe("ErrorMessage", () => {
         message: "Must have 10 digits",
       },
     };
-    const customErrorMessages = [
+    const jsxErrorMessage = [
       {
         type: "required",
         message: <p>This is required</p>,
       },
     ];
     render(
-      <ErrorMessage
-        name="testErrorMessage"
-        errors={errors}
-        customErrorMessages={customErrorMessages}
-      />,
+      <ErrorMessage name="testErrorMessage" errors={errors} jsxErrorMessage={jsxErrorMessage} />,
     );
     expect(screen.getByText("Must have 10 digits")).toBeInTheDocument();
   });
@@ -101,7 +89,7 @@ describe("ErrorMessage", () => {
         type: "minLength",
       },
     };
-    const customErrorMessages = [
+    const jsxErrorMessage = [
       {
         type: "required",
         message: <p>This is required</p>,
@@ -109,11 +97,7 @@ describe("ErrorMessage", () => {
     ];
     expect(() =>
       render(
-        <ErrorMessage
-          name="testErrorMessage"
-          errors={errors}
-          customErrorMessages={customErrorMessages}
-        />,
+        <ErrorMessage name="testErrorMessage" errors={errors} jsxErrorMessage={jsxErrorMessage} />,
       ),
     ).toThrow("Unexpected error with no message");
   });

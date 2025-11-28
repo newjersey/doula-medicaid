@@ -79,9 +79,6 @@ const PersonalDetailsStep1 = () => {
                 required
                 errors={errors}
                 register={register}
-                registerOptions={{
-                  required: `${inputNameToLabel["firstName"]} is required`,
-                }}
               />
             </div>
             <div className="tablet:grid-col-4">
@@ -98,9 +95,6 @@ const PersonalDetailsStep1 = () => {
                 required
                 errors={errors}
                 register={register}
-                registerOptions={{
-                  required: `${inputNameToLabel["lastName"]} is required`,
-                }}
               />
             </div>
           </Fieldset>
@@ -125,8 +119,7 @@ const PersonalDetailsStep1 = () => {
             required
             errors={errors}
             register={register}
-            registerOptions={{
-              required: `${inputNameToLabel["socialSecurityNumber"]} is required`,
+            additionalRegisterOptions={{
               pattern: {
                 value: /\d{3}-\d{2}-\d{4}/,
                 message: "Entered value does not match Social Security Number format",
@@ -149,8 +142,7 @@ const PersonalDetailsStep1 = () => {
             required
             errors={errors}
             register={register}
-            registerOptions={{
-              required: `${inputNameToLabel["email"]} is required`,
+            additionalRegisterOptions={{
               pattern: {
                 value: /\S+@\S+\.\S+/,
                 message: "Entered value does not match email format",
@@ -168,8 +160,7 @@ const PersonalDetailsStep1 = () => {
             required
             errors={errors}
             register={register}
-            registerOptions={{
-              required: `${inputNameToLabel["phoneNumber"]} is required`,
+            additionalRegisterOptions={{
               pattern: {
                 value: /\d{3}-\d{3}-\d{4}/,
                 message: "Entered value does not match phone number format",

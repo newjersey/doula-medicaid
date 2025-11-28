@@ -210,7 +210,7 @@ describe("DoulaRadio", () => {
           },
         }}
         register={jest.fn()}
-        customErrorMessages={[
+        jsxErrorMessage={[
           {
             type: "required",
             message: (

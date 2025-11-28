@@ -81,7 +81,7 @@ export const DoulaDateInput = <T extends FieldValues>(props: DoulaDateInputProps
             hideErrorMessage
             errors={props.errors}
             register={props.register}
-            registerOptions={{
+            additionalRegisterOptions={{
               required: `${formatInputErrorLabel("Day", props.errorLabelPrefix)} is required`,
               valueAsNumber: true,
               min: {
@@ -116,7 +116,7 @@ export const DoulaDateInput = <T extends FieldValues>(props: DoulaDateInputProps
             hideErrorMessage
             errors={props.errors}
             register={props.register}
-            registerOptions={{
+            additionalRegisterOptions={{
               required: `${formatInputErrorLabel("Year", props.errorLabelPrefix)} is required`,
               valueAsNumber: true,
               validate: (value) => {

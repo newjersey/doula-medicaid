@@ -4,12 +4,7 @@ import {
 } from "@/app/form/(formSteps)/components/ErrorMessage";
 import { Hint } from "@/app/form/(formSteps)/components/Hint";
 import { formatDescribedBy } from "@/app/form/(formSteps)/components/utils/doulaInput";
-import {
-  Label,
-  TextInputMask,
-  type TextInputMaskProps,
-  type ValidationStatus,
-} from "@trussworks/react-uswds";
+import { Label, TextInputMask, type TextInputMaskProps } from "@trussworks/react-uswds";
 import type {
   FieldErrors,
   FieldPath,
@@ -30,8 +25,8 @@ interface DoulaTextInputMaskProps<T extends FieldValues>
   required?: boolean;
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
-  registerOptions?: RegisterOptions<T>;
-  customErrorMessages?: Array<CustomErrorMessage>;
+  additionalRegisterOptions?: RegisterOptions<T>;
+  jsxErrorMessage?: Array<CustomErrorMessage>;
 }
 
 const DoulaTextInputMask = <T extends FieldValues>(props: DoulaTextInputMaskProps<T>) => {
@@ -44,8 +39,8 @@ const DoulaTextInputMask = <T extends FieldValues>(props: DoulaTextInputMaskProp
     required,
     errors,
     register,
-    registerOptions,
-    customErrorMessages,
+    additionalRegisterOptions,
+    jsxErrorMessage,
     ...otherProps
   } = props;
   const hasError = errors !== undefined && errors[name] !== undefined;
@@ -57,10 +52,12 @@ const DoulaTextInputMask = <T extends FieldValues>(props: DoulaTextInputMaskProp
   }
 
   if (hasError) {
-    const validationStatusError: ValidationStatus = "error";
-    internallySetProps.validationStatus = errors[name] ? validationStatusError : undefined;
-    internallySetProps["aria-invalid"] = errors[name] ? ("true" as const) : ("false" as const);
+    internallySetProps.validationStatus = "error";
+    internallySetProps["aria-invalid"] = "true" as const;
   }
+
+  // To override this, pass in additionalRegisterOptions
+  const defaultRegisterOptions = required === true ? { required: `${label} is required` } : {};
 
   return (
     <>
@@ -74,11 +71,9 @@ const DoulaTextInputMask = <T extends FieldValues>(props: DoulaTextInputMaskProp
         required={required}
         {...internallySetProps}
         {...otherProps}
-        {...register(name, registerOptions)}
+        {...register(name, { ...defaultRegisterOptions, ...additionalRegisterOptions })}
       />
-      {hasError && (
-        <ErrorMessage name={name} errors={errors} customErrorMessages={customErrorMessages} />
-      )}
+      {hasError && <ErrorMessage name={name} errors={errors} jsxErrorMessage={jsxErrorMessage} />}
     </>
   );
 };

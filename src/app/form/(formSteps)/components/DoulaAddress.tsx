@@ -39,7 +39,7 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
             required
             errors={props.errors}
             register={props.register}
-            registerOptions={{
+            additionalRegisterOptions={{
               required: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.streetAddress1], props.errorLabelPrefix)} is required`,
             }}
           />
@@ -66,7 +66,7 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
             required
             errors={props.errors}
             register={props.register}
-            registerOptions={{
+            additionalRegisterOptions={{
               required: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.city], props.errorLabelPrefix)} is required`,
             }}
           />
@@ -107,7 +107,7 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
             required
             errors={props.errors}
             register={props.register}
-            registerOptions={{
+            additionalRegisterOptions={{
               required: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix, true)} is required`,
               minLength: {
                 value: 5,

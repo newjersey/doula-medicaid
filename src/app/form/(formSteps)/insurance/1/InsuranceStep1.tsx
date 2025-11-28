@@ -118,8 +118,7 @@ const InsuranceStep1 = () => {
               register={register}
               errors={errors}
               inputMode="numeric"
-              registerOptions={{
-                required: `${inputNameToLabel["insuranceOccurenceAmount"]} is required`,
+              additionalRegisterOptions={{
                 min: {
                   value: 1000000,
                   message:
@@ -137,8 +136,7 @@ const InsuranceStep1 = () => {
               register={register}
               errors={errors}
               inputMode="numeric"
-              registerOptions={{
-                required: `${inputNameToLabel["insuranceAggregateAmount"]} is required`,
+              additionalRegisterOptions={{
                 min: {
                   value: 3000000,
                   message:
