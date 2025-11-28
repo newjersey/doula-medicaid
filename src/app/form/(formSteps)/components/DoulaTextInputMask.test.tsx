@@ -15,7 +15,7 @@ describe("DoulaTextInputMask", () => {
       />,
     );
 
-    expect(mockRegister).toHaveBeenCalledWith("testInput", undefined);
+    expect(mockRegister).toHaveBeenCalledWith("testInput", {});
     const input = screen.getByRole("textbox", { name: "Test label" });
     expect(input).toBeInTheDocument();
     expect(input).not.toHaveAttribute("aria-invalid");
@@ -24,9 +24,6 @@ describe("DoulaTextInputMask", () => {
 
   it("sets appropriate attributes when the input is required", () => {
     const mockRegister = jest.fn();
-    const registerOptions = {
-      required: "This field is required",
-    };
     render(
       <DoulaTextInputMask
         name="testInput"
@@ -36,10 +33,9 @@ describe("DoulaTextInputMask", () => {
         pattern="\d{3}-\d{3}-\d{4}"
         required
         register={mockRegister}
-        registerOptions={registerOptions}
       />,
     );
-    expect(mockRegister).toHaveBeenCalledWith("testInput", registerOptions);
+    expect(mockRegister).toHaveBeenCalledWith("testInput", { required: "Test label is required" });
     const input = screen.getByRole("textbox", { name: "Test label *" });
     expect(input).toHaveAttribute("required");
     expect(input).not.toHaveAttribute("aria-invalid");
@@ -93,21 +89,21 @@ describe("DoulaTextInputMask", () => {
         errors={{
           testInput: {
             type: "required",
-            message: "This field is required",
+            message: "This field has a custom required error message",
           },
         }}
         register={jest.fn()}
-        registerOptions={{
-          required: "This field is required",
+        additionalRegisterOptions={{
+          required: "This field has a custom required error message",
         }}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label *" });
-    expect(input).toHaveAccessibleDescription("This field is required");
+    expect(input).toHaveAccessibleDescription("This field has a custom required error message");
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("shows a custom error message if provided", async () => {
+  it("shows a jsx error message if provided", async () => {
     render(
       <DoulaTextInputMask
         name="testInput"
@@ -119,14 +115,14 @@ describe("DoulaTextInputMask", () => {
         errors={{
           testInput: {
             type: "required",
-            message: "This field is required",
+            message: "This field has a custom required error message",
           },
         }}
         register={jest.fn()}
-        registerOptions={{
-          required: "This field is required",
+        additionalRegisterOptions={{
+          required: "This field has a custom required error message",
         }}
-        customErrorMessages={[
+        jsxErrorMessage={[
           {
             type: "required",
             message: (
@@ -172,34 +168,6 @@ describe("DoulaTextInputMask", () => {
         <DoulaTextInputMask
           name="testInput"
           label="Test label"
-          inputMode="numeric"
-          mask="___-___-____"
-          pattern="\d{3}-\d{3}-\d{4}"
-          required
-          errors={{
-            testInput: {
-              type: "required",
-              message: "This field is required",
-            },
-          }}
-          register={jest.fn()}
-          registerOptions={{
-            required: "This field is required",
-          }}
-        />
-      </>,
-    );
-    const input = screen.getByRole("textbox", { name: "Test label *" });
-    expect(input).toHaveAccessibleDescription("This field is required");
-    expect(input).toHaveAttribute("aria-invalid", "true");
-  });
-
-  it("describes the input with the hint, the error message, and the aria-describedby when all are present", () => {
-    render(
-      <>
-        <DoulaTextInputMask
-          name="testInput"
-          label="Test label"
           hint="Test hint"
           aria-describedby="anotherDescriptonID"
           inputMode="numeric"
@@ -209,12 +177,12 @@ describe("DoulaTextInputMask", () => {
           errors={{
             testInput: {
               type: "required",
-              message: "This field is required",
+              message: "This field has a custom required error message",
             },
           }}
           register={jest.fn()}
-          registerOptions={{
-            required: "This field is required",
+          additionalRegisterOptions={{
+            required: "This field has a custom required error message",
           }}
         />
         <span id="anotherDescriptonID">Additional description</span>
@@ -222,7 +190,7 @@ describe("DoulaTextInputMask", () => {
     );
     const input = screen.getByRole("textbox", { name: "Test label *" });
     expect(input).toHaveAccessibleDescription(
-      "This field is required Test hint Additional description",
+      "This field has a custom required error message Test hint Additional description",
     );
   });
 });

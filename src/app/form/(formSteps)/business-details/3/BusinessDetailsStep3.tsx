@@ -35,23 +35,21 @@ const BusinessDetailsStep3 = () => {
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
-          <div>
-            <h2 className="font-heading-md">
-              Mark Yes if these apply to your business, otherwise mark No.
-            </h2>
-            <p className="usa-hint">
-              Most individual doulas with a Sole Proprietorship business answer “No” to these
-              questions.
-            </p>
-            <DoulaYesNoRadio
-              name="hasBeenExcludedFromMedicaid"
-              value={hasBeenExcludedFromMedicaid}
-              label="Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP?"
-              required
-              register={register}
-              errors={errors}
-            />
-          </div>
+          <h2 className="font-heading-md">
+            Mark Yes if these apply to your business, otherwise mark No.
+          </h2>
+          <p className="usa-hint">
+            Most individual doulas with a Sole Proprietorship business answer “No” to these
+            questions.
+          </p>
+          <DoulaYesNoRadio
+            name="hasBeenExcludedFromMedicaid"
+            value={hasBeenExcludedFromMedicaid}
+            label="Have you ever been excluded or suspended by OIG (Office of Inspector General) from participation in Medicare, Medicaid/NJ FamilyCare, or CHIP?"
+            required
+            register={register}
+            errors={errors}
+          />
         </div>
       </div>
       <HorizontalDivider />

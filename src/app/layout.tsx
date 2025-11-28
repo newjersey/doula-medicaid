@@ -13,7 +13,8 @@ import Image from "next/image";
 
 export const metadata: Metadata = {
   title: APPLICATION_NAME,
-  description: "Prototype",
+  description:
+    "Start your Fee-for-Service (FFS) application to become an NJ FamilyCare community doula",
 };
 
 export default function RootLayout({

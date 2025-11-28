@@ -24,17 +24,17 @@
     "url": "https://github.com/newjersey"
   },
   "dependencies": {
-    "@newjersey/njwds": "2.6.1",
+    "@newjersey/njwds": "2.7.0",
     "@next/third-parties": "^15.5.6",
     "@trussworks/react-uswds": "10.2.0",
     "jiti": "2.6.1",
     "jszip": "3.10.1",
     "next": "15.5.6",
-    "node-poppler": "8.0.5",
+    "node-poppler": "8.0.6",
     "pdf-lib": "1.17.1",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "react-hook-form": "7.66.0",
+    "react-hook-form": "7.66.1",
     "react-router": "7.9.6"
   },
   "devDependencies": {
@@ -47,12 +47,12 @@
     "@testing-library/user-event": "14.6.1",
     "@types/jest": "30.0.0",
     "@types/node": "22.19.1",
-    "@types/nodemailer": "7.0.3",
-    "@types/react": "19.2.5",
+    "@types/nodemailer": "7.0.4",
+    "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "aws-cdk": "2.1031.2",
-    "aws-cdk-lib": "2.224.0",
-    "cypress": "15.6.0",
+    "aws-cdk": "2.1033.0",
+    "aws-cdk-lib": "2.229.0",
+    "cypress": "15.7.0",
     "eslint": "9.39.1",
     "eslint-config-next": "15.5.6",
     "eslint-import-resolver-typescript": "4.4.4",
@@ -68,7 +68,7 @@
     "ts-jest": "29.4.5",
     "tsx": "^4.20.6",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.46.4"
+    "typescript-eslint": "8.48.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

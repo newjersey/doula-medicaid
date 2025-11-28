@@ -15,15 +15,15 @@ export type CustomErrorMessage = {
 export interface ErrorMessageProps<T extends FieldValues> {
   name: FieldPath<T>;
   errors: FieldErrors<T>;
-  customErrorMessages?: Array<CustomErrorMessage>;
+  jsxErrorMessage?: Array<CustomErrorMessage>;
 }
 
 const getMessage = <T extends FieldValues>(
   error: NonNullable<FieldErrors<T>[FieldPath<T>]>,
-  customErrorMessages: Array<CustomErrorMessage> | undefined,
+  jsxErrorMessage: Array<CustomErrorMessage> | undefined,
 ) => {
-  if (customErrorMessages) {
-    for (const customErrorMessage of customErrorMessages) {
+  if (jsxErrorMessage) {
+    for (const customErrorMessage of jsxErrorMessage) {
       if (error.type === customErrorMessage.type) {
         return customErrorMessage.message;
       }
@@ -45,7 +45,7 @@ export const ErrorMessage = <T extends FieldValues>(props: ErrorMessageProps<T>)
     <>
       {error && (
         <span id={formatErrorMessageId(props.name)} className="usa-error-message">
-          {getMessage(error, props.customErrorMessages)}
+          {getMessage(error, props.jsxErrorMessage)}
         </span>
       )}
     </>

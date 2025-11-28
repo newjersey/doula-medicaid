@@ -30,14 +30,6 @@ describe("Page 21 - disclosure of ownership and control interest statement", () 
       description: "no ownership change within the next year",
       pdfKey: "fd452ownershipchangewithinyearno" as const,
     },
-    {
-      description: "no bankruptcy in the last 7 years",
-      pdfKey: "fd452filedbankruptcypastsevenyearsno" as const,
-    },
-    {
-      description: "no possibility of filing bankruptcy in the next year",
-      pdfKey: "fd452filedbankruptcywithinyearno" as const,
-    },
   ])("checks $description", ({ pdfKey }) => {
     expectNoDuplicateTest<PdfFfsIndividualPage21>(pdfKey, testedPdfKeys);
     const pdfFields = mapFfsIndividualFields(
@@ -46,5 +38,97 @@ describe("Page 21 - disclosure of ownership and control interest statement", () 
       }),
     );
     expect(pdfFields[pdfKey]).toEqual(true);
+  });
+
+  describe("Filed for bankruptcy in the past 7 years", () => {
+    it("throws an UnexpectedFormDataError when hasFiledBankruptcy is true but pastBankruptcyDate is null", () => {
+      const testFunction = () =>
+        mapFfsIndividualFields(
+          generateFormData({
+            hasFiledBankruptcy: true,
+            pastBankruptcyDate: null,
+          }),
+        );
+      expect(testFunction).toThrow(UnexpectedFormDataError);
+      expect(testFunction).toThrow("hasFiledBankruptcy true, but pastBankruptcyDate is null.");
+    });
+
+    it("checks the No checkbox when formData.hasFiledBankruptcy is false", () => {
+      const yesPdfKey = "fd452filedbankruptcypastsevenyearsyes";
+      const noPdfKey = "fd452filedbankruptcypastsevenyearsno";
+      const datePdfKey = "fd452filedbankruptcypastsevenyearsdate";
+      expectNoDuplicateTest<PdfFfsIndividualPage21>(noPdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          hasFiledBankruptcy: false,
+        }),
+      );
+      expect(pdfFields[noPdfKey]).toEqual(true);
+      expect(pdfFields[yesPdfKey]).toEqual(undefined);
+      expect(pdfFields[datePdfKey]).toEqual(undefined);
+    });
+
+    it("checks the Yes checkbox and fills in the date when formData.hasFiledBankruptcy is true", () => {
+      const yesPdfKey = "fd452filedbankruptcypastsevenyearsyes";
+      const noPdfKey = "fd452filedbankruptcypastsevenyearsno";
+      const datePdfKey = "fd452filedbankruptcypastsevenyearsdate";
+      expectNoDuplicateTest<PdfFfsIndividualPage21>(yesPdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage21>(datePdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          hasFiledBankruptcy: true,
+          pastBankruptcyDate: new Date("1/2/2024"),
+        }),
+      );
+      expect(pdfFields[yesPdfKey]).toEqual(true);
+      expect(pdfFields[noPdfKey]).toEqual(undefined);
+      expect(pdfFields[datePdfKey]).toEqual("01/02/2024");
+    });
+  });
+
+  describe("Possibility of filing for bankruptcy in the next year", () => {
+    it("throws an UnexpectedFormDataError when mightFileBankruptcy is true but futureBankruptcyDate is null", () => {
+      const testFunction = () =>
+        mapFfsIndividualFields(
+          generateFormData({
+            mightFileBankruptcy: true,
+            futureBankruptcyDate: null,
+          }),
+        );
+      expect(testFunction).toThrow(UnexpectedFormDataError);
+      expect(testFunction).toThrow("mightFileBankruptcy true, but futureBankruptcyDate is null.");
+    });
+
+    it("checks the No checkbox when formData.mightFileBankruptcy is false", () => {
+      const yesPdfKey = "fd452filedbankruptcywithinyearyes";
+      const noPdfKey = "fd452filedbankruptcywithinyearno";
+      const datePdfKey = "fd452filedbankruptcywithinyeardate";
+      expectNoDuplicateTest<PdfFfsIndividualPage21>(noPdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          mightFileBankruptcy: false,
+        }),
+      );
+      expect(pdfFields[noPdfKey]).toEqual(true);
+      expect(pdfFields[yesPdfKey]).toEqual(undefined);
+      expect(pdfFields[datePdfKey]).toEqual(undefined);
+    });
+
+    it("checks the Yes checkbox and fills in the date when formData.mightFileBankruptcy is true", () => {
+      const yesPdfKey = "fd452filedbankruptcywithinyearyes";
+      const noPdfKey = "fd452filedbankruptcywithinyearno";
+      const datePdfKey = "fd452filedbankruptcywithinyeardate";
+      expectNoDuplicateTest<PdfFfsIndividualPage21>(yesPdfKey, testedPdfKeys);
+      expectNoDuplicateTest<PdfFfsIndividualPage21>(datePdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(
+        generateFormData({
+          mightFileBankruptcy: true,
+          futureBankruptcyDate: new Date("1/2/2026"),
+        }),
+      );
+      expect(pdfFields[yesPdfKey]).toEqual(true);
+      expect(pdfFields[noPdfKey]).toEqual(undefined);
+      expect(pdfFields[datePdfKey]).toEqual("01/02/2026");
+    });
   });
 });

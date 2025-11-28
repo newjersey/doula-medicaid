@@ -1,0 +1,22 @@
+name: deploy-staging-to-production
+
+on: workflow_dispatch
+
+# Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  merge-staging-to-production:
+    uses: ./.github/workflows/_merge_branch.yml
+    with:
+      from_branch: staging
+      into_branch: production
+
+  # By default, a push by github actions does not trigger downstream actions https://github.com/ad-m/github-push-action/issues/32
+  # So, the push does not automatically trigger production deploy
+  deploy-prod:
+    needs: [merge-staging-to-production]
+    uses: ./.github/workflows/deploy_prod.yml
+    secrets: inherit

@@ -4,8 +4,8 @@ import {
   businessAddressFields,
   differentBusinessAddressSameAsOtherAddress,
   mailingBusinessAddressSameAsOtherAddress,
-  maximalTestFields,
-  minimalTestFields,
+  path1TestFields,
+  path2TestFields,
 } from "@/app/form/(formSteps)/business-details/1/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
@@ -89,7 +89,7 @@ describe("<BusinessDetailsStep1 />", () => {
         const renderFunction = getRenderWithExistingData(mailingAddress);
         await testSaveFieldsToDataStore(
           [mailingBusinessAddressSameAsOtherAddress],
-          minimalTestFields,
+          path1TestFields,
           renderFunction,
           screen,
         );
@@ -109,7 +109,7 @@ describe("<BusinessDetailsStep1 />", () => {
         const renderFunction = getRenderWithExistingData(mailingAddress);
         await testSaveFieldsToDataStore(
           [differentBusinessAddressSameAsOtherAddress, ...businessAddressFields],
-          maximalTestFields,
+          path2TestFields,
           renderFunction,
           screen,
         );
@@ -121,7 +121,7 @@ describe("<BusinessDetailsStep1 />", () => {
         const renderFunction = getRenderWithExistingData(mailingAddress);
         await testRequiredField(
           mailingBusinessAddressSameAsOtherAddress,
-          minimalTestFields,
+          path1TestFields,
           renderFunction,
           screen,
         );
@@ -131,7 +131,7 @@ describe("<BusinessDetailsStep1 />", () => {
         "when business address is different and $dataStoreKey is not filled in",
         async (field) => {
           const renderFunction = getRenderWithExistingData(mailingAddress);
-          await testRequiredField(field, maximalTestFields, renderFunction, screen);
+          await testRequiredField(field, path2TestFields, renderFunction, screen);
         },
       );
     });
@@ -201,7 +201,7 @@ describe("<BusinessDetailsStep1 />", () => {
       });
     });
 
-    it.each(businessAddressFields.filter((field) => field.required))(
+    it.each(businessAddressFields)(
       "conditionally renders $dataStoreKey based on businessAddressSameAsOtherAddress",
       async (field) => {
         const renderFunction = getRenderWithExistingData(mailingAddress);

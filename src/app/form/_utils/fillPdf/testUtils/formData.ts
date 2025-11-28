@@ -84,6 +84,10 @@ const testBusinessDetailsFormData: BusinessDetailsFormData = {
   businessState: AddressState.NJ,
   businessZip: "08000",
   hasDisclosableEvent: false,
+  hasFiledBankruptcy: false,
+  pastBankruptcyDate: null,
+  mightFileBankruptcy: false,
+  futureBankruptcyDate: null,
 };
 
 const testFormData: FormData = {

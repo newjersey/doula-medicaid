@@ -1,4 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
+import { formatDate } from "@/app/form/_utils/fillPdf/formatters";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 21 - disclosure of ownership and control interest statement
@@ -37,17 +38,52 @@ export interface PdfFfsIndividualPage21 {
   fd452filedbankruptcywithinyeardate: string;
 }
 
-export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPage21> => {
-  if (formData.isSupportedSoleProprietor === true) {
+const getPastBankruptcyFields = (formData: FormData) => {
+  if (formData.hasFiledBankruptcy === true) {
+    if (formData.pastBankruptcyDate === null) {
+      throw new UnexpectedFormDataError(
+        `hasFiledBankruptcy true, but pastBankruptcyDate is ${formData.pastBankruptcyDate}.`,
+      );
+    }
     return {
-      fd452ownershiphealthcareproviderno: true,
-      fd452ownershipchangeno: true,
-      fd452ownershipchangewithinyearno: true,
-      fd452filedbankruptcypastsevenyearsno: true,
-      fd452filedbankruptcywithinyearno: true,
+      fd452filedbankruptcypastsevenyearsyes: true,
+      fd452filedbankruptcypastsevenyearsdate: formatDate(formData.pastBankruptcyDate),
     };
   }
-  throw new UnexpectedFormDataError(
-    `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
-  );
+  return {
+    fd452filedbankruptcypastsevenyearsno: true,
+  };
+};
+
+const getFutureBankruptcyFields = (formData: FormData) => {
+  if (formData.mightFileBankruptcy === true) {
+    if (formData.futureBankruptcyDate === null) {
+      throw new UnexpectedFormDataError(
+        `mightFileBankruptcy true, but futureBankruptcyDate is ${formData.futureBankruptcyDate}.`,
+      );
+    }
+    return {
+      fd452filedbankruptcywithinyearyes: true,
+      fd452filedbankruptcywithinyeardate: formatDate(formData.futureBankruptcyDate),
+    };
+  }
+  return {
+    fd452filedbankruptcywithinyearno: true,
+  };
+};
+
+export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPage21> => {
+  if (formData.isSupportedSoleProprietor !== true) {
+    throw new UnexpectedFormDataError(
+      `Expected isSupportedSoleProprietor to be true, is instead ${formData.isSupportedSoleProprietor}.`,
+    );
+  }
+
+  return {
+    fd452ownershiphealthcareproviderno: true,
+    fd452ownershipchangeno: true,
+    fd452ownershipchangewithinyearno: true,
+    ...getPastBankruptcyFields(formData),
+    ...getFutureBankruptcyFields(formData),
+  };
 };

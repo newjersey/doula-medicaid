@@ -4,7 +4,6 @@ export const yesIsSoleProprietor: TestField = createTestField({
   name: "Yes",
   dataStoreKey: "isSoleProprietor",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "true",
   withinGroupName:
@@ -15,7 +14,6 @@ export const noIsSoleProprietor: TestField = createTestField({
   name: "No",
   dataStoreKey: "isSoleProprietor",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "false",
   withinGroupName:

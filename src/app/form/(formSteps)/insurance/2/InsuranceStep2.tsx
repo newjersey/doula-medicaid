@@ -64,9 +64,6 @@ const InsuranceStep2 = () => {
               required
               errors={errors}
               register={register}
-              registerOptions={{
-                required: `${orderedInputNameToLabel["insuranceCarrierName"]} is required`,
-              }}
             />
           </div>
           <div className="tablet:grid-col-6">
@@ -76,9 +73,6 @@ const InsuranceStep2 = () => {
               required
               errors={errors}
               register={register}
-              registerOptions={{
-                required: `${orderedInputNameToLabel["insurancePolicyNumber"]} is required`,
-              }}
             />
           </div>
         </div>

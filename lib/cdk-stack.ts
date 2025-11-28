@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import { aws_route53resolver as route53resolver } from "aws-cdk-lib";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecr from "aws-cdk-lib/aws-ecr";
@@ -6,6 +7,8 @@ import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { Protocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as route53 from "aws-cdk-lib/aws-route53";
+import * as targets from "aws-cdk-lib/aws-route53-targets";
 
 const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
@@ -79,7 +82,7 @@ export class CdkStack extends cdk.Stack {
     );
 
     fargateService.targetGroup.configureHealthCheck({
-      path: "/api/health",
+      path: "/humanservices/dmahs/info/doulahelp/api/health",
       port: "3000",
       protocol: Protocol.HTTP,
       healthyHttpCodes: "200",
@@ -139,6 +142,48 @@ export class CdkStack extends cdk.Stack {
       ec2.Port.tcp(443),
       "Allow ECS service to access VPC endpoints",
     );
+
+    const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
+      vpc,
+      zoneName: `${envName}-doula-vpc.dhs.nj.gov`,
+    });
+
+    const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
+      zone: hostedZone,
+      recordName: "app",
+      target: route53.RecordTarget.fromAlias(
+        new targets.LoadBalancerTarget(fargateService.loadBalancer, {
+          evaluateTargetHealth: true,
+        }),
+      ),
+    });
+
+    // For inbound DNS resolution traffic
+    const route53InboundEndpointSecurityGroup = new ec2.SecurityGroup(
+      this,
+      "Route53InboundEndpointSecurityGroup",
+      {
+        vpc,
+        allowAllOutbound: true,
+        description: "Security group for Route 53 inbound endpoint",
+      },
+    );
+    route53InboundEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.tcp(53),
+    );
+    route53InboundEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.udp(53),
+    );
+
+    const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
+    new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
+      direction: "INBOUND",
+      // Two IP addresses for the endpoint are required
+      ipAddresses: [{ subnetId: subnetIds[0] }, { subnetId: subnetIds[1] }],
+      securityGroupIds: [route53InboundEndpointSecurityGroup.securityGroupId],
+    });
 
     fargateService.taskDefinition.executionRole?.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
@@ -211,19 +256,19 @@ export class CdkStack extends cdk.Stack {
 
     // CloudFormation Outputs
     new cdk.CfnOutput(this, "LoadBalancerUrl", {
-      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}`,
+      value: `http${isHttps ? "s" : ""}://${aRecord.domainName}`,
       description: "URL of the Internal Application Load Balancer (accessible from within VPC)",
       exportName: "DoulaAssistantLoadBalancerUrl",
     });
 
     new cdk.CfnOutput(this, "HealthCheckUrl", {
-      value: `http${isHttps ? "s" : ""}://${fargateService.loadBalancer.loadBalancerDnsName}/api/health`,
+      value: `http${isHttps ? "s" : ""}://${aRecord.domainName}/humanservices/dmahs/info/doulahelp/api/health`,
       description: "URL for the health check endpoint (accessible from within VPC)",
       exportName: "DoulaAssistantHealthCheckUrl",
     });
 
     new cdk.CfnOutput(this, "LoadBalancerDnsName", {
-      value: fargateService.loadBalancer.loadBalancerDnsName,
+      value: aRecord.domainName,
       description: "Load Balancer DNS name for DNS configuration",
       exportName: "DoulaAssistantLoadBalancerDnsName",
     });

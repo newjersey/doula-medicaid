@@ -1,0 +1,22 @@
+name: deploy-main-to-staging
+
+on: workflow_dispatch
+
+# Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  merge-main-to-staging:
+    uses: ./.github/workflows/_merge_branch.yml
+    with:
+      from_branch: main
+      into_branch: staging
+
+  # By default, a push by github actions does not trigger downstream actions https://github.com/ad-m/github-push-action/issues/32
+  # So, the push does not automatically trigger staging deploy
+  deploy-staging:
+    needs: [merge-main-to-staging]
+    uses: ./.github/workflows/deploy_staging.yml
+    secrets: inherit

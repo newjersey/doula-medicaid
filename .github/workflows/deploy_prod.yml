@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "production"
+  workflow_call:
 
 # Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 permissions:
@@ -30,7 +31,7 @@ jobs:
     uses: ./.github/workflows/end_to_end_test_flags_off.yml
 
   deploy-prod:
-    needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
+    needs: [lint, typecheck, prettier, unit-tests, end-to-end-test, end-to-end-test-flags-off]
     uses: ./.github/workflows/_deploy.yml
     secrets:
       aws_account_id: ${{ secrets.AWS_ACCOUNT_ID_PROD }}

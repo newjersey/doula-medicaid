@@ -38,7 +38,6 @@ export const yesDoulaTrainingInPerson: TestField = createTestField({
   name: "Yes, in person or hybrid",
   dataStoreKey: "isDoulaTrainingInPerson",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "true",
   withinGroupName: "Did you attend your doula training classes in person? Select one *",
@@ -48,7 +47,6 @@ export const noDoulaTrainingInPerson: TestField = createTestField({
   name: "No, it was virtual",
   dataStoreKey: "isDoulaTrainingInPerson",
   required: true,
-  alternateRequiredFieldError: "This question is required",
   role: "radio",
   testValue: "false",
   withinGroupName: "Did you attend your doula training classes in person? Select one *",
@@ -130,13 +128,13 @@ export const trainingInstructorFields: TestField[] = createTestFields([
   },
 ]);
 
-export const minimalTestFields = [
+export const path1TestFields = [
   childrensFuturesTrainingOrganization,
   noDoulaTrainingInPerson,
   ...trainingInstructorFields,
 ];
 
-export const maximalTestFields = [
+export const path2TestFields = [
   noneTrainingOrganization,
   nameOfTrainingOrganization,
   yesDoulaTrainingInPerson,

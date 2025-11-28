@@ -10,7 +10,6 @@ import {
   Label,
   TextInput,
   type TextInputProps,
-  type ValidationStatus,
 } from "@trussworks/react-uswds";
 import type {
   ChangeHandler,
@@ -38,8 +37,8 @@ interface DoulaTextInputProps<T extends FieldValues>
   hideErrorMessage?: boolean;
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
-  registerOptions?: RegisterOptions<T>;
-  customErrorMessages?: Array<CustomErrorMessage>;
+  additionalRegisterOptions?: RegisterOptions<T>;
+  jsxErrorMessage?: Array<CustomErrorMessage>;
 }
 
 const wrapRegisterProps = <T extends FieldValues>(
@@ -74,8 +73,8 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
     errors,
     hideErrorMessage,
     register,
-    registerOptions,
-    customErrorMessages,
+    additionalRegisterOptions,
+    jsxErrorMessage,
     ...otherProps
   } = props;
 
@@ -88,10 +87,13 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
   }
 
   if (hasError) {
-    const validationStatusError: ValidationStatus = "error";
-    internallySetProps.validationStatus = errors[name] ? validationStatusError : undefined;
-    internallySetProps["aria-invalid"] = errors[name] ? ("true" as const) : ("false" as const);
+    internallySetProps.validationStatus = "error";
+    internallySetProps["aria-invalid"] = "true" as const;
   }
+
+  // To override this, pass in additionalRegisterOptions
+  const defaultRegisterOptions = required === true ? { required: `${label} is required` } : {};
+
   let input = (
     <TextInput
       id={name}
@@ -99,7 +101,10 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
       required={required}
       {...internallySetProps}
       {...otherProps}
-      {...wrapRegisterProps(register(name, registerOptions), numericOnly)}
+      {...wrapRegisterProps(
+        register(name, { ...defaultRegisterOptions, ...additionalRegisterOptions }),
+        numericOnly,
+      )}
     />
   );
 
@@ -120,7 +125,7 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
       {hint !== undefined && <Hint name={name} hint={hint} />}
       {input}
       {hasError && hideErrorMessage !== true && (
-        <ErrorMessage name={name} errors={errors} customErrorMessages={customErrorMessages} />
+        <ErrorMessage name={name} errors={errors} jsxErrorMessage={jsxErrorMessage} />
       )}
     </>
   );
