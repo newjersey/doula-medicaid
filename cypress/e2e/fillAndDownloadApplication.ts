@@ -20,7 +20,7 @@ import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/f
 import { TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
-export const formPages = [
+export const baseFormPages = [
   { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
   { url: "/form/screening/2", fields: screening2TestFields, titleName: "Screening 2 of 3" },
   { url: "/form/screening/3", fields: screening3TestFields, titleName: "Screening 3 of 3" },
@@ -60,7 +60,7 @@ export const formPages = [
 ];
 
 export const fillAndDownloadApplication = (
-  formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
+  baseFormPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
 ) => {
   /**
    * Test one field per page, and one of every type of field. Leaving unit individual-page tests to
@@ -82,17 +82,16 @@ export const fillAndDownloadApplication = (
     "W9_Name See Specific Instructions on page 2": legalName, // page 26
   };
 
-  // if flagOff don't test legal, else test legal
   cy.visit("/");
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
   const titleEnding = " | NJ Doula Assistant";
   cy.title().should("eq", "Welcome" + titleEnding);
   cy.contains("Start now").click();
 
-  for (const formPage of formPages) {
+  for (const formPage of baseFormPages) {
     cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
     cy.window().its("scrollY").should("equal", 0); // The page view should be at the top
-    cy.title().should("eq", `${formPage.titleName + titleEnding}`);
+    cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
 
     cy.get("form").within(() => {
       for (const field of formPage.fields) {
@@ -114,11 +113,11 @@ export const fillAndDownloadApplication = (
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/finish`);
 
   // Test clicking previous, and prepopulation
-  for (const formPage of formPages.reverse()) {
+  for (const formPage of baseFormPages.reverse()) {
     cy.contains("Previous").click();
     cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
     cy.window().its("scrollY").should("equal", 0);
-    cy.title().should("eq", `${formPage.titleName + titleEnding}`);
+    cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
 
     cy.get("form").within(() => {
       for (const field of formPage.fields) {
@@ -137,7 +136,7 @@ export const fillAndDownloadApplication = (
     });
   }
 
-  for (const _ of formPages) {
+  for (const _ of baseFormPages) {
     cy.contains("Next").click();
   }
 
