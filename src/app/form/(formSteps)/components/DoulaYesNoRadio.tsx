@@ -20,7 +20,7 @@ const DoulaYesNoRadio = <T extends FieldValues>(props: DoulaYesNoRadioProps<T>) 
     value: "false",
   };
 
-  let customErrorMessages;
+  let jsxErrorMessage;
   let options = [optionYes, optionNo];
   if (invalidOption !== undefined) {
     const validValue = invalidOption.label === "Yes" ? "false" : "true";
@@ -32,7 +32,7 @@ const DoulaYesNoRadio = <T extends FieldValues>(props: DoulaYesNoRadioProps<T>) 
         },
       };
     });
-    customErrorMessages = [
+    jsxErrorMessage = [
       {
         type: "validate",
         message: invalidOption.message,
@@ -40,7 +40,7 @@ const DoulaYesNoRadio = <T extends FieldValues>(props: DoulaYesNoRadioProps<T>) 
     ];
   }
 
-  return <DoulaRadio options={options} customErrorMessages={customErrorMessages} {...otherProps} />;
+  return <DoulaRadio options={options} jsxErrorMessage={jsxErrorMessage} {...otherProps} />;
 };
 
 export default DoulaYesNoRadio;

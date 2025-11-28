@@ -110,7 +110,7 @@ const TrainingStep1 = () => {
                 aria-describedby="nameOfTrainingOrganizationAlert"
                 errors={errors}
                 register={register}
-                registerOptions={{
+                additionalRegisterOptions={{
                   required: `This question is required`,
                 }}
               />
@@ -188,9 +188,6 @@ const TrainingStep1 = () => {
                 required
                 errors={errors}
                 register={register}
-                registerOptions={{
-                  required: `${orderedInputNameToLabel["instructorFirstName"]} is required`,
-                }}
               />
             </div>
             <div className="tablet:grid-col-6">
@@ -200,9 +197,6 @@ const TrainingStep1 = () => {
                 required
                 errors={errors}
                 register={register}
-                registerOptions={{
-                  required: `${orderedInputNameToLabel["instructorLastName"]} is required`,
-                }}
               />
             </div>
           </div>
@@ -216,8 +210,7 @@ const TrainingStep1 = () => {
                 required
                 errors={errors}
                 register={register}
-                registerOptions={{
-                  required: `${orderedInputNameToLabel["instructorEmail"]} is required`,
+                additionalRegisterOptions={{
                   pattern: {
                     value: /\S+@\S+\.\S+/,
                     message: "Entered value does not match email format",
@@ -239,7 +232,7 @@ const TrainingStep1 = () => {
                 pattern="\d{3}-\d{3}-\d{4}"
                 errors={errors}
                 register={register}
-                registerOptions={{
+                additionalRegisterOptions={{
                   pattern: {
                     value: /\d{3}-\d{3}-\d{4}/,
                     message: "Entered value does not match phone number format",

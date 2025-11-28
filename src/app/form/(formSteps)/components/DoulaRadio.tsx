@@ -19,7 +19,7 @@ export interface DoulaRadioOption<T extends FieldValues> {
   additionalRegisterOptions?: RegisterOptions<T>;
 }
 
-type wrappedAttributes = "type" | "name" | "required";
+type wrappedAttributes = "name" | "required";
 type internallySetAttributes = "id" | "aria-invalid";
 
 export interface DoulaRadioProps<T extends FieldValues>
@@ -31,7 +31,7 @@ export interface DoulaRadioProps<T extends FieldValues>
   options: Array<DoulaRadioOption<T>>;
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
-  customErrorMessages?: Array<CustomErrorMessage>;
+  jsxErrorMessage?: Array<CustomErrorMessage>;
 }
 
 const getLegend = (label: React.ReactNode, isRequired: boolean | undefined) => {
@@ -58,7 +58,7 @@ const DoulaRadio = <T extends FieldValues>(props: DoulaRadioProps<T>) => {
     options,
     errors,
     register,
-    customErrorMessages,
+    jsxErrorMessage,
     ...otherProps
   } = props;
 
@@ -70,7 +70,7 @@ const DoulaRadio = <T extends FieldValues>(props: DoulaRadioProps<T>) => {
   }
 
   if (hasError) {
-    internallySetProps["aria-invalid"] = errors[name] ? ("true" as const) : ("false" as const);
+    internallySetProps["aria-invalid"] = "true" as const;
   }
 
   const defaultRegisterOptions = required === true ? { required: "This question is required" } : {};
@@ -97,9 +97,7 @@ const DoulaRadio = <T extends FieldValues>(props: DoulaRadioProps<T>) => {
           />
         );
       })}
-      {hasError && (
-        <ErrorMessage name={name} errors={errors} customErrorMessages={customErrorMessages} />
-      )}
+      {hasError && <ErrorMessage name={name} errors={errors} jsxErrorMessage={jsxErrorMessage} />}
     </Fieldset>
   );
 };

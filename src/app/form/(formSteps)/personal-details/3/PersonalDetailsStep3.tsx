@@ -60,14 +60,14 @@ const PersonalDetailsStep3 = () => {
               required
               errors={errors}
               register={register}
-              registerOptions={{
+              additionalRegisterOptions={{
                 required: true,
                 minLength: {
                   value: 10,
                   message: `${orderedInputNameToLabel["npiNumber"]} must have 10 digits`,
                 },
               }}
-              customErrorMessages={[
+              jsxErrorMessage={[
                 {
                   type: "required",
                   message: (
