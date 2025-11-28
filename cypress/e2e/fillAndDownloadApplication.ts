@@ -1,6 +1,7 @@
-import { minimalTestFields as businessDetails1TestFields } from "@/app/form/(formSteps)/business-details/1/testFields";
-import { minimalTestFields as businessDetails2TestFields } from "@/app/form/(formSteps)/business-details/2/testFields";
-import { minimalTestFields as businessDetails3TestFields } from "@/app/form/(formSteps)/business-details/3/testFields";
+import { path1TestFields as businessDetails1TestFields } from "@/app/form/(formSteps)/business-details/1/testFields";
+import { testFields as businessDetails2TestFields } from "@/app/form/(formSteps)/business-details/2/testFields";
+import { testFields as businessDetails3TestFields } from "@/app/form/(formSteps)/business-details/3/testFields";
+import { path1TestFields as businessDetails4TestFields } from "@/app/form/(formSteps)/business-details/4/testFields";
 import { testFields as insurance1TestFields } from "@/app/form/(formSteps)/insurance/1/testFields";
 import { testFields as insurance2TestFields } from "@/app/form/(formSteps)/insurance/2/testFields";
 import {
@@ -15,7 +16,7 @@ import { testFields as personalDetails3TestFields } from "@/app/form/(formSteps)
 import { testFields as screening1TestFields } from "@/app/form/(formSteps)/screening/1/testFields";
 import { testFields as screening2TestFields } from "@/app/form/(formSteps)/screening/2/testFields";
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
-import { minimalTestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
+import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
@@ -45,17 +46,22 @@ export const baseFormPages = [
   {
     url: "/form/business-details/1",
     fields: businessDetails1TestFields,
-    titleName: "Business details 1 of 3",
+    titleName: "Business details 1 of 4",
   },
   {
     url: "/form/business-details/2",
     fields: businessDetails2TestFields,
-    titleName: "Business details 2 of 3",
+    titleName: "Business details 2 of 4",
   },
   {
     url: "/form/business-details/3",
     fields: businessDetails3TestFields,
-    titleName: "Business details 3 of 3",
+    titleName: "Business details 3 of 4",
+  },
+  {
+    url: "/form/business-details/4",
+    fields: businessDetails4TestFields,
+    titleName: "Business details 4 of 4",
   },
 ];
 
@@ -84,8 +90,8 @@ export const fillAndDownloadApplication = (
 
   cy.visit("/");
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
-  const titleEnding = " | NJ Doula Assistant";
-  cy.title().should("eq", "Welcome" + titleEnding);
+  const titleEnding = "| NJ Doula Assistant";
+  cy.title().should("eq", "Welcome " + titleEnding);
   cy.contains("Start now").click();
 
   for (const formPage of baseFormPages) {
@@ -141,7 +147,7 @@ export const fillAndDownloadApplication = (
   }
 
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/finish`);
-  cy.title().should("eq", "Finish" + titleEnding);
+  cy.title().should("eq", "Finish " + titleEnding);
   cy.contains("Download your application").click();
 
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(

@@ -1,7 +1,8 @@
 import { baseFormPages, fillAndDownloadApplication } from "./fillAndDownloadApplication";
 
 /*
-reusable function call from fillAndDownloadApplication.ts , where we take baseFormPages array, add the conditional
+Reusable function call from fillAndDownloadApplication.ts 
+below we add the conditional array elements which will display whether the flag is raised or not 
 */
 it("should fill and download the application", () => {
   const baseFormAdd = [
