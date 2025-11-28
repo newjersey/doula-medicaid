@@ -133,25 +133,31 @@ const WelcomeSection = () => {
       <div className="grid-row">
         <ProcessList>
           <ProcessListItem>
-            <ProcessListHeading type="h3">Complete your FFS application packet</ProcessListHeading>
+            <ProcessListHeading type="h3">
+              Click “Start Now” to begin your Fee-For-Service (FFS) application process
+            </ProcessListHeading>
             <p>
-              Gather the{" "}
-              <a
-                href="https://www.nj.gov/humanservices/dmahs/info/NJFC_Doula_Steps.pdf"
-                target="_blank"
-                rel="noopener"
-                className="usa-link"
-              >
-                <span className="usa-sr-only">opens in a new tab.</span>
-                required documents
-              </a>
-              , we&apos;ll guide you through the FFS application on this website.
+              This website will help you complete your FFS application forms in just 20 minutes
+              using language that is easy to understand.
             </p>
           </ProcessListItem>
           <ProcessListItem>
-            <ProcessListHeading type="h3">Email your FFS application packet</ProcessListHeading>
+            <ProcessListHeading type="h3">
+              Download, review, and sign your application
+            </ProcessListHeading>
             <p>
-              Send forms to{" "}
+              You should review, make any updates, and sign your downloaded application forms before
+              you submit. Follow instructions on the cover page of your downloaded application
+              packet.
+            </p>
+          </ProcessListItem>
+          <ProcessListItem>
+            <ProcessListHeading type="h3">
+              Email your signed application and attached documents
+            </ProcessListHeading>
+            <p>
+              This website will not submit your application. Email your completed application packet
+              to{" "}
               <a href="mailto:mahs.doulaguide@dhs.nj.gov" target="_blank" rel="noopener">
                 mahs.doulaguide@dhs.nj.gov
               </a>{" "}
@@ -164,30 +170,33 @@ const WelcomeSection = () => {
               >
                 njmmisproviderenrollment@gainwelltechnologies.com
               </a>{" "}
-              simultaneously. Keep an eye on your inbox!
+              simultaneously.
             </p>
           </ProcessListItem>
           <ProcessListItem>
             <ProcessListHeading type="h3">
-              Free background check and fingerprinting
+              Complete your free background check and fingerprinting
             </ProcessListHeading>
             <p>
-              After you submit your FFS application, a Doula Guide will email instructions to
-              complete this step in a local office and submit your receipt.
+              After you submit your application, a Doula Guide will email instructions to complete
+              this step in a local office. You will submit the receipt.
             </p>
           </ProcessListItem>
           <ProcessListItem>
             <ProcessListHeading type="h3">Receive your NJ Medicaid ID</ProcessListHeading>
             <p>
-              Once we approve your FFS application, we will send you a letter with your NJ Medicaid
-              ID.
+              Once Gainwell approves your application, you will receive a letter with your NJ
+              Medicaid ID.
             </p>
           </ProcessListItem>
           <ProcessListItem>
             <ProcessListHeading type="h3">
               Apply to Managed Care Organizations (MCOs)
             </ProcessListHeading>
-            <p>Once you receive your NJ Medicaid ID, you can apply to the MCOs.</p>
+            <p>
+              Once you receive your NJ Medicaid ID, you can apply to contract with any Managed Care
+              Organization (MCO).
+            </p>
           </ProcessListItem>
         </ProcessList>
       </div>

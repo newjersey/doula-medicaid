@@ -62,7 +62,7 @@ abbr[title] {
   .welcome-page .usa-process-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, 1fr);
-    grid-template-rows: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
     grid-auto-flow: column;
   }
 
