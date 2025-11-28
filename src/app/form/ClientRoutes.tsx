@@ -48,13 +48,13 @@ export const routes = (
           <Route path="3" element={<BusinessDetailsStep3 />} />
           <Route path="4" element={<BusinessDetailsStep4 />} />
         </Route>
-        {process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" ? (
+        {process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" && (
           <Route path="legal">
             <Route path="1" element={<LegalStep1 />} />
             <Route path="2" element={<LegalStep2 />} />
             <Route path="3" element={<LegalStep3 />} />
           </Route>
-        ) : null}
+        )}
         <Route path="finish" element={<FinishSection />} />
       </Route>
     </Route>
