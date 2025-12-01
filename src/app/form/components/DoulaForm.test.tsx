@@ -1,3 +1,4 @@
+import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
 import {
   fillAllInputs,
@@ -10,8 +11,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Label, TextInput } from "@trussworks/react-uswds";
-import { useForm, type FieldPath } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import * as router from "react-router";
 
 interface DoulaFormTestData {
@@ -19,12 +19,6 @@ interface DoulaFormTestData {
   field2: string | null;
   field3: string | null;
 }
-
-const orderedInputNameToLabel = {
-  field1: "Label 1",
-  field2: "Label 2",
-  field3: "Label 3",
-};
 
 const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
   const {
@@ -43,9 +37,7 @@ const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
 
   return (
     <DoulaForm<DoulaFormTestData>
-      orderedInputNames={
-        Object.keys(orderedInputNameToLabel) as Array<FieldPath<DoulaFormTestData>>
-      }
+      orderedInputNames={["field1", "field2", "field3"]}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
@@ -54,72 +46,27 @@ const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <h2 className="font-heading-md">Doula Form Test</h2>
-          <Label htmlFor="field1" requiredMarker>
-            {orderedInputNameToLabel["field1"]}
-          </Label>
-          <div id="field1Hint" className="usa-hint">
-            Field 1
-          </div>
-          <TextInput
-            id="field1"
-            type="text"
+          <DoulaTextInput
+            name="field1"
+            label="Label 1"
             required
-            validationStatus={errors.field1 ? "error" : undefined}
-            aria-invalid={errors.field1 ? "true" : "false"}
-            aria-describedby={errors.field1 && "field1ErrorMessage"}
-            {...register("field1", {
-              required: `${orderedInputNameToLabel["field1"]} is required`,
-            })}
+            errors={errors}
+            register={register}
           />
-          {errors.field1 && (
-            <span id="field1ErrorMessage" className="usa-error-message">
-              {errors.field1.message}
-            </span>
-          )}
-          <Label htmlFor="field2" requiredMarker>
-            {orderedInputNameToLabel["field2"]}
-          </Label>
-          <div id="field1Hint" className="usa-hint">
-            Field 2
-          </div>
-          <TextInput
-            id="field2"
-            type="text"
+          <DoulaTextInput
+            name="field2"
+            label="Label 2"
             required
-            validationStatus={errors.field2 ? "error" : undefined}
-            aria-invalid={errors.field2 ? "true" : "false"}
-            aria-describedby={errors.field2 && "field2ErrorMessage"}
-            {...register("field2", {
-              required: `${orderedInputNameToLabel["field2"]} is required`,
-            })}
+            errors={errors}
+            register={register}
           />
-          {errors.field2 && (
-            <span id="field2ErrorMessage" className="usa-error-message">
-              {errors.field2.message}
-            </span>
-          )}
-          <Label htmlFor="field3" requiredMarker>
-            {orderedInputNameToLabel["field3"]}
-          </Label>
-          <div id="field1Hint" className="usa-hint">
-            Field 3
-          </div>
-          <TextInput
-            id="field3"
-            type="text"
+          <DoulaTextInput
+            name="field3"
+            label="Label 3"
             required
-            validationStatus={errors.field3 ? "error" : undefined}
-            aria-invalid={errors.field3 ? "true" : "false"}
-            aria-describedby={errors.field3 && "field3ErrorMessage"}
-            {...register("field3", {
-              required: `${orderedInputNameToLabel["field3"]} is required`,
-            })}
+            errors={errors}
+            register={register}
           />
-          {errors.field3 && (
-            <span id="field3ErrorMessage" className="usa-error-message">
-              {errors.field3.message}
-            </span>
-          )}
         </div>
       </div>
       <FormProgressButtons />
