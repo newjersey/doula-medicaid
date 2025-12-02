@@ -123,7 +123,7 @@ describe("DoulaAddress", () => {
         errors={{}}
         register={jest.fn()}
       />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     const streetAddress1Input = await getInputField(screen, {
       name: "Street address *",
@@ -216,7 +216,7 @@ describe("DoulaAddress", () => {
           zip: "testZip",
         }}
       />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     await fillAllInputsExcept(screen, user, allInputFields, new Set(["testZip"]));
     const zipInput = await getInputField(screen, { name: "ZIP Code *" });
@@ -241,7 +241,7 @@ describe("DoulaAddress", () => {
           zip: "testZip",
         }}
       />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     const zipInput = await getInputField(screen, { name: "ZIP Code *" });
     await user.type(zipInput, "aaa");
@@ -268,7 +268,7 @@ describe("DoulaAddress", () => {
         }}
         errorLabelPrefix="Test"
       />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     const streetAddress1Input = await getInputField(screen, {
       name: "Street address *",

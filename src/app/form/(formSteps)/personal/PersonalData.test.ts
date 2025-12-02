@@ -1,8 +1,8 @@
-import { getPersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import { getPersonalFormData } from "@/app/form/(formSteps)/personal/PersonalData";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
-describe("getPersonalDetailsFormData", () => {
+describe("getPersonalFormData", () => {
   describe("hasSameBillingMailingAddress handling", () => {
     it("overwrites all billing address values with mailing address values when hasSameBillingMailingAddress is true", () => {
       const dataStore = generateDataStoreWithRequiredFields({
@@ -18,7 +18,7 @@ describe("getPersonalDetailsFormData", () => {
         billingState: "NY",
         billingZip: "22222",
       });
-      expect(getPersonalDetailsFormData(dataStore)).toMatchObject({
+      expect(getPersonalFormData(dataStore)).toMatchObject({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -46,7 +46,7 @@ describe("getPersonalDetailsFormData", () => {
         billingState: "NY",
         billingZip: "22222",
       });
-      expect(getPersonalDetailsFormData(dataStore)).toMatchObject({
+      expect(getPersonalFormData(dataStore)).toMatchObject({
         streetAddress1: "123 Main St",
         streetAddress2: "Apt 4B",
         city: "Trenton",
@@ -68,7 +68,7 @@ describe("getPersonalDetailsFormData", () => {
         dateOfBirthMonth: "12",
         dateOfBirthYear: "1990",
       });
-      expect(getPersonalDetailsFormData(dataStore)).toMatchObject({
+      expect(getPersonalFormData(dataStore)).toMatchObject({
         dateOfBirth: new Date("1990/12/25"),
       });
     });

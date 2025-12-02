@@ -18,11 +18,11 @@ describe("getCurrentFormProgress", () => {
   });
 
   it("returns the correct step when the path has steps", () => {
-    const currentFormProgress = getCurrentFormProgress("/form/personal-details/2");
+    const currentFormProgress = getCurrentFormProgress("/form/personal/2");
     expect(currentFormProgress).toEqual({
       section: {
-        id: "personal-details",
-        name: "Personal details",
+        id: "personal",
+        name: "Personal",
         numSteps: 3,
         shouldShowProgressBar: true,
         shouldShowProgressHeadingAndRequiredMessage: true,

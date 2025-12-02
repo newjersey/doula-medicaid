@@ -8,11 +8,11 @@ import {
   firstNameField,
   lastNameField,
   middleNameField,
-  testFields as personalDetails1TestFields,
+  testFields as personal1TestFields,
   phoneNumberField,
-} from "@/app/form/(formSteps)/personal-details/1/testFields";
-import { minimalTestFields as personalDetails2TestFields } from "@/app/form/(formSteps)/personal-details/2/testFields";
-import { testFields as personalDetails3TestFields } from "@/app/form/(formSteps)/personal-details/3/testFields";
+} from "@/app/form/(formSteps)/personal/1/testFields";
+import { minimalTestFields as personal2TestFields } from "@/app/form/(formSteps)/personal/2/testFields";
+import { testFields as personal3TestFields } from "@/app/form/(formSteps)/personal/3/testFields";
 import { testFields as screening1TestFields } from "@/app/form/(formSteps)/screening/1/testFields";
 import { testFields as screening2TestFields } from "@/app/form/(formSteps)/screening/2/testFields";
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
@@ -29,19 +29,19 @@ export const baseFormPages = [
   { url: "/form/insurance/2", fields: insurance2TestFields, titleName: "Insurance 2 of 2" },
   { url: "/form/training/1", fields: training1TestFields, titleName: "Training 1 of 1" },
   {
-    url: "/form/personal-details/1",
-    fields: personalDetails1TestFields,
-    titleName: "Personal details 1 of 3",
+    url: "/form/personal/1",
+    fields: personal1TestFields,
+    titleName: "Personal 1 of 3",
   },
   {
-    url: "/form/personal-details/2",
-    fields: personalDetails2TestFields,
-    titleName: "Personal details 2 of 3",
+    url: "/form/personal/2",
+    fields: personal2TestFields,
+    titleName: "Personal 2 of 3",
   },
   {
-    url: "/form/personal-details/3",
-    fields: personalDetails3TestFields,
-    titleName: "Personal details 3 of 3",
+    url: "/form/personal/3",
+    fields: personal3TestFields,
+    titleName: "Personal 3 of 3",
   },
   {
     url: "/form/business-details/1",

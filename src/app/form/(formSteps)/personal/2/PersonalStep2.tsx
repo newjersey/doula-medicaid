@@ -4,14 +4,14 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import PublicInformationExplainer from "@/app/form/(formSteps)/personal-details/2/PublicInformationExplainer";
+import PublicInformationExplainer from "@/app/form/(formSteps)/personal/2/PublicInformationExplainer";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
-import { type PersonalDetails2Data } from "@form/(formSteps)/personal-details/PersonalDetailsData";
+import { type Personal2Data } from "@form/(formSteps)/personal/PersonalData";
 import { useForm, type FieldPath } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } = {
+const orderedInputNameToLabel: { [key in keyof Personal2Data]: string } = {
   streetAddress1: "Street address",
   streetAddress2: "Street address line 2",
   city: "City",
@@ -26,7 +26,7 @@ const orderedInputNameToLabel: { [key in keyof PersonalDetails2Data]: string } =
 };
 
 const mayHaveThreeOrMoreErrors = true;
-const PersonalDetailsStep2 = () => {
+const PersonalStep2 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
@@ -34,7 +34,7 @@ const PersonalDetailsStep2 = () => {
     formState: { errors },
     setFocus,
     watch,
-  } = useForm<PersonalDetails2Data>({
+  } = useForm<Personal2Data>({
     defaultValues: {
       streetAddress1: getDefaultValue(dataStore, "streetAddress1") ?? "",
       streetAddress2: getDefaultValue(dataStore, "streetAddress2") ?? "",
@@ -57,10 +57,8 @@ const PersonalDetailsStep2 = () => {
   const hasSameBillingMailingAddress = watch("hasSameBillingMailingAddress");
 
   return (
-    <DoulaForm<PersonalDetails2Data>
-      orderedInputNames={
-        Object.keys(orderedInputNameToLabel) as Array<FieldPath<PersonalDetails2Data>>
-      }
+    <DoulaForm<Personal2Data>
+      orderedInputNames={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Personal2Data>>}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
@@ -69,7 +67,7 @@ const PersonalDetailsStep2 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <div>
-            <DoulaAddress<PersonalDetails2Data>
+            <DoulaAddress<Personal2Data>
               fieldsetProps={{
                 legend: (
                   <div>
@@ -109,7 +107,7 @@ const PersonalDetailsStep2 = () => {
             />
 
             {hasSameBillingMailingAddress === "false" && (
-              <DoulaAddress<PersonalDetails2Data>
+              <DoulaAddress<Personal2Data>
                 fieldsetProps={{
                   legend: <p className="margin-top-5">What is your billing address?</p>,
                 }}
@@ -139,4 +137,4 @@ const PersonalDetailsStep2 = () => {
     </DoulaForm>
   );
 };
-export default PersonalDetailsStep2;
+export default PersonalStep2;

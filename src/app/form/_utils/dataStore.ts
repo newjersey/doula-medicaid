@@ -17,10 +17,10 @@ import type {
   BusinessDetails4Data,
 } from "@form/(formSteps)/business-details/BusinessDetailsData";
 import type {
-  PersonalDetails1Data,
-  PersonalDetails2Data,
-  PersonalDetails3Data,
-} from "@form/(formSteps)/personal-details/PersonalDetailsData";
+  Personal1Data,
+  Personal2Data,
+  Personal3Data,
+} from "@form/(formSteps)/personal/PersonalData";
 
 export type DataStoreKey =
   | keyof Screening1Data
@@ -29,9 +29,9 @@ export type DataStoreKey =
   | keyof Insurance1Data
   | keyof Insurance2Data
   | keyof TrainingData
-  | keyof PersonalDetails1Data
-  | keyof PersonalDetails2Data
-  | keyof PersonalDetails3Data
+  | keyof Personal1Data
+  | keyof Personal2Data
+  | keyof Personal3Data
   | keyof BusinessDetails1Data
   | keyof BusinessDetails2Data
   | keyof BusinessDetails3Data

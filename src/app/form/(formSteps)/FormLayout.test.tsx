@@ -19,12 +19,10 @@ describe("<FormLayout />", () => {
   });
 
   it("shows heading 1 and page title with the step number and section title", async () => {
-    renderWithProviders(routes, "/form/personal-details/2");
+    renderWithProviders(routes, "/form/personal/2");
     const heading1 = screen.getByRole("heading", { level: 1 });
-    expect(heading1).toHaveTextContent("2 of 3 Personal details");
-    await waitFor(() =>
-      expect(document.title).toBe("Personal details 2 of 3 | NJ Doula Assistant"),
-    );
+    expect(heading1).toHaveTextContent("2 of 3 Personal");
+    await waitFor(() => expect(document.title).toBe("Personal 2 of 3 | NJ Doula Assistant"));
   });
 
   it("shows required field indicator text with an asterisk", () => {

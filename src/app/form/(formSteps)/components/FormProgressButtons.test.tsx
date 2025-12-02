@@ -33,14 +33,14 @@ describe("<FormProgressButtons />", () => {
     });
 
     it("shows both previous and next buttons when on a middle step", async () => {
-      renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
+      renderWithProviders(<FormProgressButtons />, "/form/personal/2");
 
       const formProgressButtonGroup = getFormProgressButtonsList();
       expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(2);
 
       expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute(
         "href",
-        "/form/personal-details/1",
+        "/form/personal/1",
       );
       const nextButton = screen.getByRole("button", { name: "Next" });
       expect(nextButton).toHaveAttribute("type", "submit");
@@ -65,13 +65,13 @@ describe("<FormProgressButtons />", () => {
     });
     it("when Next is clicked", async () => {
       const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
-      renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
+      renderWithProviders(<FormProgressButtons />, "/form/personal/2");
       await screen.getByRole("button", { name: "Next" }).click();
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressNext");
     });
     it("when Previous is clicked", async () => {
       const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
-      renderWithProviders(<FormProgressButtons />, "/form/personal-details/2");
+      renderWithProviders(<FormProgressButtons />, "/form/personal/2");
       await screen.getByRole("link", { name: "Previous" }).click();
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressPrevious");
     });

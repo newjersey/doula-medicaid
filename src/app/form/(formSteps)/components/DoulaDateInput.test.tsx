@@ -93,7 +93,7 @@ describe("<DoulaDateInput />", () => {
           dayName="testDay"
           yearName="testYear"
         />,
-        "/form/personal-details/2",
+        "/form/personal/2",
       );
       await fillField(screen, user, {
         name: "Month *",
@@ -127,7 +127,7 @@ describe("<DoulaDateInput />", () => {
           dayName="testDay"
           yearName="testYear"
         />,
-        "/form/personal-details/2",
+        "/form/personal/2",
       );
       await fillField(screen, user, {
         name: "Month *",
@@ -157,7 +157,7 @@ describe("<DoulaDateInput />", () => {
         yearName="testYear"
         errorLabelPrefix="Test"
       />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     const monthInput = await getInputField(screen, {
       name: "Month *",

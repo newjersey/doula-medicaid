@@ -15,7 +15,7 @@ describe("<ProgressBar />", () => {
     expect(sections[1]).toHaveTextContent("completed");
     expect(sections[2]).toHaveTextContent("Training");
     expect(sections[2]).toHaveTextContent("completed");
-    expect(sections[3]).toHaveTextContent("Personal details");
+    expect(sections[3]).toHaveTextContent("Personal");
     expect(sections[3]).toHaveTextContent("completed");
     expect(sections[4]).toHaveTextContent("Business details");
     expect(sections[4].getAttribute("aria-current")).toEqual("true");

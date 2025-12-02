@@ -1,6 +1,6 @@
 import type { BusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
 import type { InsuranceFormData } from "@/app/form/(formSteps)/insurance/InsuranceData";
-import type { PersonalDetailsFormData } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import type { PersonalFormData } from "@/app/form/(formSteps)/personal/PersonalData";
 import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
 import type { DataStore, DataStoreKey } from "@/app/form/_utils/dataStore";
@@ -54,7 +54,7 @@ const testInsuranceFormData: InsuranceFormData = {
   insuranceZip: "08000",
 };
 
-const testPersonalDetailsFormData: PersonalDetailsFormData = {
+const testPersonalFormData: PersonalFormData = {
   firstName: "Default first",
   middleName: null,
   lastName: "Default last",
@@ -94,7 +94,7 @@ const testFormData: FormData = {
   ...testScreeningFormData,
   ...testInsuranceFormData,
   ...testTrainingFormData,
-  ...testPersonalDetailsFormData,
+  ...testPersonalFormData,
   ...testBusinessDetailsFormData,
 };
 
@@ -114,7 +114,7 @@ export const generateDataStoreWithRequiredFields = (
     haveOtherBusinessOwnerNextYear: "false",
     hadDhmasBusiness: "false",
 
-    // Personal details
+    // Personal
     hasSameBillingMailingAddress: "true",
 
     // Business details

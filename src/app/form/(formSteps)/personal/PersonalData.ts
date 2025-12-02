@@ -2,7 +2,7 @@ import type { DataStore } from "@/app/form/_utils/dataStore";
 import { getAddressState, getBoolean, getValue } from "@/app/form/_utils/dataStore";
 import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
-export interface PersonalDetails1Data {
+export interface Personal1Data {
   firstName: string;
   middleName: string;
   lastName: string;
@@ -14,7 +14,7 @@ export interface PersonalDetails1Data {
   phoneNumber: string;
 }
 
-export interface PersonalDetails2Data {
+export interface Personal2Data {
   streetAddress1: string;
   streetAddress2: string;
   city: string;
@@ -28,13 +28,13 @@ export interface PersonalDetails2Data {
   billingZip: string;
 }
 
-export interface PersonalDetails3Data {
+export interface Personal3Data {
   npiNumber: string;
   medicareProviderId: string;
   upinNumber: string;
 }
 
-export interface PersonalDetailsFormData {
+export interface PersonalFormData {
   // 1
   firstName: string;
   middleName: string | null;
@@ -62,15 +62,15 @@ export interface PersonalDetailsFormData {
   upinNumber: string | null;
 }
 
-export const getPersonalDetailsFormData = (dataStore: DataStore): PersonalDetailsFormData => {
+export const getPersonalFormData = (dataStore: DataStore): PersonalFormData => {
   return {
-    ...getPersonalDetails1FormData(dataStore),
-    ...getPersonalDetails2FormData(dataStore),
-    ...getPersonalDetails3FormData(dataStore),
+    ...getPersonal1FormData(dataStore),
+    ...getPersonal2FormData(dataStore),
+    ...getPersonal3FormData(dataStore),
   };
 };
 
-const getPersonalDetails1FormData = (dataStore: DataStore) => {
+const getPersonal1FormData = (dataStore: DataStore) => {
   const dateOfBirth = new Date(
     `${getValue(dataStore, "dateOfBirthMonth", true)}/${getValue(dataStore, "dateOfBirthDay", true)}/${getValue(dataStore, "dateOfBirthYear", true)}`,
   );
@@ -85,7 +85,7 @@ const getPersonalDetails1FormData = (dataStore: DataStore) => {
   };
 };
 
-const getPersonalDetails2FormData = (dataStore: DataStore) => {
+const getPersonal2FormData = (dataStore: DataStore) => {
   const hasSameBillingMailingAddress = getBoolean(dataStore, "hasSameBillingMailingAddress", true);
   return {
     streetAddress1: getValue(dataStore, "streetAddress1", true),
@@ -111,7 +111,7 @@ const getPersonalDetails2FormData = (dataStore: DataStore) => {
   };
 };
 
-const getPersonalDetails3FormData = (dataStore: DataStore) => {
+const getPersonal3FormData = (dataStore: DataStore) => {
   return {
     npiNumber: getValue(dataStore, "npiNumber", true),
     medicareProviderId: getValue(dataStore, "medicareProviderId", false),
