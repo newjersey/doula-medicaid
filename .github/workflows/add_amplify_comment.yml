@@ -25,12 +25,6 @@ jobs:
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.DOULA_PM_ISSUE_COMMENT_TOKEN }}
-          script: |
-            github.rest.issues.createComment({
-              issue_number: '351',
-              owner: 'newjersey',
-              repo: 'doula-pm',
-              body: 'Test automation comment'
-            })
+          run: gh issue comment 351 --body "Hi from GitHub CLI" --repo newjersey/doula-pm
 
         # body: 'App is being deployed to https://${{ github.head_ref }}.${{ secrets.AMPLIFY_APP_ID }}.amplifyapp.com/humanservices/dmahs/info/doulahelp. See the build at https://us-east-1.console.aws.amazon.com/amplify/apps/${{ secrets.AMPLIFY_APP_ID }}/branches/${{ github.head_ref }}/deployments'
