@@ -91,6 +91,7 @@ export const fillAndDownloadApplication = (
   cy.visit("/");
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
   const titleEnding = "| NJ Doula Assistant";
+  cy.wait(500); // The title takes a moment to update
   cy.title().should("eq", "Welcome " + titleEnding);
   cy.contains("Start now").click();
 
