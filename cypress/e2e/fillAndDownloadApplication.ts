@@ -18,7 +18,7 @@ import { testFields as screening2TestFields } from "@/app/form/(formSteps)/scree
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
 import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
-import { TestField } from "@/app/form/_utils/testUtils/sharedTests";
+import { type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
 export const baseFormPages = [
@@ -92,7 +92,7 @@ export const fillAndDownloadApplication = (
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
   const titleEnding = "| NJ Doula Assistant";
   cy.wait(500); // The title takes a moment to update
-  cy.title().should("eq", "Welcome " + titleEnding);
+  cy.title().should("eq", `Welcome ${titleEnding}`);
   cy.contains("Start now").click();
 
   for (const formPage of baseFormPages) {
@@ -148,7 +148,7 @@ export const fillAndDownloadApplication = (
   }
 
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/finish`);
-  cy.title().should("eq", "Finish " + titleEnding);
+  cy.title().should("eq", `Finish ${titleEnding}`);
   cy.contains("Download your application").click();
 
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
