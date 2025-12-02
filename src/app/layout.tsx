@@ -41,7 +41,7 @@ export default function RootLayout({
                   <Image className="nj-banner__header-seal" src={njStateSeal} alt="NJ flag"></Image>
                 </div>
                 <div className="grid-col-fill">
-                  <a href="https://nj.gov" target="_blank" rel="noopener" className="usa-link">
+                  <a href="https://nj.gov" target="_blank" rel="noopener">
                     <span className="usa-sr-only">opens in a new tab.</span>
                     Official Site of the State of New Jersey
                   </a>
@@ -49,14 +49,13 @@ export default function RootLayout({
                 <div className="grid-col-auto">
                   <div className="text-white">
                     <ul>
-                      <li>Governor Phil Murphy &bull; Lt. Governor Tahesha Way</li>
                       <li>
-                        <a
-                          href="https://nj.gov/subscribe/"
-                          target="_blank"
-                          rel="noopener"
-                          className="usa-link"
-                        >
+                        <a href="https://nj.gov/governor/" target="_blank" rel="noopener">
+                          Governor Phil Murphy &bull; Lt. Governor Tahesha Way
+                        </a>
+                      </li>
+                      <li>
+                        <a href="https://nj.gov/subscribe/" target="_blank" rel="noopener">
                           <svg
                             className="usa-icon nj-banner__mail-icon bottom-neg-2px margin-right-05"
                             aria-hidden="true"
