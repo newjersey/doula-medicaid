@@ -1,4 +1,4 @@
-import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
+import PersonalStep1 from "@/app/form/(formSteps)/personal/1/PersonalStep1";
 import {
   contactInformationFields,
   emailField,
@@ -6,7 +6,7 @@ import {
   phoneNumberField,
   socialSecurityNumberField,
   testFields,
-} from "@/app/form/(formSteps)/personal-details/1/testFields";
+} from "@/app/form/(formSteps)/personal/1/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
@@ -19,9 +19,9 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-describe("<PersonalDetailsStep1 />", () => {
+describe("<PersonalStep1 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
-    renderWithProviders(<PersonalDetailsStep1 />, "/form/personal-details/1", dataStore);
+    renderWithProviders(<PersonalStep1 />, "/form/personal/1", dataStore);
 
   describe("personal identification fields", () => {
     it("saves fields to the data store on submit", async () => {

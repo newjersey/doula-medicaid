@@ -1,4 +1,4 @@
-import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
+import PersonalStep2 from "@/app/form/(formSteps)/personal/2/PersonalStep2";
 import {
   billingAddressFields,
   billingStateField,
@@ -9,7 +9,7 @@ import {
   stateField,
   testFields,
   yesSameBillingMailingAddress,
-} from "@/app/form/(formSteps)/personal-details/2/testFields";
+} from "@/app/form/(formSteps)/personal/2/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { expectAddressHasAutocomplete } from "@/app/form/_utils/testUtils/autocomplete";
 import {
@@ -28,9 +28,9 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-describe("<PersonalDetailsStep2 />", () => {
+describe("<PersonalStep2 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
-    renderWithProviders(<PersonalDetailsStep2 />, "/form/personal-details/2", dataStore);
+    renderWithProviders(<PersonalStep2 />, "/form/personal/2", dataStore);
 
   describe("mailing address fields", () => {
     it("enables autocompleting the mailing address", () => {

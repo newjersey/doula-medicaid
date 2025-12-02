@@ -108,7 +108,7 @@ describe("submission behavior", () => {
   it("saves fields to the data store and routes to the next step on submit", async () => {
     const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     const user = userEvent.setup();
     await fillAllInputs(screen, user, doulaTestFormFields);
@@ -118,14 +118,14 @@ describe("submission behavior", () => {
       field2: "Bar",
       field3: "Zoink",
     });
-    expect(mockNavigate).toHaveBeenCalledWith("/form/personal-details/3");
+    expect(mockNavigate).toHaveBeenCalledWith("/form/personal/3");
   });
 
   it("does not save fields to the data store and does not route on error", async () => {
     const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
     const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-      "/form/personal-details/2",
+      "/form/personal/2",
     );
     const user = userEvent.setup();
     await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
@@ -154,7 +154,7 @@ describe("error summary", () => {
       const user = userEvent.setup();
       renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-        "/form/personal-details/2",
+        "/form/personal/2",
       );
       await user.click(screen.getByRole("button", { name: "Next" }));
 
@@ -193,7 +193,7 @@ describe("error summary", () => {
       const user = userEvent.setup();
       renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-        "/form/personal-details/2",
+        "/form/personal/2",
       );
       await user.type(
         screen.getByRole("textbox", {
@@ -234,7 +234,7 @@ describe("error summary", () => {
       const user = userEvent.setup();
       renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={false} />,
-        "/form/personal-details/2",
+        "/form/personal/2",
       );
 
       await user.click(screen.getByRole("button", { name: "Next" }));
@@ -258,7 +258,7 @@ describe("error summary", () => {
       const user = userEvent.setup();
       renderWithProviders(
         <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-        "/form/personal-details/2",
+        "/form/personal/2",
       );
       await user.click(screen.getByRole("button", { name: "Next" }));
       await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));

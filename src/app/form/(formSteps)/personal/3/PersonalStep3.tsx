@@ -3,29 +3,29 @@
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
-import NpiExplainer from "@/app/form/(formSteps)/personal-details/3/NpiExplainer";
-import type { PersonalDetails3Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import NpiExplainer from "@/app/form/(formSteps)/personal/3/NpiExplainer";
+import type { Personal3Data } from "@/app/form/(formSteps)/personal/PersonalData";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof PersonalDetails3Data]: string } = {
+const orderedInputNameToLabel: { [key in keyof Personal3Data]: string } = {
   npiNumber: "National Provider Identifier (NPI)",
   upinNumber: "UPIN number",
   medicareProviderId: "Medicare provider ID",
 };
 
 const mayHaveThreeOrMoreErrors = false;
-const PersonalDetailsStep3 = () => {
+const PersonalStep3 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<PersonalDetails3Data>({
+  } = useForm<Personal3Data>({
     defaultValues: {
       npiNumber: getDefaultValue(dataStore, "npiNumber") ?? "",
       upinNumber: getDefaultValue(dataStore, "upinNumber") ?? "",
@@ -36,7 +36,7 @@ const PersonalDetailsStep3 = () => {
 
   const npiNumber = watch("npiNumber");
   return (
-    <DoulaForm<PersonalDetails3Data>
+    <DoulaForm<Personal3Data>
       errors={errors}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
@@ -123,4 +123,4 @@ const PersonalDetailsStep3 = () => {
   );
 };
 
-export default PersonalDetailsStep3;
+export default PersonalStep3;

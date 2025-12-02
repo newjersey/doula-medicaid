@@ -88,7 +88,7 @@ describe("DoulaTextInput", () => {
     };
 
     const user = userEvent.setup();
-    renderWithProviders(<TestForm />, "/form/personal-details/1");
+    renderWithProviders(<TestForm />, "/form/personal/1");
 
     const input = screen.getByRole("textbox", { name: "Test label" });
     await user.type(input, "aaa");

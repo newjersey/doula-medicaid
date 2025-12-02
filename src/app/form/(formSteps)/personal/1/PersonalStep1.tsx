@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaDateInput } from "@/app/form/(formSteps)/components/DoulaDateInput";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
-import { type PersonalDetails1Data } from "@/app/form/(formSteps)/personal-details/PersonalDetailsData";
+import { type Personal1Data } from "@/app/form/(formSteps)/personal/PersonalData";
 import { getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
@@ -21,7 +21,7 @@ const inputNameToLabel = {
   phoneNumber: "Phone number",
 } as const;
 
-const orderedInputNames: Array<keyof PersonalDetails1Data> = [
+const orderedInputNames: Array<keyof Personal1Data> = [
   "firstName",
   "middleName",
   "lastName",
@@ -34,7 +34,7 @@ const orderedInputNames: Array<keyof PersonalDetails1Data> = [
 ];
 
 const mayHaveThreeOrMoreErrors = true;
-const PersonalDetailsStep1 = () => {
+const PersonalStep1 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
@@ -42,7 +42,7 @@ const PersonalDetailsStep1 = () => {
     handleSubmit,
     setFocus,
     watch,
-  } = useForm<PersonalDetails1Data>({
+  } = useForm<Personal1Data>({
     defaultValues: {
       firstName: getDefaultValue(dataStore, "firstName") ?? "",
       middleName: getDefaultValue(dataStore, "middleName") ?? "",
@@ -61,7 +61,7 @@ const PersonalDetailsStep1 = () => {
   const socialSecurityNumber = watch("socialSecurityNumber");
 
   return (
-    <DoulaForm<PersonalDetails1Data>
+    <DoulaForm<Personal1Data>
       orderedInputNames={orderedInputNames}
       errors={errors}
       setFocus={setFocus}
@@ -175,4 +175,4 @@ const PersonalDetailsStep1 = () => {
   );
 };
 
-export default PersonalDetailsStep1;
+export default PersonalStep1;

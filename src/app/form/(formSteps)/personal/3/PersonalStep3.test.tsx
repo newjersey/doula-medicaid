@@ -1,10 +1,10 @@
-import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
+import PersonalStep3 from "@/app/form/(formSteps)/personal/3/PersonalStep3";
 import {
   doulaProviderIdentificationFields,
   npiNumberField,
   otherIdentificationFields,
   testFields,
-} from "@/app/form/(formSteps)/personal-details/3/testFields";
+} from "@/app/form/(formSteps)/personal/3/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
@@ -17,9 +17,9 @@ import {
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-describe("<PersonalDetailsStep3 />", () => {
+describe("<PersonalStep3 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
-    renderWithProviders(<PersonalDetailsStep3 />, "/form/personal-details/3", dataStore);
+    renderWithProviders(<PersonalStep3 />, "/form/personal/3", dataStore);
 
   describe("Doula provider identification fields", () => {
     it("saves fields to the data store on submit", async () => {

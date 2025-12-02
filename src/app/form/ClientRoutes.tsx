@@ -7,9 +7,9 @@ import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { FormLayout } from "@/app/form/(formSteps)/FormLayout";
 import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
 import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
-import PersonalDetailsStep1 from "@/app/form/(formSteps)/personal-details/1/PersonalDetailsStep1";
-import PersonalDetailsStep2 from "@/app/form/(formSteps)/personal-details/2/PersonalDetailsStep2";
-import PersonalDetailsStep3 from "@/app/form/(formSteps)/personal-details/3/PersonalDetailsStep3";
+import PersonalStep1 from "@/app/form/(formSteps)/personal/1/PersonalStep1";
+import PersonalStep2 from "@/app/form/(formSteps)/personal/2/PersonalStep2";
+import PersonalStep3 from "@/app/form/(formSteps)/personal/3/PersonalStep3";
 import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
 import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
@@ -37,10 +37,10 @@ export const routes = (
         <Route path="training">
           <Route path="1" element={<TrainingStep1 />} />
         </Route>
-        <Route path="personal-details">
-          <Route path="1" element={<PersonalDetailsStep1 />} />
-          <Route path="2" element={<PersonalDetailsStep2 />} />
-          <Route path="3" element={<PersonalDetailsStep3 />} />
+        <Route path="personal">
+          <Route path="1" element={<PersonalStep1 />} />
+          <Route path="2" element={<PersonalStep2 />} />
+          <Route path="3" element={<PersonalStep3 />} />
         </Route>
         <Route path="business-details">
           <Route path="1" element={<BusinessDetailsStep1 />} />

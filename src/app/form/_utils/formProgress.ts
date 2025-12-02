@@ -33,8 +33,8 @@ export const progressBarSections: Array<Section> = [
     shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
-    id: "personal-details",
-    name: "Personal details",
+    id: "personal",
+    name: "Personal",
     numSteps: 3,
     shouldShowProgressBar: true,
     shouldShowProgressHeadingAndRequiredMessage: true,
