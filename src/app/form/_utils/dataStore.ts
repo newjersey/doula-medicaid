@@ -10,12 +10,12 @@ import type {
 import type { TrainingData } from "@/app/form/(formSteps)/training/TrainingData";
 import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import type {
+  Business1Data,
+  Business2Data,
+  Business3Data,
+  Business4Data,
   BusinessAddressSameAsOtherAddressOptions,
-  BusinessDetails1Data,
-  BusinessDetails2Data,
-  BusinessDetails3Data,
-  BusinessDetails4Data,
-} from "@form/(formSteps)/business-details/BusinessDetailsData";
+} from "@form/(formSteps)/business/BusinessData";
 import type {
   Personal1Data,
   Personal2Data,
@@ -32,10 +32,10 @@ export type DataStoreKey =
   | keyof Personal1Data
   | keyof Personal2Data
   | keyof Personal3Data
-  | keyof BusinessDetails1Data
-  | keyof BusinessDetails2Data
-  | keyof BusinessDetails3Data
-  | keyof BusinessDetails4Data;
+  | keyof Business1Data
+  | keyof Business2Data
+  | keyof Business3Data
+  | keyof Business4Data;
 
 export type DataStore = { [key: string]: string };
 

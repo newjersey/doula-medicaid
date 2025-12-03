@@ -1,7 +1,7 @@
-import { path1TestFields as businessDetails1TestFields } from "@/app/form/(formSteps)/business-details/1/testFields";
-import { testFields as businessDetails2TestFields } from "@/app/form/(formSteps)/business-details/2/testFields";
-import { testFields as businessDetails3TestFields } from "@/app/form/(formSteps)/business-details/3/testFields";
-import { path1TestFields as businessDetails4TestFields } from "@/app/form/(formSteps)/business-details/4/testFields";
+import { path1TestFields as business1TestFields } from "@/app/form/(formSteps)/business/1/testFields";
+import { testFields as business2TestFields } from "@/app/form/(formSteps)/business/2/testFields";
+import { testFields as business3TestFields } from "@/app/form/(formSteps)/business/3/testFields";
+import { path1TestFields as business4TestFields } from "@/app/form/(formSteps)/business/4/testFields";
 import { testFields as insurance1TestFields } from "@/app/form/(formSteps)/insurance/1/testFields";
 import { testFields as insurance2TestFields } from "@/app/form/(formSteps)/insurance/2/testFields";
 import {
@@ -44,24 +44,24 @@ export const baseFormPages = [
     titleName: "Personal 3 of 3",
   },
   {
-    url: "/form/business-details/1",
-    fields: businessDetails1TestFields,
-    titleName: "Business details 1 of 4",
+    url: "/form/business/1",
+    fields: business1TestFields,
+    titleName: "Business 1 of 4",
   },
   {
-    url: "/form/business-details/2",
-    fields: businessDetails2TestFields,
-    titleName: "Business details 2 of 4",
+    url: "/form/business/2",
+    fields: business2TestFields,
+    titleName: "Business 2 of 4",
   },
   {
-    url: "/form/business-details/3",
-    fields: businessDetails3TestFields,
-    titleName: "Business details 3 of 4",
+    url: "/form/business/3",
+    fields: business3TestFields,
+    titleName: "Business 3 of 4",
   },
   {
-    url: "/form/business-details/4",
-    fields: businessDetails4TestFields,
-    titleName: "Business details 4 of 4",
+    url: "/form/business/4",
+    fields: business4TestFields,
+    titleName: "Business 4 of 4",
   },
 ];
 

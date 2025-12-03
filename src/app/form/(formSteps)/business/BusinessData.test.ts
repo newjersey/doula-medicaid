@@ -1,8 +1,8 @@
-import { getBusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import { getBusinessFormData } from "@/app/form/(formSteps)/business/BusinessData";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
-describe("getBusinessDetailsFormData", () => {
+describe("getBusinessFormData", () => {
   describe("businessAddressSameAsOtherAddress handling", () => {
     it("overwrites all business address values with mailing address values when businessAddressSameAsOtherAddress is mailing", () => {
       const dataStore = generateDataStoreWithRequiredFields({
@@ -18,7 +18,7 @@ describe("getBusinessDetailsFormData", () => {
         businessState: "NY",
         businessZip: "22222",
       });
-      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
+      expect(getBusinessFormData(dataStore)).toMatchObject({
         businessStreetAddress1: "123 Main St",
         businessStreetAddress2: "Apt 4B",
         businessCity: "Trenton",
@@ -41,7 +41,7 @@ describe("getBusinessDetailsFormData", () => {
         businessState: "NY",
         businessZip: "22222",
       });
-      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
+      expect(getBusinessFormData(dataStore)).toMatchObject({
         businessStreetAddress1: "123 Main St",
         businessStreetAddress2: "Apt 4B",
         businessCity: "Trenton",
@@ -69,7 +69,7 @@ describe("getBusinessDetailsFormData", () => {
         businessState: "NJ",
         businessZip: "08609",
       });
-      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
+      expect(getBusinessFormData(dataStore)).toMatchObject({
         businessStreetAddress1: "55 Cherry St",
         businessStreetAddress2: "Apt 10",
         businessCity: "Newark",
@@ -86,7 +86,7 @@ describe("getBusinessDetailsFormData", () => {
         hasBeenSuspendedFromMedicaid: "false",
         hasBeenExcludedFromMedicaid: "false",
       });
-      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
+      expect(getBusinessFormData(dataStore)).toMatchObject({
         hasDisclosableEvent: false,
       });
     });
@@ -98,7 +98,7 @@ describe("getBusinessDetailsFormData", () => {
       { key: "hasBeenExcludedFromMedicaid", value: "true" },
     ])("sets hasDisclosableEvent to true when $key is $value", async ({ key, value }) => {
       const dataStore = generateDataStoreWithRequiredFields({ [key]: value });
-      expect(getBusinessDetailsFormData(dataStore)).toMatchObject({
+      expect(getBusinessFormData(dataStore)).toMatchObject({
         hasDisclosableEvent: true,
       });
     });

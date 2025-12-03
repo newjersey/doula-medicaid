@@ -1,4 +1,4 @@
-import BusinessDetailsStep4 from "@/app/form/(formSteps)/business-details/4/BusinessDetailsStep4";
+import BusinessStep4 from "@/app/form/(formSteps)/business/4/BusinessStep4";
 import {
   firstRadioOptionTestFields,
   futureBankruptcyDateFields,
@@ -7,7 +7,7 @@ import {
   pastBankruptcyDateFields,
   path1TestFields,
   path2TestFields,
-} from "@/app/form/(formSteps)/business-details/4/testFields";
+} from "@/app/form/(formSteps)/business/4/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
@@ -18,9 +18,9 @@ import {
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 
-describe("<BusinessDetailsStep4 />", () => {
+describe("<BusinessStep4 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
-    renderWithProviders(<BusinessDetailsStep4 />, "/form/business-details/4", dataStore);
+    renderWithProviders(<BusinessStep4 />, "/form/business/4", dataStore);
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(path1TestFields, path1TestFields, renderFunction, screen);

@@ -1,8 +1,8 @@
 import { BASE_PATH } from "@/app/basePath";
-import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
-import BusinessDetailsStep2 from "@/app/form/(formSteps)/business-details/2/BusinessDetailsStep2";
-import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/3/BusinessDetailsStep3";
-import BusinessDetailsStep4 from "@/app/form/(formSteps)/business-details/4/BusinessDetailsStep4";
+import BusinessStep1 from "@/app/form/(formSteps)/business/1/BusinessStep1";
+import BusinessStep2 from "@/app/form/(formSteps)/business/2/BusinessStep2";
+import BusinessStep3 from "@/app/form/(formSteps)/business/3/BusinessStep3";
+import BusinessStep4 from "@/app/form/(formSteps)/business/4/BusinessStep4";
 import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { FormLayout } from "@/app/form/(formSteps)/FormLayout";
 import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
@@ -42,11 +42,11 @@ export const routes = (
           <Route path="2" element={<PersonalStep2 />} />
           <Route path="3" element={<PersonalStep3 />} />
         </Route>
-        <Route path="business-details">
-          <Route path="1" element={<BusinessDetailsStep1 />} />
-          <Route path="2" element={<BusinessDetailsStep2 />} />
-          <Route path="3" element={<BusinessDetailsStep3 />} />
-          <Route path="4" element={<BusinessDetailsStep4 />} />
+        <Route path="business">
+          <Route path="1" element={<BusinessStep1 />} />
+          <Route path="2" element={<BusinessStep2 />} />
+          <Route path="3" element={<BusinessStep3 />} />
+          <Route path="4" element={<BusinessStep4 />} />
         </Route>
         {process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" && (
           <Route path="legal">

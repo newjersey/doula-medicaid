@@ -1,4 +1,4 @@
-import type { BusinessDetailsFormData } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import type { BusinessFormData } from "@/app/form/(formSteps)/business/BusinessData";
 import type { InsuranceFormData } from "@/app/form/(formSteps)/insurance/InsuranceData";
 import type { PersonalFormData } from "@/app/form/(formSteps)/personal/PersonalData";
 import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
@@ -77,7 +77,7 @@ const testPersonalFormData: PersonalFormData = {
   upinNumber: null,
 };
 
-const testBusinessDetailsFormData: BusinessDetailsFormData = {
+const testBusinessFormData: BusinessFormData = {
   businessStreetAddress1: "Default business street 1",
   businessStreetAddress2: null,
   businessCity: "Default business city",
@@ -95,7 +95,7 @@ const testFormData: FormData = {
   ...testInsuranceFormData,
   ...testTrainingFormData,
   ...testPersonalFormData,
-  ...testBusinessDetailsFormData,
+  ...testBusinessFormData,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
@@ -117,7 +117,7 @@ export const generateDataStoreWithRequiredFields = (
     // Personal
     hasSameBillingMailingAddress: "true",
 
-    // Business details
+    // Business
     businessAddressSameAsOtherAddress: "different",
     hasUncollectedDebt: "false",
     isSubjectToPaymentSuspension: "false",

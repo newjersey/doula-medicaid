@@ -26,7 +26,7 @@ describe("<FormLayout />", () => {
   });
 
   it("shows required field indicator text with an asterisk", () => {
-    renderWithProviders(routes, "/form/business-details/1");
+    renderWithProviders(routes, "/form/business/1");
     expect(screen.getByText(/A red asterisk.*indicates a required field/)).toBeInTheDocument();
   });
 });
