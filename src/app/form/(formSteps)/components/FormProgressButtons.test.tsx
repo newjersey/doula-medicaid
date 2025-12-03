@@ -47,7 +47,7 @@ describe("<FormProgressButtons />", () => {
     });
 
     it("shows only the previous button when on the last step", () => {
-      renderWithProviders(<FormProgressButtons />, "/form/finish");
+      renderWithProviders(<FormProgressButtons />, "/form/review");
 
       const formProgressButtonGroup = getFormProgressButtonsList();
       expect(within(formProgressButtonGroup).getAllByRole("listitem").length).toEqual(1);

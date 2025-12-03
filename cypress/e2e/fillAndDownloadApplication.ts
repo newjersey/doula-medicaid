@@ -117,7 +117,7 @@ export const fillAndDownloadApplication = (
     });
     cy.contains("Next").click();
   }
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/finish`);
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
 
   // Test clicking previous, and prepopulation
   for (const formPage of baseFormPages.reverse()) {
@@ -147,8 +147,8 @@ export const fillAndDownloadApplication = (
     cy.contains("Next").click();
   }
 
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/finish`);
-  cy.title().should("eq", `Finish ${titleEnding}`);
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
+  cy.title().should("eq", `Review ${titleEnding}`);
   cy.contains("Download your application").click();
 
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(

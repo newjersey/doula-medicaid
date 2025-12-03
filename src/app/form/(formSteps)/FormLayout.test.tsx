@@ -12,8 +12,8 @@ describe("<FormLayout />", () => {
   });
 
   it("shows the progress bar when shouldShowProgressBar is true", async () => {
-    const name = "Finish";
-    renderWithProviders(routes, "/form/finish");
+    const name = "Review";
+    renderWithProviders(routes, "/form/review");
     await waitFor(() => expect(document.title).toBe(`${name} | NJ Doula Assistant`));
     expect(screen.queryByRole("generic", { name: /progress/i })).toBeInTheDocument();
   });

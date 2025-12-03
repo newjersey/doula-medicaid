@@ -19,13 +19,13 @@ describe("<ProgressBar />", () => {
     expect(sections[3]).toHaveTextContent("completed");
     expect(sections[4]).toHaveTextContent("Business");
     expect(sections[4].getAttribute("aria-current")).toEqual("true");
-    expect(sections[5]).toHaveTextContent("Finish");
+    expect(sections[5]).toHaveTextContent("Review");
     expect(sections[5]).toHaveTextContent("not completed");
   });
 
   it("shows the progress bar and page title but not the heading or required indicator when shouldShowProgressHeadingAndRequiredMessage is false", async () => {
-    renderWithProviders(routes, "/form/finish");
-    const name = "Finish";
+    renderWithProviders(routes, "/form/review");
+    const name = "Review";
 
     const progressSection = screen.getByRole("generic", { name: /progress/i });
     const names = within(progressSection)
