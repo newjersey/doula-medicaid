@@ -8,7 +8,7 @@ import { getFormData } from "@form/_utils/fillPdf/form";
 import { sendGAEvent } from "@next/third-parties/google";
 import { useEffect, useState } from "react";
 
-const FinishSection = () => {
+const ReviewSection = () => {
   const [downloadData, setDownloadData] = useState<{
     url: string;
     filename: string;
@@ -82,4 +82,4 @@ const FinishSection = () => {
   );
 };
 
-export default FinishSection;
+export default ReviewSection;

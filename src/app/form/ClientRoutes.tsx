@@ -3,13 +3,13 @@ import BusinessStep1 from "@/app/form/(formSteps)/business/1/BusinessStep1";
 import BusinessStep2 from "@/app/form/(formSteps)/business/2/BusinessStep2";
 import BusinessStep3 from "@/app/form/(formSteps)/business/3/BusinessStep3";
 import BusinessStep4 from "@/app/form/(formSteps)/business/4/BusinessStep4";
-import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
 import { FormLayout } from "@/app/form/(formSteps)/FormLayout";
 import InsuranceStep1 from "@/app/form/(formSteps)/insurance/1/InsuranceStep1";
 import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
 import PersonalStep1 from "@/app/form/(formSteps)/personal/1/PersonalStep1";
 import PersonalStep2 from "@/app/form/(formSteps)/personal/2/PersonalStep2";
 import PersonalStep3 from "@/app/form/(formSteps)/personal/3/PersonalStep3";
+import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
 import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
@@ -55,7 +55,7 @@ export const routes = (
             <Route path="3" element={<LegalStep3 />} />
           </Route>
         )}
-        <Route path="finish" element={<FinishSection />} />
+        <Route path="review" element={<ReviewSection />} />
       </Route>
     </Route>
   </Routes>

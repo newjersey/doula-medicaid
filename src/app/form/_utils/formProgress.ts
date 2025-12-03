@@ -58,8 +58,8 @@ export const progressBarSections: Array<Section> = [
       ]
     : []),
   {
-    id: "finish",
-    name: "Finish",
+    id: "review",
+    name: "Review",
     shouldShowProgressBar: true,
     shouldShowProgressHeadingAndRequiredMessage: false,
   },

@@ -1,4 +1,4 @@
-import FinishSection from "@/app/form/(formSteps)/finish/FinishSection";
+import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import { type DataStore } from "@/app/form/_utils/dataStore";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
@@ -14,9 +14,9 @@ jest.mock("@form/_utils/fillPdf/form", () => ({
 }));
 
 const renderFunction = (dataStore: DataStore) =>
-  renderWithProviders(<FinishSection />, "/form/finish/1", dataStore);
+  renderWithProviders(<ReviewSection />, "/form/review/1", dataStore);
 
-describe("<FinishSection />", () => {
+describe("<ReviewSection />", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
