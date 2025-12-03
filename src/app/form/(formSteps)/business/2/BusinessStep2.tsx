@@ -1,7 +1,7 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
-import { type BusinessDetails2Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import { type Business2Data } from "@/app/form/(formSteps)/business/BusinessData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
@@ -10,14 +10,14 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
-const BusinessDetailsStep2 = () => {
+const BusinessStep2 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<BusinessDetails2Data>({
+  } = useForm<Business2Data>({
     defaultValues: {
       hasUncollectedDebt: getDefaultBoolean(dataStore, "hasUncollectedDebt"),
       isSubjectToPaymentSuspension: getDefaultBoolean(dataStore, "isSubjectToPaymentSuspension"),
@@ -28,7 +28,7 @@ const BusinessDetailsStep2 = () => {
   const isSubjectToPaymentSuspension = watch("isSubjectToPaymentSuspension");
 
   return (
-    <DoulaForm<BusinessDetails2Data>
+    <DoulaForm<Business2Data>
       errors={errors}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
@@ -71,4 +71,4 @@ const BusinessDetailsStep2 = () => {
   );
 };
 
-export default BusinessDetailsStep2;
+export default BusinessStep2;

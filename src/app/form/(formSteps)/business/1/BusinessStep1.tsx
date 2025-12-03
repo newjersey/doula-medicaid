@@ -1,8 +1,8 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
-import { formatAddressLabel } from "@/app/form/(formSteps)/business-details/1/_utils/formatAddressLabel";
-import type { BusinessDetails1Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import { formatAddressLabel } from "@/app/form/(formSteps)/business/1/_utils/formatAddressLabel";
+import type { Business1Data } from "@/app/form/(formSteps)/business/BusinessData";
 import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
 import DoulaRadio, { type DoulaRadioOption } from "@/app/form/(formSteps)/components/DoulaRadio";
 import SoleProprietorExplainer from "@/app/form/(formSteps)/components/SoleProprietorExplainer";
@@ -19,7 +19,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm, type FieldPath } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } = {
+const orderedInputNameToLabel: { [key in keyof Business1Data]: string } = {
   businessAddressSameAsOtherAddress: "Is your business address the same as a previous address?",
   businessStreetAddress1: "Street address",
   businessStreetAddress2: "Street address line 2",
@@ -29,7 +29,7 @@ const orderedInputNameToLabel: { [key in keyof BusinessDetails1Data]: string } =
 };
 
 const mayHaveThreeOrMoreErrors = true;
-const BusinessDetailsStep1 = () => {
+const BusinessStep1 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
@@ -37,7 +37,7 @@ const BusinessDetailsStep1 = () => {
     formState: { errors },
     setFocus,
     watch,
-  } = useForm<BusinessDetails1Data>({
+  } = useForm<Business1Data>({
     defaultValues: {
       businessAddressSameAsOtherAddress:
         getBusinessAddressSameAsOtherAddress(dataStore, false) ?? "",
@@ -75,10 +75,8 @@ const BusinessDetailsStep1 = () => {
   }
 
   return (
-    <DoulaForm<BusinessDetails1Data>
-      orderedInputNames={
-        Object.keys(orderedInputNameToLabel) as Array<FieldPath<BusinessDetails1Data>>
-      }
+    <DoulaForm<Business1Data>
+      orderedInputNames={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Business1Data>>}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
@@ -143,7 +141,7 @@ const BusinessDetailsStep1 = () => {
             register={register}
           />
           {businessAddressSameAsOtherAddress === "different" && (
-            <DoulaAddress<BusinessDetails1Data>
+            <DoulaAddress<Business1Data>
               fieldsetProps={{
                 legend: <p className="margin-top-5">What is your business address?</p>,
               }}
@@ -168,7 +166,7 @@ const BusinessDetailsStep1 = () => {
   );
 };
 
-const getAddressOptions = (dataStore: DataStore): Array<DoulaRadioOption<BusinessDetails1Data>> => {
+const getAddressOptions = (dataStore: DataStore): Array<DoulaRadioOption<Business1Data>> => {
   const mailingOption = {
     label: (
       <div>
@@ -185,7 +183,7 @@ const getAddressOptions = (dataStore: DataStore): Array<DoulaRadioOption<Busines
     value: "mailing",
   };
 
-  const addressOptions: Array<DoulaRadioOption<BusinessDetails1Data>> = [mailingOption];
+  const addressOptions: Array<DoulaRadioOption<Business1Data>> = [mailingOption];
 
   const hasSameBillingMailingAddress = getValue(dataStore, "hasSameBillingMailingAddress", false);
   if (hasSameBillingMailingAddress === "false") {
@@ -214,4 +212,4 @@ const getAddressOptions = (dataStore: DataStore): Array<DoulaRadioOption<Busines
   return addressOptions;
 };
 
-export default BusinessDetailsStep1;
+export default BusinessStep1;

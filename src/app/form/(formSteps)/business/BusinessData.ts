@@ -9,7 +9,7 @@ import { type AddressState } from "@/app/form/_utils/inputFields/addressState";
 
 export type BusinessAddressSameAsOtherAddressOptions = "mailing" | "billing" | "different" | "";
 
-export interface BusinessDetails1Data {
+export interface Business1Data {
   businessAddressSameAsOtherAddress: BusinessAddressSameAsOtherAddressOptions;
   businessStreetAddress1: string;
   businessStreetAddress2: string;
@@ -18,17 +18,17 @@ export interface BusinessDetails1Data {
   businessZip: string;
 }
 
-export interface BusinessDetails2Data {
+export interface Business2Data {
   hasUncollectedDebt: "true" | "false" | "";
   isSubjectToPaymentSuspension: "true" | "false" | "";
 }
 
-export interface BusinessDetails3Data {
+export interface Business3Data {
   hasBeenExcludedFromMedicaid: "true" | "false" | "";
   hasBeenSuspendedFromMedicaid: "true" | "false" | "";
 }
 
-export interface BusinessDetails4Data {
+export interface Business4Data {
   hasFiledBankruptcy: "true" | "false" | "";
   pastBankruptcyMonth: string;
   pastBankruptcyDay: string;
@@ -40,7 +40,7 @@ export interface BusinessDetails4Data {
   futureBankruptcyYear: string;
 }
 
-export interface BusinessDetailsFormData {
+export interface BusinessFormData {
   businessStreetAddress1: string;
   businessStreetAddress2: string | null;
   businessCity: string;
@@ -53,7 +53,7 @@ export interface BusinessDetailsFormData {
   futureBankruptcyDate: Date | null;
 }
 
-const getBusinessDetails1Data = (dataStore: DataStore) => {
+const getBusiness1Data = (dataStore: DataStore) => {
   const businessAddressSameAsOtherAddress = getBusinessAddressSameAsOtherAddress(dataStore, true);
   switch (businessAddressSameAsOtherAddress) {
     case "mailing":
@@ -86,7 +86,7 @@ const getBusinessDetails1Data = (dataStore: DataStore) => {
       );
   }
 };
-const getBusinessDetails2And3Data = (dataStore: DataStore) => {
+const getBusiness2And3Data = (dataStore: DataStore) => {
   const hasUncollectedDebt = getBoolean(dataStore, "hasUncollectedDebt", true);
   const isSubjectToPaymentSuspension = getBoolean(dataStore, "isSubjectToPaymentSuspension", true);
   const hasBeenExcludedFromMedicaid = getBoolean(dataStore, "hasBeenExcludedFromMedicaid", true);
@@ -104,7 +104,7 @@ const getBusinessDetails2And3Data = (dataStore: DataStore) => {
   return { hasDisclosableEvent };
 };
 
-const getBusinessDetails4Data = (dataStore: DataStore) => {
+const getBusiness4Data = (dataStore: DataStore) => {
   const hasFiledBankruptcy = getBoolean(dataStore, "hasFiledBankruptcy", true);
   const pastBankruptcyDate = hasFiledBankruptcy
     ? new Date(
@@ -128,10 +128,10 @@ const getBusinessDetails4Data = (dataStore: DataStore) => {
   };
 };
 
-export const getBusinessDetailsFormData = (dataStore: DataStore): BusinessDetailsFormData => {
+export const getBusinessFormData = (dataStore: DataStore): BusinessFormData => {
   return {
-    ...getBusinessDetails1Data(dataStore),
-    ...getBusinessDetails2And3Data(dataStore),
-    ...getBusinessDetails4Data(dataStore),
+    ...getBusiness1Data(dataStore),
+    ...getBusiness2And3Data(dataStore),
+    ...getBusiness4Data(dataStore),
   };
 };

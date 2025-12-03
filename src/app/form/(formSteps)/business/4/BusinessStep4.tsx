@@ -1,7 +1,7 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
-import { type BusinessDetails4Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import { type Business4Data } from "@/app/form/(formSteps)/business/BusinessData";
 import { DoulaDateInput } from "@/app/form/(formSteps)/components/DoulaDateInput";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
@@ -10,7 +10,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const orderedInputNames: Array<keyof BusinessDetails4Data> = [
+const orderedInputNames: Array<keyof Business4Data> = [
   "hasFiledBankruptcy",
   "pastBankruptcyMonth",
   "pastBankruptcyDay",
@@ -22,7 +22,7 @@ const orderedInputNames: Array<keyof BusinessDetails4Data> = [
 ];
 
 const mayHaveThreeOrMoreErrors = true;
-const BusinessDetailsStep4 = () => {
+const BusinessStep4 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
@@ -30,7 +30,7 @@ const BusinessDetailsStep4 = () => {
     formState: { errors },
     setFocus,
     watch,
-  } = useForm<BusinessDetails4Data>({
+  } = useForm<Business4Data>({
     defaultValues: {
       hasFiledBankruptcy: getDefaultBoolean(dataStore, "hasFiledBankruptcy"),
       pastBankruptcyMonth: getDefaultValue(dataStore, "pastBankruptcyMonth") ?? "",
@@ -49,7 +49,7 @@ const BusinessDetailsStep4 = () => {
   const currentYear: number = new Date().getFullYear();
 
   return (
-    <DoulaForm<BusinessDetails4Data>
+    <DoulaForm<Business4Data>
       orderedInputNames={orderedInputNames}
       errors={errors}
       handleSubmit={handleSubmit}
@@ -116,4 +116,4 @@ const BusinessDetailsStep4 = () => {
   );
 };
 
-export default BusinessDetailsStep4;
+export default BusinessStep4;

@@ -5,7 +5,7 @@ import { screen } from "@testing-library/react";
 
 describe("<ProgressBar />", () => {
   it("shows the progress bar", () => {
-    renderWithProviders(routes, "/form/business-details/1");
+    renderWithProviders(routes, "/form/business/1");
     const progressSection = screen.getByRole("generic", { name: /progress/i });
     const sections = within(progressSection).getAllByRole("listitem");
     expect(sections.length).toEqual(6);
@@ -17,7 +17,7 @@ describe("<ProgressBar />", () => {
     expect(sections[2]).toHaveTextContent("completed");
     expect(sections[3]).toHaveTextContent("Personal");
     expect(sections[3]).toHaveTextContent("completed");
-    expect(sections[4]).toHaveTextContent("Business details");
+    expect(sections[4]).toHaveTextContent("Business");
     expect(sections[4].getAttribute("aria-current")).toEqual("true");
     expect(sections[5]).toHaveTextContent("Finish");
     expect(sections[5]).toHaveTextContent("not completed");

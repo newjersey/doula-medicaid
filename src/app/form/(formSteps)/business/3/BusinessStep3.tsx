@@ -1,7 +1,7 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
-import { type BusinessDetails3Data } from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+import { type Business3Data } from "@/app/form/(formSteps)/business/BusinessData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
@@ -10,14 +10,14 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { useForm } from "react-hook-form";
 
 const mayHaveThreeOrMoreErrors = false;
-const BusinessDetailsStep3 = () => {
+const BusinessStep3 = () => {
   const { dataStore } = useDataStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<BusinessDetails3Data>({
+  } = useForm<Business3Data>({
     defaultValues: {
       hasBeenExcludedFromMedicaid: getDefaultBoolean(dataStore, "hasBeenExcludedFromMedicaid"),
       hasBeenSuspendedFromMedicaid: getDefaultBoolean(dataStore, "hasBeenSuspendedFromMedicaid"),
@@ -28,7 +28,7 @@ const BusinessDetailsStep3 = () => {
   const hasBeenSuspendedFromMedicaid = watch("hasBeenSuspendedFromMedicaid");
 
   return (
-    <DoulaForm<BusinessDetails3Data>
+    <DoulaForm<Business3Data>
       errors={errors}
       handleSubmit={handleSubmit}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
@@ -71,4 +71,4 @@ const BusinessDetailsStep3 = () => {
   );
 };
 
-export default BusinessDetailsStep3;
+export default BusinessStep3;

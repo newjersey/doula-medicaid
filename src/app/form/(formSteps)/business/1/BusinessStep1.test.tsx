@@ -1,4 +1,4 @@
-import BusinessDetailsStep1 from "@/app/form/(formSteps)/business-details/1/BusinessDetailsStep1";
+import BusinessStep1 from "@/app/form/(formSteps)/business/1/BusinessStep1";
 import {
   billingBusinessAddressSameAsOtherAddress,
   businessAddressFields,
@@ -6,7 +6,7 @@ import {
   mailingBusinessAddressSameAsOtherAddress,
   path1TestFields,
   path2TestFields,
-} from "@/app/form/(formSteps)/business-details/1/testFields";
+} from "@/app/form/(formSteps)/business/1/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
@@ -34,10 +34,10 @@ const billingAddress = {
   billingZip: "22222",
 };
 
-describe("<BusinessDetailsStep1 />", () => {
+describe("<BusinessStep1 />", () => {
   const getRenderWithExistingData = (existingData: DataStore) => {
     return (dataStore: DataStore = {}) =>
-      renderWithProviders(<BusinessDetailsStep1 />, "/form/business-details/1", {
+      renderWithProviders(<BusinessStep1 />, "/form/business/1", {
         ...dataStore,
         ...existingData,
       });

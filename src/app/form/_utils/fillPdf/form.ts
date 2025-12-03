@@ -1,8 +1,8 @@
 import { BASE_PATH } from "@/app/basePath";
 import {
-  getBusinessDetailsFormData,
-  type BusinessDetailsFormData,
-} from "@/app/form/(formSteps)/business-details/BusinessDetailsData";
+  getBusinessFormData,
+  type BusinessFormData,
+} from "@/app/form/(formSteps)/business/BusinessData";
 import {
   getInsuranceFormData,
   type InsuranceFormData,
@@ -28,7 +28,7 @@ export interface FormData
     TrainingFormData,
     InsuranceFormData,
     PersonalFormData,
-    BusinessDetailsFormData {}
+    BusinessFormData {}
 
 export interface FilledPDFData {
   filename: string;
@@ -46,7 +46,7 @@ export const getFormData = (dataStore: DataStore): FormData => {
     ...getTrainingFormData(dataStore),
     ...getInsuranceFormData(dataStore),
     ...getPersonalFormData(dataStore),
-    ...getBusinessDetailsFormData(dataStore),
+    ...getBusinessFormData(dataStore),
   };
 };
 

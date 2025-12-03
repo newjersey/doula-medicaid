@@ -40,8 +40,8 @@ export const progressBarSections: Array<Section> = [
     shouldShowProgressHeadingAndRequiredMessage: true,
   },
   {
-    id: "business-details",
-    name: "Business details",
+    id: "business",
+    name: "Business",
     numSteps: 4,
     shouldShowProgressBar: true,
     shouldShowProgressHeadingAndRequiredMessage: true,

@@ -1,8 +1,8 @@
-import BusinessDetailsStep3 from "@/app/form/(formSteps)/business-details/3/BusinessDetailsStep3";
+import BusinessStep3 from "@/app/form/(formSteps)/business/3/BusinessStep3";
 import {
   firstRadioOptionTestFields,
   testFields,
-} from "@/app/form/(formSteps)/business-details/3/testFields";
+} from "@/app/form/(formSteps)/business/3/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
@@ -12,9 +12,9 @@ import {
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 
-describe("<BusinessDetailsStep3 />", () => {
+describe("<BusinessStep3 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
-    renderWithProviders(<BusinessDetailsStep3 />, "/form/business-details/3", dataStore);
+    renderWithProviders(<BusinessStep3 />, "/form/business/3", dataStore);
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(testFields, testFields, renderFunction, screen);
