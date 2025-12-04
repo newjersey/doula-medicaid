@@ -1,4 +1,4 @@
-import { getCurrentFormProgress, progressBarSections } from "@form/_utils/formProgress";
+import { getCurrentFormProgress, getProgressBarSections } from "@form/_utils/formProgress";
 import { RequiredMarker } from "@trussworks/react-uswds";
 import { usePathname } from "next/navigation";
 
@@ -7,14 +7,14 @@ type CompletionState = "complete" | "current" | "incomplete";
 export const ProgressBar = () => {
   const pathname = usePathname();
   const { section: currentSection, step: currentStep } = getCurrentFormProgress(pathname);
-  const currentSectionIndex = progressBarSections.findIndex(
+  const currentSectionIndex = getProgressBarSections().findIndex(
     (sections) => sections.id === currentSection.id,
   );
 
   return (
     <div className="usa-step-indicator" aria-label="progress">
       <ol className="usa-step-indicator__segments">
-        {progressBarSections.map((section, sectionIndex) => {
+        {getProgressBarSections().map((section, sectionIndex) => {
           let completionState: CompletionState;
           switch (true) {
             case sectionIndex < currentSectionIndex:
