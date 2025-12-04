@@ -11,9 +11,8 @@ jobs:
         id: get-linked-issues
         env:
           GH_TOKEN: ${{ secrets.DOULA_PM_ISSUE_COMMENT_TOKEN }}
-          # ${{ github.event.number }}
         run: |
-          echo "LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=358 -f query='
+          echo "LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=${{ github.event.number }} -f query='
             query ($owner: String!, $repo: String!, $pr: Int!) {
               repository(owner: $owner, name: $repo) {
                 pullRequest(number: $pr) {
@@ -25,7 +24,7 @@ jobs:
                 }
               }
             }
-          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' | xargs)" >> $GITHUB_ENV
+          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' | xargs)" >> $GITHUB_OUTPUT
 
       - name: Comment issue with amplify link
         env:
