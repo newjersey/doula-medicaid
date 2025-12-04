@@ -12,7 +12,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=${{ github.event.number }} -f query='
+          echo "LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=${{ github.event.number }} -f query='
             query ($owner: String!, $repo: String!, $pr: Int!) {
               repository(owner: $owner, name: $repo) {
                 pullRequest(number: $pr) {
@@ -24,8 +24,7 @@ jobs:
                 }
               }
             }
-          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' | xargs)
-          echo "LINKED_ISSUES=${LINKED_ISSUES}" >> $GITHUB_ENV
+          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' | xargs)" >> $GITHUB_ENV
 
       - name: Comment issue with amplify link
         env:
