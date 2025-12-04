@@ -6,7 +6,7 @@ describe("<LegalStep1 />", () => {
   const oldProcessEnv = process.env;
 
   beforeEach(() => {
-    jest.resetModules(); // Clears the cache
+    jest.resetModules();
     process.env = { ...oldProcessEnv, NEXT_PUBLIC_FLAG_LEGAL: "1" };
   });
 
