@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Get linked issues
         id: get-linked-issues
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=${{ github.event.number }} -f query='
             query ($owner: String!, $repo: String!, $pr: Int!) {
@@ -25,13 +27,13 @@ jobs:
           ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number')
           echo "LINKED_ISSUES=${LINKED_ISSUES}" >> $GITHUB_ENV
 
-      # - name: Comment issue with amplify link
-      #   run: |
-      #     for issueNum in ${ LINKED_ISSUES }; do
-      #       gh issue comment $issueNum --body "test 3" --repo newjersey/doula-pm
-      #     done
-      #   env:
-      #     GH_TOKEN: ${{ secrets.DOULA_PM_ISSUE_COMMENT_TOKEN }}
-      #     LINKED_ISSUES: ${{ steps.get-linked-issues.outputs.LINKED_ISSUES }}
+      - name: Comment issue with amplify link
+        env:
+          GH_TOKEN: ${{ secrets.DOULA_PM_ISSUE_COMMENT_TOKEN }}
+          LINKED_ISSUES: ${{ steps.get-linked-issues.outputs.LINKED_ISSUES }}
+        run: |
+          for issueNum in ${ LINKED_ISSUES }; do
+            gh issue comment $issueNum --body "test 3" --repo newjersey/doula-pm
+          done
 
       # body: 'App is being deployed to https://${{ github.head_ref }}.${{ secrets.AMPLIFY_APP_ID }}.amplifyapp.com/humanservices/dmahs/info/doulahelp. See the build at https://us-east-1.console.aws.amazon.com/amplify/apps/${{ secrets.AMPLIFY_APP_ID }}/branches/${{ github.head_ref }}/deployments'
