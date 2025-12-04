@@ -32,7 +32,7 @@ jobs:
           GH_TOKEN: ${{ secrets.DOULA_PM_ISSUE_COMMENT_TOKEN }}
           LINKED_ISSUES: ${{ steps.get-linked-issues.outputs.LINKED_ISSUES }}
         run: |
-          for issueNum in ${ LINKED_ISSUES }; do
+          for issueNum in ${{ LINKED_ISSUES }}; do
             gh issue comment $issueNum --body "test 3" --repo newjersey/doula-pm
           done
 
