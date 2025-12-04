@@ -1,5 +1,11 @@
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import {
+  getAllSections,
+  getCurrentFormProgress,
+  getNextFormProgress,
+  isFinalFormProgress,
+} from "@/app/form/_utils/formProgress";
+import {
   fillAllInputs,
   fillAllInputsExcept,
   fillField,
@@ -35,7 +41,10 @@ export interface TestField {
   prerequisiteField?: TestField;
 }
 
-type RenderFunction = (dataStore?: DataStore) => { mockUpdateDataStore: jest.Mock };
+type RenderFunction = (dataStore?: DataStore) => {
+  mockUpdateDataStore: jest.Mock;
+  pathname: string;
+};
 
 export const createTestField = (field: TestFieldParameters): TestField => {
   return {
@@ -70,9 +79,18 @@ export const testSaveFieldsToDataStore = async (
   screen: Screen,
 ) => {
   const user = userEvent.setup();
-  const { mockUpdateDataStore } = renderFunction();
+  const { mockUpdateDataStore, pathname } = renderFunction();
   await fillAllInputs(screen, user, allFields);
-  await user.click(screen.getByRole("button", { name: "Next" }));
+
+  const allSections = getAllSections();
+  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
+  const submitButtonName =
+    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
+  await user.click(
+    screen.getByRole("button", {
+      name: submitButtonName,
+    }),
+  );
 
   const dataUpdates = Object.fromEntries(
     fieldsToTest.map((field) => [field.dataStoreKey, field.expectedValue]),
@@ -87,12 +105,16 @@ export const testRequiredField = async (
   screen: Screen,
 ) => {
   const user = userEvent.setup();
-  const { mockUpdateDataStore } = renderFunction();
+  const { mockUpdateDataStore, pathname } = renderFunction();
   await fillAllInputsExcept(screen, user, allFields, new Set([fieldToTest.dataStoreKey]));
   const input = await getInputField(screen, fieldToTest);
   expect(input).toBeRequired();
 
-  await user.click(screen.getByRole("button", { name: "Next" }));
+  const allSections = getAllSections();
+  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
+  const submitButtonName =
+    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
+  await user.click(screen.getByRole("button", { name: submitButtonName }));
   expect(input).toHaveAccessibleDescription(
     expect.stringContaining(fieldToTest.requiredErrorMessage),
   );
@@ -113,11 +135,15 @@ export const testInvalidField = async (
   focusedField?: FieldToGet,
 ) => {
   const user = userEvent.setup();
-  const { mockUpdateDataStore } = renderFunction();
+  const { mockUpdateDataStore, pathname } = renderFunction();
   await fillAllInputsExcept(screen, user, allFields, new Set([invalidField.dataStoreKey]));
   await fillField(screen, user, invalidField);
 
-  await user.click(screen.getByRole("button", { name: "Next" }));
+  const allSections = getAllSections();
+  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
+  const submitButtonName =
+    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
+  await user.click(screen.getByRole("button", { name: submitButtonName }));
   const input = await getInputField(screen, invalidField);
   expect(input).toHaveAccessibleDescription(expect.stringContaining(expectedErrorMessage));
   expect(input).toHaveAttribute("aria-invalid", "true");

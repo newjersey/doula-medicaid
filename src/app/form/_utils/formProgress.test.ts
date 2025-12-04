@@ -2,6 +2,7 @@ import {
   getCurrentFormProgress,
   getNextFormProgress,
   getPreviousFormProgress,
+  isFinalFormProgress,
 } from "@form/_utils/formProgress";
 
 describe("getCurrentFormProgress", () => {
@@ -96,8 +97,8 @@ describe("getPreviousFormProgress", () => {
   });
 });
 
-describe("getNextStep and getPreviousStep", () => {
-  it("gets the correct next and previous steps when transitioning within a section", () => {
+describe("getNextFormProgress and getPreviousFormProgress", () => {
+  it("gets the correct next and previous form progress when transitioning within a section", () => {
     const section = {
       id: "section1",
       name: "Section 1",
@@ -205,11 +206,82 @@ describe("getNextStep and getPreviousStep", () => {
       },
     },
   ])(
-    "gets the correct next and previous steps when transitioning between sections and $name",
+    "gets the correct next and previous form progress when transitioning between sections and $name",
     ({ firstFormProgress, secondFormProgress }) => {
       const allSections = [firstFormProgress.section, secondFormProgress.section];
       expect(getNextFormProgress(firstFormProgress, allSections)).toEqual(secondFormProgress);
       expect(getPreviousFormProgress(secondFormProgress, allSections)).toEqual(firstFormProgress);
     },
   );
+});
+
+describe("isFinalFormProgress", () => {
+  const otherSection = {
+    id: "otherSection",
+    name: "Other section",
+    shouldShowProgressBar: true,
+    shouldShowProgressHeadingAndRequiredMessage: true,
+  };
+
+  it("returns true when the form progress is final and has steps", () => {
+    const sectionWithSteps = {
+      id: "sectionWithSteps",
+      name: "Section with steps",
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
+      numSteps: 2,
+    };
+    const allSections = [otherSection, sectionWithSteps];
+    const currentFormProgress = {
+      section: sectionWithSteps,
+      step: 2,
+    };
+    expect(isFinalFormProgress(currentFormProgress, allSections)).toEqual(true);
+  });
+
+  it("returns true when the form progress is final and has no steps", () => {
+    const sectionWithoutSteps = {
+      id: "sectionWithoutSteps",
+      name: "Section without steps",
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
+    };
+
+    const allSections = [otherSection, sectionWithoutSteps];
+    const currentFormProgress = {
+      section: sectionWithoutSteps,
+    };
+    expect(isFinalFormProgress(currentFormProgress, allSections)).toEqual(true);
+  });
+
+  it("returns false when the form progress is not final and has steps", () => {
+    const sectionWithSteps = {
+      id: "sectionWithSteps",
+      name: "Section with steps",
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
+      numSteps: 2,
+    };
+    const allSections = [sectionWithSteps, otherSection];
+    const currentFormProgress = {
+      section: sectionWithSteps,
+      step: 2,
+    };
+    expect(isFinalFormProgress(currentFormProgress, allSections)).toEqual(false);
+  });
+
+  it("returns false when the form progress is not final and has no steps", () => {
+    const sectionWithoutSteps = {
+      id: "sectionWithoutSteps",
+      name: "Section without steps",
+      shouldShowProgressBar: true,
+      shouldShowProgressHeadingAndRequiredMessage: true,
+    };
+
+    const allSections = [sectionWithoutSteps, otherSection];
+    const currentFormProgress = {
+      section: sectionWithoutSteps,
+    };
+    expect(isFinalFormProgress(currentFormProgress, allSections)).toEqual(false);
+  });
 });

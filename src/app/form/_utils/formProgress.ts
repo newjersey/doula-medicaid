@@ -119,8 +119,8 @@ export const getNextFormProgress = (
     const currentSectionIndex = allSections.findIndex(
       (section) => section.id === currentStep.section.id,
     );
-    const isFinalStep = currentSectionIndex === allSections.length - 1;
-    if (isFinalStep) {
+    const isFinalSection = currentSectionIndex === allSections.length - 1;
+    if (isFinalSection) {
       return null;
     }
     const nextSectionIndex = currentSectionIndex + 1;
@@ -162,4 +162,21 @@ export const getPreviousFormProgress = (
       }),
     };
   }
+};
+
+export const isFinalFormProgress = (
+  formProgress: FormProgress,
+  allSections: Array<Section>,
+): boolean => {
+  const currentSectionIndex = allSections.findIndex(
+    (section) => section.id === formProgress.section.id,
+  );
+  const isFinalSection = currentSectionIndex === allSections.length - 1;
+  if (
+    isFinalSection &&
+    (formProgress.step === undefined || formProgress.step === formProgress.section.numSteps)
+  ) {
+    return true;
+  }
+  return false;
 };
