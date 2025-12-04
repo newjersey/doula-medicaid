@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  allSections,
+  getAllSections,
   getCurrentFormProgress,
   getNextFormProgress,
   getPreviousFormProgress,
@@ -18,8 +18,8 @@ export interface FormProgressPosition {
 export const useFormProgressPosition = (): FormProgressPosition => {
   const pathname = usePathname();
   const current = getCurrentFormProgress(pathname);
-  const next = getNextFormProgress(current, allSections);
-  const previous = getPreviousFormProgress(current, allSections);
+  const next = getNextFormProgress(current, getAllSections());
+  const previous = getPreviousFormProgress(current, getAllSections());
   return { current, next, previous };
 };
 
