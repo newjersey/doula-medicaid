@@ -11,8 +11,9 @@ jobs:
         id: get-linked-issues
         env:
           GH_TOKEN: ${{ secrets.DOULA_PM_ISSUE_COMMENT_TOKEN }}
+          # ${{ github.event.number }}
         run: |
-          echo "LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=${{ github.event.number }} -f query='
+          echo "LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=358 -f query='
             query ($owner: String!, $repo: String!, $pr: Int!) {
               repository(owner: $owner, name: $repo) {
                 pullRequest(number: $pr) {
