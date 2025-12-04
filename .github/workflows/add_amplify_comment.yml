@@ -9,21 +9,21 @@ jobs:
     steps:
       - name: Get linked issues
         id: get-linked-issues
-        run: >
-          echo "LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F
-          pr=${{ github.event.number }} -f query=' query ($owner: String!, $repo: String!, $pr:
-          Int!) {
-            repository(owner: $owner, name: $repo) {
-              pullRequest(number: $pr) {
-                closingIssuesReferences(first: 100) {
-                  nodes {
-                    number
+        run: |
+          LINKED_ISSUES=$(gh api graphql -F owner='newjersey' -F repo='doula-medicaid' -F pr=${{ github.event.number }} -f query='
+            query ($owner: String!, $repo: String!, $pr: Int!) {
+              repository(owner: $owner, name: $repo) {
+                pullRequest(number: $pr) {
+                  closingIssuesReferences(first: 100) {
+                    nodes {
+                      number
+                    }
                   }
                 }
               }
             }
-          }'  --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number)'" >>
-          $GITHUB_ENV
+          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number')
+          echo "LINKED_ISSUES=${LINKED_ISSUES}" >> $GITHUB_ENV
 
       # - name: Comment issue with amplify link
       #   run: |
