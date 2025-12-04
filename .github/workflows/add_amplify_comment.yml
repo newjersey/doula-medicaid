@@ -24,9 +24,7 @@ jobs:
                 }
               }
             }
-          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' | xargs)"
-
-      #           #  >> $GITHUB_ENV
+          ' --jq '.data.repository.pullRequest.closingIssuesReferences.nodes[].number' | xargs)" >> $GITHUB_ENV
 
       - name: Comment issue with amplify link
         env:
