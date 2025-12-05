@@ -16,6 +16,7 @@ import type {
   Business4Data,
   BusinessAddressSameAsOtherAddressOptions,
 } from "@form/(formSteps)/business/BusinessData";
+import type { Legal1Data } from "@form/(formSteps)/legal/LegalData";
 import type {
   Personal1Data,
   Personal2Data,
@@ -35,7 +36,8 @@ export type DataStoreKey =
   | keyof Business1Data
   | keyof Business2Data
   | keyof Business3Data
-  | keyof Business4Data;
+  | keyof Business4Data
+  | keyof Legal1Data;
 
 export type DataStore = { [key: string]: string };
 
