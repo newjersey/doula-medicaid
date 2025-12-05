@@ -80,6 +80,7 @@ const LegalStep1 = () => {
               errors={errors}
               register={register}
               maxLength={100}
+              required
             />
           )}
         </div>
@@ -114,6 +115,7 @@ const LegalStep1 = () => {
               errors={errors}
               register={register}
               maxLength={100}
+              required
             />
           )}
         </div>
