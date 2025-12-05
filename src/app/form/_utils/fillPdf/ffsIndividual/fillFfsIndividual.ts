@@ -55,6 +55,7 @@ import {
   getPage8Fields,
   type PdfFfsIndividualPage8,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page8";
+import { getPage9Fields } from "@/app/form/_utils/fillPdf/ffsIndividual/page9";
 import { fillForm, type FormData } from "@form/_utils/fillPdf/form";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
@@ -82,6 +83,7 @@ export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndivi
     ...getPage5Fields(formData),
     ...getPage6Fields(formData),
     ...getPage8Fields(formData),
+    ...getPage9Fields(formData),
     ...getPage11Fields(formData),
     ...getPage13Fields(formData),
     ...getPage17Fields(formData),
