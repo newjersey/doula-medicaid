@@ -35,7 +35,7 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-hook-form": "7.68.0",
-    "react-router": "7.10.0"
+    "react-router": "7.10.1"
   },
   "devDependencies": {
     "@aws-sdk/client-ec2": "^3.919.0",
