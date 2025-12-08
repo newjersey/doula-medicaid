@@ -39,7 +39,7 @@ describe("Page 23 - disclosure of ownership and control interest statement", () 
         }),
       );
       expect(pdfFields[pdfKey]).toEqual(true);
-      expect(pdfFields[oppositePdfKey]).toEqual(false);
+      expect(pdfFields[oppositePdfKey]).toEqual(undefined);
     });
 
     it("checks the Yes checkbox when formData.hasDisclosableEvent is true", () => {
@@ -52,7 +52,7 @@ describe("Page 23 - disclosure of ownership and control interest statement", () 
         }),
       );
       expect(pdfFields[pdfKey]).toEqual(true);
-      expect(pdfFields[oppositePdfKey]).toEqual(false);
+      expect(pdfFields[oppositePdfKey]).toEqual(undefined);
     });
   });
 });

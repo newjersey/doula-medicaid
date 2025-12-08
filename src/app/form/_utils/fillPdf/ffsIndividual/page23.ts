@@ -1,4 +1,5 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
+import { mapYesNoFields } from "@/app/form/_utils/fillPdf/mappers";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 23 - disclosure of ownership and control interest statement
@@ -44,10 +45,17 @@ export interface PdfFfsIndividualPage23 {
 
 export const getPage23Fields = (formData: FormData): Partial<PdfFfsIndividualPage23> => {
   if (formData.isSupportedSoleProprietor === true) {
+    const hasDisclosableEventFields = mapYesNoFields<PdfFfsIndividualPage23>(
+      formData.hasDisclosableEvent,
+      {
+        yesPdfKey: "fd452disclosableeventyyes",
+        noPdfKey: "fd452disclosableeventno",
+      },
+    );
+
     return {
       fd452increasedbedcapacityno: true,
-      fd452disclosableeventyyes: formData.hasDisclosableEvent,
-      fd452disclosableeventno: !formData.hasDisclosableEvent,
+      ...hasDisclosableEventFields,
     };
   } else {
     throw new UnexpectedFormDataError(
