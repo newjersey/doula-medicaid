@@ -41,18 +41,6 @@ describe("Page 21 - disclosure of ownership and control interest statement", () 
   });
 
   describe("Filed for bankruptcy in the past 7 years", () => {
-    it("throws an UnexpectedFormDataError when hasFiledBankruptcy is true but pastBankruptcyDate is null", () => {
-      const testFunction = () =>
-        mapFfsIndividualFields(
-          generateFormData({
-            hasFiledBankruptcy: true,
-            pastBankruptcyDate: null,
-          }),
-        );
-      expect(testFunction).toThrow(UnexpectedFormDataError);
-      expect(testFunction).toThrow("hasFiledBankruptcy true, but pastBankruptcyDate is null.");
-    });
-
     it("checks the No checkbox when formData.hasFiledBankruptcy is false", () => {
       const yesPdfKey = "fd452filedbankruptcypastsevenyearsyes";
       const noPdfKey = "fd452filedbankruptcypastsevenyearsno";
@@ -87,18 +75,6 @@ describe("Page 21 - disclosure of ownership and control interest statement", () 
   });
 
   describe("Possibility of filing for bankruptcy in the next year", () => {
-    it("throws an UnexpectedFormDataError when mightFileBankruptcy is true but futureBankruptcyDate is null", () => {
-      const testFunction = () =>
-        mapFfsIndividualFields(
-          generateFormData({
-            mightFileBankruptcy: true,
-            futureBankruptcyDate: null,
-          }),
-        );
-      expect(testFunction).toThrow(UnexpectedFormDataError);
-      expect(testFunction).toThrow("mightFileBankruptcy true, but futureBankruptcyDate is null.");
-    });
-
     it("checks the No checkbox when formData.mightFileBankruptcy is false", () => {
       const yesPdfKey = "fd452filedbankruptcywithinyearyes";
       const noPdfKey = "fd452filedbankruptcywithinyearno";

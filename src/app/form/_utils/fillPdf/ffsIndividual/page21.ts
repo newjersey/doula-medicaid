@@ -1,5 +1,6 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import { formatDate } from "@/app/form/_utils/fillPdf/formatters";
+import { mapYesNoExplainYesFields } from "@/app/form/_utils/fillPdf/mappers";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 21 - disclosure of ownership and control interest statement
@@ -38,40 +39,6 @@ export interface PdfFfsIndividualPage21 {
   fd452filedbankruptcywithinyeardate: string;
 }
 
-const getPastBankruptcyFields = (formData: FormData) => {
-  if (formData.hasFiledBankruptcy === true) {
-    if (formData.pastBankruptcyDate === null) {
-      throw new UnexpectedFormDataError(
-        `hasFiledBankruptcy true, but pastBankruptcyDate is ${formData.pastBankruptcyDate}.`,
-      );
-    }
-    return {
-      fd452filedbankruptcypastsevenyearsyes: true,
-      fd452filedbankruptcypastsevenyearsdate: formatDate(formData.pastBankruptcyDate),
-    };
-  }
-  return {
-    fd452filedbankruptcypastsevenyearsno: true,
-  };
-};
-
-const getFutureBankruptcyFields = (formData: FormData) => {
-  if (formData.mightFileBankruptcy === true) {
-    if (formData.futureBankruptcyDate === null) {
-      throw new UnexpectedFormDataError(
-        `mightFileBankruptcy true, but futureBankruptcyDate is ${formData.futureBankruptcyDate}.`,
-      );
-    }
-    return {
-      fd452filedbankruptcywithinyearyes: true,
-      fd452filedbankruptcywithinyeardate: formatDate(formData.futureBankruptcyDate),
-    };
-  }
-  return {
-    fd452filedbankruptcywithinyearno: true,
-  };
-};
-
 export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPage21> => {
   if (formData.isSupportedSoleProprietor !== true) {
     throw new UnexpectedFormDataError(
@@ -79,11 +46,31 @@ export const getPage21Fields = (formData: FormData): Partial<PdfFfsIndividualPag
     );
   }
 
+  const pastBankruptcyFields = mapYesNoExplainYesFields<PdfFfsIndividualPage21>(
+    formData.hasFiledBankruptcy,
+    formData.pastBankruptcyDate ? formatDate(formData.pastBankruptcyDate) : null,
+    {
+      yesPdfKey: "fd452filedbankruptcypastsevenyearsyes",
+      noPdfKey: "fd452filedbankruptcypastsevenyearsno",
+      yesExplanationPdfKey: "fd452filedbankruptcypastsevenyearsdate",
+    },
+  );
+
+  const futureBankruptcyFields = mapYesNoExplainYesFields<PdfFfsIndividualPage21>(
+    formData.mightFileBankruptcy,
+    formData.futureBankruptcyDate ? formatDate(formData.futureBankruptcyDate) : null,
+    {
+      yesPdfKey: "fd452filedbankruptcywithinyearyes",
+      noPdfKey: "fd452filedbankruptcywithinyearno",
+      yesExplanationPdfKey: "fd452filedbankruptcywithinyeardate",
+    },
+  );
+
   return {
     fd452ownershiphealthcareproviderno: true,
     fd452ownershipchangeno: true,
     fd452ownershipchangewithinyearno: true,
-    ...getPastBankruptcyFields(formData),
-    ...getFutureBankruptcyFields(formData),
+    ...pastBankruptcyFields,
+    ...futureBankruptcyFields,
   };
 };
