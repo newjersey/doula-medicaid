@@ -1,3 +1,4 @@
+import { mapYesNoExplainYesFields } from "@/app/form/_utils/fillPdf/mappers";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 9 - SECTION II – PROVIDER IDENTIFICATION
@@ -26,7 +27,26 @@ export interface PdfFfsIndividualPage9 {
   fd425signaturedateofdoulaprovfdate_af_date: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage9> => {
-  return {};
+  const licenseSuspendedFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+    formData.hadLicenseSuspended,
+    formData.licenseSuspendedExplanation,
+    {
+      yesPdfKey: "fd425licensesuspensionyes",
+      noPdfKey: "fd425licensesuspensionno",
+      yesExplanationPdfKey: "fd425licensesuspensionyesexplaination",
+    },
+  );
+
+  const crimeChargeFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+    formData.hasCrimeCharge,
+    formData.crimeChargeExplanation,
+    {
+      yesPdfKey: "fd425indictedyes",
+      noPdfKey: "fd425indictedno",
+      yesExplanationPdfKey: "fd425indictedyesexplaination",
+    },
+  );
+
+  return { ...crimeChargeFields, ...licenseSuspendedFields };
 };

@@ -55,7 +55,10 @@ import {
   getPage8Fields,
   type PdfFfsIndividualPage8,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page8";
-import { getPage9Fields } from "@/app/form/_utils/fillPdf/ffsIndividual/page9";
+import {
+  getPage9Fields,
+  type PdfFfsIndividualPage9,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page9";
 import { fillForm, type FormData } from "@form/_utils/fillPdf/form";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
@@ -66,6 +69,7 @@ export interface PdfFfsIndividual
     PdfFfsIndividualPage5,
     PdfFfsIndividualPage6,
     PdfFfsIndividualPage8,
+    PdfFfsIndividualPage9,
     PdfFfsIndividualPage11,
     PdfFfsIndividualPage13,
     PdfFfsIndividualPage17,

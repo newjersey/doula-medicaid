@@ -7,6 +7,7 @@ import {
   getInsuranceFormData,
   type InsuranceFormData,
 } from "@/app/form/(formSteps)/insurance/InsuranceData";
+import { getLegalFormData, type LegalFormData } from "@/app/form/(formSteps)/legal/LegalData";
 import {
   getPersonalFormData,
   type PersonalFormData,
@@ -26,9 +27,9 @@ export interface FormData
   extends ScreeningFormData,
     InsuranceFormData,
     TrainingFormData,
-    InsuranceFormData,
     PersonalFormData,
-    BusinessFormData {}
+    BusinessFormData,
+    LegalFormData {}
 
 export interface FilledPDFData {
   filename: string;
@@ -44,9 +45,9 @@ export const getFormData = (dataStore: DataStore): FormData => {
     ...getScreeningFormData(dataStore),
     ...getInsuranceFormData(dataStore),
     ...getTrainingFormData(dataStore),
-    ...getInsuranceFormData(dataStore),
     ...getPersonalFormData(dataStore),
     ...getBusinessFormData(dataStore),
+    ...getLegalFormData(dataStore),
   };
 };
 
