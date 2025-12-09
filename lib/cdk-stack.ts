@@ -13,6 +13,8 @@ import * as targets from "aws-cdk-lib/aws-route53-targets";
 const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
 
+const STAGING_ENV_NAME = "staging";
+
 /** See docs/deployment.md */
 export class CdkStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
@@ -21,6 +23,8 @@ export class CdkStack extends cdk.Stack {
     const envName = this.node.tryGetContext("env");
     const isHttps = this.node.tryGetContext("https") == "true";
     const certificateArn = this.node.tryGetContext("certificateArn");
+
+    const dnsIps = this.node.tryGetContext("dnsIps");
 
     // Use an existing VPC by name
     const vpc = ec2.Vpc.fromLookup(this, "ExistingVpc", {
@@ -176,6 +180,24 @@ export class CdkStack extends cdk.Stack {
       ec2.Peer.ipv4(vpc.vpcCidrBlock),
       ec2.Port.udp(53),
     );
+
+    if (envName === STAGING_ENV_NAME) {
+      if (dnsIps === undefined) {
+        throw new Error(
+          "A comma-delimited list of DNS IPs is required for this Route53 stable CNAME to be accessed from outside the VPC. Prod currently deploys the Route53 stuff, but does not actually use it. This difference between staging and prod is tech debt. See deployment.md",
+        );
+      }
+      for (const dnsIp of dnsIps.split(",")) {
+        route53InboundEndpointSecurityGroup.addIngressRule(
+          ec2.Peer.ipv4(`${dnsIp}/32`),
+          ec2.Port.tcp(53),
+        );
+        route53InboundEndpointSecurityGroup.addIngressRule(
+          ec2.Peer.ipv4(`${dnsIp}/32`),
+          ec2.Port.udp(53),
+        );
+      }
+    }
 
     const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
     new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
