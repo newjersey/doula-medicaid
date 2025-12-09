@@ -1,26 +1,107 @@
 "use client";
 
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
+import DoulaTextareaCharacterCount from "@/app/form/(formSteps)/components/DoulaTextareaCharacterCount";
+import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
+import { type Legal2Data } from "@/app/form/(formSteps)/legal/LegalData";
+import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const mayHaveThreeOrMoreErrors = false;
+const orderedInputNames: Array<keyof Legal2Data> = [
+  "hasCrimeCharge",
+  "crimeChargeExplanation",
+  "hadLicenseSuspended",
+  "licenseSuspendedExplanation",
+];
+
+const mayHaveThreeOrMoreErrors = true;
 const LegalStep2 = () => {
+  const { dataStore } = useDataStore();
   const {
-    formState: { errors },
+    register,
     handleSubmit,
-  } = useForm<object>({
-    defaultValues: {},
+    formState: { errors },
+    setFocus,
+    watch,
+  } = useForm<Legal2Data>({
+    defaultValues: {
+      hasCrimeCharge: getDefaultBoolean(dataStore, "hasCrimeCharge"),
+      crimeChargeExplanation: getDefaultValue(dataStore, "crimeChargeExplanation") ?? "",
+      hadLicenseSuspended: getDefaultBoolean(dataStore, "hadLicenseSuspended"),
+      licenseSuspendedExplanation: getDefaultValue(dataStore, "licenseSuspendedExplanation") ?? "",
+    },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
+  const hasCrimeCharge = watch("hasCrimeCharge");
+  const hadLicenseSuspended = watch("hadLicenseSuspended");
 
   return (
-    <DoulaForm<object>
+    <DoulaForm<Legal2Data>
+      orderedInputNames={orderedInputNames}
       errors={errors}
       handleSubmit={handleSubmit}
+      setFocus={setFocus}
       mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
     >
+      <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+        <div className="desktop:grid-col-8">
+          <h2 className="font-heading-md margin-bottom-0">Medicaid statements</h2>
+          <p className="usa-hint">
+            To meet legal requirements, we ask these questions. Answering &quot;Yes&quot; will not
+            automatically disqualify you.
+          </p>
+          <DoulaYesNoRadio
+            name="hasCrimeCharge"
+            value={hasCrimeCharge}
+            label="Have you ever been indicted or charged with a crime or a disorderly persons offense anywhere?"
+            required
+            register={register}
+            errors={errors}
+          />
+          {hasCrimeCharge === "true" && (
+            <div className="maxw-mobile-lg">
+              <DoulaTextareaCharacterCount
+                name="crimeChargeExplanation"
+                label="In a few words, please explain the charge or offense."
+                required
+                inputClassName="height-10"
+                maxLength={68}
+                errors={errors}
+                register={register}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+      <HorizontalDivider />
+      <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
+        <div className="desktop:grid-col-8">
+          <DoulaYesNoRadio
+            name="hadLicenseSuspended"
+            value={hadLicenseSuspended}
+            label="Have you ever had a professional license suspended or revoked, or faced disciplinary action or fines from any professional licensing authority?"
+            required
+            register={register}
+            errors={errors}
+          />
+          {hadLicenseSuspended === "true" && (
+            <div className="maxw-mobile-lg">
+              <DoulaTextareaCharacterCount
+                name="licenseSuspendedExplanation"
+                label="In a few words, please explain the suspension, revocation, or disciplinary action."
+                required
+                inputClassName="height-10"
+                maxLength={68}
+                errors={errors}
+                register={register}
+              />
+            </div>
+          )}
+        </div>
+      </div>
       <HorizontalDivider />
       <FormProgressButtons />
     </DoulaForm>

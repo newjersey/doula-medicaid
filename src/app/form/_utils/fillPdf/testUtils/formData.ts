@@ -1,5 +1,6 @@
 import type { BusinessFormData } from "@/app/form/(formSteps)/business/BusinessData";
 import type { InsuranceFormData } from "@/app/form/(formSteps)/insurance/InsuranceData";
+import type { LegalFormData } from "@/app/form/(formSteps)/legal/LegalData";
 import type { PersonalFormData } from "@/app/form/(formSteps)/personal/PersonalData";
 import type { ScreeningFormData } from "@/app/form/(formSteps)/screening/ScreeningData";
 import type { TrainingFormData } from "@/app/form/(formSteps)/training/TrainingData";
@@ -90,12 +91,20 @@ const testBusinessFormData: BusinessFormData = {
   futureBankruptcyDate: null,
 };
 
+const testLegalFormData: LegalFormData = {
+  hasCrimeCharge: false,
+  crimeChargeExplanation: null,
+  hadLicenseSuspended: false,
+  licenseSuspendedExplanation: null,
+};
+
 const testFormData: FormData = {
   ...testScreeningFormData,
   ...testInsuranceFormData,
   ...testTrainingFormData,
   ...testPersonalFormData,
   ...testBusinessFormData,
+  ...testLegalFormData,
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
