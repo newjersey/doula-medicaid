@@ -69,7 +69,7 @@ describe("DoulaTextareaCharacterCount", () => {
 
     expect(mockRegister).toHaveBeenCalledWith(
       "testInput",
-      expect.objectContaining({ required: "Test label is required" }),
+      expect.objectContaining({ required: "This question is required" }),
     );
     const input = screen.getByRole("textbox", { name: "Test label *" });
     expect(input).toHaveAttribute("required");
@@ -215,6 +215,8 @@ describe("DoulaTextareaCharacterCount", () => {
 
     expect(screen.getByText("1 character over limit")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Next" }));
-    expect(input).toHaveAccessibleDescription("Test label must be 10 characters or less");
+    expect(input).toHaveAccessibleDescription(
+      "Character limit exceeded. Please edit and try again.",
+    );
   });
 });
