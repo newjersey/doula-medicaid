@@ -1,13 +1,7 @@
 import { ErrorMessage } from "@/app/form/(formSteps)/components/ErrorMessage";
 import { Hint } from "@/app/form/(formSteps)/components/Hint";
 import { formatDescribedBy } from "@/app/form/(formSteps)/components/utils/doulaInput";
-import {
-  CharacterCount,
-  InputGroup,
-  InputPrefix,
-  Label,
-  type TextareaCharacterCountProps,
-} from "@trussworks/react-uswds";
+import { CharacterCount, Label, type TextareaCharacterCountProps } from "@trussworks/react-uswds";
 import type {
   FieldErrors,
   FieldPath,
@@ -24,7 +18,7 @@ export interface DoulaTextareaCharacterCountProps<T extends FieldValues>
   name: FieldPath<T>;
   label: React.ReactNode;
   hint?: string;
-  inputPrefix?: string;
+  inputClassName?: string;
   required?: boolean;
   errors?: FieldErrors<T>;
   register: UseFormRegister<T>;
@@ -38,8 +32,8 @@ const DoulaTextareaCharacterCount = <T extends FieldValues>(
     name,
     label,
     hint,
-    inputPrefix,
     "aria-describedby": ariaDescribedby,
+    inputClassName,
     required,
     errors,
     register,
@@ -61,34 +55,26 @@ const DoulaTextareaCharacterCount = <T extends FieldValues>(
   }
 
   // To override this, pass in additionalRegisterOptions
-  const requiredRegisterOption = required === true ? { required: `${label} is required` } : {};
+  const requiredRegisterOption = required === true ? { required: "This question is required" } : {};
 
-  let input = (
+  const input = (
     <CharacterCount
       id={name}
       required={required}
       isTextArea={true}
       {...internallySetProps}
       {...otherProps}
+      className={inputClassName}
       {...register(name, {
         ...requiredRegisterOption,
         maxLength: {
           value: otherProps.maxLength,
-          message: `${label} must be ${otherProps.maxLength} characters or less`,
+          message: "Character limit exceeded. Please edit and try again.",
         },
         ...additionalRegisterOptions,
       })}
     />
   );
-
-  if (inputPrefix) {
-    input = (
-      <InputGroup error={hasError}>
-        <InputPrefix>{inputPrefix}</InputPrefix>
-        {input}
-      </InputGroup>
-    );
-  }
 
   return (
     <>
