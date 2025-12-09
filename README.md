@@ -75,7 +75,8 @@ npm run dev:test
 # Then run cypress tests with `[productionFlags]` in their name
 npm run cypress:run:productionFlags
 
-# cypress:gui can be run normally, and the GUI lets you select which test to run
+# To run with cypress GUI
+npm run cypress:gui:productionFlags
 ```
 
 The local file may need to be updated if you want to turn flags back on again
