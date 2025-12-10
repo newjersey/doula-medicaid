@@ -65,29 +65,30 @@ export const baseFormPages = [
   },
 ];
 
+const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
+export const baseExpectedFields: Partial<PdfFfsIndividual> = {
+  fd427LegalName: legalName, // page 4
+  fd443telephoneno: phoneNumberField.expectedValue, // page 6
+  fd425legalname: legalName, // page 8
+  "fd455aREQPAPER_Provider Name": legalName, // page 13
+  "fd452disclosingentitySole Proprietorship": true, // page 17
+  fd452affliatedprevious12monthsno: true, // page 18
+  fd452nameofotherentitywithownershipinteresline1: "N/A", // page 19
+  fd452significanttransactionsprevious5yearsline1: "N/A", // page 20
+  fd452ownershiphealthcareproviderno: true, // page 21
+  fd452operatedorfiscallymanagedno: true, // page 22
+  fd452increasedbedcapacityno: true, // page 23
+  "W9_Name See Specific Instructions on page 2": legalName, // page 26
+};
+
 export const fillAndDownloadApplication = (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
+  expectedFields: Partial<PdfFfsIndividual>,
 ) => {
   /**
    * Test one field per page, and one of every type of field. Leaving unit individual-page tests to
    * test that every field within the page is filled under different circumstances
    */
-  const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
-  const expectedFields: Partial<PdfFfsIndividual> = {
-    fd427LegalName: legalName, // page 4
-    fd443telephoneno: phoneNumberField.expectedValue, // page 6
-    fd425legalname: legalName, // page 8
-    fd425licensesuspensionno: true, // page 9
-    "fd455aREQPAPER_Provider Name": legalName, // page 13
-    "fd452disclosingentitySole Proprietorship": true, // page 17
-    fd452affliatedprevious12monthsno: true, // page 18
-    fd452nameofotherentitywithownershipinteresline1: "N/A", // page 19
-    fd452significanttransactionsprevious5yearsline1: "N/A", // page 20
-    fd452ownershiphealthcareproviderno: true, // page 21
-    fd452operatedorfiscallymanagedno: true, // page 22
-    fd452increasedbedcapacityno: true, // page 23
-    "W9_Name See Specific Instructions on page 2": legalName, // page 26
-  };
 
   cy.visit("/");
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
