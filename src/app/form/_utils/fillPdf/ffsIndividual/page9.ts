@@ -1,5 +1,5 @@
 import { mapYesNoExplainYesFields } from "@/app/form/_utils/fillPdf/mappers";
-import { type FormData } from "@form/_utils/fillPdf/form";
+import { type FormData, type FormDataWithLegal } from "@form/_utils/fillPdf/form";
 
 // Page 9 - SECTION II – PROVIDER IDENTIFICATION
 export interface PdfFfsIndividualPage9 {
@@ -28,25 +28,30 @@ export interface PdfFfsIndividualPage9 {
 }
 
 export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage9> => {
-  const licenseSuspendedFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
-    formData.hadLicenseSuspended,
-    formData.licenseSuspendedExplanation,
-    {
-      yesPdfKey: "fd425licensesuspensionyes",
-      noPdfKey: "fd425licensesuspensionno",
-      yesExplanationPdfKey: "fd425licensesuspensionyesexplaination",
-    },
-  );
+  if (process.env.NEXT_PUBLIC_FLAG_LEGAL === "1") {
+    const formDataWithLegal = formData as FormDataWithLegal;
+    const licenseSuspendedFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+      formDataWithLegal.hadLicenseSuspended,
+      formDataWithLegal.licenseSuspendedExplanation,
+      {
+        yesPdfKey: "fd425licensesuspensionyes",
+        noPdfKey: "fd425licensesuspensionno",
+        yesExplanationPdfKey: "fd425licensesuspensionyesexplaination",
+      },
+    );
 
-  const crimeChargeFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
-    formData.hasCrimeCharge,
-    formData.crimeChargeExplanation,
-    {
-      yesPdfKey: "fd425indictedyes",
-      noPdfKey: "fd425indictedno",
-      yesExplanationPdfKey: "fd425indictedyesexplaination",
-    },
-  );
+    const crimeChargeFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+      formDataWithLegal.hasCrimeCharge,
+      formDataWithLegal.crimeChargeExplanation,
+      {
+        yesPdfKey: "fd425indictedyes",
+        noPdfKey: "fd425indictedno",
+        yesExplanationPdfKey: "fd425indictedyesexplaination",
+      },
+    );
 
-  return { ...crimeChargeFields, ...licenseSuspendedFields };
+    return { ...crimeChargeFields, ...licenseSuspendedFields };
+  }
+
+  return {};
 };

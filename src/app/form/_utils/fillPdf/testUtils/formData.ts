@@ -98,21 +98,26 @@ const testLegalFormData: LegalFormData = {
   licenseSuspendedExplanation: null,
 };
 
-const testFormData: FormData = {
-  ...testScreeningFormData,
-  ...testInsuranceFormData,
-  ...testTrainingFormData,
-  ...testPersonalFormData,
-  ...testBusinessFormData,
-  ...testLegalFormData,
+const getTestFormData = () => {
+  return {
+    ...testScreeningFormData,
+    ...testInsuranceFormData,
+    ...testTrainingFormData,
+    ...testPersonalFormData,
+    ...testBusinessFormData,
+    ...(process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" ? testLegalFormData : {}),
+  };
 };
 
 export const generateFormData = (formDataOverrides: Partial<FormData>): FormData => {
-  return { ...testFormData, ...formDataOverrides };
+  return {
+    ...getTestFormData(),
+    ...formDataOverrides,
+  };
 };
 
 export const generateDataStoreWithRequiredFields = (
-  overrides?: DataStore,
+  dataStoreOverrides?: DataStore,
   keysToOmit?: Array<DataStoreKey>,
 ) => {
   const dataStoreFieldsNotInFormData: DataStore = {
@@ -156,6 +161,7 @@ export const generateDataStoreWithRequiredFields = (
     ],
   };
 
+  const testFormData = getTestFormData();
   for (const [key, value] of Object.entries(testFormData)) {
     if (!(key in replaceFormDataWithDataStoreFields) && value !== null) {
       defaultDataStore[key as DataStoreKey] = value.toString();
@@ -168,7 +174,7 @@ export const generateDataStoreWithRequiredFields = (
     }
   }
 
-  const dataStore = { ...defaultDataStore, ...overrides };
+  const dataStore = { ...defaultDataStore, ...dataStoreOverrides };
   if (keysToOmit !== undefined) {
     for (const key of keysToOmit) {
       delete dataStore[key];

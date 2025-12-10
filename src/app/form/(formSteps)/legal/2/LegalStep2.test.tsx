@@ -20,12 +20,10 @@ import { screen } from "@testing-library/react";
 
 describe("<LegalStep2 />", () => {
   const oldProcessEnv = process.env;
-
   beforeEach(() => {
     jest.resetModules();
     process.env = { ...oldProcessEnv, NEXT_PUBLIC_FLAG_LEGAL: "1" };
   });
-
   afterAll(() => {
     process.env = oldProcessEnv;
   });
