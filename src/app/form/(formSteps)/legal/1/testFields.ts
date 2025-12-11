@@ -1,8 +1,4 @@
-import {
-  createTestField,
-  createTestFields,
-  type TestField,
-} from "@/app/form/_utils/testUtils/sharedTests";
+import { createTestField, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 
 export const noEmployedByState: TestField = createTestField({
   name: "No",
@@ -14,7 +10,7 @@ export const noEmployedByState: TestField = createTestField({
 });
 
 export const yesEmployedByState: TestField = createTestField({
-  name: "No",
+  name: "Yes",
   dataStoreKey: "employedByState",
   required: true,
   role: "radio",
@@ -33,7 +29,7 @@ export const noApprovedForMedicaidProgram: TestField = createTestField({
 });
 
 export const yesApprovedForMedicaidProgram: TestField = createTestField({
-  name: "No",
+  name: "Yes",
   dataStoreKey: "approvedForMedicaidProgram",
   required: true,
   role: "radio",
@@ -42,23 +38,23 @@ export const yesApprovedForMedicaidProgram: TestField = createTestField({
     "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare?",
 });
 
-export const employedByStateDetails: TestField[] = createTestFields([
-  {
-    name: "In a few words please explain your role with the State of New Jersey *",
-    required: true,
-    dataStoreKey: "usersRoleWithState",
-    testValue: "Test role in New Jersey.",
-  },
-]);
+export const employedByStateDetails = createTestField({
+  name: "In a few words please explain your role with the State of New Jersey *",
+  dataStoreKey: "employedByState",
+  required: true,
+  testValue: "Test employed by state details",
+  prerequisiteField: yesEmployedByState,
+  alternateRequiredFieldError: "This question is required",
+});
 
-export const approvedForMedicaidDetails: TestField[] = createTestFields([
-  {
-    name: "What services did you provide and what is your current provider status? Please explain in a few words. *",
-    required: true,
-    dataStoreKey: "usersServicesProvided",
-    testValue: "Test services provided.",
-  },
-]);
+export const approvedForMedicaidDetails = createTestField({
+  name: "What services did you provide and what is your current provider status? Please explain in a few words. *",
+  dataStoreKey: "medicaidDetails",
+  required: true,
+  testValue: "Test medicaid details",
+  prerequisiteField: yesApprovedForMedicaidProgram,
+  alternateRequiredFieldError: "This question is required",
+});
 
 export const path1TestFields: Array<TestField> = [noEmployedByState, noApprovedForMedicaidProgram];
 export const firstRadioOptionTestFields: Array<TestField> = [
@@ -68,7 +64,7 @@ export const firstRadioOptionTestFields: Array<TestField> = [
 
 export const path2TestFields: Array<TestField> = [
   yesEmployedByState,
-  ...employedByStateDetails,
+  employedByStateDetails,
   yesApprovedForMedicaidProgram,
-  ...approvedForMedicaidDetails,
+  approvedForMedicaidDetails,
 ];
