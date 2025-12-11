@@ -63,6 +63,7 @@ import { fillForm, type FormData } from "@form/_utils/fillPdf/form";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
+export const FFS_INDIVIDUAL_WITH_LEGAL_PDF_PATH = "/pdf/ffs_individual_with_legal.pdf";
 
 export interface PdfFfsIndividual
   extends PdfFfsIndividualPage4,
@@ -107,7 +108,9 @@ export const fillFfsIndividualForm = (formData: FormData) => {
   return fillForm(
     mapFfsIndividualFields(formData),
     fieldOptions,
-    FFS_INDIVIDUAL_PDF_PATH,
+    process.env.NEXT_PUBLIC_FLAG_LEGAL === "1"
+      ? FFS_INDIVIDUAL_WITH_LEGAL_PDF_PATH
+      : FFS_INDIVIDUAL_PDF_PATH,
     FFS_INDIVIDUAL_PDF_NAME,
   );
 };
