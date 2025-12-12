@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { aws_route53resolver as route53resolver } from "aws-cdk-lib";
+import { aws_route53resolver as route53resolver, Size } from "aws-cdk-lib";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecr from "aws-cdk-lib/aws-ecr";
@@ -7,6 +7,7 @@ import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { Protocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as targets from "aws-cdk-lib/aws-route53-targets";
 
@@ -60,6 +61,15 @@ export class CdkStack extends cdk.Stack {
         LOG_LEVEL: "info",
       },
       environmentFiles: [ecs.EnvironmentFile.fromBucket(bucket, `configuration/.env`)],
+      logging: ecs.LogDrivers.awsLogs({
+        streamPrefix: "DoulaAssistantStream",
+        mode: ecs.AwsLogDriverMode.NON_BLOCKING,
+        maxBufferSize: Size.mebibytes(25),
+        logGroup: new logs.LogGroup(this, "DoulaAssistantLogGroup", {
+          logGroupName: "/ecs/doula-assistant",
+          retention: logs.RetentionDays.SIX_MONTHS,
+        }),
+      }),
     });
 
     appContainer.addPortMappings({ containerPort: 3000 });
@@ -145,6 +155,14 @@ export class CdkStack extends cdk.Stack {
       vpcEndpointSecurityGroup,
       ec2.Port.tcp(443),
       "Allow ECS service to access VPC endpoints",
+    );
+
+    fargateService.taskDefinition.addToExecutionRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["logs:CreateLogGroup"],
+        resources: ["*"],
+      }),
     );
 
     const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
