@@ -1,24 +1,22 @@
 "use client";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
-import DoulaRadio from "@/app/form/(formSteps)/components/DoulaRadio";
 import DoulaTextareaCharacterCount from "@/app/form/(formSteps)/components/DoulaTextareaCharacterCount";
+import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { type Legal1Data } from "@/app/form/(formSteps)/legal/LegalData";
-import { getDefaultValue } from "@/app/form/_utils/dataStore";
+import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const orderedInputNameToLabel: { [key in keyof Legal1Data]: string } = {
-  usersRoleWithState: "In a few words please explain your role with the State of New Jersey",
-  usersServicesProvided:
-    "What services did you provide and what is your current provider status? Please explain in a few words.",
-  employedByState: "Are you employed by the State of New Jersey?",
-  approvedForMedicaidProgram:
-    "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare?",
-};
+const orderedInputNames: Array<keyof Legal1Data & string> = [
+  "employedByState",
+  "approvedForMedicaidProgram",
+  "employedByStateDetails",
+  "approvedForMedicaidDetails",
+];
 
-const mayHaveThreeOrMoreErrors = false;
+const mayHaveThreeOrMoreErrors = true;
 
 const LegalStep1 = () => {
   const { dataStore } = useDataStore();
@@ -26,13 +24,14 @@ const LegalStep1 = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setFocus,
     watch,
   } = useForm<Legal1Data>({
     defaultValues: {
-      employedByState: getDefaultValue(dataStore, "employedByState") ?? "",
-      usersRoleWithState: getDefaultValue(dataStore, "usersRoleWithState") ?? "",
-      approvedForMedicaidProgram: getDefaultValue(dataStore, "approvedForMedicaidProgram") ?? "",
-      usersServicesProvided: getDefaultValue(dataStore, "usersServicesProvided") ?? "",
+      employedByState: getDefaultBoolean(dataStore, "employedByState"),
+      employedByStateDetails: getDefaultValue(dataStore, "employedByStateDetails") ?? "",
+      approvedForMedicaidProgram: getDefaultBoolean(dataStore, "approvedForMedicaidProgram"),
+      approvedForMedicaidDetails: getDefaultValue(dataStore, "approvedForMedicaidDetails") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
@@ -41,10 +40,12 @@ const LegalStep1 = () => {
   const approvedForMedicaidProgram = watch("approvedForMedicaidProgram");
 
   return (
-    <DoulaForm<object>
+    <DoulaForm<Legal1Data>
+      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
       errors={errors}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      setFocus={setFocus}
+      orderedInputNames={orderedInputNames}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
@@ -53,33 +54,25 @@ const LegalStep1 = () => {
             To meet legal requirements, we ask these questions. Answering &quot;Yes&quot; will not
             automatically disqualify you.
           </p>
-          <DoulaRadio
+          <DoulaYesNoRadio
             name="employedByState"
             value={employedByState}
-            label={orderedInputNameToLabel["employedByState"]}
+            label="Are you employed by the State of New Jersey?"
             required
-            options={[
-              {
-                label: "Yes",
-                value: "true",
-              },
-              {
-                label: "No",
-                value: "false",
-              },
-            ]}
             errors={errors}
             register={register}
           />
           {employedByState === "true" && (
             <DoulaTextareaCharacterCount
-              name="usersRoleWithState"
-              label={orderedInputNameToLabel["usersRoleWithState"]}
+              name="employedByStateDetails"
+              label="In a few words please explain your role with the State of New Jersey"
               className="tablet:grid-col-6"
-              // aria-describedby="nameOfTrainingOrganizationAlert"
               errors={errors}
               register={register}
               maxLength={100}
+              additionalRegisterOptions={{
+                required: "This question is required",
+              }}
               required
             />
           )}
@@ -88,33 +81,25 @@ const LegalStep1 = () => {
       <HorizontalDivider />
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
-          <DoulaRadio
+          <DoulaYesNoRadio
             name="approvedForMedicaidProgram"
             value={approvedForMedicaidProgram}
-            label={orderedInputNameToLabel["approvedForMedicaidProgram"]}
+            label="Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare?"
             required
-            options={[
-              {
-                label: "Yes",
-                value: "true",
-              },
-              {
-                label: "No",
-                value: "false",
-              },
-            ]}
             errors={errors}
             register={register}
           />
           {approvedForMedicaidProgram === "true" && (
             <DoulaTextareaCharacterCount
-              name="usersServicesProvided"
-              label={orderedInputNameToLabel["usersServicesProvided"]}
+              name="approvedForMedicaidDetails"
+              label="What services did you provide and what is your current provider status? Please explain in a few words."
               className="tablet:grid-col-6"
-              // aria-describedby="nameOfTrainingOrganizationAlert"
               errors={errors}
               register={register}
               maxLength={100}
+              additionalRegisterOptions={{
+                required: "This question is required",
+              }}
               required
             />
           )}

@@ -34,7 +34,6 @@ describe("<LegalStep1 />", () => {
     await testSaveFieldsToDataStore(path1TestFields, path1TestFields, renderFunction, screen);
   });
 
-  // when user clicks no for both
   describe("marks fields as required and displays an error message", () => {
     it.each(path1TestFields.filter((field) => field.required === true))(
       "When both radios are answered with no.",
