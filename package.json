@@ -31,7 +31,7 @@
     "jiti": "2.6.1",
     "jszip": "3.10.1",
     "next": "15.5.9",
-    "node-poppler": "8.0.6",
+    "node-poppler": "9.0.1",
     "pdf-lib": "1.17.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
