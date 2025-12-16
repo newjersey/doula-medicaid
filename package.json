@@ -54,7 +54,7 @@
     "aws-cdk": "2.1034.0",
     "aws-cdk-lib": "2.232.2",
     "cypress": "15.7.1",
-    "eslint": "9.39.1",
+    "eslint": "9.39.2",
     "eslint-config-next": "15.5.9",
     "eslint-import-resolver-typescript": "4.4.4",
     "eslint-plugin-import-x": "4.16.1",
