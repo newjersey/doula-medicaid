@@ -83,7 +83,7 @@ export class CdkStack extends cdk.Stack {
         taskDefinition,
         serviceName: "doula-assistant-service",
         desiredCount: 1,
-        minHealthyPercent: 0,
+        minHealthyPercent: 100,
         maxHealthyPercent: 200,
         loadBalancerName: "doula-assistant-alb",
         publicLoadBalancer: false, // Internal ALB
