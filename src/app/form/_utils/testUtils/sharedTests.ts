@@ -15,7 +15,7 @@ import {
   type Role,
 } from "@/app/form/_utils/testUtils/fillInputs";
 import type { Screen } from "@testing-library/dom";
-import userEvent from "@testing-library/user-event";
+import userEvent, { type UserEvent } from "@testing-library/user-event";
 
 interface TestFieldParameters {
   name: string | RegExp;
@@ -72,6 +72,14 @@ export const createTestFields = (fields: Array<TestFieldParameters>): Array<Test
   return testFields;
 };
 
+const clickNextButton = async (pathname: string, user: UserEvent, screen: Screen) => {
+  const allSections = getAllSections();
+  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
+  const submitButtonName =
+    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
+  await user.click(screen.getByRole("button", { name: submitButtonName }));
+};
+
 export const testSaveFieldsToDataStore = async (
   fieldsToTest: Array<TestField>,
   allFields: Array<TestField>,
@@ -82,16 +90,7 @@ export const testSaveFieldsToDataStore = async (
   const { mockUpdateDataStore, pathname } = renderFunction();
   await fillAllInputs(screen, user, allFields);
 
-  const allSections = getAllSections();
-  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
-  const submitButtonName =
-    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
-  await user.click(
-    screen.getByRole("button", {
-      name: submitButtonName,
-    }),
-  );
-
+  await clickNextButton(pathname, user, screen);
   const dataUpdates = Object.fromEntries(
     fieldsToTest.map((field) => [field.dataStoreKey, field.expectedValue]),
   );
@@ -110,11 +109,7 @@ export const testRequiredField = async (
   const input = await getInputField(screen, fieldToTest);
   expect(input).toBeRequired();
 
-  const allSections = getAllSections();
-  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
-  const submitButtonName =
-    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
-  await user.click(screen.getByRole("button", { name: submitButtonName }));
+  await clickNextButton(pathname, user, screen);
   expect(input).toHaveAccessibleDescription(
     expect.stringContaining(fieldToTest.requiredErrorMessage),
   );
@@ -139,11 +134,7 @@ export const testInvalidField = async (
   await fillAllInputsExcept(screen, user, allFields, new Set([invalidField.dataStoreKey]));
   await fillField(screen, user, invalidField);
 
-  const allSections = getAllSections();
-  const nextFormProgress = getNextFormProgress(getCurrentFormProgress(pathname), allSections);
-  const submitButtonName =
-    nextFormProgress && isFinalFormProgress(nextFormProgress, allSections) ? "Review" : "Next";
-  await user.click(screen.getByRole("button", { name: submitButtonName }));
+  await clickNextButton(pathname, user, screen);
   const input = await getInputField(screen, invalidField);
   expect(input).toHaveAccessibleDescription(expect.stringContaining(expectedErrorMessage));
   expect(input).toHaveAttribute("aria-invalid", "true");
@@ -201,4 +192,33 @@ export const testConditionalRender = async (
 
   await fillField(screen, user, field.prerequisiteField);
   expect(input).toHaveValue(field.expectedValue);
+};
+
+export const testFocusesFirstErrorEvenIfConditional = async (
+  earlierConditionallyRenderedRequiredField: TestField,
+  laterAlwaysRenderedField: TestField,
+  allFields: Array<TestField>,
+  renderFunction: RenderFunction,
+  screen: Screen,
+) => {
+  if (earlierConditionallyRenderedRequiredField.prerequisiteField === undefined) {
+    throw new Error(
+      `${earlierConditionallyRenderedRequiredField.dataStoreKey} needs a prerequisiteField to test that the focus order is correct despite not initially being visible`,
+    );
+  }
+  const user = userEvent.setup();
+  const { pathname } = renderFunction();
+  await fillAllInputsExcept(
+    screen,
+    user,
+    allFields,
+    new Set([
+      earlierConditionallyRenderedRequiredField.dataStoreKey,
+      laterAlwaysRenderedField.dataStoreKey,
+    ]),
+  );
+
+  const earlierInput = await getInputField(screen, earlierConditionallyRenderedRequiredField);
+  await clickNextButton(pathname, user, screen);
+  expect(earlierInput).toHaveFocus();
 };

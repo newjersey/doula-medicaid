@@ -50,7 +50,32 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
       },
     );
 
-    return { ...crimeChargeFields, ...licenseSuspendedFields };
+    const disqualificationsFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+      formDataWithLegal.hasDisqualification,
+      formDataWithLegal.disqualificationExplanation,
+      {
+        yesPdfKey: "fd425programsuspensionsyes",
+        noPdfKey: "fd425programsuspensionsno",
+        yesExplanationPdfKey: "fd425programsuspensionsyesexplaination",
+      },
+    );
+
+    const healthProgramCompanyFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+      formDataWithLegal.hasCompanyInvolvement,
+      formDataWithLegal.companyInvolvementExplanation,
+      {
+        yesPdfKey: "fd425partnershipyes",
+        noPdfKey: "fd425partnershipno",
+        yesExplanationPdfKey: "fd425partnershipyesexplaination",
+      },
+    );
+
+    return {
+      ...crimeChargeFields,
+      ...licenseSuspendedFields,
+      ...disqualificationsFields,
+      ...healthProgramCompanyFields,
+    };
   }
 
   return {};

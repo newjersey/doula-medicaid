@@ -1,5 +1,6 @@
 import { path1TestFields as legal1TestFields } from "@/app/form/(formSteps)/legal/1/testFields";
 import { path1TestFields as legal2TestFields } from "@/app/form/(formSteps)/legal/2/testFields";
+import { path1TestFields as legal3TestFields } from "@/app/form/(formSteps)/legal/3/testFields";
 import {
   baseExpectedFields,
   baseFormPages,
@@ -15,7 +16,7 @@ it("should fill and download the application", () => {
     ...baseFormPages,
     { url: "/form/legal/1", fields: legal1TestFields, titleName: "Legal 1 of 3" },
     { url: "/form/legal/2", fields: legal2TestFields, titleName: "Legal 2 of 3" },
-    { url: "/form/legal/3", fields: [], titleName: "Legal 3 of 3" },
+    { url: "/form/legal/3", fields: legal3TestFields, titleName: "Legal 3 of 3" },
   ];
 
   fillAndDownloadApplication(baseFormDevFlags, {

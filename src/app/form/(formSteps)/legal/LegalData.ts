@@ -13,18 +13,29 @@ export interface Legal2Data {
   hadLicenseSuspended: "true" | "false" | "";
   licenseSuspendedExplanation: string;
 }
+export interface Legal3Data {
+  hasDisqualification: "true" | "false" | "";
+  disqualificationExplanation: string;
+  hasCompanyInvolvement: "true" | "false" | "";
+  companyInvolvementExplanation: string;
+}
 
 export interface LegalFormData {
-  // legal 1
+  // Legal 1
   employedByState: boolean;
   approvedForMedicaidProgram: boolean;
   employedByStateDetails: string | null;
   approvedForMedicaidDetails: string | null;
-  // legal 2
+  // Legal 2
   hasCrimeCharge: boolean;
   crimeChargeExplanation: string | null;
   hadLicenseSuspended: boolean;
   licenseSuspendedExplanation: string | null;
+  // Legal 3
+  hasDisqualification: boolean;
+  disqualificationExplanation: string | null;
+  hasCompanyInvolvement: boolean;
+  companyInvolvementExplanation: string | null;
 }
 
 const getLegal1Data = (dataStore: DataStore) => {
@@ -45,9 +56,19 @@ const getLegal2Data = (dataStore: DataStore) => {
   };
 };
 
+const getLegal3Data = (dataStore: DataStore) => {
+  return {
+    hasDisqualification: getBoolean(dataStore, "hasDisqualification", true),
+    disqualificationExplanation: getValue(dataStore, "disqualificationExplanation", false),
+    hasCompanyInvolvement: getBoolean(dataStore, "hasCompanyInvolvement", true),
+    companyInvolvementExplanation: getValue(dataStore, "companyInvolvementExplanation", false),
+  };
+};
+
 export const getLegalFormData = (dataStore: DataStore): LegalFormData => {
   return {
     ...getLegal1Data(dataStore),
     ...getLegal2Data(dataStore),
+    ...getLegal3Data(dataStore),
   };
 };
