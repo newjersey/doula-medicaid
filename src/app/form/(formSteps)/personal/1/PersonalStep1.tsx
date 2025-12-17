@@ -21,7 +21,7 @@ const inputNameToLabel = {
   phoneNumber: "Phone number",
 } as const;
 
-const orderedInputNames: Array<keyof Personal1Data> = [
+const manualFocusOrder: Array<keyof Personal1Data> = [
   "firstName",
   "middleName",
   "lastName",
@@ -33,7 +33,7 @@ const orderedInputNames: Array<keyof Personal1Data> = [
   "phoneNumber",
 ];
 
-const mayHaveThreeOrMoreErrors = true;
+const showErrorSummary = true;
 const PersonalStep1 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -54,7 +54,7 @@ const PersonalStep1 = () => {
       email: getDefaultValue(dataStore, "email") ?? "",
       phoneNumber: getDefaultValue(dataStore, "phoneNumber") ?? "",
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !showErrorSummary,
   });
 
   const phoneNumber = watch("phoneNumber");
@@ -62,11 +62,11 @@ const PersonalStep1 = () => {
 
   return (
     <DoulaForm<Personal1Data>
-      orderedInputNames={orderedInputNames}
       errors={errors}
-      setFocus={setFocus}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      setFocus={setFocus}
+      manualFocusOrder={manualFocusOrder}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

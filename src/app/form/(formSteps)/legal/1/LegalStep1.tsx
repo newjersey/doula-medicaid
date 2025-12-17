@@ -9,15 +9,15 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const orderedInputNames: Array<keyof Legal1Data & string> = [
+const manualFocusOrder: Array<keyof Legal1Data & string> = [
   "isEmployedByNj",
   "employedByNjExplanation",
   "hasProvidedMedicaidServices",
   "medicaidServicesExplanation",
 ];
 
-const mayHaveThreeOrMoreErrors = true;
-
+const showErrorSummary = false;
+const manuallySetErrorFocus = true;
 const LegalStep1 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -33,7 +33,7 @@ const LegalStep1 = () => {
       hasProvidedMedicaidServices: getDefaultBoolean(dataStore, "hasProvidedMedicaidServices"),
       medicaidServicesExplanation: getDefaultValue(dataStore, "medicaidServicesExplanation") ?? "",
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !manuallySetErrorFocus,
   });
 
   const isEmployedByNj = watch("isEmployedByNj");
@@ -41,11 +41,11 @@ const LegalStep1 = () => {
 
   return (
     <DoulaForm<Legal1Data>
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
       errors={errors}
       handleSubmit={handleSubmit}
       setFocus={setFocus}
-      orderedInputNames={orderedInputNames}
+      manualFocusOrder={manualFocusOrder}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

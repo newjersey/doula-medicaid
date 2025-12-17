@@ -17,7 +17,7 @@ const orderedInputNameToLabel: { [key in keyof Personal3Data]: string } = {
   medicareProviderId: "Medicare provider ID",
 };
 
-const mayHaveThreeOrMoreErrors = false;
+const showErrorSummary = false;
 const PersonalStep3 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -31,7 +31,7 @@ const PersonalStep3 = () => {
       upinNumber: getDefaultValue(dataStore, "upinNumber") ?? "",
       medicareProviderId: getDefaultValue(dataStore, "medicareProviderId") ?? "",
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !showErrorSummary,
   });
 
   const npiNumber = watch("npiNumber");
@@ -39,7 +39,7 @@ const PersonalStep3 = () => {
     <DoulaForm<Personal3Data>
       errors={errors}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

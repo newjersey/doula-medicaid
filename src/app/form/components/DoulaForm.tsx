@@ -16,18 +16,26 @@ import { useNavigate } from "react-router";
 
 type DoulaFormProps<T extends FieldValues> =
   | {
-      orderedInputNames: Array<FieldPath<T>>;
       errors: FieldErrors<T>;
-      setFocus: UseFormSetFocus<T>;
       handleSubmit: UseFormHandleSubmit<T, T>;
       children: React.ReactNode;
-      mayHaveThreeOrMoreErrors: true;
+      setFocus: UseFormSetFocus<T>;
+      manualFocusOrder: Array<FieldPath<T>>;
+      showErrorSummary: true;
     }
   | {
       errors: FieldErrors<T>;
       handleSubmit: UseFormHandleSubmit<T, T>;
       children: React.ReactNode;
-      mayHaveThreeOrMoreErrors: false;
+      showErrorSummary: false;
+    }
+  | {
+      errors: FieldErrors<T>;
+      handleSubmit: UseFormHandleSubmit<T, T>;
+      children: React.ReactNode;
+      setFocus: UseFormSetFocus<T>;
+      manualFocusOrder: Array<FieldPath<T>>;
+      showErrorSummary: false;
     };
 
 export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
@@ -60,13 +68,13 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
         type: errors[name]?.type,
       });
     }
-    if (props.mayHaveThreeOrMoreErrors) {
+    if ("manualFocusOrder" in props) {
       if (Object.keys(errors).length >= 3) {
         setShouldSummarizeErrors(true);
         errorSummaryRef.current?.focus();
       } else {
         setShouldSummarizeErrors(false);
-        for (const inputName of props.orderedInputNames) {
+        for (const inputName of props.manualFocusOrder) {
           const fieldPath = inputName as FieldPath<T>;
           if (errors[fieldPath] !== undefined) {
             props.setFocus(fieldPath);
@@ -82,7 +90,7 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
     <div>
       {isDataLoaded && (
         <Form onSubmit={onSubmitHandler} className="maxw-full" noValidate>
-          {props.mayHaveThreeOrMoreErrors && (
+          {props.showErrorSummary && (
             <div className={`grid-row grid-gap-3 ${shouldSummarizeErrors && "margin-top-3"}`}>
               <div className="desktop:grid-col-8">
                 <ErrorSummary<T>

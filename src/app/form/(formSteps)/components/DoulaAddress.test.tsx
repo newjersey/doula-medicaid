@@ -78,13 +78,13 @@ const TestForm = (
   const testZip = watch("testZip");
   return (
     <DoulaForm<TestFormData>
-      orderedInputNames={
+      errors={errors}
+      handleSubmit={handleSubmit}
+      setFocus={setFocus}
+      manualFocusOrder={
         Object.keys(testFormOrderedInputNameToLabel) as Array<FieldPath<TestFormData>>
       }
-      errors={errors}
-      setFocus={setFocus}
-      handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={true}
+      showErrorSummary={true}
     >
       <DoulaAddress
         {...props}

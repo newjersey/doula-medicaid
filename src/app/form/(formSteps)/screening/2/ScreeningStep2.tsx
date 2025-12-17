@@ -10,7 +10,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const mayHaveThreeOrMoreErrors = false;
+const showErrorSummary = false;
 const ScreeningStep2 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -30,7 +30,7 @@ const ScreeningStep2 = () => {
     <DoulaForm<Screening2Data>
       errors={errors}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

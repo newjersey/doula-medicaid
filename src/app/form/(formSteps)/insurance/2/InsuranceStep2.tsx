@@ -20,7 +20,7 @@ const orderedInputNameToLabel: { [key in keyof Insurance2Data]: string } = {
   insuranceZip: "ZIP Code",
 };
 
-const mayHaveThreeOrMoreErrors = true;
+const showErrorSummary = true;
 
 const InsuranceStep2 = () => {
   const { dataStore } = useDataStore();
@@ -40,17 +40,17 @@ const InsuranceStep2 = () => {
       insuranceState: getDefaultValue(dataStore, "insuranceState") ?? "NJ",
       insuranceZip: getDefaultValue(dataStore, "insuranceZip") ?? "",
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !showErrorSummary,
   });
   const insuranceZip = watch("insuranceZip");
 
   return (
     <DoulaForm<Insurance2Data>
-      orderedInputNames={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Insurance2Data>>}
       errors={errors}
-      setFocus={setFocus}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      setFocus={setFocus}
+      manualFocusOrder={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Insurance2Data>>}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

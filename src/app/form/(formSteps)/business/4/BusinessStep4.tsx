@@ -10,7 +10,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const orderedInputNames: Array<keyof Business4Data> = [
+const manualFocusOrder: Array<keyof Business4Data> = [
   "hasFiledBankruptcy",
   "pastBankruptcyMonth",
   "pastBankruptcyDay",
@@ -21,7 +21,7 @@ const orderedInputNames: Array<keyof Business4Data> = [
   "futureBankruptcyYear",
 ];
 
-const mayHaveThreeOrMoreErrors = true;
+const showErrorSummary = true;
 const BusinessStep4 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -41,7 +41,7 @@ const BusinessStep4 = () => {
       futureBankruptcyDay: getDefaultValue(dataStore, "futureBankruptcyDay") ?? "",
       futureBankruptcyYear: getDefaultValue(dataStore, "futureBankruptcyYear") ?? "",
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !showErrorSummary,
   });
   const hasFiledBankruptcy = watch("hasFiledBankruptcy");
   const mightFileBankruptcy = watch("mightFileBankruptcy");
@@ -50,11 +50,11 @@ const BusinessStep4 = () => {
 
   return (
     <DoulaForm<Business4Data>
-      orderedInputNames={orderedInputNames}
       errors={errors}
       handleSubmit={handleSubmit}
       setFocus={setFocus}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      manualFocusOrder={manualFocusOrder}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

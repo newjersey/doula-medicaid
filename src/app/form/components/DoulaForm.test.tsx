@@ -20,7 +20,7 @@ interface DoulaFormTestData {
   field3: string | null;
 }
 
-const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
+const DoulaFormTestPage = (props: { showErrorSummary: boolean }) => {
   const {
     register,
     handleSubmit,
@@ -32,16 +32,16 @@ const DoulaFormTestPage = (props: { mayHaveThreeOrMoreErrors: boolean }) => {
       field2: "",
       field3: "",
     },
-    shouldFocusError: !props.mayHaveThreeOrMoreErrors,
+    shouldFocusError: !props.showErrorSummary,
   });
 
   return (
     <DoulaForm<DoulaFormTestData>
-      orderedInputNames={["field1", "field2", "field3"]}
       errors={errors}
-      setFocus={setFocus}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={props.mayHaveThreeOrMoreErrors}
+      setFocus={setFocus}
+      manualFocusOrder={["field1", "field2", "field3"]}
+      showErrorSummary={props.showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
@@ -107,7 +107,7 @@ describe("submission behavior", () => {
 
   it("saves fields to the data store and routes to the next step on submit", async () => {
     const { mockUpdateDataStore } = renderWithProviders(
-      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+      <DoulaFormTestPage showErrorSummary={true} />,
       "/form/personal/2",
     );
     const user = userEvent.setup();
@@ -124,7 +124,7 @@ describe("submission behavior", () => {
   it("does not save fields to the data store and does not route on error", async () => {
     const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
     const { mockUpdateDataStore } = renderWithProviders(
-      <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
+      <DoulaFormTestPage showErrorSummary={true} />,
       "/form/personal/2",
     );
     const user = userEvent.setup();
@@ -148,14 +148,11 @@ describe("error summary", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  describe("when mayHaveThreeOrMoreErrors is true", () => {
+  describe("when showErrorSummary is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
       const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       const user = userEvent.setup();
-      renderWithProviders(
-        <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-        "/form/personal/2",
-      );
+      renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.click(screen.getByRole("button", { name: "Next" }));
 
       const focusedElement = document.activeElement as HTMLElement;
@@ -191,10 +188,7 @@ describe("error summary", () => {
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
       const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       const user = userEvent.setup();
-      renderWithProviders(
-        <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-        "/form/personal/2",
-      );
+      renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.type(
         screen.getByRole("textbox", {
           name: "Label 1 *",
@@ -229,13 +223,10 @@ describe("error summary", () => {
     });
   });
 
-  describe("when mayHaveThreeOrMoreErrors is false", () => {
+  describe("when showErrorSummary is false", () => {
     it("does not show an error summary if there are 3 errors, instead it focuses on the first error", async () => {
       const user = userEvent.setup();
-      renderWithProviders(
-        <DoulaFormTestPage mayHaveThreeOrMoreErrors={false} />,
-        "/form/personal/2",
-      );
+      renderWithProviders(<DoulaFormTestPage showErrorSummary={false} />, "/form/personal/2");
 
       await user.click(screen.getByRole("button", { name: "Next" }));
 
@@ -256,10 +247,7 @@ describe("error summary", () => {
     async ({ name }) => {
       const labelWithoutAsterisk = name.toString().replace(" *", "");
       const user = userEvent.setup();
-      renderWithProviders(
-        <DoulaFormTestPage mayHaveThreeOrMoreErrors={true} />,
-        "/form/personal/2",
-      );
+      renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.click(screen.getByRole("button", { name: "Next" }));
       await user.click(screen.getByRole("link", { name: `${labelWithoutAsterisk} is required` }));
 
