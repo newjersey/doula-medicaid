@@ -66,6 +66,9 @@ the services running within.
 There are a couple of differences between the staging and production deploys. Some are due to the
 different nature of the staging and production deployments, and some are due to tech debt.
 
+There is currently no automation to deploy the cdk stack itself. The commands below should be run
+manually from a local machine.
+
 ### Production
 
 In production, the public-facing firewall redirects to an OIT-created ALB that is external to the
@@ -143,7 +146,12 @@ The output `DoulaAssistantStack.LoadBalancerUrl` should be accessible from an
 ## Deploy the application
 
 Github actions have been set up to build the docker container, and pull the new container onto the
-cdk stack. There is currently no automation to deploy the cdk stack itself.
+cdk stack.
+
+**Back-to-back deployments may result in only the first deploy getting deployed.** This is because
+`aws ecs update-service --cluster doula-assistant-cluster --service doula-assistant-service --force-new-deployment`,
+called in the `_deploy.yml` workflow, will not create an additional deployment if one is already in
+progress.
 
 ## Update feature flags and environment variables
 
