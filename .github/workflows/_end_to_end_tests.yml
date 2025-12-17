@@ -31,4 +31,4 @@ jobs:
           NODE_ENV=test npm start & npx wait-on
           http://localhost:3000/humanservices/dmahs/info/doulahelp
       - name: Run cypress tests
-        run: npm run ${{ cypress_run_command }}
+        run: npm run "${{ inputs.cypress_run_command }}"
