@@ -10,7 +10,7 @@ export const noHasCrimeCharge: TestField = createTestField({
     "Have you ever been indicted or charged with a crime or a disorderly persons offense anywhere? Select one *",
 });
 
-const yesHasCrimeCharge: TestField = createTestField({
+export const yesHasCrimeCharge: TestField = createTestField({
   name: "Yes",
   dataStoreKey: "hasCrimeCharge",
   required: true,

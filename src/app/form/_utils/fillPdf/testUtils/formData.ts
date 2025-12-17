@@ -103,6 +103,10 @@ const testLegalFormData: LegalFormData = {
   crimeChargeExplanation: null,
   hadLicenseSuspended: false,
   licenseSuspendedExplanation: null,
+  hasDisqualification: false,
+  disqualificationExplanation: null,
+  hasCompanyInvolvement: false,
+  companyInvolvementExplanation: null,
 };
 
 const getTestFormData = () => {

@@ -1,14 +1,14 @@
-import LegalStep2 from "@/app/form/(formSteps)/legal/2/LegalStep2";
+import LegalStep3 from "@/app/form/(formSteps)/legal/3/LegalStep3";
 import {
-  crimeChargeExplanationField,
+  companyInvolvementExplanationField,
+  disqualificationExplanationField,
   firstRadioOptionTestFields,
-  licenseSuspendedExplanationField,
-  noHadLicenseSuspended,
-  noHasCrimeCharge,
+  noHasCompanyInvolvement,
+  noHasDisqualification,
   path1TestFields,
   path2TestFields,
-  yesHasCrimeCharge,
-} from "@/app/form/(formSteps)/legal/2/testFields";
+  yesHasDisqualification,
+} from "@/app/form/(formSteps)/legal/3/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
@@ -20,7 +20,7 @@ import {
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 
-describe("<LegalStep2 />", () => {
+describe("<LegalStep3 />", () => {
   const oldProcessEnv = process.env;
   beforeEach(() => {
     jest.resetModules();
@@ -31,7 +31,7 @@ describe("<LegalStep2 />", () => {
   });
 
   const renderFunction = (dataStore: DataStore = {}) =>
-    renderWithProviders(<LegalStep2 />, "/form/legal/2", dataStore);
+    renderWithProviders(<LegalStep3 />, "/form/legal/3", dataStore);
 
   it("saves fields to the data store on submit", async () => {
     await testSaveFieldsToDataStore(path1TestFields, path1TestFields, renderFunction, screen);
@@ -46,7 +46,7 @@ describe("<LegalStep2 />", () => {
     );
 
     it.each(
-      [crimeChargeExplanationField, licenseSuspendedExplanationField].filter(
+      [disqualificationExplanationField, companyInvolvementExplanationField].filter(
         (field) => field.required === true,
       ),
     )(
@@ -57,17 +57,18 @@ describe("<LegalStep2 />", () => {
     );
   });
 
-  it.each([...path1TestFields, crimeChargeExplanationField, licenseSuspendedExplanationField])(
-    "fills $dataStoreKey from the data store when page is loaded",
-    async (field) => {
-      await testFillFromDataStore(field, renderFunction, screen);
-    },
-  );
+  it.each([
+    ...path1TestFields,
+    disqualificationExplanationField,
+    companyInvolvementExplanationField,
+  ])("fills $dataStoreKey from the data store when page is loaded", async (field) => {
+    await testFillFromDataStore(field, renderFunction, screen);
+  });
 
   it("conditionally renders an explanation based on hasCrimeCharge", async () => {
     await testConditionalRender(
-      crimeChargeExplanationField,
-      noHasCrimeCharge,
+      disqualificationExplanationField,
+      noHasDisqualification,
       renderFunction,
       screen,
     );
@@ -75,8 +76,8 @@ describe("<LegalStep2 />", () => {
 
   it("conditionally renders an explanation based on hadLicenseSuspended", async () => {
     await testConditionalRender(
-      licenseSuspendedExplanationField,
-      noHadLicenseSuspended,
+      companyInvolvementExplanationField,
+      noHasCompanyInvolvement,
       renderFunction,
       screen,
     );
@@ -84,9 +85,9 @@ describe("<LegalStep2 />", () => {
 
   it("focuses on the first error, even if the first error is conditionally rendered", async () => {
     await testFocusesFirstErrorEvenIfConditional(
-      crimeChargeExplanationField,
-      noHadLicenseSuspended,
-      [yesHasCrimeCharge, crimeChargeExplanationField, noHadLicenseSuspended],
+      disqualificationExplanationField,
+      noHasCompanyInvolvement,
+      [yesHasDisqualification, disqualificationExplanationField, noHasCompanyInvolvement],
       renderFunction,
       screen,
     );
