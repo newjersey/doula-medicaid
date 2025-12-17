@@ -15,7 +15,7 @@ const orderedInputNameToLabel = {
     "Do you manage your business as an individual doula operating as a Sole Proprietor?",
 };
 
-const mayHaveThreeOrMoreErrors = false;
+const showErrorSummary = false;
 const ScreeningStep1 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -31,7 +31,7 @@ const ScreeningStep1 = () => {
     <DoulaForm<Screening1Data>
       errors={errors}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

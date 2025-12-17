@@ -28,7 +28,7 @@ const orderedInputNameToLabel: { [key in keyof Business1Data]: string } = {
   businessZip: "ZIP Code",
 };
 
-const mayHaveThreeOrMoreErrors = true;
+const showErrorSummary = true;
 const BusinessStep1 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -47,7 +47,7 @@ const BusinessStep1 = () => {
       businessState: getDefaultValue(dataStore, "businessState") ?? "NJ",
       businessZip: getDefaultValue(dataStore, "businessZip") ?? "",
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !showErrorSummary,
   });
   const businessAddressSameAsOtherAddress = watch("businessAddressSameAsOtherAddress");
   const businessZip = watch("businessZip");
@@ -76,11 +76,11 @@ const BusinessStep1 = () => {
 
   return (
     <DoulaForm<Business1Data>
-      orderedInputNames={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Business1Data>>}
       errors={errors}
       setFocus={setFocus}
+      manualFocusOrder={Object.keys(orderedInputNameToLabel) as Array<FieldPath<Business1Data>>}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">

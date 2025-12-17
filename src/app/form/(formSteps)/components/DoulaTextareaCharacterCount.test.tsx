@@ -189,11 +189,11 @@ describe("DoulaTextareaCharacterCount", () => {
       });
       return (
         <DoulaForm<TestFormData>
-          orderedInputNames={["testInput"]}
           errors={errors}
-          setFocus={setFocus}
           handleSubmit={handleSubmit}
-          mayHaveThreeOrMoreErrors={true}
+          setFocus={setFocus}
+          manualFocusOrder={["testInput"]}
+          showErrorSummary={true}
         >
           <DoulaTextareaCharacterCount
             name="testInput"

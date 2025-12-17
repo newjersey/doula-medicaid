@@ -80,7 +80,7 @@ describe("DoulaTextInput", () => {
         <DoulaForm<TestFormData>
           errors={errors}
           handleSubmit={handleSubmit}
-          mayHaveThreeOrMoreErrors={false}
+          showErrorSummary={false}
         >
           <DoulaTextInput name="testInput" label="Test label" numericOnly register={register} />
         </DoulaForm>

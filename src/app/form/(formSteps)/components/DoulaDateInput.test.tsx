@@ -30,11 +30,11 @@ const TestForm = (props: Omit<DoulaDateInputProps<TestFormData>, "errors" | "reg
   });
   return (
     <DoulaForm<TestFormData>
-      orderedInputNames={["testMonth", "testDay", "testYear"]}
+      manualFocusOrder={["testMonth", "testDay", "testYear"]}
       errors={errors}
       setFocus={setFocus}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={true}
+      showErrorSummary={true}
     >
       <DoulaDateInput {...props} errors={errors} register={register} />
       <FormProgressButtons />

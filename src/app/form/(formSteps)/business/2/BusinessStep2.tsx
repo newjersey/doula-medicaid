@@ -9,7 +9,7 @@ import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { useForm } from "react-hook-form";
 
-const mayHaveThreeOrMoreErrors = false;
+const showErrorSummary = false;
 const BusinessStep2 = () => {
   const { dataStore } = useDataStore();
   const {
@@ -22,7 +22,7 @@ const BusinessStep2 = () => {
       hasUncollectedDebt: getDefaultBoolean(dataStore, "hasUncollectedDebt"),
       isSubjectToPaymentSuspension: getDefaultBoolean(dataStore, "isSubjectToPaymentSuspension"),
     },
-    shouldFocusError: !mayHaveThreeOrMoreErrors,
+    shouldFocusError: !showErrorSummary,
   });
   const hasUncollectedDebt = watch("hasUncollectedDebt");
   const isSubjectToPaymentSuspension = watch("isSubjectToPaymentSuspension");
@@ -31,7 +31,7 @@ const BusinessStep2 = () => {
     <DoulaForm<Business2Data>
       errors={errors}
       handleSubmit={handleSubmit}
-      mayHaveThreeOrMoreErrors={mayHaveThreeOrMoreErrors}
+      showErrorSummary={showErrorSummary}
     >
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
