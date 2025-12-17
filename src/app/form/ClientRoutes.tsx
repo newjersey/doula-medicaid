@@ -14,11 +14,20 @@ import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
 import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
+import WebsiteUnavailable from "@/app/form/(formSteps)/welcome/WebsiteUnavailable";
 import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
 import { BrowserRouter, Route, Routes } from "react-router";
 import LegalStep1 from "./(formSteps)/legal/1/LegalStep1";
 import LegalStep2 from "./(formSteps)/legal/2/LegalStep2";
 import LegalStep3 from "./(formSteps)/legal/3/LegalStep3";
+
+export const websiteUnavailableRoutes = (
+  <Routes>
+    <Route path="form">
+      <Route path="welcome" element={<WebsiteUnavailable />} />
+    </Route>
+  </Routes>
+);
 
 export const routes = (
   <Routes>
@@ -62,5 +71,9 @@ export const routes = (
 );
 
 export default function ClientRoutes() {
-  return <BrowserRouter basename={BASE_PATH}>{routes}</BrowserRouter>;
+  return (
+    <BrowserRouter basename={BASE_PATH}>
+      {process.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE === "1" ? websiteUnavailableRoutes : routes}
+    </BrowserRouter>
+  );
 }

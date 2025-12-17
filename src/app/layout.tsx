@@ -76,7 +76,7 @@ export default function RootLayout({
           </div>
         </header>
         <main id="main-content">
-          <WipBanner />
+          {process.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE !== "1" && <WipBanner />}
           <div className="usa-section">
             <div className="grid-container">{children}</div>
           </div>

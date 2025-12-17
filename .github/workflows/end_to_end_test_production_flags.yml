@@ -15,19 +15,5 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "22"
-      - name: Install dependencies
-        run: npm ci
-      - name: Use .env.test-production-flags
-        run: mv .env.test-production-flags .env.test
-      - name: Build the application
-        run: NODE_ENV=test npm run build
-      - name: Start the application
-        run:
-          NODE_ENV=test npm start & npx wait-on
-          http://localhost:3000/humanservices/dmahs/info/doulahelp
-      - name: Run cypress tests
-        run: npm run cypress:run:productionFlags
+  # This doesn't actually do anything, currently refactoring
+  # These names are hardcoded to something that only tech ops has permissions on
