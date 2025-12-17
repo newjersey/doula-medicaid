@@ -3,6 +3,7 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 const getFormProgressButtonsList = () => {
   const allLists = screen.getAllByRole("list");
@@ -70,9 +71,10 @@ describe("<FormProgressButtons />", () => {
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressNext");
     });
     it("when Previous is clicked", async () => {
+      const user = userEvent.setup();
       const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
       renderWithProviders(<FormProgressButtons />, "/form/personal/2");
-      await screen.getByRole("link", { name: "Previous" }).click();
+      await user.click(screen.getByRole("link", { name: "Previous" }));
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressPrevious");
     });
   });

@@ -4,6 +4,15 @@ import { waitFor, within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
 
 describe("<ProgressBar />", () => {
+  let scrollToSpy: jest.SpyInstance;
+  beforeEach(() => {
+    scrollToSpy = jest.spyOn(window, "scrollTo");
+  });
+
+  afterEach(() => {
+    scrollToSpy.mockRestore();
+  });
+
   it("shows the progress bar", () => {
     renderWithProviders(routes, "/form/business/1");
     const progressSection = screen.getByRole("generic", { name: /progress/i });
