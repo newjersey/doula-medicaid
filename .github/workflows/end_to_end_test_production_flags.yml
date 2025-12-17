@@ -13,7 +13,8 @@ jobs:
   end-to-end-tests-production-flags:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
-  # This doesn't actually do anything, currently refactoring
-  # These names are hardcoded to something that only tech ops has permissions on
+      - name: Just a placeholder
+        run:
+          echo "This still exists at a stub because it is a required test on the repo, and only tech
+          ops has permissions to remove it as required. We have submitted a request to remove it
+          from being required, and will clean this up when that change has been made."

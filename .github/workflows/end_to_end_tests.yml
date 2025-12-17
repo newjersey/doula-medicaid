@@ -27,3 +27,15 @@ jobs:
     with:
       env_test_file: .env.test-website-unavailable
       cypress_run_command: cypress:run:websiteUnavailable
+
+  end-to-end-tests:
+    needs:
+      [
+        end-to-end-tests-development-flags,
+        end-to-end-tests-production-flags,
+        end-to-end-tests-website-unavailable,
+      ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: To detect that required e2e tests are complete
+        run: echo "All e2e tests have passed"
