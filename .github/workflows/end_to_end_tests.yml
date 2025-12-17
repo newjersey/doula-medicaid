@@ -11,19 +11,19 @@ on:
 
 jobs:
   end-to-end-tests-development-flags:
-    uses: ./.github/workflows/_end_to_end_test.yml
+    uses: ./.github/workflows/_end_to_end_tests.yml
     with:
       env_test_file: .env.test
       cypress_run_command: cypress:run
 
   end-to-end-tests-production-flags:
-    uses: ./.github/workflows/_end_to_end_test.yml
+    uses: ./.github/workflows/_end_to_end_tests.yml
     with:
       env_test_file: .env.test-production-flags
       cypress_run_command: cypress:run:productionFlags
 
   end-to-end-tests-website-unavailable:
-    uses: ./.github/workflows/_end_to_end_test.yml
+    uses: ./.github/workflows/_end_to_end_tests.yml
     with:
       env_test_file: .env.test-website-unavailable
       cypress_run_command: cypress:run:websiteUnavailable
