@@ -15,12 +15,12 @@ export interface Legal2Data {
 }
 
 export interface LegalFormData {
-  // legal 1 
+  // legal 1
   employedByState: boolean;
   approvedForMedicaidProgram: boolean;
   employedByStateDetails: string | null;
   approvedForMedicaidDetails: string | null;
-  // legal 2 
+  // legal 2
   hasCrimeCharge: boolean;
   crimeChargeExplanation: string | null;
   hadLicenseSuspended: boolean;
