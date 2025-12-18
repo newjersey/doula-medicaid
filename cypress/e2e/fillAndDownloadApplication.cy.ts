@@ -1,3 +1,4 @@
+import { path1TestFields as legal1TestFields } from "@/app/form/(formSteps)/legal/1/testFields";
 import { path1TestFields as legal2TestFields } from "@/app/form/(formSteps)/legal/2/testFields";
 import {
   baseExpectedFields,
@@ -12,7 +13,7 @@ below we add the conditional array elements which will display whether the flag 
 it("should fill and download the application", () => {
   const baseFormDevFlags = [
     ...baseFormPages,
-    { url: "/form/legal/1", fields: [], titleName: "Legal 1 of 3" },
+    { url: "/form/legal/1", fields: legal1TestFields, titleName: "Legal 1 of 3" },
     { url: "/form/legal/2", fields: legal2TestFields, titleName: "Legal 2 of 3" },
     { url: "/form/legal/3", fields: [], titleName: "Legal 3 of 3" },
   ];

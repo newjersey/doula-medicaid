@@ -17,7 +17,7 @@
     "cypress:gui": "cypress open",
     "cypress:gui:productionFlags": "cypress open --env productionFlags=true",
     "cypress:gui:websiteUnavailable": "cypress open --env websiteUnavailable=true",
-    "test": "env $(cat .env.test-production-flags | xargs) jest",
+    "test": "env $(cat .github/.env.test-production-flags | xargs) jest",
     "typecheck": "tsc --noemit",
     "configureVpc": "npx tsx scripts/configureVpc.ts",
     "cdk:deploy": "npx cdk deploy DoulaAssistantStack"

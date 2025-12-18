@@ -92,6 +92,13 @@ const testBusinessFormData: BusinessFormData = {
 };
 
 const testLegalFormData: LegalFormData = {
+  // legal 1
+  employedByState: false,
+  employedByStateDetails: null,
+  approvedForMedicaidProgram: false,
+  approvedForMedicaidDetails: null,
+
+  // legal 2
   hasCrimeCharge: false,
   crimeChargeExplanation: null,
   hadLicenseSuspended: false,
