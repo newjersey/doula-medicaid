@@ -66,6 +66,7 @@ export const baseFormPages = [
 ];
 
 const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
+const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
 export const baseExpectedFields: Partial<PdfFfsIndividual> = {
   fd427LegalName: legalName, // page 4
   fd443telephoneno: phoneNumberField.expectedValue, // page 6
