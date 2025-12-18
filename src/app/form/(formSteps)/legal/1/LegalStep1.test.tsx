@@ -2,6 +2,7 @@ import LegalStep1 from "@/app/form/(formSteps)/legal/1/LegalStep1";
 import {
   approvedForMedicaidDetails,
   employedByStateDetails,
+  firstRadioOptionTestFields,
   noApprovedForMedicaidProgram,
   noEmployedByState,
   path1TestFields,
@@ -35,14 +36,14 @@ describe("<LegalStep1 />", () => {
   });
 
   describe("marks fields as required and displays an error message", () => {
-    it.each(path1TestFields.filter((field) => field.required === true))(
-      "When both radios are answered with no.",
+    it.each(firstRadioOptionTestFields.filter((field) => field.required === true))(
+      "when $dataStoreKey is not filed in",
       async (field) => {
         await testRequiredField(field, path1TestFields, renderFunction, screen);
       },
     );
     it.each(
-      [employedByStateDetails, approvedForMedicaidDetails].filter(
+      [approvedForMedicaidDetails, employedByStateDetails].filter(
         (field) => field.required === true,
       ),
     )(
@@ -53,11 +54,11 @@ describe("<LegalStep1 />", () => {
     );
   });
 
-  it("conditionally renders an explanation based on hasCrimeCharge", async () => {
+  it("conditionally renders an explanation based on employedByState", async () => {
     await testConditionalRender(employedByStateDetails, noEmployedByState, renderFunction, screen);
   });
 
-  it("conditionally renders an explanation based on hadLicenseSuspended", async () => {
+  it("conditionally renders an explanation based on medicalDetails", async () => {
     await testConditionalRender(
       approvedForMedicaidDetails,
       noApprovedForMedicaidProgram,

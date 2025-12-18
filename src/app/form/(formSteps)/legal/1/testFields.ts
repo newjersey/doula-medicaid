@@ -6,7 +6,7 @@ export const noEmployedByState: TestField = createTestField({
   required: true,
   role: "radio",
   testValue: "false",
-  withinGroupName: "Are you employed by the State of New Jersey? *",
+  withinGroupName: "Are you employed by the State of New Jersey? Select one *",
 });
 
 const yesEmployedByState: TestField = createTestField({
@@ -15,7 +15,7 @@ const yesEmployedByState: TestField = createTestField({
   required: true,
   role: "radio",
   testValue: "false",
-  withinGroupName: "Are you employed by the State of New Jersey? *",
+  withinGroupName: "Are you employed by the State of New Jersey? Select one *",
 });
 
 export const noApprovedForMedicaidProgram: TestField = createTestField({
@@ -25,7 +25,7 @@ export const noApprovedForMedicaidProgram: TestField = createTestField({
   role: "radio",
   testValue: "false",
   withinGroupName:
-    "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare?",
+    "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare? Select one *",
 });
 
 const yesApprovedForMedicaidProgram: TestField = createTestField({
@@ -35,12 +35,12 @@ const yesApprovedForMedicaidProgram: TestField = createTestField({
   role: "radio",
   testValue: "false",
   withinGroupName:
-    "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare?",
+    "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare? Select one *",
 });
 
 export const employedByStateDetails = createTestField({
   name: "In a few words please explain your role with the State of New Jersey *",
-  dataStoreKey: "employedByState",
+  dataStoreKey: "employedByStateDetails",
   required: true,
   testValue: "Test employed by state details",
   prerequisiteField: yesEmployedByState,
