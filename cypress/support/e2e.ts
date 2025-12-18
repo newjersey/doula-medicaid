@@ -20,8 +20,22 @@
 // require('./commands')
 
 const isRelevantSuite = (): boolean => {
-  const isProductionFlagsTest = Cypress.currentTest.title.includes("[productionFlags]");
-  return Cypress.env("PRODUCTION_FLAGS") === true ? isProductionFlagsTest : !isProductionFlagsTest;
+  const potentialCypressEnvs = ["productionFlags", "websiteUnavailable"];
+
+  const relevantCypressEnvs = potentialCypressEnvs.filter(
+    (cypressEnv) => Cypress.env(cypressEnv) === true,
+  );
+
+  if (relevantCypressEnvs.length === 0) {
+    return potentialCypressEnvs
+      .map((cypressEnv) => Cypress.currentTest.title.includes(`[${cypressEnv}]`))
+      .every((x) => x === false);
+  }
+
+  const titleIncludesAllFlags = relevantCypressEnvs
+    .map((cypressEnv) => Cypress.currentTest.title.includes(`[${cypressEnv}]`))
+    .every((titleIncludesTag) => titleIncludesTag === true);
+  return titleIncludesAllFlags;
 };
 
 beforeEach(function () {

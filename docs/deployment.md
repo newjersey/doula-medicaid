@@ -165,7 +165,7 @@ aws ecs update-service --cluster doula-assistant-cluster --service doula-assista
 
 Environment variables for the Amplify deployment are
 [set via the Amplify console](https://docs.aws.amazon.com/amplify/latest/userguide/setting-env-vars.html).
-Then, select the deployment and redeploy it.
+Then, select the deployment and click "Redeploy this version".
 
 ## Local Docker development
 

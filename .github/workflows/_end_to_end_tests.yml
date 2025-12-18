@@ -1,16 +1,17 @@
-name: end-to-end-tests-production-flags
+name: end-to-end-tests
 
 on:
-  pull_request:
-    branches:
-      - "main"
-  push:
-    branches:
-      - "main"
   workflow_call:
+    inputs:
+      env_test_file:
+        required: true
+        type: string
+      cypress_run_command:
+        required: true
+        type: string
 
 jobs:
-  end-to-end-tests-production-flags:
+  end-to-end-tests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -21,8 +22,9 @@ jobs:
           node-version: "22"
       - name: Install dependencies
         run: npm ci
-      - name: Use .env.test-production-flags
-        run: mv .env.test-production-flags .env.test
+      - name: Use ${{ inputs.env_test_file }}
+        if: ${{ inputs.env_test_file != '.env.test' }}
+        run: mv .github/${{ inputs.env_test_file }} .env.test
       - name: Build the application
         run: NODE_ENV=test npm run build
       - name: Start the application
@@ -30,4 +32,4 @@ jobs:
           NODE_ENV=test npm start & npx wait-on
           http://localhost:3000/humanservices/dmahs/info/doulahelp
       - name: Run cypress tests
-        run: npm run cypress:run:productionFlags
+        run: npm run "${{ inputs.cypress_run_command }}"
