@@ -21,7 +21,9 @@ Second, run the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open
+[http://localhost:3000/humanservices/dmahs/info/doulahelp](http://localhost:3000/humanservices/dmahs/info/doulahelp)
+with your browser to see the result.
 
 ## Running tests
 
@@ -73,7 +75,8 @@ npm run dev:test
 # Then run cypress tests with `[productionFlags]` in their name
 npm run cypress:run:productionFlags
 
-# cypress:gui can be run normally, and the GUI lets you select which test to run
+# To run with cypress GUI
+npm run cypress:gui:productionFlags
 ```
 
 The local file may need to be updated if you want to turn flags back on again

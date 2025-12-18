@@ -25,5 +25,5 @@ export const renderWithProviders = (
       </PathnameContext.Provider>
     </AppRouterContext.Provider>,
   );
-  return { mockUpdateDataStore };
+  return { mockUpdateDataStore, pathname };
 };

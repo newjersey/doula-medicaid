@@ -1,42 +1,3 @@
-// // import { getBoolean, type DataStore } from "@/app/form/_utils/dataStore";
-
-// export interface Legal1Data {
-//   // bool for Q1
-//   employedByState: string;
-//   // text area for q1
-//   employedByStateDetails: string;
-//   // bool for Q2
-//   approvedForMedicaidProgram: string;
-//   // text area for q2
-//   usersServicesProvided: string;
-// }
-
-// export interface Legal1FromData {
-//   // bool for Q1
-//   employedByState: boolean;
-//   // text area for q1
-//   employedByStateDetails: string;
-//   // bool for Q2
-//   approvedForMedicaidProgram: boolean;
-//   // text area for q2
-//   usersServicesProvided: string;
-// }
-
-// // export interface Legal2Data {}
-// // export interface Legal2FromData {}
-// // export interface Legal3Data {}
-// // export interface Legal3FromData {}
-
-// // const getLegal1Data = (dataStore: DataStore) => {
-// //   const employedByState = getBoolean(dataStore, "employedByState", true);
-// //   const approvedForMedicaidProgram = getBoolean(dataStore, "approvedForMedicaidProgram", true);
-// // };
-
-// // export const getLegalFormData = (dataStore: DataStore): BusinessFormData => {
-// //     return {
-// //         ...getLegal1Data(dataStore)
-// //     };
-// // };
 import { getBoolean, getValue, type DataStore } from "@/app/form/_utils/dataStore";
 
 export interface Legal1Data {
@@ -46,24 +7,47 @@ export interface Legal1Data {
   approvedForMedicaidDetails: string;
 }
 
+export interface Legal2Data {
+  hasCrimeCharge: "true" | "false" | "";
+  crimeChargeExplanation: string;
+  hadLicenseSuspended: "true" | "false" | "";
+  licenseSuspendedExplanation: string;
+}
+
 export interface LegalFormData {
+  // legal 1 
   employedByState: boolean;
   approvedForMedicaidProgram: boolean;
   employedByStateDetails: string | null;
   approvedForMedicaidDetails: string | null;
+  // legal 2 
+  hasCrimeCharge: boolean;
+  crimeChargeExplanation: string | null;
+  hadLicenseSuspended: boolean;
+  licenseSuspendedExplanation: string | null;
 }
 
 const getLegal1Data = (dataStore: DataStore) => {
   return {
     employedByState: getBoolean(dataStore, "employedByState", true),
-    approvedForMedicaidProgram: getBoolean(dataStore, "approvedForMedicaidProgram", true),
     employedByStateDetails: getValue(dataStore, "employedByStateDetails", false),
+    approvedForMedicaidProgram: getBoolean(dataStore, "approvedForMedicaidProgram", true),
     approvedForMedicaidDetails: getValue(dataStore, "approvedForMedicaidDetails", false),
+  };
+};
+
+const getLegal2Data = (dataStore: DataStore) => {
+  return {
+    hasCrimeCharge: getBoolean(dataStore, "hasCrimeCharge", true),
+    crimeChargeExplanation: getValue(dataStore, "crimeChargeExplanation", false),
+    hadLicenseSuspended: getBoolean(dataStore, "hadLicenseSuspended", true),
+    licenseSuspendedExplanation: getValue(dataStore, "licenseSuspendedExplanation", false),
   };
 };
 
 export const getLegalFormData = (dataStore: DataStore): LegalFormData => {
   return {
     ...getLegal1Data(dataStore),
+    ...getLegal2Data(dataStore),
   };
 };

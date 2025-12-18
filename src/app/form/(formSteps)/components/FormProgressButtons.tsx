@@ -1,5 +1,6 @@
 "use client";
 
+import { getAllSections, isFinalFormProgress } from "@/app/form/_utils/formProgress";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { sendGAEvent } from "@next/third-parties/google";
 import { Button, ButtonGroup } from "@trussworks/react-uswds";
@@ -29,7 +30,7 @@ const FormProgressButtons = (props: { overrideClassNames?: string }) => {
         className="margin-top-0"
         onClick={() => sendGAEvent("event", "progressNext")}
       >
-        Next
+        {isFinalFormProgress(formProgressPosition.next, getAllSections()) ? "Review" : "Next"}
       </Button>,
     );
   }

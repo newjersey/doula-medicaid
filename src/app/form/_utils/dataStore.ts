@@ -2,6 +2,7 @@ import type {
   Insurance1Data,
   Insurance2Data,
 } from "@/app/form/(formSteps)/insurance/InsuranceData";
+import type { Legal2Data } from "@/app/form/(formSteps)/legal/LegalData";
 import type {
   Screening1Data,
   Screening2Data,
@@ -37,7 +38,9 @@ export type DataStoreKey =
   | keyof Business2Data
   | keyof Business3Data
   | keyof Business4Data
-  | keyof Legal1Data;
+  | keyof Legal1Data
+  | keyof Legal2Data;
+
 
 export type DataStore = { [key: string]: string };
 

@@ -7,6 +7,7 @@ import {
   getInsuranceFormData,
   type InsuranceFormData,
 } from "@/app/form/(formSteps)/insurance/InsuranceData";
+import { getLegalFormData, type LegalFormData } from "@/app/form/(formSteps)/legal/LegalData";
 import {
   getPersonalFormData,
   type PersonalFormData,
@@ -22,13 +23,16 @@ import {
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 
-export interface FormData
+interface BaseFormData
   extends ScreeningFormData,
     InsuranceFormData,
     TrainingFormData,
-    InsuranceFormData,
     PersonalFormData,
     BusinessFormData {}
+
+export interface FormDataWithLegal extends BaseFormData, LegalFormData {}
+
+export type FormData = FormDataWithLegal | BaseFormData;
 
 export interface FilledPDFData {
   filename: string;
@@ -44,9 +48,9 @@ export const getFormData = (dataStore: DataStore): FormData => {
     ...getScreeningFormData(dataStore),
     ...getInsuranceFormData(dataStore),
     ...getTrainingFormData(dataStore),
-    ...getInsuranceFormData(dataStore),
     ...getPersonalFormData(dataStore),
     ...getBusinessFormData(dataStore),
+    ...(process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" ? { ...getLegalFormData(dataStore) } : {}),
   };
 };
 

@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { aws_route53resolver as route53resolver } from "aws-cdk-lib";
+import { aws_route53resolver as route53resolver, Size } from "aws-cdk-lib";
 import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import * as ecr from "aws-cdk-lib/aws-ecr";
@@ -7,11 +7,14 @@ import * as ecs from "aws-cdk-lib/aws-ecs";
 import * as ecsPatterns from "aws-cdk-lib/aws-ecs-patterns";
 import { Protocol } from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import * as iam from "aws-cdk-lib/aws-iam";
+import * as logs from "aws-cdk-lib/aws-logs";
 import * as route53 from "aws-cdk-lib/aws-route53";
 import * as targets from "aws-cdk-lib/aws-route53-targets";
 
 const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
+
+const STAGING_ENV_NAME = "staging";
 
 /** See docs/deployment.md */
 export class CdkStack extends cdk.Stack {
@@ -21,6 +24,8 @@ export class CdkStack extends cdk.Stack {
     const envName = this.node.tryGetContext("env");
     const isHttps = this.node.tryGetContext("https") == "true";
     const certificateArn = this.node.tryGetContext("certificateArn");
+
+    const dnsIps = this.node.tryGetContext("dnsIps");
 
     // Use an existing VPC by name
     const vpc = ec2.Vpc.fromLookup(this, "ExistingVpc", {
@@ -56,6 +61,15 @@ export class CdkStack extends cdk.Stack {
         LOG_LEVEL: "info",
       },
       environmentFiles: [ecs.EnvironmentFile.fromBucket(bucket, `configuration/.env`)],
+      logging: ecs.LogDrivers.awsLogs({
+        streamPrefix: "DoulaAssistantStream",
+        mode: ecs.AwsLogDriverMode.NON_BLOCKING,
+        maxBufferSize: Size.mebibytes(25),
+        logGroup: new logs.LogGroup(this, "DoulaAssistantLogGroup", {
+          logGroupName: "/ecs/doula-assistant",
+          retention: logs.RetentionDays.SIX_MONTHS,
+        }),
+      }),
     });
 
     appContainer.addPortMappings({ containerPort: 3000 });
@@ -69,7 +83,7 @@ export class CdkStack extends cdk.Stack {
         taskDefinition,
         serviceName: "doula-assistant-service",
         desiredCount: 1,
-        minHealthyPercent: 0,
+        minHealthyPercent: 100,
         maxHealthyPercent: 200,
         loadBalancerName: "doula-assistant-alb",
         publicLoadBalancer: false, // Internal ALB
@@ -143,47 +157,77 @@ export class CdkStack extends cdk.Stack {
       "Allow ECS service to access VPC endpoints",
     );
 
-    const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
-      vpc,
-      zoneName: `${envName}-doula-vpc.dhs.nj.gov`,
-    });
+    fargateService.taskDefinition.addToExecutionRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ["logs:CreateLogGroup"],
+        resources: ["*"],
+      }),
+    );
 
-    const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
-      zone: hostedZone,
-      recordName: "app",
-      target: route53.RecordTarget.fromAlias(
-        new targets.LoadBalancerTarget(fargateService.loadBalancer, {
-          evaluateTargetHealth: true,
-        }),
-      ),
-    });
+    let dnsName = fargateService.loadBalancer.loadBalancerDnsName;
 
-    // For inbound DNS resolution traffic
-    const route53InboundEndpointSecurityGroup = new ec2.SecurityGroup(
-      this,
-      "Route53InboundEndpointSecurityGroup",
-      {
+    if (envName === STAGING_ENV_NAME) {
+      if (dnsIps === undefined) {
+        throw new Error(
+          "A comma-delimited list of DNS IPs is required for this Route53 stable CNAME to be accessed from outside the VPC. Prod currently deploys the Route53 stuff, but does not actually use it. This difference between staging and prod is tech debt. See deployment.md",
+        );
+      }
+
+      const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
         vpc,
-        allowAllOutbound: true,
-        description: "Security group for Route 53 inbound endpoint",
-      },
-    );
-    route53InboundEndpointSecurityGroup.addIngressRule(
-      ec2.Peer.ipv4(vpc.vpcCidrBlock),
-      ec2.Port.tcp(53),
-    );
-    route53InboundEndpointSecurityGroup.addIngressRule(
-      ec2.Peer.ipv4(vpc.vpcCidrBlock),
-      ec2.Port.udp(53),
-    );
+        zoneName: `${envName}-doula-vpc.dhs.nj.gov`,
+      });
 
-    const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
-    new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
-      direction: "INBOUND",
-      // Two IP addresses for the endpoint are required
-      ipAddresses: [{ subnetId: subnetIds[0] }, { subnetId: subnetIds[1] }],
-      securityGroupIds: [route53InboundEndpointSecurityGroup.securityGroupId],
-    });
+      const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
+        zone: hostedZone,
+        recordName: "app",
+        target: route53.RecordTarget.fromAlias(
+          new targets.LoadBalancerTarget(fargateService.loadBalancer, {
+            evaluateTargetHealth: true,
+          }),
+        ),
+      });
+      dnsName = aRecord.domainName;
+
+      // For inbound DNS resolution traffic
+      const route53InboundEndpointSecurityGroup = new ec2.SecurityGroup(
+        this,
+        "Route53InboundEndpointSecurityGroup",
+        {
+          vpc,
+          allowAllOutbound: true,
+          description: "Security group for Route 53 inbound endpoint",
+        },
+      );
+      route53InboundEndpointSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4(vpc.vpcCidrBlock),
+        ec2.Port.tcp(53),
+      );
+      route53InboundEndpointSecurityGroup.addIngressRule(
+        ec2.Peer.ipv4(vpc.vpcCidrBlock),
+        ec2.Port.udp(53),
+      );
+      for (const dnsIp of dnsIps.split(",")) {
+        route53InboundEndpointSecurityGroup.addIngressRule(
+          ec2.Peer.ipv4(`${dnsIp}/32`),
+          ec2.Port.tcp(53),
+        );
+        route53InboundEndpointSecurityGroup.addIngressRule(
+          ec2.Peer.ipv4(`${dnsIp}/32`),
+          ec2.Port.udp(53),
+        );
+      }
+      const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
+
+      // This costs $200/mo
+      new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
+        direction: "INBOUND",
+        // Two IP addresses for the endpoint are required
+        ipAddresses: [{ subnetId: subnetIds[0] }, { subnetId: subnetIds[1] }],
+        securityGroupIds: [route53InboundEndpointSecurityGroup.securityGroupId],
+      });
+    }
 
     fargateService.taskDefinition.executionRole?.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
@@ -256,27 +300,16 @@ export class CdkStack extends cdk.Stack {
 
     // CloudFormation Outputs
     new cdk.CfnOutput(this, "LoadBalancerUrl", {
-      value: `http${isHttps ? "s" : ""}://${aRecord.domainName}`,
+      value: `http${isHttps ? "s" : ""}://${dnsName}`,
       description: "URL of the Internal Application Load Balancer (accessible from within VPC)",
       exportName: "DoulaAssistantLoadBalancerUrl",
     });
 
     new cdk.CfnOutput(this, "HealthCheckUrl", {
-      value: `http${isHttps ? "s" : ""}://${aRecord.domainName}/humanservices/dmahs/info/doulahelp/api/health`,
-      description: "URL for the health check endpoint (accessible from within VPC)",
+      value: `http${isHttps ? "s" : ""}://${dnsName}/humanservices/dmahs/info/doulahelp/api/health`,
+      description:
+        "URL for the health check endpoint (accessible from within VPC, via Cloudshell -> create an environment within the VPC)",
       exportName: "DoulaAssistantHealthCheckUrl",
-    });
-
-    new cdk.CfnOutput(this, "LoadBalancerDnsName", {
-      value: aRecord.domainName,
-      description: "Load Balancer DNS name for DNS configuration",
-      exportName: "DoulaAssistantLoadBalancerDnsName",
-    });
-
-    new cdk.CfnOutput(this, "InternalAccessNote", {
-      value:
-        "Service accessible via API Gateway (public HTTPS) or internal HTTP/HTTPS load balancer (VPC only). API Gateway provides HTTPS termination and public access.",
-      description: "Service accessibility options",
     });
 
     // Tags for all resources

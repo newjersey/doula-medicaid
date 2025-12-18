@@ -55,16 +55,22 @@ import {
   getPage8Fields,
   type PdfFfsIndividualPage8,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page8";
+import {
+  getPage9Fields,
+  type PdfFfsIndividualPage9,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page9";
 import { fillForm, type FormData } from "@form/_utils/fillPdf/form";
 
 export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
+export const FFS_INDIVIDUAL_WITH_LEGAL_PDF_PATH = "/pdf/ffs_individual_with_legal.pdf";
 
 export interface PdfFfsIndividual
   extends PdfFfsIndividualPage4,
     PdfFfsIndividualPage5,
     PdfFfsIndividualPage6,
     PdfFfsIndividualPage8,
+    PdfFfsIndividualPage9,
     PdfFfsIndividualPage11,
     PdfFfsIndividualPage13,
     PdfFfsIndividualPage17,
@@ -82,6 +88,7 @@ export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndivi
     ...getPage5Fields(formData),
     ...getPage6Fields(formData),
     ...getPage8Fields(formData),
+    ...getPage9Fields(formData),
     ...getPage11Fields(formData),
     ...getPage13Fields(formData),
     ...getPage17Fields(formData),
@@ -101,7 +108,9 @@ export const fillFfsIndividualForm = (formData: FormData) => {
   return fillForm(
     mapFfsIndividualFields(formData),
     fieldOptions,
-    FFS_INDIVIDUAL_PDF_PATH,
+    process.env.NEXT_PUBLIC_FLAG_LEGAL === "1"
+      ? FFS_INDIVIDUAL_WITH_LEGAL_PDF_PATH
+      : FFS_INDIVIDUAL_PDF_PATH,
     FFS_INDIVIDUAL_PDF_NAME,
   );
 };
