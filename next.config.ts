@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/",
+        // We put the home page on /form/welcome instead of / as a matter of tech debt. It was the most convenient thing to do then, and we thought we could always refactor to move it back to /.
+        // However, public communications, e.g. the press release, have since directly linked to /form/welcome. If we switch the location of the landing page, we need to make sure that /form/welcome redirects to the new location
+        // Removing this redirect without doing so will break links from multiple external sources, including the press release.
         destination: "/form/welcome",
         permanent: false,
       },
