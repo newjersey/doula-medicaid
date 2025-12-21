@@ -54,7 +54,7 @@
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
     "aws-cdk": "2.1100.1",
-    "aws-cdk-lib": "2.232.2",
+    "aws-cdk-lib": "2.233.0",
     "cypress": "15.8.1",
     "eslint": "9.39.2",
     "eslint-config-next": "15.5.9",
