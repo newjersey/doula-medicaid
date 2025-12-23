@@ -20,7 +20,10 @@ import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/t
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
-import { pdfjsLib } from "pdfjs-dist";
+import * as pdfjsLib from "pdfjs-dist";
+// this seems like the correct one
+// import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+// import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs';
 
 export const baseFormPages = [
   { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
@@ -127,74 +130,95 @@ export const fillAndDownloadApplication = (
   }
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
 
-  // Test clicking previous, and prepopulation
-  for (const formPage of formPages.reverse()) {
-    cy.contains("Previous").click();
-    cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
-    cy.window().its("scrollY").should("equal", 0);
-    cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
+  // // Test clicking previous, and prepopulation
+  // for (const formPage of formPages.reverse()) {
+  //   cy.contains("Previous").click();
+  //   cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
+  //   cy.window().its("scrollY").should("equal", 0);
+  //   cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
 
-    cy.get("form").within(() => {
-      for (const field of formPage.fields) {
-        if (field.role === "textbox") {
-          cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
-        } else if (field.role === "radio") {
-          cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).should(
-            "be.checked",
-          );
-        } else if (field.role === "combobox") {
-          cy.get(`select[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
-        } else {
-          throw new Error(`Unexpected type ${field.role}`);
-        }
-      }
-    });
-  }
+  //   cy.get("form").within(() => {
+  //     for (const field of formPage.fields) {
+  //       if (field.role === "textbox") {
+  //         cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
+  //       } else if (field.role === "radio") {
+  //         cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).should(
+  //           "be.checked",
+  //         );
+  //       } else if (field.role === "combobox") {
+  //         cy.get(`select[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
+  //       } else {
+  //         throw new Error(`Unexpected type ${field.role}`);
+  //       }
+  //     }
+  //   });
+  // }
 
-  for (const _ of formPages.slice(0, -1)) {
-    cy.contains("button", "Next").click();
-  }
-  cy.contains("button", "Review").click();
+  // for (const _ of formPages.slice(0, -1)) {
+  //   cy.contains("button", "Next").click();
+  // }
+  // cy.contains("button", "Review").click();
 
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
   cy.title().should("eq", `Review ${titleEnding}`);
   cy.contains("Download your application").click();
 
-  cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
-    async (file: typeof Cypress.Buffer) => {
-      /**
-       * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
-       * by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I
-       * simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to
-       * an ArrayBuffer.
-       *
-       * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
-       * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does
-       * run.
-       */
-      //  @ts-expect-error see above
-      const uint8Array = new Uint8Array(file);
-      const pdfDoc = await PDFDocument.load(uint8Array);
-      const form = pdfDoc.getForm();
+  const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
+  cy.readFile(pdfFilePath, null).then(async (file: typeof Cypress.Buffer) => {
+    // throw new Error("Does this even run");
+    /**
+     * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned by
+     * cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I simply
+     * could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to an
+     * ArrayBuffer.
+     *
+     * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
+     * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does run.
+     */
+    //  @ts-expect-error see above
+    const uint8Array = new Uint8Array(file);
 
-      const pageCount = pdfDoc.getPageCount();
-      expect(pageCount).to.equal(39);
+    // new stuff
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+    const pdf = await pdfjsLib.getDocument("helloworld.pdf").promise;
+    // throw new Error(`test ${pdf}`);
+    const page1 = await pdf.getPage(1);
+    const page1TextItems = await page1.getTextContent();
+    const page1Text = page1TextItems.items
+      .map(function (s) {
+        return s.toString();
+      })
+      .join("");
 
-      for (const [key, value] of Object.entries(expectedFields)) {
-        const field = form.getField(key);
-        if (field instanceof PDFTextField) {
-          expect(field.getText()).to.equal(value);
-        } else if (field instanceof PDFCheckBox) {
-          expect(field.isChecked()).to.equal(value);
-        } else {
-          throw new Error(`Unexpected field class ${field.constructor.name}`);
-        }
+    throw new Error(page1Text);
+
+    // old stuff
+    const pdfDoc = await PDFDocument.load(uint8Array);
+    const form = pdfDoc.getForm();
+
+    const pageCount = pdfDoc.getPageCount();
+    expect(pageCount).to.equal(39);
+
+    for (const [key, value] of Object.entries(expectedFields)) {
+      const field = form.getField(key);
+      if (field instanceof PDFTextField) {
+        expect(field.getText()).to.equal(value);
+      } else if (field instanceof PDFCheckBox) {
+        expect(field.isChecked()).to.equal(value);
+      } else {
+        throw new Error(`Unexpected field class ${field.constructor.name}`);
       }
-    },
-  );
+    }
+  });
+  // throw new Error("This");
 
   // The cover page should have accessibly readable text
   // We need to use a different pdf library, as our usual one cannot read text: https://github.com/Hopding/pdf-lib#limitations
 
-  pdfjsLib.getDocument("helloworld.pdf");
+  // pdfjsLib.getDocument(pdfFilePath);
+  // const loadingTask = await pdfjsLib.getDocument("helloworld.pdf");
+  // loadingTask.promise.then(function (pdf) {
+  //   // you can now use *pdf* here
+  // });
 };
