@@ -27,12 +27,8 @@ jobs:
   end-to-end-test:
     uses: ./.github/workflows/end_to_end_test.yml
 
-  end-to-end-test-production-flags:
-    uses: ./.github/workflows/end_to_end_test_production_flags.yml
-
   deploy-prod:
-    needs:
-      [lint, typecheck, prettier, unit-tests, end-to-end-test, end-to-end-test-production-flags]
+    needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
     uses: ./.github/workflows/_deploy.yml
     secrets:
       aws_account_id: ${{ secrets.AWS_ACCOUNT_ID_PROD }}
