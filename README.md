@@ -67,7 +67,7 @@ make any changes and test with them locally, without having to reset any changes
 committing.
 
 ```sh
-cp .env.test-production-flags .env.test.local
+cp cypress/.env.test-production-flags .env.test.local
 
 # Restart the NextJS process
 npm run dev:test
