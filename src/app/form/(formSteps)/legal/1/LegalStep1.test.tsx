@@ -1,10 +1,10 @@
 import LegalStep1 from "@/app/form/(formSteps)/legal/1/LegalStep1";
 import {
-  approvedForMedicaidDetails,
-  employedByStateDetails,
+  employedByNjExplanation,
   firstRadioOptionTestFields,
-  noApprovedForMedicaidProgram,
-  noEmployedByState,
+  medicaidServicesExplanation,
+  noHasProvidedMedicaidServices,
+  noIsEmployedByNj,
   path1TestFields,
   path2TestFields,
 } from "@/app/form/(formSteps)/legal/1/testFields";
@@ -49,7 +49,7 @@ describe("<LegalStep1 />", () => {
       },
     );
     it.each(
-      [approvedForMedicaidDetails, employedByStateDetails].filter(
+      [medicaidServicesExplanation, employedByNjExplanation].filter(
         (field) => field.required === true,
       ),
     )(
@@ -60,14 +60,14 @@ describe("<LegalStep1 />", () => {
     );
   });
 
-  it("conditionally renders an explanation based on employedByState", async () => {
-    await testConditionalRender(employedByStateDetails, noEmployedByState, renderFunction, screen);
+  it("conditionally renders an explanation based on isEmployedByNj", async () => {
+    await testConditionalRender(employedByNjExplanation, noIsEmployedByNj, renderFunction, screen);
   });
 
   it("conditionally renders an explanation based on medicalDetails", async () => {
     await testConditionalRender(
-      approvedForMedicaidDetails,
-      noApprovedForMedicaidProgram,
+      medicaidServicesExplanation,
+      noHasProvidedMedicaidServices,
       renderFunction,
       screen,
     );
