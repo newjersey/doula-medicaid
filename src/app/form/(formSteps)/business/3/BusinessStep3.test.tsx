@@ -21,7 +21,7 @@ describe("<BusinessStep3 />", () => {
   });
 
   it.each(firstRadioOptionTestFields.filter((field) => field.required === true))(
-    "marks $dataStoreKey as required and displays an error message if it is not filed in",
+    "marks $dataStoreKey as required and displays an error message if it is not filled in",
     async (field) => {
       await testRequiredField(field, testFields, renderFunction, screen);
     },
