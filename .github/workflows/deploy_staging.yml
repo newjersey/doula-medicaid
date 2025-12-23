@@ -24,8 +24,8 @@ jobs:
   unit-tests:
     uses: ./.github/workflows/unit_tests.yml
 
-  end-to-end-test:
-    uses: ./.github/workflows/end_to_end_test.yml
+  end-to-end-tests:
+    uses: ./.github/workflows/end_to_end_tests.yml
 
   deploy-staging:
     needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
