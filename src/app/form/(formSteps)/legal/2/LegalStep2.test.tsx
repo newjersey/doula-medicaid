@@ -33,8 +33,14 @@ describe("<LegalStep2 />", () => {
   const renderFunction = (dataStore: DataStore = {}) =>
     renderWithProviders(<LegalStep2 />, "/form/legal/2", dataStore);
 
-  it("saves fields to the data store on submit", async () => {
-    await testSaveFieldsToDataStore(path1TestFields, path1TestFields, renderFunction, screen);
+  describe("saves fields to the data store on submit", () => {
+    it("when 'No' is selected for both questions", async () => {
+      await testSaveFieldsToDataStore(path1TestFields, path1TestFields, renderFunction, screen);
+    });
+
+    it("when 'Yes' is selected for both questions and explanations are provided", async () => {
+      await testSaveFieldsToDataStore(path2TestFields, path2TestFields, renderFunction, screen);
+    });
   });
 
   describe("marks fields as required and displays an error message", () => {
