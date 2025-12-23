@@ -9,7 +9,7 @@ export const noIsEmployedByNj: TestField = createTestField({
   withinGroupName: "Are you employed by the State of New Jersey? Select one *",
 });
 
-const yesIsEmployedByNj: TestField = createTestField({
+export const yesIsEmployedByNj: TestField = createTestField({
   name: "Yes",
   dataStoreKey: "isEmployedByNj",
   required: true,

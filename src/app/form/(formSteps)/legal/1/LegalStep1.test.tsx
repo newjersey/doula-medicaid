@@ -7,11 +7,14 @@ import {
   noIsEmployedByNj,
   path1TestFields,
   path2TestFields,
+  yesIsEmployedByNj,
 } from "@/app/form/(formSteps)/legal/1/testFields";
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   testConditionalRender,
+  testFillFromDataStore,
+  testFocusesFirstErrorEvenIfConditional,
   testRequiredField,
   testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
@@ -60,6 +63,13 @@ describe("<LegalStep1 />", () => {
     );
   });
 
+  it.each([...path1TestFields, employedByNjExplanation, medicaidServicesExplanation])(
+    "fills $dataStoreKey from the data store when page is loaded",
+    async (field) => {
+      await testFillFromDataStore(field, renderFunction, screen);
+    },
+  );
+
   it("conditionally renders an explanation based on isEmployedByNj", async () => {
     await testConditionalRender(employedByNjExplanation, noIsEmployedByNj, renderFunction, screen);
   });
@@ -68,6 +78,16 @@ describe("<LegalStep1 />", () => {
     await testConditionalRender(
       medicaidServicesExplanation,
       noHasProvidedMedicaidServices,
+      renderFunction,
+      screen,
+    );
+  });
+
+  it("focuses on the first error, even if the first error is conditionally rendered", async () => {
+    await testFocusesFirstErrorEvenIfConditional(
+      employedByNjExplanation,
+      noHasProvidedMedicaidServices,
+      [yesIsEmployedByNj, employedByNjExplanation, noHasProvidedMedicaidServices],
       renderFunction,
       screen,
     );

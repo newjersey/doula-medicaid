@@ -11,8 +11,8 @@ import { useForm } from "react-hook-form";
 
 const orderedInputNames: Array<keyof Legal1Data & string> = [
   "isEmployedByNj",
-  "hasProvidedMedicaidServices",
   "employedByNjExplanation",
+  "hasProvidedMedicaidServices",
   "medicaidServicesExplanation",
 ];
 
@@ -69,7 +69,7 @@ const LegalStep1 = () => {
               className="tablet:grid-col-6"
               errors={errors}
               register={register}
-              maxLength={100}
+              maxLength={68}
               additionalRegisterOptions={{
                 required: "This question is required",
               }}
@@ -96,7 +96,7 @@ const LegalStep1 = () => {
               className="tablet:grid-col-6"
               errors={errors}
               register={register}
-              maxLength={100}
+              maxLength={68}
               additionalRegisterOptions={{
                 required: "This question is required",
               }}
