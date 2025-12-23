@@ -96,7 +96,7 @@ const testLegalFormData: LegalFormData = {
   isEmployedByNj: false,
   employedByNjExplanation: null,
   hasProvidedMedicaidServices: false,
-  medicaidServicesExplanation: null,
+  medicaidProviderExplanation: null,
 
   // legal 2
   hasCrimeCharge: false,

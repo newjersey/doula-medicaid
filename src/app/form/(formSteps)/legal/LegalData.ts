@@ -4,7 +4,7 @@ export interface Legal1Data {
   isEmployedByNj: "true" | "false" | "";
   hasProvidedMedicaidServices: "true" | "false" | "";
   employedByNjExplanation: string;
-  medicaidServicesExplanation: string;
+  medicaidProviderExplanation: string;
 }
 
 export interface Legal2Data {
@@ -25,7 +25,7 @@ export interface LegalFormData {
   isEmployedByNj: boolean;
   hasProvidedMedicaidServices: boolean;
   employedByNjExplanation: string | null;
-  medicaidServicesExplanation: string | null;
+  medicaidProviderExplanation: string | null;
   // Legal 2
   hasCrimeCharge: boolean;
   crimeChargeExplanation: string | null;
@@ -43,7 +43,7 @@ const getLegal1Data = (dataStore: DataStore) => {
     isEmployedByNj: getBoolean(dataStore, "isEmployedByNj", true),
     employedByNjExplanation: getValue(dataStore, "employedByNjExplanation", false),
     hasProvidedMedicaidServices: getBoolean(dataStore, "hasProvidedMedicaidServices", true),
-    medicaidServicesExplanation: getValue(dataStore, "medicaidServicesExplanation", false),
+    medicaidProviderExplanation: getValue(dataStore, "medicaidProviderExplanation", false),
   };
 };
 
