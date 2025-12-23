@@ -92,17 +92,19 @@ const testBusinessFormData: BusinessFormData = {
 };
 
 const testLegalFormData: LegalFormData = {
-  // legal 1
+  // Legal 1
   isEmployedByNj: false,
   employedByNjExplanation: null,
   hasProvidedMedicaidServices: false,
   medicaidProviderExplanation: null,
 
-  // legal 2
+  // Legal 2
   hasCrimeCharge: false,
   crimeChargeExplanation: null,
   hadLicenseSuspended: false,
   licenseSuspendedExplanation: null,
+
+  // Legal 3
   hasDisqualification: false,
   disqualificationExplanation: null,
   hasCompanyInvolvement: false,

@@ -7,6 +7,16 @@ describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
   const testedPdfKeys = new Set<keyof PdfFfsIndividualPage9>([]);
 
   describe("when NEXT_PUBLIC_FLAG_LEGAL is not set", () => {
+    it("does not fill 1. approved as a provider of services under Medicaid", () => {
+      const yesPdfKey = "fd425approvedprovideryes";
+      const noPdfKey = "fd425approvedproviderno";
+      const explanationPdfKey = "fd425approvedprovideryesexplaination";
+      const pdfFields = mapFfsIndividualFields(generateFormData({}));
+      expect(pdfFields[noPdfKey]).toEqual(undefined);
+      expect(pdfFields[yesPdfKey]).toEqual(undefined);
+      expect(pdfFields[explanationPdfKey]).toEqual(undefined);
+    });
+
     it("does not fill 2. past or pending license suspension, revocation, or adverse action", () => {
       const yesPdfKey = "fd425licensesuspensionyes";
       const noPdfKey = "fd425licensesuspensionno";
@@ -46,6 +56,16 @@ describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
       expect(pdfFields[yesPdfKey]).toEqual(undefined);
       expect(pdfFields[explanationPdfKey]).toEqual(undefined);
     });
+
+    it("it does not fill 6. employed by the State of New Jersey", () => {
+      const yesPdfKey = "fd425employedbystateofnjyes";
+      const noPdfKey = "fd425employedbystateofnjno";
+      const explanationPdfKey = "fd425employedbystateofnjyesexplaination";
+      const pdfFields = mapFfsIndividualFields(generateFormData({}));
+      expect(pdfFields[noPdfKey]).toEqual(undefined);
+      expect(pdfFields[yesPdfKey]).toEqual(undefined);
+      expect(pdfFields[explanationPdfKey]).toEqual(undefined);
+    });
   });
 
   describe('when NEXT_PUBLIC_FLAG_LEGAL is "1"', () => {
@@ -56,6 +76,40 @@ describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
     });
     afterAll(() => {
       process.env = oldProcessEnv;
+    });
+
+    describe("1. approved as a provider of services under Medicaid", () => {
+      it("checks the No checkbox when formData.hasProvidedMedicaidServices is false", () => {
+        const yesPdfKey = "fd425approvedprovideryes";
+        const noPdfKey = "fd425approvedproviderno";
+        const explanationPdfKey = "fd425approvedprovideryesexplaination";
+        expectNoDuplicateTest<PdfFfsIndividualPage9>(noPdfKey, testedPdfKeys);
+        const pdfFields = mapFfsIndividualFields(
+          generateFormData({
+            hasProvidedMedicaidServices: false,
+          }),
+        );
+        expect(pdfFields[noPdfKey]).toEqual(true);
+        expect(pdfFields[yesPdfKey]).toEqual(undefined);
+        expect(pdfFields[explanationPdfKey]).toEqual(undefined);
+      });
+
+      it("checks the Yes checkbox and fills in the explanation when formData.hasProvidedMedicaidServices is true", () => {
+        const yesPdfKey = "fd425approvedprovideryes";
+        const noPdfKey = "fd425approvedproviderno";
+        const explanationPdfKey = "fd425approvedprovideryesexplaination";
+        expectNoDuplicateTest<PdfFfsIndividualPage9>(yesPdfKey, testedPdfKeys);
+        expectNoDuplicateTest<PdfFfsIndividualPage9>(explanationPdfKey, testedPdfKeys);
+        const pdfFields = mapFfsIndividualFields(
+          generateFormData({
+            hasProvidedMedicaidServices: true,
+            medicaidProviderExplanation: "Brief explanation of crime charge",
+          }),
+        );
+        expect(pdfFields[yesPdfKey]).toEqual(true);
+        expect(pdfFields[noPdfKey]).toEqual(undefined);
+        expect(pdfFields[explanationPdfKey]).toEqual("Brief explanation of crime charge");
+      });
     });
 
     describe("2. past or pending license suspension, revocation, or adverse action", () => {
@@ -186,6 +240,40 @@ describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
           generateFormData({
             hasCompanyInvolvement: true,
             companyInvolvementExplanation: "Brief explanation of company involvement",
+          }),
+        );
+        expect(pdfFields[yesPdfKey]).toEqual(true);
+        expect(pdfFields[noPdfKey]).toEqual(undefined);
+        expect(pdfFields[explanationPdfKey]).toEqual("Brief explanation of company involvement");
+      });
+    });
+
+    describe("employed by the State of New Jersey", () => {
+      it("checks the No checkbox when formData.isEmployedByNj is false", () => {
+        const yesPdfKey = "fd425employedbystateofnjyes";
+        const noPdfKey = "fd425employedbystateofnjno";
+        const explanationPdfKey = "fd425employedbystateofnjyesexplaination";
+        expectNoDuplicateTest<PdfFfsIndividualPage9>(noPdfKey, testedPdfKeys);
+        const pdfFields = mapFfsIndividualFields(
+          generateFormData({
+            isEmployedByNj: false,
+          }),
+        );
+        expect(pdfFields[noPdfKey]).toEqual(true);
+        expect(pdfFields[yesPdfKey]).toEqual(undefined);
+        expect(pdfFields[explanationPdfKey]).toEqual(undefined);
+      });
+
+      it("checks the Yes checkbox and fills in the explanation when formData.isEmployedByNj is true", () => {
+        const yesPdfKey = "fd425employedbystateofnjyes";
+        const noPdfKey = "fd425employedbystateofnjno";
+        const explanationPdfKey = "fd425employedbystateofnjyesexplaination";
+        expectNoDuplicateTest<PdfFfsIndividualPage9>(yesPdfKey, testedPdfKeys);
+        expectNoDuplicateTest<PdfFfsIndividualPage9>(explanationPdfKey, testedPdfKeys);
+        const pdfFields = mapFfsIndividualFields(
+          generateFormData({
+            isEmployedByNj: true,
+            employedByNjExplanation: "Brief explanation of company involvement",
           }),
         );
         expect(pdfFields[yesPdfKey]).toEqual(true);

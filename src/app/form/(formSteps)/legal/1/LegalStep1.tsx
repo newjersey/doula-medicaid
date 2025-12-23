@@ -63,18 +63,17 @@ const LegalStep1 = () => {
             register={register}
           />
           {isEmployedByNj === "true" && (
-            <DoulaTextareaCharacterCount
-              name="employedByNjExplanation"
-              label="In a few words please explain your role with the State of New Jersey"
-              className="tablet:grid-col-6"
-              errors={errors}
-              register={register}
-              maxLength={68}
-              additionalRegisterOptions={{
-                required: "This question is required",
-              }}
-              required
-            />
+            <div className="maxw-mobile-lg">
+              <DoulaTextareaCharacterCount
+                name="employedByNjExplanation"
+                label="In a few words please explain your role with the State of New Jersey"
+                required
+                inputClassName="height-10"
+                maxLength={68}
+                errors={errors}
+                register={register}
+              />
+            </div>
           )}
         </div>
       </div>
@@ -90,18 +89,17 @@ const LegalStep1 = () => {
             register={register}
           />
           {hasProvidedMedicaidServices === "true" && (
-            <DoulaTextareaCharacterCount
-              name="medicaidProviderExplanation"
-              label="What services did you provide and what is your current provider status? Please explain in a few words."
-              className="tablet:grid-col-6"
-              errors={errors}
-              register={register}
-              maxLength={68}
-              additionalRegisterOptions={{
-                required: "This question is required",
-              }}
-              required
-            />
+            <div className="maxw-mobile-lg">
+              <DoulaTextareaCharacterCount
+                name="medicaidProviderExplanation"
+                label="What services did you provide and what is your current provider status? Please explain in a few words."
+                required
+                inputClassName="height-10"
+                maxLength={68}
+                errors={errors}
+                register={register}
+              />
+            </div>
           )}
         </div>
       </div>
