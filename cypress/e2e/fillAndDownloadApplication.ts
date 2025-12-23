@@ -20,6 +20,7 @@ import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/t
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
+import { pdfjsLib } from "pdfjs-dist";
 
 export const baseFormPages = [
   { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
@@ -191,4 +192,9 @@ export const fillAndDownloadApplication = (
       }
     },
   );
+
+  // The cover page should have accessibly readable text
+  // We need to use a different pdf library, as our usual one cannot read text: https://github.com/Hopding/pdf-lib#limitations
+
+  pdfjsLib.getDocument("helloworld.pdf");
 };
