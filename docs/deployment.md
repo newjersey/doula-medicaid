@@ -78,19 +78,38 @@ were to run `cdk destroy` then `cdk create`. OIT requires that the VPC-internal 
 ALBs communicate over HTTPS. So, we manually generate and upload, then deploy a self-signed SSL cert
 to the internal and external ALBs.
 
-Thus, deploying the production stack for the first time is weirdly cyclical:
+Separately, production (like staging) has also set up a stable DNS
+`app.production-doula-vpc.dhs.nj.gov` that resolves within the VPC via a private hosted zone, and
+points to the internal ALB. It uses a DHS-provided SSL cert. The existence of both the random and
+the stable DNS is a matter of tech debt. We created the stable DNS, similar to staging, so that
+on-prem DHS servers could resolve the same public URL to the application, despite traffic not going
+through the public-facing firewall. However, as of writing we have yet to switch the VPC-external
+ALB to point to the stable DNS instead of the random one.
 
-1. First, deploy the cdk stack with a **http** internal ALB, replacing `<profile name>`.
+There is thus tech tebt in the architecture of this production stack. Additionally, to recreated it
+as it current is, the cloudformation stack needs to first be deployed before the random DNS is known
+and the self-signed SSL cert for external <-> internal ALB communication can be created. Deploying
+the production stack for the first time, in a way that recreates the current tech debt architecutre,
+is thus weirdly cyclical:
+
+1. Obtain the DHS-provided SSL certificate for `app.production-doula-vpc.dhs.nj.gov`. Manually
+   upload it to AWS Certificate Manager, and note the ARN.
+2. Obtain the IPs of the on-prem DNS servers.
+
+3. Deploy the cdk stack with a **http** internal ALB, replacing `<profile name>`,
+   `<comma-separated list of IPs of on-prem DNS servers>`, and `<stable DNS cert ARN>`. Due to the
+   http deployment, the stable DNS cert for `app.production-doula-vpc.dhs.nj.gov` won't be used, but
+   providing it works with how our `cdk-stack.ts` is structured.
 
    ```sh
-   npm run cdk:deploy -- --profile <profile name> --context env=production
+   npm run cdk:deploy -- --profile <profile name> --context env=production --context dnsIps=<comma-separated list of IPs of on-prem DNS servers> --context certificateArn=<stable DNS cert>
    ```
 
    This generates the random cloudformation-generated internal ALB DNS, e.g.
    internal-doula-assistant-alb-1234567890.us-east-1.elb.amazonaws.com, where `1234567890` is a
    random number. This is output as `DoulaAssistantStack.LoadBalancerUrl`.
 
-2. Using this DNS, create a self-signed SSL certificate, replacing `<load balancer domain>` and
+4. Using this DNS, create a self-signed SSL certificate, replacing `<load balancer domain>` and
    `<email>`. The load balancer domain is the SAN and not the common name because it is likely too
    long to fit the 64-character limit on common names. The SSL certificate can be self-signed
    because it's just used for TLS communication.
@@ -102,11 +121,12 @@ Thus, deploying the production stack for the first time is weirdly cyclical:
    Log into AWS Console, upload the certificate to AWS Certificate Manager, and obtain the
    certificate ARN.
 
-3. Then, deploy the cdk stack again but with **https**, and providing the certificate ARN. Replace
-   `<profile name>`, env `<production or staging>`, and `<certificate arn>`
+5. Then, deploy the cdk stack again but with **https**, and providing the certificate ARNs for both
+   the stable and random DNS. Replace `<profile name>`, env `<production or staging>`,
+   `<stable DNS cert ARN>`, and `<self-signed random DNS cert ARN>`
 
    ```sh
-   npm run cdk:deploy -- --profile <profile name> --context env=<production or staging> --context https=true --context certificateArn=<certificate arn>
+   npm run cdk:deploy -- --profile <profile name> --context env=<production or staging> --context https=true --context dnsIps=<comma-separated list of IPs of on-prem DNS servers> --context certificateArn=<stable DNS cert ARN> --context cfDnsCertificateArn=<self-signed random DNS cert ARN>
    ```
 
 Any subsequent cdk deployments should use use https.
@@ -116,15 +136,9 @@ The output `DoulaAssistantStack.LoadBalancerUrl` should be accessible from an
 
 ### Staging
 
-In staging, there is no public-facing firewall, or VPC-external ALB. Instead, on-prem DNS servers
-point to the DNS of the VPC-internal ALB. Unlike in production, the DNS of this VPC-internal ALB is
-stable, as configured by the private hosted zone within the VPC. This stable DNS does not change if
-one were to run `cdk destroy` then `cdk create`. This difference with production is a matter of tech
-debt. The stable DNS costs $200/mo, and we have yet to decided whether we would prefer the random,
-or the stable DNS.
-
-Accordingly, since the stable DNS is `app.staging-doula-vpc.dhs.nj.gov`, the internal ALB in staging
-uses a DHS-provided SSL cert, instead of a self-signed certificate as used in production.
+In staging, there is no public-facing firewall, or VPC-external ALB. Instead, we only have on-prem
+DNS servers point to the DNS of the VPC-internal ALB. We thus do not need the self-signed cert for
+the random cloudformation-generated DNS, and do not need an initial http deploy.
 
 To deploy staging,
 
@@ -135,7 +149,7 @@ To deploy staging,
    `<comma-separated list of IPs of on-prem DNS servers>`.
 
    ```sh
-   npm run cdk:deploy -- --profile <profile name> --context env=staging --context https=true --context certificateArn=<certificate arn> --context dnsIps=<comma-separated list of IPs of on-prem DNS servers>
+   npm run cdk:deploy -- --profile <profile name> --context env=staging --context https=true --context dnsIps=<comma-separated list of IPs of on-prem DNS servers> --context certificateArn=<certificate arn>
    ```
 
 4. Configure any additional firewall rules, etc, via OIT

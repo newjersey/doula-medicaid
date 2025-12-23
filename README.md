@@ -1,4 +1,9 @@
-# Doula Medicaid
+# NJ Doula Assistant
+
+Helping doulas start the Fee-for-Service (FFS) application to become an NJ FamilyCare community
+doula.
+
+https://www.nj.gov/humanservices/dmahs/info/doulahelp
 
 ## Getting Started
 

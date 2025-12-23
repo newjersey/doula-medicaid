@@ -14,7 +14,7 @@ import * as targets from "aws-cdk-lib/aws-route53-targets";
 const VPC_NAME = "DHS-DMAHS-DoulaApp-*";
 const ECR_REPOSITORY_NAME = "doula-app";
 
-const STAGING_ENV_NAME = "staging";
+const PRODUCTION_ENV_NAME = "production";
 
 /** See docs/deployment.md */
 export class CdkStack extends cdk.Stack {
@@ -24,6 +24,7 @@ export class CdkStack extends cdk.Stack {
     const envName = this.node.tryGetContext("env");
     const isHttps = this.node.tryGetContext("https") == "true";
     const certificateArn = this.node.tryGetContext("certificateArn");
+    const cfDnsCertificateArn = this.node.tryGetContext("cfDnsCertificateArn");
 
     const dnsIps = this.node.tryGetContext("dnsIps");
 
@@ -89,11 +90,21 @@ export class CdkStack extends cdk.Stack {
         publicLoadBalancer: false, // Internal ALB
         listenerPort: isHttps ? 443 : 80,
         ...(isHttps && {
-          certificate: acm.Certificate.fromCertificateArn(this, "Certificate", certificateArn),
+          certificate: acm.Certificate.fromCertificateArn(
+            this,
+            "stableDnsCertificate",
+            certificateArn,
+          ),
         }),
         taskSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
       },
     );
+
+    if (envName === PRODUCTION_ENV_NAME) {
+      fargateService.listener.addCertificates("CfGeneratedDnsCertificates", [
+        acm.Certificate.fromCertificateArn(this, "CfGeneratedDnsCertificate", cfDnsCertificateArn),
+      ]);
+    }
 
     fargateService.targetGroup.configureHealthCheck({
       path: "/humanservices/dmahs/info/doulahelp/api/health",
@@ -167,67 +178,59 @@ export class CdkStack extends cdk.Stack {
 
     let dnsName = fargateService.loadBalancer.loadBalancerDnsName;
 
-    if (envName === STAGING_ENV_NAME) {
-      if (dnsIps === undefined) {
-        throw new Error(
-          "A comma-delimited list of DNS IPs is required for this Route53 stable CNAME to be accessed from outside the VPC. Prod currently deploys the Route53 stuff, but does not actually use it. This difference between staging and prod is tech debt. See deployment.md",
-        );
-      }
+    const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
+      vpc,
+      zoneName: `${envName}-doula-vpc.dhs.nj.gov`,
+    });
 
-      const hostedZone = new route53.PrivateHostedZone(this, "DoulaPrivateZone", {
+    const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
+      zone: hostedZone,
+      recordName: "app",
+      target: route53.RecordTarget.fromAlias(
+        new targets.LoadBalancerTarget(fargateService.loadBalancer, {
+          evaluateTargetHealth: true,
+        }),
+      ),
+    });
+    dnsName = aRecord.domainName;
+
+    // For inbound DNS resolution traffic
+    const route53InboundEndpointSecurityGroup = new ec2.SecurityGroup(
+      this,
+      "Route53InboundEndpointSecurityGroup",
+      {
         vpc,
-        zoneName: `${envName}-doula-vpc.dhs.nj.gov`,
-      });
-
-      const aRecord = new route53.ARecord(this, "DoulaAlbARecord", {
-        zone: hostedZone,
-        recordName: "app",
-        target: route53.RecordTarget.fromAlias(
-          new targets.LoadBalancerTarget(fargateService.loadBalancer, {
-            evaluateTargetHealth: true,
-          }),
-        ),
-      });
-      dnsName = aRecord.domainName;
-
-      // For inbound DNS resolution traffic
-      const route53InboundEndpointSecurityGroup = new ec2.SecurityGroup(
-        this,
-        "Route53InboundEndpointSecurityGroup",
-        {
-          vpc,
-          allowAllOutbound: true,
-          description: "Security group for Route 53 inbound endpoint",
-        },
-      );
+        allowAllOutbound: true,
+        description: "Security group for Route 53 inbound endpoint",
+      },
+    );
+    route53InboundEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.tcp(53),
+    );
+    route53InboundEndpointSecurityGroup.addIngressRule(
+      ec2.Peer.ipv4(vpc.vpcCidrBlock),
+      ec2.Port.udp(53),
+    );
+    for (const dnsIp of dnsIps.split(",")) {
       route53InboundEndpointSecurityGroup.addIngressRule(
-        ec2.Peer.ipv4(vpc.vpcCidrBlock),
+        ec2.Peer.ipv4(`${dnsIp}/32`),
         ec2.Port.tcp(53),
       );
       route53InboundEndpointSecurityGroup.addIngressRule(
-        ec2.Peer.ipv4(vpc.vpcCidrBlock),
+        ec2.Peer.ipv4(`${dnsIp}/32`),
         ec2.Port.udp(53),
       );
-      for (const dnsIp of dnsIps.split(",")) {
-        route53InboundEndpointSecurityGroup.addIngressRule(
-          ec2.Peer.ipv4(`${dnsIp}/32`),
-          ec2.Port.tcp(53),
-        );
-        route53InboundEndpointSecurityGroup.addIngressRule(
-          ec2.Peer.ipv4(`${dnsIp}/32`),
-          ec2.Port.udp(53),
-        );
-      }
-      const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
-
-      // This costs $200/mo
-      new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
-        direction: "INBOUND",
-        // Two IP addresses for the endpoint are required
-        ipAddresses: [{ subnetId: subnetIds[0] }, { subnetId: subnetIds[1] }],
-        securityGroupIds: [route53InboundEndpointSecurityGroup.securityGroupId],
-      });
     }
+    const subnetIds = vpc.privateSubnets.map((subnet) => subnet.subnetId);
+
+    // This costs $200/mo
+    new route53resolver.CfnResolverEndpoint(this, "DoulaInboundEndpoint", {
+      direction: "INBOUND",
+      // Two IP addresses for the endpoint are required
+      ipAddresses: [{ subnetId: subnetIds[0] }, { subnetId: subnetIds[1] }],
+      securityGroupIds: [route53InboundEndpointSecurityGroup.securityGroupId],
+    });
 
     fargateService.taskDefinition.executionRole?.addManagedPolicy(
       iam.ManagedPolicy.fromAwsManagedPolicyName("service-role/AmazonECSTaskExecutionRolePolicy"),
