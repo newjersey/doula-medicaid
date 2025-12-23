@@ -24,7 +24,7 @@ jobs:
         run: npm ci
       - name: Use ${{ inputs.env_test_file }}
         if: ${{ inputs.env_test_file != '.env.test' }}
-        run: mv .github/${{ inputs.env_test_file }} .env.test
+        run: mv ${{ inputs.env_test_file }} .env.test
       - name: Build the application
         run: NODE_ENV=test npm run build
       - name: Start the application

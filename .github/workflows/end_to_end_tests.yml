@@ -19,13 +19,13 @@ jobs:
   end-to-end-tests-production-flags:
     uses: ./.github/workflows/_end_to_end_tests.yml
     with:
-      env_test_file: .env.test-production-flags
+      env_test_file: cypress/.env.test-production-flags
       cypress_run_command: cypress:run:productionFlags
 
   end-to-end-tests-website-unavailable:
     uses: ./.github/workflows/_end_to_end_tests.yml
     with:
-      env_test_file: .env.test-website-unavailable
+      env_test_file: cypress/.env.test-website-unavailable
       cypress_run_command: cypress:run:websiteUnavailable
 
   end-to-end-tests:
