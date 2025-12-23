@@ -2,7 +2,7 @@ import LegalStep1 from "@/app/form/(formSteps)/legal/1/LegalStep1";
 import {
   employedByNjExplanation,
   firstRadioOptionTestFields,
-  medicaidServicesExplanation,
+  medicaidProviderExplanation,
   noHasProvidedMedicaidServices,
   noIsEmployedByNj,
   path1TestFields,
@@ -52,7 +52,7 @@ describe("<LegalStep1 />", () => {
       },
     );
     it.each(
-      [medicaidServicesExplanation, employedByNjExplanation].filter(
+      [medicaidProviderExplanation, employedByNjExplanation].filter(
         (field) => field.required === true,
       ),
     )(
@@ -63,7 +63,7 @@ describe("<LegalStep1 />", () => {
     );
   });
 
-  it.each([...path1TestFields, employedByNjExplanation, medicaidServicesExplanation])(
+  it.each([...path1TestFields, employedByNjExplanation, medicaidProviderExplanation])(
     "fills $dataStoreKey from the data store when page is loaded",
     async (field) => {
       await testFillFromDataStore(field, renderFunction, screen);
@@ -76,7 +76,7 @@ describe("<LegalStep1 />", () => {
 
   it("conditionally renders an explanation based on medicalDetails", async () => {
     await testConditionalRender(
-      medicaidServicesExplanation,
+      medicaidProviderExplanation,
       noHasProvidedMedicaidServices,
       renderFunction,
       screen,

@@ -47,9 +47,9 @@ export const employedByNjExplanation = createTestField({
   alternateRequiredFieldError: "This question is required",
 });
 
-export const medicaidServicesExplanation = createTestField({
+export const medicaidProviderExplanation = createTestField({
   name: "What services did you provide and what is your current provider status? Please explain in a few words. *",
-  dataStoreKey: "medicaidServicesExplanation",
+  dataStoreKey: "medicaidProviderExplanation",
   required: true,
   testValue: "Test medicaid details",
   prerequisiteField: yesHasProvidedMedicaidServices,
@@ -67,5 +67,5 @@ export const path2TestFields: Array<TestField> = [
   yesIsEmployedByNj,
   employedByNjExplanation,
   yesHasProvidedMedicaidServices,
-  medicaidServicesExplanation,
+  medicaidProviderExplanation,
 ];

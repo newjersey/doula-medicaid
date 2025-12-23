@@ -13,7 +13,7 @@ const manualFocusOrder: Array<keyof Legal1Data & string> = [
   "isEmployedByNj",
   "employedByNjExplanation",
   "hasProvidedMedicaidServices",
-  "medicaidServicesExplanation",
+  "medicaidProviderExplanation",
 ];
 
 const showErrorSummary = false;
@@ -31,7 +31,7 @@ const LegalStep1 = () => {
       isEmployedByNj: getDefaultBoolean(dataStore, "isEmployedByNj"),
       employedByNjExplanation: getDefaultValue(dataStore, "employedByNjExplanation") ?? "",
       hasProvidedMedicaidServices: getDefaultBoolean(dataStore, "hasProvidedMedicaidServices"),
-      medicaidServicesExplanation: getDefaultValue(dataStore, "medicaidServicesExplanation") ?? "",
+      medicaidProviderExplanation: getDefaultValue(dataStore, "medicaidProviderExplanation") ?? "",
     },
     shouldFocusError: !manuallySetErrorFocus,
   });
@@ -91,7 +91,7 @@ const LegalStep1 = () => {
           />
           {hasProvidedMedicaidServices === "true" && (
             <DoulaTextareaCharacterCount
-              name="medicaidServicesExplanation"
+              name="medicaidProviderExplanation"
               label="What services did you provide and what is your current provider status? Please explain in a few words."
               className="tablet:grid-col-6"
               errors={errors}
