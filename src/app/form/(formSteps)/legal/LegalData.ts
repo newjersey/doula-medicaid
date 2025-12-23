@@ -1,10 +1,10 @@
 import { getBoolean, getValue, type DataStore } from "@/app/form/_utils/dataStore";
 
 export interface Legal1Data {
-  employedByState: "true" | "false" | "";
-  approvedForMedicaidProgram: "true" | "false" | "";
-  employedByStateDetails: string;
-  approvedForMedicaidDetails: string;
+  isEmployedByNj: "true" | "false" | "";
+  hasProvidedMedicaidServices: "true" | "false" | "";
+  employedByNjExplanation: string;
+  medicaidServicesExplanation: string;
 }
 
 export interface Legal2Data {
@@ -22,10 +22,10 @@ export interface Legal3Data {
 
 export interface LegalFormData {
   // Legal 1
-  employedByState: boolean;
-  approvedForMedicaidProgram: boolean;
-  employedByStateDetails: string | null;
-  approvedForMedicaidDetails: string | null;
+  isEmployedByNj: boolean;
+  hasProvidedMedicaidServices: boolean;
+  employedByNjExplanation: string | null;
+  medicaidServicesExplanation: string | null;
   // Legal 2
   hasCrimeCharge: boolean;
   crimeChargeExplanation: string | null;
@@ -40,10 +40,10 @@ export interface LegalFormData {
 
 const getLegal1Data = (dataStore: DataStore) => {
   return {
-    employedByState: getBoolean(dataStore, "employedByState", true),
-    employedByStateDetails: getValue(dataStore, "employedByStateDetails", false),
-    approvedForMedicaidProgram: getBoolean(dataStore, "approvedForMedicaidProgram", true),
-    approvedForMedicaidDetails: getValue(dataStore, "approvedForMedicaidDetails", false),
+    isEmployedByNj: getBoolean(dataStore, "isEmployedByNj", true),
+    employedByNjExplanation: getValue(dataStore, "employedByNjExplanation", false),
+    hasProvidedMedicaidServices: getBoolean(dataStore, "hasProvidedMedicaidServices", true),
+    medicaidServicesExplanation: getValue(dataStore, "medicaidServicesExplanation", false),
   };
 };
 

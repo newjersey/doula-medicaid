@@ -1,26 +1,26 @@
 import { createTestField, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 
-export const noEmployedByState: TestField = createTestField({
+export const noIsEmployedByNj: TestField = createTestField({
   name: "No",
-  dataStoreKey: "employedByState",
+  dataStoreKey: "isEmployedByNj",
   required: true,
   role: "radio",
   testValue: "false",
   withinGroupName: "Are you employed by the State of New Jersey? Select one *",
 });
 
-const yesEmployedByState: TestField = createTestField({
+const yesIsEmployedByNj: TestField = createTestField({
   name: "Yes",
-  dataStoreKey: "employedByState",
+  dataStoreKey: "isEmployedByNj",
   required: true,
   role: "radio",
   testValue: "true",
   withinGroupName: "Are you employed by the State of New Jersey? Select one *",
 });
 
-export const noApprovedForMedicaidProgram: TestField = createTestField({
+export const noHasProvidedMedicaidServices: TestField = createTestField({
   name: "No",
-  dataStoreKey: "approvedForMedicaidProgram",
+  dataStoreKey: "hasProvidedMedicaidServices",
   required: true,
   role: "radio",
   testValue: "false",
@@ -28,9 +28,9 @@ export const noApprovedForMedicaidProgram: TestField = createTestField({
     "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare? Select one *",
 });
 
-const yesApprovedForMedicaidProgram: TestField = createTestField({
+const yesHasProvidedMedicaidServices: TestField = createTestField({
   name: "Yes",
-  dataStoreKey: "approvedForMedicaidProgram",
+  dataStoreKey: "hasProvidedMedicaidServices",
   required: true,
   role: "radio",
   testValue: "true",
@@ -38,34 +38,34 @@ const yesApprovedForMedicaidProgram: TestField = createTestField({
     "Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare? Select one *",
 });
 
-export const employedByStateDetails = createTestField({
+export const employedByNjExplanation = createTestField({
   name: "In a few words please explain your role with the State of New Jersey *",
-  dataStoreKey: "employedByStateDetails",
+  dataStoreKey: "employedByNjExplanation",
   required: true,
   testValue: "Test employed by state details",
-  prerequisiteField: yesEmployedByState,
+  prerequisiteField: yesIsEmployedByNj,
   alternateRequiredFieldError: "This question is required",
 });
 
-export const approvedForMedicaidDetails = createTestField({
+export const medicaidServicesExplanation = createTestField({
   name: "What services did you provide and what is your current provider status? Please explain in a few words. *",
-  dataStoreKey: "approvedForMedicaidDetails",
+  dataStoreKey: "medicaidServicesExplanation",
   required: true,
   testValue: "Test medicaid details",
-  prerequisiteField: yesApprovedForMedicaidProgram,
+  prerequisiteField: yesHasProvidedMedicaidServices,
   alternateRequiredFieldError: "This question is required",
 });
 
-export const path1TestFields: Array<TestField> = [noEmployedByState, noApprovedForMedicaidProgram];
+export const path1TestFields: Array<TestField> = [noIsEmployedByNj, noHasProvidedMedicaidServices];
 
 export const firstRadioOptionTestFields: Array<TestField> = [
-  yesEmployedByState,
-  yesApprovedForMedicaidProgram,
+  yesIsEmployedByNj,
+  yesHasProvidedMedicaidServices,
 ];
 
 export const path2TestFields: Array<TestField> = [
-  yesEmployedByState,
-  employedByStateDetails,
-  yesApprovedForMedicaidProgram,
-  approvedForMedicaidDetails,
+  yesIsEmployedByNj,
+  employedByNjExplanation,
+  yesHasProvidedMedicaidServices,
+  medicaidServicesExplanation,
 ];

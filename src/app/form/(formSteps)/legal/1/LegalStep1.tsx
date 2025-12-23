@@ -10,10 +10,10 @@ import FormProgressButtons from "@form/(formSteps)/components/FormProgressButton
 import { useForm } from "react-hook-form";
 
 const orderedInputNames: Array<keyof Legal1Data & string> = [
-  "employedByState",
-  "approvedForMedicaidProgram",
-  "employedByStateDetails",
-  "approvedForMedicaidDetails",
+  "isEmployedByNj",
+  "hasProvidedMedicaidServices",
+  "employedByNjExplanation",
+  "medicaidServicesExplanation",
 ];
 
 const mayHaveThreeOrMoreErrors = true;
@@ -28,16 +28,16 @@ const LegalStep1 = () => {
     watch,
   } = useForm<Legal1Data>({
     defaultValues: {
-      employedByState: getDefaultBoolean(dataStore, "employedByState"),
-      employedByStateDetails: getDefaultValue(dataStore, "employedByStateDetails") ?? "",
-      approvedForMedicaidProgram: getDefaultBoolean(dataStore, "approvedForMedicaidProgram"),
-      approvedForMedicaidDetails: getDefaultValue(dataStore, "approvedForMedicaidDetails") ?? "",
+      isEmployedByNj: getDefaultBoolean(dataStore, "isEmployedByNj"),
+      employedByNjExplanation: getDefaultValue(dataStore, "employedByNjExplanation") ?? "",
+      hasProvidedMedicaidServices: getDefaultBoolean(dataStore, "hasProvidedMedicaidServices"),
+      medicaidServicesExplanation: getDefaultValue(dataStore, "medicaidServicesExplanation") ?? "",
     },
     shouldFocusError: !mayHaveThreeOrMoreErrors,
   });
 
-  const employedByState = watch("employedByState");
-  const approvedForMedicaidProgram = watch("approvedForMedicaidProgram");
+  const isEmployedByNj = watch("isEmployedByNj");
+  const hasProvidedMedicaidServices = watch("hasProvidedMedicaidServices");
 
   return (
     <DoulaForm<Legal1Data>
@@ -55,16 +55,16 @@ const LegalStep1 = () => {
             automatically disqualify you.
           </p>
           <DoulaYesNoRadio
-            name="employedByState"
-            value={employedByState}
+            name="isEmployedByNj"
+            value={isEmployedByNj}
             label="Are you employed by the State of New Jersey?"
             required
             errors={errors}
             register={register}
           />
-          {employedByState === "true" && (
+          {isEmployedByNj === "true" && (
             <DoulaTextareaCharacterCount
-              name="employedByStateDetails"
+              name="employedByNjExplanation"
               label="In a few words please explain your role with the State of New Jersey"
               className="tablet:grid-col-6"
               errors={errors}
@@ -82,16 +82,16 @@ const LegalStep1 = () => {
       <div className="grid-row grid-gap-3 margin-top-3 margin-bottom-5">
         <div className="desktop:grid-col-8">
           <DoulaYesNoRadio
-            name="approvedForMedicaidProgram"
-            value={approvedForMedicaidProgram}
+            name="hasProvidedMedicaidServices"
+            value={hasProvidedMedicaidServices}
             label="Have you previously been approved to provide services under any state's Medicaid program, such as NJ FamilyCare?"
             required
             errors={errors}
             register={register}
           />
-          {approvedForMedicaidProgram === "true" && (
+          {hasProvidedMedicaidServices === "true" && (
             <DoulaTextareaCharacterCount
-              name="approvedForMedicaidDetails"
+              name="medicaidServicesExplanation"
               label="What services did you provide and what is your current provider status? Please explain in a few words."
               className="tablet:grid-col-6"
               errors={errors}
