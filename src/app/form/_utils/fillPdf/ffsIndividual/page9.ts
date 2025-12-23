@@ -30,6 +30,19 @@ export interface PdfFfsIndividualPage9 {
 export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage9> => {
   if (process.env.NEXT_PUBLIC_FLAG_LEGAL === "1") {
     const formDataWithLegal = formData as FormDataWithLegal;
+
+    // Question 1
+    const medicaidProviderFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+      formDataWithLegal.hasProvidedMedicaidServices,
+      formDataWithLegal.medicaidProviderExplanation,
+      {
+        yesPdfKey: "fd425approvedprovideryes",
+        noPdfKey: "fd425approvedproviderno",
+        yesExplanationPdfKey: "fd425approvedprovideryesexplaination",
+      },
+    );
+
+    // Question 2
     const licenseSuspendedFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
       formDataWithLegal.hadLicenseSuspended,
       formDataWithLegal.licenseSuspendedExplanation,
@@ -40,6 +53,7 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
       },
     );
 
+    // Question 3
     const crimeChargeFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
       formDataWithLegal.hasCrimeCharge,
       formDataWithLegal.crimeChargeExplanation,
@@ -50,6 +64,7 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
       },
     );
 
+    // Question 4
     const disqualificationsFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
       formDataWithLegal.hasDisqualification,
       formDataWithLegal.disqualificationExplanation,
@@ -60,6 +75,7 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
       },
     );
 
+    // Question 5
     const healthProgramCompanyFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
       formDataWithLegal.hasCompanyInvolvement,
       formDataWithLegal.companyInvolvementExplanation,
@@ -70,11 +86,24 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
       },
     );
 
+    // Question 6
+    const njEmploymentFields = mapYesNoExplainYesFields<PdfFfsIndividualPage9>(
+      formDataWithLegal.isEmployedByNj,
+      formDataWithLegal.employedByNjExplanation,
+      {
+        yesPdfKey: "fd425employedbystateofnjyes",
+        noPdfKey: "fd425employedbystateofnjno",
+        yesExplanationPdfKey: "fd425employedbystateofnjyesexplaination",
+      },
+    );
+
     return {
+      ...medicaidProviderFields,
       ...crimeChargeFields,
       ...licenseSuspendedFields,
       ...disqualificationsFields,
       ...healthProgramCompanyFields,
+      ...njEmploymentFields,
     };
   }
 

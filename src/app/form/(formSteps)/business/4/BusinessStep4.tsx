@@ -66,8 +66,8 @@ const BusinessStep4 = () => {
             value={hasFiledBankruptcy}
             label="Have you filed for bankruptcy in the past 7 years?"
             required
-            register={register}
             errors={errors}
+            register={register}
           />
           {hasFiledBankruptcy === "true" && (
             <DoulaDateInput
@@ -92,8 +92,8 @@ const BusinessStep4 = () => {
             value={mightFileBankruptcy}
             label="Is there a possibility that you will file for bankruptcy in the next year?"
             required
-            register={register}
             errors={errors}
+            register={register}
           />
           {mightFileBankruptcy === "true" && (
             <DoulaDateInput

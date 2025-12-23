@@ -61,8 +61,8 @@ const LegalStep3 = () => {
             value={hasDisqualification}
             label="Have you ever been barred, disqualified, or faced any penalties in connection with Medicaid, Medicare, or any other government-funded or private health program?"
             required
-            register={register}
             errors={errors}
+            register={register}
           />
           {hasDisqualification === "true" && (
             <div className="maxw-mobile-lg">
@@ -87,8 +87,8 @@ const LegalStep3 = () => {
             value={hasCompanyInvolvement}
             label="Does anyone on this application, or an immediate family member, have any involvement with a company that provides services for Medicaid, Medicare, or other health programs?"
             required
-            register={register}
             errors={errors}
+            register={register}
           />
           {hasCompanyInvolvement === "true" && (
             <div className="maxw-mobile-lg">

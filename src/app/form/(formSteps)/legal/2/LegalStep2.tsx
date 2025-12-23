@@ -60,8 +60,8 @@ const LegalStep2 = () => {
             value={hasCrimeCharge}
             label="Have you ever been indicted or charged with a crime or a disorderly persons offense anywhere?"
             required
-            register={register}
             errors={errors}
+            register={register}
           />
           {hasCrimeCharge === "true" && (
             <div className="maxw-mobile-lg">
@@ -86,8 +86,8 @@ const LegalStep2 = () => {
             value={hadLicenseSuspended}
             label="Have you ever had a professional license suspended or revoked, or faced disciplinary action or fines from any professional licensing authority?"
             required
-            register={register}
             errors={errors}
+            register={register}
           />
           {hadLicenseSuspended === "true" && (
             <div className="maxw-mobile-lg">
