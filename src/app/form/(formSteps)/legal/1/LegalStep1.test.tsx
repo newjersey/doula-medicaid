@@ -37,7 +37,7 @@ describe("<LegalStep1 />", () => {
 
   describe("marks fields as required and displays an error message", () => {
     it.each(firstRadioOptionTestFields.filter((field) => field.required === true))(
-      "when $dataStoreKey is not filed in",
+      "when $dataStoreKey is not filled in",
       async (field) => {
         await testRequiredField(field, path1TestFields, renderFunction, screen);
       },
