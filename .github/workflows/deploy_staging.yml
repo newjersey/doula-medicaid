@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/end_to_end_tests.yml
 
   deploy-staging:
-    needs: [lint, typecheck, prettier, unit-tests, end-to-end-test]
+    needs: [lint, typecheck, prettier, unit-tests, end-to-end-tests]
     uses: ./.github/workflows/_deploy.yml
     secrets:
       aws_account_id: ${{ secrets.AWS_ACCOUNT_ID_DEV }}
