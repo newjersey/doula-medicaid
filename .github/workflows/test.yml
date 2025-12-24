@@ -1,6 +1,9 @@
-name: deploy
+name: test s3
 
 on:
+  pull_request:
+    branches:
+      - "main"
   workflow_call:
     secrets:
       aws_account_id:
@@ -22,22 +25,5 @@ jobs:
           aws-region: us-east-1
           mask-aws-account-id: true
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v2
-
       - name: Copy environment file
         run: aws s3 cp s3://doula-assistant-${{ secrets.aws_account_id }}/configuration/.env .env
-
-      - name: Build Docker image
-        uses: docker/build-push-action@v6
-        with:
-          push: true
-          tags: ${{ secrets.aws_account_id }}.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest
-
-      - name: Deploy image on ECS
-        run: |
-          aws ecs update-service \
-            --cluster doula-assistant-cluster \
-            --service doula-assistant-service \
-            --force-new-deployment

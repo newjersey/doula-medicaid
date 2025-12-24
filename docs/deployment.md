@@ -205,12 +205,19 @@ EOF
 brew services start colima
 ```
 
-### Usage tips
+## Manually build and deploy to ECS from local
 
-To log docker into ECR (replace account number and region):
+Log docker into ECR (replace account number and region):
 
 ```sh
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin <account number>.dkr.ecr.<region>.amazonaws.com
+```
+
+Build and push, replacing `<account number>` and including `--platform linux/amd64` if needed (see
+above)
+
+```sh
+docker build -t doula-app-main . && docker tag doula-app-main:latest <account number>.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest && docker push <account number>.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest
 ```
 
 If building on an Apple Silicon Mac, `--platform linux/amd64` must be specified when running
@@ -218,15 +225,6 @@ If building on an Apple Silicon Mac, `--platform linux/amd64` must be specified 
 
 ```sh
 docker build -t doula-app . --platform linux/amd64
-```
-
-## Manually build and deploy to ECS from local
-
-Build and push, replacing `<account number>` and including `--platform linux/amd64` if needed (see
-above)
-
-```sh
-docker build -t doula-app-main . && docker tag doula-app-main:latest <account number>.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest && docker push <account number>.dkr.ecr.us-east-1.amazonaws.com/doula-app:latest
 ```
 
 Update ECS

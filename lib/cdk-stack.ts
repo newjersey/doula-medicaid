@@ -271,7 +271,7 @@ export class CdkStack extends cdk.Stack {
 
     // Create GitHub Actions IAM role for OIDC federation
     const githubActionsRole = new iam.Role(this, "GitHubActionsRole", {
-      roleName: "GitHubAction-PushEcrUpdateEcs",
+      roleName: "GitHubAction",
       assumedBy: new iam.WebIdentityPrincipal(
         `arn:aws:iam::${this.account}:oidc-provider/token.actions.githubusercontent.com`,
         {
@@ -297,6 +297,9 @@ export class CdkStack extends cdk.Stack {
         resources: [fargateService.service.serviceArn, cluster.clusterArn],
       }),
     );
+
+    // Allow GitHub Actions role to pull the /configuration/.env file
+    bucket.grantRead(githubActionsRole, "configuration/.env");
 
     // CloudFormation Outputs
     new cdk.CfnOutput(this, "LoadBalancerUrl", {
