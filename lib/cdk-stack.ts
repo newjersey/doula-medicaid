@@ -271,7 +271,7 @@ export class CdkStack extends cdk.Stack {
 
     // Create GitHub Actions IAM role for OIDC federation
     const githubActionsRole = new iam.Role(this, "GitHubActionsRole", {
-      roleName: "GitHubAction",
+      roleName: "GitHubAction-Doula",
       assumedBy: new iam.WebIdentityPrincipal(
         `arn:aws:iam::${this.account}:oidc-provider/token.actions.githubusercontent.com`,
         {

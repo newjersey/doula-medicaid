@@ -16,8 +16,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v5.1.1
         with:
-          role-to-assume:
-            arn:aws:iam::${{ secrets.aws_account_id }}:role/GitHubAction-PushEcrUpdateEcs
+          role-to-assume: arn:aws:iam::${{ secrets.aws_account_id }}:role/GitHubAction-Doula
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: us-east-1
           mask-aws-account-id: true
