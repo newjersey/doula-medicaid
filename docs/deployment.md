@@ -155,8 +155,13 @@ progress.
 
 ## Update feature flags and environment variables
 
-Update the file at `s3://doula-assistant-<account number>/configuration/.env`, replacing account
-number. Then, deploy a new ECS task.
+Get the existing feature environment file, replacing account number and environment name
+
+```sh
+aws s3 cp s3://doula-assistant-<account number>/configuration/.env .<"staging" or "production">.env
+```
+
+Update and upload the file. Then, deploy a new ECS task.
 
 ```sh
 aws s3 cp .<"staging" or "production">.env s3://doula-assistant-<account number>/configuration/.env
