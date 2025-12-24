@@ -23,16 +23,13 @@ import {
 import type { DataStore } from "@/app/form/_utils/dataStore";
 import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 
-interface BaseFormData
+export interface FormData
   extends ScreeningFormData,
     InsuranceFormData,
     TrainingFormData,
     PersonalFormData,
-    BusinessFormData {}
-
-export interface FormDataWithLegal extends BaseFormData, LegalFormData {}
-
-export type FormData = FormDataWithLegal | BaseFormData;
+    BusinessFormData,
+    LegalFormData {}
 
 export interface FilledPDFData {
   filename: string;
@@ -50,7 +47,7 @@ export const getFormData = (dataStore: DataStore): FormData => {
     ...getTrainingFormData(dataStore),
     ...getPersonalFormData(dataStore),
     ...getBusinessFormData(dataStore),
-    ...(process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" ? { ...getLegalFormData(dataStore) } : {}),
+    ...getLegalFormData(dataStore),
   };
 };
 

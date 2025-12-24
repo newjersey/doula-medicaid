@@ -118,7 +118,7 @@ const getTestFormData = () => {
     ...testTrainingFormData,
     ...testPersonalFormData,
     ...testBusinessFormData,
-    ...(process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" ? testLegalFormData : {}),
+    ...testLegalFormData,
   };
 };
 

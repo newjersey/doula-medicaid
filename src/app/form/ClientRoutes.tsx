@@ -58,13 +58,11 @@ export const routes = (
           <Route path="3" element={<BusinessStep3 />} />
           <Route path="4" element={<BusinessStep4 />} />
         </Route>
-        {process.env.NEXT_PUBLIC_FLAG_LEGAL === "1" && (
-          <Route path="legal">
-            <Route path="1" element={<LegalStep1 />} />
-            <Route path="2" element={<LegalStep2 />} />
-            <Route path="3" element={<LegalStep3 />} />
-          </Route>
-        )}
+        <Route path="legal">
+          <Route path="1" element={<LegalStep1 />} />
+          <Route path="2" element={<LegalStep2 />} />
+          <Route path="3" element={<LegalStep3 />} />
+        </Route>
         <Route path="review" element={<ReviewSection />} />
       </Route>
     </Route>

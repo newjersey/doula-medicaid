@@ -9,7 +9,6 @@ export const GET = async () => {
       environment: process.env.NODE_ENV || "development",
       featureFlags: {
         NEXT_PUBLIC_FLAG_TEST: process.env.NEXT_PUBLIC_FLAG_TEST,
-        NEXT_PUBLIC_FLAG_LEGAL: process.env.NEXT_PUBLIC_FLAG_LEGAL,
         NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE: process.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE,
       },
     };

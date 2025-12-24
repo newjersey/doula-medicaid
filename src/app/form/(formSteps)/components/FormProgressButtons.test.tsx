@@ -55,7 +55,7 @@ describe("<FormProgressButtons />", () => {
 
       expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute(
         "href",
-        "/form/business/4",
+        "/form/legal/3",
       );
     });
   });
