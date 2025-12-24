@@ -21,15 +21,6 @@ import {
 import { screen } from "@testing-library/react";
 
 describe("<LegalStep3 />", () => {
-  const oldProcessEnv = process.env;
-  beforeEach(() => {
-    jest.resetModules();
-    process.env = { ...oldProcessEnv, NEXT_PUBLIC_FLAG_LEGAL: "1" };
-  });
-  afterAll(() => {
-    process.env = oldProcessEnv;
-  });
-
   const renderFunction = (dataStore: DataStore = {}) =>
     renderWithProviders(<LegalStep3 />, "/form/legal/3", dataStore);
 
