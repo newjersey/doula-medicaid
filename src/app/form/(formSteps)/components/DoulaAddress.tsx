@@ -1,9 +1,9 @@
+import { DoulaAddressState } from "@/app/form/(formSteps)/components/DoulaAddressState";
+import { DoulaAddressZip } from "@/app/form/(formSteps)/components/DoulaAddressZip";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
-import DoulaTextInputMask from "@/app/form/(formSteps)/components/DoulaTextInputMask";
 import { formatInputErrorLabel } from "@/app/form/(formSteps)/components/utils/doulaInput";
-import { AddressState, addressStateToName } from "@/app/form/_utils/inputFields/addressState";
 import { typecheckAutocomplete } from "@/app/form/_utils/types/autocomplete";
-import { Fieldset, Label, Select, type FieldsetProps } from "@trussworks/react-uswds";
+import { Fieldset, type FieldsetProps } from "@trussworks/react-uswds";
 import type { FieldErrors, FieldPath, FieldValues, UseFormRegister } from "react-hook-form";
 
 export interface DoulaAddressProps<T extends FieldValues> {
@@ -74,46 +74,22 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
       </div>
       <div className="grid-row grid-gap">
         <div className="mobile-lg:grid-col-6">
-          <Label htmlFor={props.addressKeys.state} requiredMarker>
-            {props.orderedInputNameToLabel[props.addressKeys.state]}
-          </Label>
-          <Select
-            className="usa-select"
-            id={props.addressKeys.state}
-            {...(props.autocomplete !== undefined && {
-              autoComplete: typecheckAutocomplete(`${props.autocomplete} address-level1`),
-            })}
-            required
-            {...props.register(props.addressKeys.state)}
-          >
-            {Object.keys(AddressState).map((state) => (
-              <option key={state} value={state}>
-                {addressStateToName[state as keyof typeof AddressState]}
-              </option>
-            ))}
-          </Select>
+          <DoulaAddressState
+            name={props.addressKeys.state}
+            label={props.orderedInputNameToLabel[props.addressKeys.state]}
+            autocomplete={props.autocomplete}
+            register={props.register}
+          />
         </div>
         <div className="mobile-lg:grid-col-4">
-          <DoulaTextInputMask
-            className="usa-input--medium"
+          <DoulaAddressZip
             name={props.addressKeys.zip}
             label={props.orderedInputNameToLabel[props.addressKeys.zip]}
-            {...(props.autocomplete !== undefined && {
-              autoComplete: typecheckAutocomplete(`${props.autocomplete} postal-code`),
-            })}
             value={props.zipValue ?? ""}
-            mask="#####"
-            pattern="\d{5}"
-            required
+            autocomplete={props.autocomplete}
+            errorLabelPrefix={props.errorLabelPrefix}
             errors={props.errors}
             register={props.register}
-            additionalRegisterOptions={{
-              required: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix, true)} is required`,
-              minLength: {
-                value: 5,
-                message: `${formatInputErrorLabel(props.orderedInputNameToLabel[props.addressKeys.zip], props.errorLabelPrefix, true)} must have five digits`,
-              },
-            }}
           />
         </div>
       </div>

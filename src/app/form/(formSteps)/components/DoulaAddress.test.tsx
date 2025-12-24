@@ -3,7 +3,7 @@ import {
   type DoulaAddressProps,
 } from "@/app/form/(formSteps)/components/DoulaAddress";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import { fillAllInputsExcept, getInputField } from "@/app/form/_utils/testUtils/fillInputs";
+import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { render, screen } from "@testing-library/react";
@@ -24,35 +24,6 @@ const testFormOrderedInputNameToLabel = {
   testState: "State",
   testZip: "ZIP Code",
 };
-
-const allInputFields = [
-  {
-    name: "Street address *",
-    dataStoreKey: "testStreetAddress1",
-    role: "textbox" as const,
-    testValue: "55 Cherry St",
-  },
-  {
-    name: "Street address line 2",
-    dataStoreKey: "testStreetAddress2",
-    role: "textbox" as const,
-    testValue: "Apt 4",
-  },
-  { name: "City *", dataStoreKey: "testCity", role: "textbox" as const, testValue: "Newark" },
-  {
-    name: "State *",
-    dataStoreKey: "testState",
-    role: "combobox" as const,
-    testValue: "Pennsylvania",
-    expectedValue: "PA",
-  },
-  {
-    name: "ZIP Code *",
-    dataStoreKey: "testZip",
-    role: "textbox" as const,
-    testValue: "08609",
-  },
-];
 
 const TestForm = (
   props: Omit<
@@ -199,57 +170,6 @@ describe("DoulaAddress", () => {
       "autocomplete",
       "shipping postal-code",
     );
-  });
-
-  it("displays an error message if zip has fewer than five digits", async () => {
-    const user = userEvent.setup();
-    renderWithProviders(
-      <TestForm
-        fieldsetProps={{
-          legend: "What is your address?",
-        }}
-        addressKeys={{
-          streetAddress1: "testStreetAddress1",
-          streetAddress2: "testStreetAddress2",
-          city: "testCity",
-          state: "testState",
-          zip: "testZip",
-        }}
-      />,
-      "/form/personal/2",
-    );
-    await fillAllInputsExcept(screen, user, allInputFields, new Set(["testZip"]));
-    const zipInput = await getInputField(screen, { name: "ZIP Code *" });
-    await user.type(zipInput, "1");
-    await user.click(screen.getByRole("button", { name: "Next" }));
-
-    expect(zipInput).toHaveAccessibleDescription("ZIP Code must have five digits");
-  });
-
-  it("prevents non-numeric inputs in ZIP Code", async () => {
-    const user = userEvent.setup();
-    renderWithProviders(
-      <TestForm
-        fieldsetProps={{
-          legend: "What is your address?",
-        }}
-        addressKeys={{
-          streetAddress1: "testStreetAddress1",
-          streetAddress2: "testStreetAddress2",
-          city: "testCity",
-          state: "testState",
-          zip: "testZip",
-        }}
-      />,
-      "/form/personal/2",
-    );
-    const zipInput = await getInputField(screen, { name: "ZIP Code *" });
-    await user.type(zipInput, "aaa");
-    expect(zipInput).toHaveValue("");
-    await user.type(zipInput, "!!");
-    expect(zipInput).toHaveValue("");
-    await user.type(zipInput, "11");
-    expect(zipInput).toHaveValue("11");
   });
 
   it("displays error messages that includes a prefix if provided", async () => {
