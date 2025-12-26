@@ -1,5 +1,6 @@
 import { UnexpectedFormDataError } from "@/app/form/_utils/fillPdf/ffsIndividual/errors";
 import { formatDate, formatName } from "@/app/form/_utils/fillPdf/formatters";
+import { StateApprovedTraining } from "@/app/form/_utils/inputFields/stateApprovedTraining";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
 // Page 4 - doula qualifications form
@@ -28,7 +29,7 @@ export interface PdfFfsIndividualPage4 {
 
 export const getPage4Fields = (formData: FormData): Partial<PdfFfsIndividualPage4> => {
   let trainingProgramName: string;
-  if (formData.stateApprovedTraining === "None of these") {
+  if (formData.stateApprovedTraining === StateApprovedTraining.NONE) {
     if (formData.nameOfTrainingOrganization === null) {
       throw new UnexpectedFormDataError(
         "stateApprovedTraining had value none of these, but no training organization was provided.",

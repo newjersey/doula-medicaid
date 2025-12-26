@@ -91,6 +91,10 @@ const DoulaTextInput = <T extends FieldValues>(props: DoulaTextInputProps<T>) =>
     internallySetProps["aria-invalid"] = "true" as const;
   }
 
+  if (numericOnly === true) {
+    internallySetProps["inputMode"] = "numeric";
+  }
+
   // To override this, pass in additionalRegisterOptions
   const defaultRegisterOptions = required === true ? { required: `${label} is required` } : {};
 

@@ -78,6 +78,7 @@ export const DoulaAddress = <T extends FieldValues>(props: DoulaAddressProps<T>)
             name={props.addressKeys.state}
             label={props.orderedInputNameToLabel[props.addressKeys.state]}
             autocomplete={props.autocomplete}
+            errors={props.errors}
             register={props.register}
           />
         </div>

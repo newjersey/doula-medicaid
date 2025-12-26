@@ -117,7 +117,6 @@ const InsuranceStep1 = () => {
               inputPrefix="$"
               register={register}
               errors={errors}
-              inputMode="numeric"
               additionalRegisterOptions={{
                 min: {
                   value: 1000000,
@@ -135,7 +134,6 @@ const InsuranceStep1 = () => {
               inputPrefix="$"
               register={register}
               errors={errors}
-              inputMode="numeric"
               additionalRegisterOptions={{
                 min: {
                   value: 3000000,
