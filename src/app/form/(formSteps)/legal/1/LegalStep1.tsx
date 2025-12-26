@@ -3,7 +3,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaTextareaCharacterCount from "@/app/form/(formSteps)/components/DoulaTextareaCharacterCount";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { type Legal1Data } from "@/app/form/(formSteps)/legal/LegalData";
-import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { getBooleanString, getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -28,9 +28,9 @@ const LegalStep1 = () => {
     watch,
   } = useForm<Legal1Data>({
     defaultValues: {
-      isEmployedByNj: getDefaultBoolean(dataStore, "isEmployedByNj"),
+      isEmployedByNj: getBooleanString(dataStore, "isEmployedByNj"),
       employedByNjExplanation: getDefaultValue(dataStore, "employedByNjExplanation") ?? "",
-      hasProvidedMedicaidServices: getDefaultBoolean(dataStore, "hasProvidedMedicaidServices"),
+      hasProvidedMedicaidServices: getBooleanString(dataStore, "hasProvidedMedicaidServices"),
       medicaidProviderExplanation: getDefaultValue(dataStore, "medicaidProviderExplanation") ?? "",
     },
     shouldFocusError: !manuallySetErrorFocus,

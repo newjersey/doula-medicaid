@@ -3,7 +3,7 @@
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type Business3Data } from "@/app/form/(formSteps)/business/BusinessData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { getBooleanString } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -19,8 +19,8 @@ const BusinessStep3 = () => {
     watch,
   } = useForm<Business3Data>({
     defaultValues: {
-      hasBeenExcludedFromMedicaid: getDefaultBoolean(dataStore, "hasBeenExcludedFromMedicaid"),
-      hasBeenSuspendedFromMedicaid: getDefaultBoolean(dataStore, "hasBeenSuspendedFromMedicaid"),
+      hasBeenExcludedFromMedicaid: getBooleanString(dataStore, "hasBeenExcludedFromMedicaid"),
+      hasBeenSuspendedFromMedicaid: getBooleanString(dataStore, "hasBeenSuspendedFromMedicaid"),
     },
     shouldFocusError: !showErrorSummary,
   });

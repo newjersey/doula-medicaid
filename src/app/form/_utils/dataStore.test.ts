@@ -1,8 +1,8 @@
 import {
   getAddressState,
   getBoolean,
+  getBooleanString,
   getBusinessAddressSameAsOtherAddress,
-  getDefaultBoolean,
   getValue,
 } from "@/app/form/_utils/dataStore";
 import { AddressState } from "@/app/form/_utils/inputFields/addressState";
@@ -23,18 +23,18 @@ describe("getValue", () => {
   });
 });
 
-describe("getDefaultBooleanString", () => {
+describe("getBooleanString", () => {
   it("returns an empty string if the value is not in the data store", () => {
-    expect(getDefaultBoolean({}, "isSoleProprietor")).toEqual("");
+    expect(getBooleanString({}, "isSoleProprietor")).toEqual("");
   });
 
   it("returns the value in the data store as a true or false string", () => {
-    expect(getDefaultBoolean({ isSoleProprietor: "true" }, "isSoleProprietor")).toEqual("true");
-    expect(getDefaultBoolean({ isSoleProprietor: "false" }, "isSoleProprietor")).toEqual("false");
+    expect(getBooleanString({ isSoleProprietor: "true" }, "isSoleProprietor")).toEqual("true");
+    expect(getBooleanString({ isSoleProprietor: "false" }, "isSoleProprietor")).toEqual("false");
   });
 
   it("throws an error if the value is not a valid string boolean", () => {
-    expect(() => getDefaultBoolean({ isSoleProprietor: "invalid" }, "isSoleProprietor")).toThrow(
+    expect(() => getBooleanString({ isSoleProprietor: "invalid" }, "isSoleProprietor")).toThrow(
       "Invalid boolean string value: isSoleProprietor, invalid",
     );
   });

@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import SoleProprietorExplainer from "@/app/form/(formSteps)/components/SoleProprietorExplainer";
 import type { Screening1Data } from "@/app/form/(formSteps)/screening/ScreeningData";
-import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { getBooleanString } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -24,7 +24,7 @@ const ScreeningStep1 = () => {
     formState: { errors },
     watch,
   } = useForm<Screening1Data>({
-    defaultValues: { isSoleProprietor: getDefaultBoolean(dataStore, "isSoleProprietor") },
+    defaultValues: { isSoleProprietor: getBooleanString(dataStore, "isSoleProprietor") },
   });
   const isSoleProprietor = watch("isSoleProprietor");
   return (

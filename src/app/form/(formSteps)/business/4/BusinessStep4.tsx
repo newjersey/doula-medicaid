@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type Business4Data } from "@/app/form/(formSteps)/business/BusinessData";
 import { DoulaDateInput } from "@/app/form/(formSteps)/components/DoulaDateInput";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { getBooleanString, getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -32,11 +32,11 @@ const BusinessStep4 = () => {
     watch,
   } = useForm<Business4Data>({
     defaultValues: {
-      hasFiledBankruptcy: getDefaultBoolean(dataStore, "hasFiledBankruptcy"),
+      hasFiledBankruptcy: getBooleanString(dataStore, "hasFiledBankruptcy"),
       pastBankruptcyMonth: getDefaultValue(dataStore, "pastBankruptcyMonth") ?? "",
       pastBankruptcyDay: getDefaultValue(dataStore, "pastBankruptcyDay") ?? "",
       pastBankruptcyYear: getDefaultValue(dataStore, "pastBankruptcyYear") ?? "",
-      mightFileBankruptcy: getDefaultBoolean(dataStore, "mightFileBankruptcy"),
+      mightFileBankruptcy: getBooleanString(dataStore, "mightFileBankruptcy"),
       futureBankruptcyMonth: getDefaultValue(dataStore, "futureBankruptcyMonth") ?? "",
       futureBankruptcyDay: getDefaultValue(dataStore, "futureBankruptcyDay") ?? "",
       futureBankruptcyYear: getDefaultValue(dataStore, "futureBankruptcyYear") ?? "",

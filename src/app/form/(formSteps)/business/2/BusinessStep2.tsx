@@ -3,7 +3,7 @@
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type Business2Data } from "@/app/form/(formSteps)/business/BusinessData";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
-import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { getBooleanString } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -19,8 +19,8 @@ const BusinessStep2 = () => {
     watch,
   } = useForm<Business2Data>({
     defaultValues: {
-      hasUncollectedDebt: getDefaultBoolean(dataStore, "hasUncollectedDebt"),
-      isSubjectToPaymentSuspension: getDefaultBoolean(dataStore, "isSubjectToPaymentSuspension"),
+      hasUncollectedDebt: getBooleanString(dataStore, "hasUncollectedDebt"),
+      isSubjectToPaymentSuspension: getBooleanString(dataStore, "isSubjectToPaymentSuspension"),
     },
     shouldFocusError: !showErrorSummary,
   });
