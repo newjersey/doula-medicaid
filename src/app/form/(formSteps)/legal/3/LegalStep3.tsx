@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaTextareaCharacterCount from "@/app/form/(formSteps)/components/DoulaTextareaCharacterCount";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { type Legal3Data } from "@/app/form/(formSteps)/legal/LegalData";
-import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { getBooleanString, getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -30,9 +30,9 @@ const LegalStep3 = () => {
     watch,
   } = useForm<Legal3Data>({
     defaultValues: {
-      hasDisqualification: getDefaultBoolean(dataStore, "hasDisqualification"),
+      hasDisqualification: getBooleanString(dataStore, "hasDisqualification"),
       disqualificationExplanation: getDefaultValue(dataStore, "disqualificationExplanation") ?? "",
-      hasCompanyInvolvement: getDefaultBoolean(dataStore, "hasCompanyInvolvement"),
+      hasCompanyInvolvement: getBooleanString(dataStore, "hasCompanyInvolvement"),
       companyInvolvementExplanation:
         getDefaultValue(dataStore, "companyInvolvementExplanation") ?? "",
     },

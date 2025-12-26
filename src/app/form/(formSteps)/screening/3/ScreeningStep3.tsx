@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { unsupportedErrorMessage } from "@/app/form/(formSteps)/screening/_utils/unsupportedErrorMessage";
 import type { Screening3Data } from "@/app/form/(formSteps)/screening/ScreeningData";
-import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { getBooleanString } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -20,11 +20,8 @@ const ScreeningStep3 = () => {
     watch,
   } = useForm<Screening3Data>({
     defaultValues: {
-      haveOtherBusinessOwnerNextYear: getDefaultBoolean(
-        dataStore,
-        "haveOtherBusinessOwnerNextYear",
-      ),
-      hadDhmasBusiness: getDefaultBoolean(dataStore, "hadDhmasBusiness"),
+      haveOtherBusinessOwnerNextYear: getBooleanString(dataStore, "haveOtherBusinessOwnerNextYear"),
+      hadDhmasBusiness: getBooleanString(dataStore, "hadDhmasBusiness"),
     },
   });
   const haveOtherBusinessOwnerNextYear = watch("haveOtherBusinessOwnerNextYear");

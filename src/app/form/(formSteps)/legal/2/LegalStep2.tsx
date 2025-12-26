@@ -4,7 +4,7 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import DoulaTextareaCharacterCount from "@/app/form/(formSteps)/components/DoulaTextareaCharacterCount";
 import DoulaYesNoRadio from "@/app/form/(formSteps)/components/DoulaYesNoRadio";
 import { type Legal2Data } from "@/app/form/(formSteps)/legal/LegalData";
-import { getDefaultBoolean, getDefaultValue } from "@/app/form/_utils/dataStore";
+import { getBooleanString, getDefaultValue } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
@@ -30,9 +30,9 @@ const LegalStep2 = () => {
     watch,
   } = useForm<Legal2Data>({
     defaultValues: {
-      hasCrimeCharge: getDefaultBoolean(dataStore, "hasCrimeCharge"),
+      hasCrimeCharge: getBooleanString(dataStore, "hasCrimeCharge"),
       crimeChargeExplanation: getDefaultValue(dataStore, "crimeChargeExplanation") ?? "",
-      hadLicenseSuspended: getDefaultBoolean(dataStore, "hadLicenseSuspended"),
+      hadLicenseSuspended: getBooleanString(dataStore, "hadLicenseSuspended"),
       licenseSuspendedExplanation: getDefaultValue(dataStore, "licenseSuspendedExplanation") ?? "",
     },
     shouldFocusError: !manuallySetErrorFocus,

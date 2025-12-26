@@ -1,4 +1,4 @@
-import { getDefaultBoolean } from "@/app/form/_utils/dataStore";
+import { getBooleanString } from "@/app/form/_utils/dataStore";
 import { DataStoreProvider, useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { render, screen } from "@testing-library/react";
@@ -11,7 +11,7 @@ describe("<DataStoreProvider /> and useDataStore", () => {
       return (
         <>
           <h1>
-            The value of isSoleProprietor is {getDefaultBoolean(dataStore, "isSoleProprietor")}.
+            The value of isSoleProprietor is {getBooleanString(dataStore, "isSoleProprietor")}.
           </h1>
           <button
             onClick={() => {
