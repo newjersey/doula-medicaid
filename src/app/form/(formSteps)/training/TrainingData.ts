@@ -1,5 +1,6 @@
 import { getAddressState, getBoolean, getValue, type DataStore } from "@/app/form/_utils/dataStore";
 import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
+import { StateApprovedTraining } from "@/app/form/_utils/inputFields/stateApprovedTraining";
 
 export interface TrainingData {
   stateApprovedTraining: string;
@@ -33,21 +34,25 @@ export interface TrainingFormData {
 
 export const getTrainingFormData = (dataStore: DataStore): TrainingFormData => {
   const isDoulaTrainingInPerson = getBoolean(dataStore, "isDoulaTrainingInPerson", true);
+  const stateApprovedTraining = getValue(dataStore, "stateApprovedTraining", true);
   return {
-    stateApprovedTraining: getValue(dataStore, "stateApprovedTraining", true),
-    nameOfTrainingOrganization: getValue(dataStore, "nameOfTrainingOrganization", false),
+    stateApprovedTraining,
+    nameOfTrainingOrganization:
+      stateApprovedTraining === StateApprovedTraining.NONE
+        ? getValue(dataStore, "nameOfTrainingOrganization", true)
+        : null,
     isDoulaTrainingInPerson: isDoulaTrainingInPerson,
     trainingStreetAddress1: isDoulaTrainingInPerson
-      ? getValue(dataStore, "trainingStreetAddress1", false)
+      ? getValue(dataStore, "trainingStreetAddress1", true)
       : null,
     trainingStreetAddress2: isDoulaTrainingInPerson
-      ? getValue(dataStore, "trainingStreetAddress2", false)
+      ? getValue(dataStore, "trainingStreetAddress2", true)
       : null,
-    trainingCity: isDoulaTrainingInPerson ? getValue(dataStore, "trainingCity", false) : null,
+    trainingCity: isDoulaTrainingInPerson ? getValue(dataStore, "trainingCity", true) : null,
     trainingState: isDoulaTrainingInPerson
-      ? getAddressState(dataStore, "trainingState", false)
+      ? getAddressState(dataStore, "trainingState", true)
       : null,
-    trainingZip: isDoulaTrainingInPerson ? getValue(dataStore, "trainingZip", false) : null,
+    trainingZip: isDoulaTrainingInPerson ? getValue(dataStore, "trainingZip", true) : null,
     instructorFirstName: getValue(dataStore, "instructorFirstName", true),
     instructorLastName: getValue(dataStore, "instructorLastName", true),
     instructorEmail: getValue(dataStore, "instructorEmail", true),

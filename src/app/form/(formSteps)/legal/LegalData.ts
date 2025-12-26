@@ -39,29 +39,47 @@ export interface LegalFormData {
 }
 
 const getLegal1Data = (dataStore: DataStore) => {
+  const isEmployedByNj = getBoolean(dataStore, "isEmployedByNj", true);
+  const hasProvidedMedicaidServices = getBoolean(dataStore, "hasProvidedMedicaidServices", true);
   return {
-    isEmployedByNj: getBoolean(dataStore, "isEmployedByNj", true),
-    employedByNjExplanation: getValue(dataStore, "employedByNjExplanation", false),
-    hasProvidedMedicaidServices: getBoolean(dataStore, "hasProvidedMedicaidServices", true),
-    medicaidProviderExplanation: getValue(dataStore, "medicaidProviderExplanation", false),
+    isEmployedByNj,
+    employedByNjExplanation: isEmployedByNj
+      ? getValue(dataStore, "employedByNjExplanation", true)
+      : null,
+    hasProvidedMedicaidServices,
+    medicaidProviderExplanation: hasProvidedMedicaidServices
+      ? getValue(dataStore, "medicaidProviderExplanation", true)
+      : null,
   };
 };
 
 const getLegal2Data = (dataStore: DataStore) => {
+  const hasCrimeCharge = getBoolean(dataStore, "hasCrimeCharge", true);
+  const hadLicenseSuspended = getBoolean(dataStore, "hadLicenseSuspended", true);
   return {
-    hasCrimeCharge: getBoolean(dataStore, "hasCrimeCharge", true),
-    crimeChargeExplanation: getValue(dataStore, "crimeChargeExplanation", false),
-    hadLicenseSuspended: getBoolean(dataStore, "hadLicenseSuspended", true),
-    licenseSuspendedExplanation: getValue(dataStore, "licenseSuspendedExplanation", false),
+    hasCrimeCharge,
+    crimeChargeExplanation: hasCrimeCharge
+      ? getValue(dataStore, "crimeChargeExplanation", true)
+      : null,
+    hadLicenseSuspended,
+    licenseSuspendedExplanation: hadLicenseSuspended
+      ? getValue(dataStore, "licenseSuspendedExplanation", true)
+      : null,
   };
 };
 
 const getLegal3Data = (dataStore: DataStore) => {
+  const hasDisqualification = getBoolean(dataStore, "hasDisqualification", true);
+  const hasCompanyInvolvement = getBoolean(dataStore, "hasCompanyInvolvement", true);
   return {
-    hasDisqualification: getBoolean(dataStore, "hasDisqualification", true),
-    disqualificationExplanation: getValue(dataStore, "disqualificationExplanation", false),
-    hasCompanyInvolvement: getBoolean(dataStore, "hasCompanyInvolvement", true),
-    companyInvolvementExplanation: getValue(dataStore, "companyInvolvementExplanation", false),
+    hasDisqualification,
+    disqualificationExplanation: hasDisqualification
+      ? getValue(dataStore, "disqualificationExplanation", true)
+      : null,
+    hasCompanyInvolvement,
+    companyInvolvementExplanation: hasCompanyInvolvement
+      ? getValue(dataStore, "companyInvolvementExplanation", true)
+      : null,
   };
 };
 
