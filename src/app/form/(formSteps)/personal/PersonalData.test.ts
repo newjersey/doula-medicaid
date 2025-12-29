@@ -2,7 +2,22 @@ import { getPersonalFormData } from "@/app/form/(formSteps)/personal/PersonalDat
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { AddressState } from "@/app/form/_utils/inputFields/addressState";
 
-describe("getPersonalFormData", () => {
+describe("getPersonal1FormData", () => {
+  describe("date of birth handling", () => {
+    it("creates date when all date components are present", async () => {
+      const dataStore = generateDataStoreWithRequiredFields({
+        dateOfBirthDay: "25",
+        dateOfBirthMonth: "12",
+        dateOfBirthYear: "1990",
+      });
+      expect(getPersonalFormData(dataStore)).toMatchObject({
+        dateOfBirth: new Date("1990/12/25"),
+      });
+    });
+  });
+});
+
+describe("getPersonal2FormData", () => {
   describe("hasSameBillingMailingAddress handling", () => {
     it("overwrites all billing address values with mailing address values when hasSameBillingMailingAddress is true", () => {
       const dataStore = generateDataStoreWithRequiredFields({
@@ -60,16 +75,28 @@ describe("getPersonalFormData", () => {
       });
     });
   });
+});
 
-  describe("date of birth handling", () => {
-    it("creates date when all date components are present", async () => {
+describe("getPersonal4FormData", () => {
+  describe("secondNameOnJointBankAccount", () => {
+    it("gets secondNameOnJointBankAccount when hasJointBankAccount is true", () => {
       const dataStore = generateDataStoreWithRequiredFields({
-        dateOfBirthDay: "25",
-        dateOfBirthMonth: "12",
-        dateOfBirthYear: "1990",
+        hasJointBankAccount: "true",
+        secondNameOnJointBankAccount: "Second name",
       });
       expect(getPersonalFormData(dataStore)).toMatchObject({
-        dateOfBirth: new Date("1990/12/25"),
+        hasJointBankAccount: true,
+        secondNameOnJointBankAccount: "Second name",
+      });
+    });
+    it("overwrites secondNameOnJointBankAccount with null when hasJointBankAccount is not true", () => {
+      const dataStore = generateDataStoreWithRequiredFields({
+        hasJointBankAccount: "false",
+        secondNameOnJointBankAccount: "Second name",
+      });
+      expect(getPersonalFormData(dataStore)).toMatchObject({
+        hasJointBankAccount: false,
+        secondNameOnJointBankAccount: null,
       });
     });
   });

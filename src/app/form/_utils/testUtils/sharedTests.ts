@@ -12,34 +12,39 @@ import {
   getInputField,
   type FieldToFill,
   type FieldToGet,
-  type Role,
 } from "@/app/form/_utils/testUtils/fillInputs";
 import type { Screen } from "@testing-library/dom";
 import userEvent, { type UserEvent } from "@testing-library/user-event";
 
-interface TestFieldParameters {
+type TestFieldParameters = {
   name: string | RegExp;
   dataStoreKey: string;
   required: boolean;
-  testValue: string;
-  expectedValue?: string;
-  role?: Role;
   withinGroupName?: string;
   prerequisiteField?: TestField;
   alternateRequiredFieldError?: string;
-}
+} & (
+  | {
+      role?: "textbox" | "combobox" | "radio";
+      testValue: string;
+      expectedValue?: string;
+    }
+  | {
+      role: "checkbox";
+    }
+);
 
-export interface TestField {
+export type TestField = {
   name: string | RegExp;
   dataStoreKey: string;
   required: boolean;
-  testValue: string;
-  expectedValue: string;
-  role: Role;
   requiredErrorMessage: string;
   withinGroupName?: string;
   prerequisiteField?: TestField;
-}
+  role: "textbox" | "combobox" | "radio" | "checkbox";
+  testValue: string;
+  expectedValue: string;
+};
 
 type RenderFunction = (dataStore?: DataStore) => {
   mockUpdateDataStore: jest.Mock;
@@ -47,13 +52,10 @@ type RenderFunction = (dataStore?: DataStore) => {
 };
 
 export const createTestField = (field: TestFieldParameters): TestField => {
-  return {
+  const commonTestFields = {
     name: field.name,
     dataStoreKey: field.dataStoreKey,
     required: field.required,
-    testValue: field.testValue,
-    expectedValue: field.expectedValue ?? field.testValue,
-    role: field.role ?? "textbox",
     requiredErrorMessage:
       field.alternateRequiredFieldError ??
       (field.role === "radio"
@@ -61,6 +63,22 @@ export const createTestField = (field: TestFieldParameters): TestField => {
         : `${field.name.toString().replace(" *", "")} is required`),
     withinGroupName: field.withinGroupName,
     prerequisiteField: field.prerequisiteField,
+  };
+
+  if (field.role === "checkbox") {
+    return {
+      ...commonTestFields,
+      role: field.role,
+      testValue: "true",
+      expectedValue: "true",
+    };
+  }
+
+  return {
+    ...commonTestFields,
+    role: field.role ?? "textbox",
+    testValue: field.testValue,
+    expectedValue: field.expectedValue ?? field.testValue,
   };
 };
 
@@ -165,8 +183,11 @@ export const testFillFromDataStore = async (
     case "radio":
       expect(input).toBeChecked();
       break;
+    case "checkbox":
+      expect(input).toBeChecked();
+      break;
     default:
-      throw new Error(`Role ${field.role} not implemented`);
+      throw new Error(`Role not implemented`);
   }
 };
 
@@ -185,13 +206,21 @@ export const testConditionalRender = async (
   const input = await getInputField(screen, field);
 
   await fillField(screen, user, field);
-  expect(input).toHaveValue(field.expectedValue);
+  if (field.role === "checkbox") {
+    expect(input).toBeChecked();
+  } else {
+    expect(input).toHaveValue(field.expectedValue);
+  }
 
   await fillField(screen, user, hideField);
   expect(input).not.toBeInTheDocument();
 
   await fillField(screen, user, field.prerequisiteField);
-  expect(input).toHaveValue(field.expectedValue);
+  if (field.role === "checkbox") {
+    expect(input).toBeChecked();
+  } else {
+    expect(input).toHaveValue(field.expectedValue);
+  }
 };
 
 export const testFocusesFirstErrorEvenIfConditional = async (

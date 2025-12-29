@@ -2,7 +2,7 @@ import type { Screen } from "@testing-library/dom";
 import { within } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 
-export type Role = "textbox" | "combobox" | "radio";
+export type Role = "textbox" | "combobox" | "radio" | "checkbox";
 
 export type FieldToFill =
   | {
@@ -13,7 +13,7 @@ export type FieldToFill =
     }
   | {
       name: string | RegExp;
-      role: "radio";
+      role: "radio" | "checkbox";
       withinGroupName?: string;
     };
 
@@ -53,6 +53,9 @@ export const fillField = async (screen: Screen, user: UserEvent, fieldToFill: Fi
       await user.selectOptions(inputField, fieldToFill.testValue);
       break;
     case "radio":
+      await user.click(inputField);
+      break;
+    case "checkbox":
       await user.click(inputField);
       break;
     default:

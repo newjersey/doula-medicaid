@@ -36,8 +36,8 @@ describe("<FormLayout />", () => {
   it("shows heading 1 and page title with the step number and section title", async () => {
     renderWithProviders(routes, "/form/personal/2");
     const heading1 = screen.getByRole("heading", { level: 1 });
-    expect(heading1).toHaveTextContent("2 of 3 Personal");
-    await waitFor(() => expect(document.title).toBe("Personal 2 of 3 | NJ Doula Assistant"));
+    expect(heading1).toHaveTextContent("2 of 4 Personal");
+    await waitFor(() => expect(document.title).toBe("Personal 2 of 4 | NJ Doula Assistant"));
 
     expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
     expect(scrollToSpy).toHaveBeenCalledTimes(1);

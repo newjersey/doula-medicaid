@@ -76,6 +76,17 @@ const testPersonalFormData: PersonalFormData = {
   npiNumber: "3333333333",
   medicareProviderId: null,
   upinNumber: null,
+
+  // 4
+  bankName: "Bank name",
+  bankCity: "Trenton",
+  bankState: "NJ",
+  bankZip: "22222",
+  nameOnBankAccount: "Default first Default Last",
+  hasJointBankAccount: false,
+  secondNameOnJointBankAccount: null,
+  bankRoutingNumber: "1234",
+  bankAccountNumber: "123456789",
 };
 
 const testBusinessFormData: BusinessFormData = {

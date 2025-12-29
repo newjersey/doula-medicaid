@@ -11,11 +11,11 @@ import type { DataStore } from "@/app/form/_utils/dataStore";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
-  type TestField,
   testFillFromDataStore,
   testInvalidField,
   testRequiredField,
   testSaveFieldsToDataStore,
+  type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -119,7 +119,7 @@ describe("<InsuranceStep1 />", () => {
   });
 
   describe("insurance coverage explainer", () => {
-    it("orders the insurance coverage explainer immediately after the end date year question", async () => {
+    it("orders the insurance coverage explainer immediately after the last insurance coverage question", async () => {
       const user = userEvent.setup();
       renderFunction();
 
@@ -155,7 +155,7 @@ describe("<InsuranceStep1 />", () => {
   });
 
   describe("coverage amount explainer", () => {
-    it("orders the insurance coverage explainer immediately after the end date year question", async () => {
+    it("orders the insurance coverage explainer immediately after the last coverage amount question", async () => {
       const user = userEvent.setup();
       renderFunction();
 

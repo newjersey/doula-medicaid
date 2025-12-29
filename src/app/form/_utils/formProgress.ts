@@ -36,7 +36,7 @@ export const getProgressBarSections = (): Array<Section> => {
     {
       id: "personal",
       name: "Personal",
-      numSteps: 3,
+      numSteps: 4,
       shouldShowProgressBar: true,
       shouldShowProgressHeadingAndRequiredMessage: true,
     },

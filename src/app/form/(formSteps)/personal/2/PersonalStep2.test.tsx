@@ -146,7 +146,7 @@ describe("<PersonalStep2 />", () => {
   });
 
   describe("Public information explainer", () => {
-    it("orders the public information explainer immediately after the billing address question", async () => {
+    it("orders the public information explainer immediately after the last billing address question", async () => {
       const user = userEvent.setup();
       renderFunction();
 
