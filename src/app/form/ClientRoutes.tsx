@@ -9,6 +9,7 @@ import InsuranceStep2 from "@/app/form/(formSteps)/insurance/2/InsuranceStep2";
 import PersonalStep1 from "@/app/form/(formSteps)/personal/1/PersonalStep1";
 import PersonalStep2 from "@/app/form/(formSteps)/personal/2/PersonalStep2";
 import PersonalStep3 from "@/app/form/(formSteps)/personal/3/PersonalStep3";
+import PersonalStep4 from "@/app/form/(formSteps)/personal/4/PersonalStep4";
 import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import ScreeningStep1 from "@/app/form/(formSteps)/screening/1/ScreeningStep1";
 import ScreeningStep2 from "@/app/form/(formSteps)/screening/2/ScreeningStep2";
@@ -51,6 +52,7 @@ export const routes = (
           <Route path="1" element={<PersonalStep1 />} />
           <Route path="2" element={<PersonalStep2 />} />
           <Route path="3" element={<PersonalStep3 />} />
+          <Route path="4" element={<PersonalStep4 />} />
         </Route>
         <Route path="business">
           <Route path="1" element={<BusinessStep1 />} />

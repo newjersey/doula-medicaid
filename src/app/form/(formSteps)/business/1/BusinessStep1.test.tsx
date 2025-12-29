@@ -44,7 +44,7 @@ describe("<BusinessStep1 />", () => {
   };
 
   describe("Sole proprietor explainer", () => {
-    it("orders the sole proprietor explainer immediately after the sole proprietor content", async () => {
+    it("orders the sole proprietor explainer immediately after the last sole proprietor content", async () => {
       const user = userEvent.setup();
       const renderFunction = getRenderWithExistingData(mailingAddress);
       renderFunction();

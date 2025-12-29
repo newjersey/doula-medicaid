@@ -21,6 +21,7 @@ import type {
   Personal1Data,
   Personal2Data,
   Personal3Data,
+  Personal4Data,
 } from "@form/(formSteps)/personal/PersonalData";
 
 export type DataStoreKey =
@@ -33,6 +34,7 @@ export type DataStoreKey =
   | keyof Personal1Data
   | keyof Personal2Data
   | keyof Personal3Data
+  | keyof Personal4Data
   | keyof Business1Data
   | keyof Business2Data
   | keyof Business3Data

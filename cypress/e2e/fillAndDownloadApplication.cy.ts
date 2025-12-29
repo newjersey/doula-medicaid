@@ -16,6 +16,7 @@ import {
 } from "@/app/form/(formSteps)/personal/1/testFields";
 import { minimalTestFields as personal2TestFields } from "@/app/form/(formSteps)/personal/2/testFields";
 import { testFields as personal3TestFields } from "@/app/form/(formSteps)/personal/3/testFields";
+import { path1TestFields as personal4TestFields } from "@/app/form/(formSteps)/personal/4/testFields";
 import { testFields as screening1TestFields } from "@/app/form/(formSteps)/screening/1/testFields";
 import { testFields as screening2TestFields } from "@/app/form/(formSteps)/screening/2/testFields";
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
@@ -34,17 +35,22 @@ export const formPages = [
   {
     url: "/form/personal/1",
     fields: personal1TestFields,
-    titleName: "Personal 1 of 3",
+    titleName: "Personal 1 of 4",
   },
   {
     url: "/form/personal/2",
     fields: personal2TestFields,
-    titleName: "Personal 2 of 3",
+    titleName: "Personal 2 of 4",
   },
   {
     url: "/form/personal/3",
     fields: personal3TestFields,
-    titleName: "Personal 3 of 3",
+    titleName: "Personal 3 of 4",
+  },
+  {
+    url: "/form/personal/4",
+    fields: personal4TestFields,
+    titleName: "Personal 4 of 4",
   },
   {
     url: "/form/business/1",

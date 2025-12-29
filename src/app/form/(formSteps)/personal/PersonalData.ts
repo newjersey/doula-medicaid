@@ -34,6 +34,18 @@ export interface Personal3Data {
   upinNumber: string;
 }
 
+export interface Personal4Data {
+  bankName: string;
+  bankCity: string;
+  bankState: string;
+  bankZip: string;
+  nameOnBankAccount: string;
+  hasJointBankAccount: boolean;
+  secondNameOnJointBankAccount: string;
+  bankRoutingNumber: string;
+  bankAccountNumber: string;
+}
+
 export interface PersonalFormData {
   // 1
   firstName: string;
@@ -60,6 +72,17 @@ export interface PersonalFormData {
   npiNumber: string;
   medicareProviderId: string | null;
   upinNumber: string | null;
+
+  // 4
+  bankName: string;
+  bankCity: string;
+  bankState: string;
+  bankZip: string;
+  nameOnBankAccount: string;
+  hasJointBankAccount: boolean;
+  secondNameOnJointBankAccount: string | null;
+  bankRoutingNumber: string;
+  bankAccountNumber: string;
 }
 
 export const getPersonalFormData = (dataStore: DataStore): PersonalFormData => {
@@ -67,6 +90,7 @@ export const getPersonalFormData = (dataStore: DataStore): PersonalFormData => {
     ...getPersonal1FormData(dataStore),
     ...getPersonal2FormData(dataStore),
     ...getPersonal3FormData(dataStore),
+    ...getPersonal4FormData(dataStore),
   };
 };
 
@@ -116,5 +140,22 @@ const getPersonal3FormData = (dataStore: DataStore) => {
     npiNumber: getValue(dataStore, "npiNumber", true),
     medicareProviderId: getValue(dataStore, "medicareProviderId", false),
     upinNumber: getValue(dataStore, "upinNumber", false),
+  };
+};
+
+const getPersonal4FormData = (dataStore: DataStore) => {
+  const hasJointBankAccount = getBoolean(dataStore, "hasJointBankAccount", true);
+  return {
+    bankName: getValue(dataStore, "bankName", true),
+    bankCity: getValue(dataStore, "bankCity", true),
+    bankState: getValue(dataStore, "bankState", true),
+    bankZip: getValue(dataStore, "bankZip", true),
+    nameOnBankAccount: getValue(dataStore, "nameOnBankAccount", true),
+    hasJointBankAccount,
+    secondNameOnJointBankAccount: hasJointBankAccount
+      ? getValue(dataStore, "secondNameOnJointBankAccount", true)
+      : null,
+    bankRoutingNumber: getValue(dataStore, "bankRoutingNumber", true),
+    bankAccountNumber: getValue(dataStore, "bankAccountNumber", true),
   };
 };

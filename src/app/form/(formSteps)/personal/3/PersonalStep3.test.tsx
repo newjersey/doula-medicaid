@@ -92,7 +92,7 @@ describe("<PersonalStep3 />", () => {
   });
 
   describe("NPI explainer", () => {
-    it("orders the NPI explainer immediately after the NPI input", async () => {
+    it("orders the NPI explainer immediately after the last NPI input", async () => {
       const user = userEvent.setup();
       renderFunction();
 
