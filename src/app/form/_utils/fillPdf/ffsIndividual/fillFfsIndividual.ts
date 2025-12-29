@@ -65,7 +65,8 @@ export const FFS_INDIVIDUAL_PDF_NAME = "Fee For Service Application.pdf";
 export const FFS_INDIVIDUAL_PDF_PATH = "/pdf/ffs_individual.pdf";
 
 export interface PdfFfsIndividual
-  extends PdfFfsIndividualPage4,
+  extends
+    PdfFfsIndividualPage4,
     PdfFfsIndividualPage5,
     PdfFfsIndividualPage6,
     PdfFfsIndividualPage8,

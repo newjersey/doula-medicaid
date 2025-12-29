@@ -22,8 +22,10 @@ export interface DoulaRadioOption<T extends FieldValues> {
 type wrappedAttributes = "name" | "required";
 type internallySetAttributes = "id" | "aria-invalid";
 
-export interface DoulaRadioProps<T extends FieldValues>
-  extends Omit<RadioProps, wrappedAttributes | internallySetAttributes> {
+export interface DoulaRadioProps<T extends FieldValues> extends Omit<
+  RadioProps,
+  wrappedAttributes | internallySetAttributes
+> {
   name: FieldPath<T>;
   value: string;
   label: React.ReactNode;

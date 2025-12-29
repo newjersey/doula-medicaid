@@ -24,7 +24,8 @@ import type { DataStore } from "@/app/form/_utils/dataStore";
 import { PDFBool, PDFCheckBox, PDFDocument, PDFName, PDFTextField } from "pdf-lib";
 
 export interface FormData
-  extends ScreeningFormData,
+  extends
+    ScreeningFormData,
     InsuranceFormData,
     TrainingFormData,
     PersonalFormData,

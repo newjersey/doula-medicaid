@@ -13,8 +13,10 @@ import type {
 type wrappedAttributes = "getMessage" | "name" | "required";
 type internallySetAttributes = "id" | "validationStatus" | "aria-invalid";
 
-export interface DoulaTextareaCharacterCountProps<T extends FieldValues>
-  extends Omit<TextareaCharacterCountProps, wrappedAttributes | internallySetAttributes> {
+export interface DoulaTextareaCharacterCountProps<T extends FieldValues> extends Omit<
+  TextareaCharacterCountProps,
+  wrappedAttributes | internallySetAttributes
+> {
   name: FieldPath<T>;
   label: React.ReactNode;
   hint?: string;
