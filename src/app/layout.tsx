@@ -62,7 +62,7 @@ export default function RootLayout({
                             focusable="false"
                             role="img"
                           >
-                            <use href={`${BASE_PATH}/svg/sprite.svg#mail`}></use>
+                            <use href={`${BASE_PATH}/img/sprite.svg#mail`}></use>
                           </svg>
                           <span className="usa-sr-only">opens in a new tab.</span>
                           Get Updates
@@ -90,7 +90,7 @@ export default function RootLayout({
               size="slim"
               image={
                 <Image
-                  src={`${BASE_PATH}/svg/DHS_logo.svg`}
+                  src={`${BASE_PATH}/img/DHS_logo.svg`}
                   width={210}
                   height={107}
                   alt="DHS logo"
@@ -106,7 +106,7 @@ export default function RootLayout({
                         focusable="false"
                         role="img"
                       >
-                        <use href={`${BASE_PATH}/svg/sprite.svg#mail`}></use>
+                        <use href={`${BASE_PATH}/img/sprite.svg#mail`}></use>
                       </svg>
                       mahs.doulaguide@dhs.nj.gov
                     </a>{" "}
