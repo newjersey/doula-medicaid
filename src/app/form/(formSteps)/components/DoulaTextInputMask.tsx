@@ -16,8 +16,10 @@ import type {
 type wrappedAttributes = "type" | "name" | "required";
 type internallySetAttributes = "id" | "validationStatus" | "aria-invalid";
 
-interface DoulaTextInputMaskProps<T extends FieldValues>
-  extends Omit<TextInputMaskProps, wrappedAttributes | internallySetAttributes> {
+interface DoulaTextInputMaskProps<T extends FieldValues> extends Omit<
+  TextInputMaskProps,
+  wrappedAttributes | internallySetAttributes
+> {
   name: FieldPath<T>;
   label: React.ReactNode;
   hint?: string;
