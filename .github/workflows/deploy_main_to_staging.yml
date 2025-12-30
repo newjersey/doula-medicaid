@@ -1,6 +1,9 @@
 name: deploy-main-to-staging
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 14 * * 1" # Every Monday at 9am EST/10am EDT. Github actions run on UTC and as of writing [lacks timezone config](https://github.com/orgs/community/discussions/13454).
 
 # Required to connect to AWS https://aws.amazon.com/blogs/security/use-iam-roles-to-connect-github-actions-to-actions-in-aws/
 permissions:
