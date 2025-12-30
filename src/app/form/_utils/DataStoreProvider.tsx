@@ -1,5 +1,5 @@
 import type { DataStore } from "@/app/form/_utils/dataStore";
-import { sendGAEvent } from "@next/third-parties/google";
+import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const DataStoreContext = createContext<DataStore>({});

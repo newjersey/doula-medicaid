@@ -1,6 +1,5 @@
 "use client";
 
-import { BASE_PATH } from "@/app/basePath";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaAddressState } from "@/app/form/(formSteps)/components/DoulaAddressState";
 import { DoulaAddressZip } from "@/app/form/(formSteps)/components/DoulaAddressZip";
@@ -13,7 +12,7 @@ import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { Checkbox } from "@trussworks/react-uswds";
-import Image from "next/image";
+// import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 const manualFocusOrder: Array<keyof Personal4Data> = [
@@ -196,12 +195,12 @@ const PersonalStep4 = () => {
             <p className="usa-hint">
               Please reference the image below to find your account numbers.
             </p>
-            <Image
+            {/* <Image
               src={`${BASE_PATH}/img/voided_check.png`}
               width={568}
               height={355}
               alt="Routing and account numbers can be found on the bottom left of the check. Write VOID on the check."
-            />
+            /> */}
           </div>
         </div>
         <div className="form-explainer desktop:grid-col-4">

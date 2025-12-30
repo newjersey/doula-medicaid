@@ -2,13 +2,12 @@ import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import { type DataStore } from "@/app/form/_utils/dataStore";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
-import { jest } from "@jest/globals";
-import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { screen, waitFor } from "@testing-library/react";
+import type { Mock } from "vitest";
 
-jest.mock("@form/_utils/fillPdf/form", () => ({
+vi.mock("@form/_utils/fillPdf/form", () => ({
   ...(jest.requireActual("@form/_utils/fillPdf/form") as object),
-  fillForm: jest.fn((_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
+  fillForm: vi.fn((_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
     return { filename, bytes: new Uint8Array(0) };
   }),
 }));
@@ -18,13 +17,13 @@ const renderFunction = (dataStore: DataStore) =>
 
 describe("<ReviewSection />", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("builds form, renders download link, and previous buttons", async () => {
-    const mockCreateObjectURL = jest.fn().mockReturnValue("mock-blob-url");
-    (global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
-    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+    const mockCreateObjectURL = vi.fn().mockReturnValue("mock-blob-url");
+    (global.URL.createObjectURL as Mock) = mockCreateObjectURL;
+    const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
 
     const dataStore = generateDataStoreWithRequiredFields();
     renderFunction(dataStore);

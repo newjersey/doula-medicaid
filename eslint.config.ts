@@ -1,34 +1,34 @@
-import { FlatCompat } from "@eslint/eslintrc";
-import { flatConfigs as importXFlatConfigs } from "eslint-plugin-import-x";
+import js from "@eslint/js";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-defineConfig([globalIgnores(["**/lib/*", "**/bin/*"])]);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
-  importXFlatConfigs.recommended,
-  importXFlatConfigs.typescript,
+export default defineConfig([
+  globalIgnores(["dist"]),
+  {
+    files: ["**/*.{ts,tsx}"],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      ecmaVersion: "latest",
+      globals: globals.browser,
+    },
+  },
+  {
+    // plugins: {
+    //   // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/11543
+    //   "import-x": importX, // https://github.com/un-ts/eslint-plugin-import-x/issues/421
+    // },
+    // extends: ["import-x/flat/recommended", "import-x/flat/typescript"],
+  },
   {
     files: ["**/*.{js,mjs,cjs,jsx,mjsx,ts,tsx,mtsx}"],
-    languageOptions: {
-      parserOptions: {
-        projectService: {
-          allowDefaultProject: ["*.js"],
-        },
-        tsconfigRootDir: import.meta.dirname,
-      },
-      ecmaVersion: "latest",
-      sourceType: "module",
-    },
     rules: {
       "func-style": "error",
       "prefer-template": "error",
@@ -41,11 +41,11 @@ const eslintConfig = [
         },
       ],
       "@typescript-eslint/no-floating-promises": "off",
-      "@typescript-eslint/prefer-nullish-coalescing": "error",
-      "@typescript-eslint/strict-boolean-expressions": [
-        "error",
-        { allowNullableString: true, allowNumber: false },
-      ],
+      // "@typescript-eslint/prefer-nullish-coalescing": "error",
+      // "@typescript-eslint/strict-boolean-expressions": [
+      //   "error",
+      //   { allowNullableString: true, allowNumber: false },
+      // ],
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
@@ -57,6 +57,4 @@ const eslintConfig = [
       "no-restricted-imports": ["error", { patterns: ["..*"] }],
     },
   },
-];
-
-export default eslintConfig;
+]);

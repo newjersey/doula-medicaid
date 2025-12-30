@@ -6,10 +6,10 @@ export const GET = async () => {
       status: "ok",
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
-      environment: process.env.NODE_ENV || "development",
+      environment: import.meta.env.NODE_ENV || "development",
       featureFlags: {
-        NEXT_PUBLIC_FLAG_TEST: process.env.NEXT_PUBLIC_FLAG_TEST,
-        NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE: process.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE,
+        NEXT_PUBLIC_FLAG_TEST: import.meta.env.NEXT_PUBLIC_FLAG_TEST,
+        NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE: import.meta.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE,
       },
     };
 

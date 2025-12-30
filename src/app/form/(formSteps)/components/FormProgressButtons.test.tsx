@@ -1,6 +1,6 @@
+import * as googleAnalytics from "@/app/form/_utils/googleAnalytics";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
-import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { within } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -62,17 +62,17 @@ describe("<FormProgressButtons />", () => {
 
   describe("sends GA events", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
     it("when Next is clicked", async () => {
-      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+      const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
       renderWithProviders(<FormProgressButtons />, "/form/personal/2");
       await screen.getByRole("button", { name: "Next" }).click();
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressNext");
     });
     it("when Previous is clicked", async () => {
       const user = userEvent.setup();
-      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+      const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
       renderWithProviders(<FormProgressButtons />, "/form/personal/2");
       await user.click(screen.getByRole("link", { name: "Previous" }));
       expect(mockSendGAEvent).toHaveBeenCalledWith("event", "progressPrevious");

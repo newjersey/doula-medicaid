@@ -1,8 +1,8 @@
 "use client";
 
 import { getAllSections, isFinalFormProgress } from "@/app/form/_utils/formProgress";
+import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { sendGAEvent } from "@next/third-parties/google";
 import { Button, ButtonGroup } from "@trussworks/react-uswds";
 import { NavLink } from "react-router";
 

@@ -1,4 +1,3 @@
-import { BASE_PATH } from "@/app/basePath";
 import BusinessStep1 from "@/app/form/(formSteps)/business/1/BusinessStep1";
 import BusinessStep2 from "@/app/form/(formSteps)/business/2/BusinessStep2";
 import BusinessStep3 from "@/app/form/(formSteps)/business/3/BusinessStep3";
@@ -17,7 +16,7 @@ import ScreeningStep3 from "@/app/form/(formSteps)/screening/3/ScreeningStep3";
 import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
 import WebsiteUnavailable from "@/app/form/(formSteps)/welcome/WebsiteUnavailable";
 import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { Route, Routes } from "react-router";
 import LegalStep1 from "./(formSteps)/legal/1/LegalStep1";
 import LegalStep2 from "./(formSteps)/legal/2/LegalStep2";
 import LegalStep3 from "./(formSteps)/legal/3/LegalStep3";
@@ -72,9 +71,8 @@ export const routes = (
 );
 
 export default function ClientRoutes() {
-  return (
-    <BrowserRouter basename={BASE_PATH}>
-      {process.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE === "1" ? websiteUnavailableRoutes : routes}
-    </BrowserRouter>
-  );
+  if (import.meta.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE === "1") {
+    return websiteUnavailableRoutes;
+  }
+  return routes;
 }

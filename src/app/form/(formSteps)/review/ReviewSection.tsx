@@ -3,9 +3,9 @@
 import { ValueNotFoundError } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { fillFfsIndividualForm } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
+import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { getFormData } from "@form/_utils/fillPdf/form";
-import { sendGAEvent } from "@next/third-parties/google";
 import { useEffect, useState } from "react";
 
 const ReviewSection = () => {

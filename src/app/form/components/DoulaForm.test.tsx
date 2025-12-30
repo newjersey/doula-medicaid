@@ -1,5 +1,6 @@
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
+import * as googleAnalytics from "@/app/form/_utils/googleAnalytics";
 import {
   fillAllInputs,
   fillAllInputsExcept,
@@ -8,7 +9,6 @@ import {
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
-import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useForm } from "react-hook-form";
@@ -96,13 +96,13 @@ const doulaTestFormFields: TestField[] = createTestFields([
 ]);
 
 describe("submission behavior", () => {
-  const mockNavigate = jest.fn();
+  const mockNavigate = vi.fn();
   beforeEach(() => {
-    jest.spyOn(router, "useNavigate").mockImplementation(() => mockNavigate);
+    vi.spyOn(router, "useNavigate").mockImplementation(() => mockNavigate);
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("saves fields to the data store and routes to the next step on submit", async () => {
@@ -122,7 +122,7 @@ describe("submission behavior", () => {
   });
 
   it("does not save fields to the data store and does not route on error", async () => {
-    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+    const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
     const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage showErrorSummary={true} />,
       "/form/personal/2",
@@ -146,11 +146,11 @@ describe("submission behavior", () => {
 
 describe("error summary", () => {
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   describe("when showErrorSummary is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
-      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+      const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
       const user = userEvent.setup();
       renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.click(screen.getByRole("button", { name: "Next" }));
@@ -186,7 +186,7 @@ describe("error summary", () => {
     });
 
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
-      const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+      const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
       const user = userEvent.setup();
       renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.type(

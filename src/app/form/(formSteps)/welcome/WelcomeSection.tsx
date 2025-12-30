@@ -3,7 +3,7 @@ import {
   formatFormProgressUrl,
   useFormProgressPosition,
 } from "@/app/form/_utils/formProgressRouting";
-import { sendGAEvent } from "@next/third-parties/google";
+import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import {
   Icon,
   IconList,

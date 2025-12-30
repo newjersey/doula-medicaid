@@ -2,11 +2,12 @@
 
 import { getCurrentFormProgress } from "@/app/form/_utils/formProgress";
 import { Alert } from "@trussworks/react-uswds";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 const WipBanner = () => {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
   const pathParts = pathname.split("/");
   const sectionsIdsWithBanner = ["welcome"];
 

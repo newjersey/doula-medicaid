@@ -3,7 +3,7 @@ import RootLayout from "@/app/layout";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-global.performance.mark = jest.fn();
+global.performance.mark = vi.fn();
 
 describe("<RootLayout />", () => {
   it("it has a skip nav that is the first item in the body and skips to main content when clicked", async () => {

@@ -1,6 +1,6 @@
 import { getBooleanString } from "@/app/form/_utils/dataStore";
 import { DataStoreProvider, useDataStore } from "@/app/form/_utils/DataStoreProvider";
-import * as nextThirdPartiesGoogle from "@next/third-parties/google";
+import * as googleAnalytics from "@/app/form/_utils/googleAnalytics";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
@@ -35,7 +35,7 @@ describe("<DataStoreProvider /> and useDataStore", () => {
   });
 
   it("asks the user for confirmation before leaving the page if the data store contains data", async () => {
-    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+    const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
 
     const Child = () => {
       const { updateDataStore } = useDataStore();
@@ -57,7 +57,7 @@ describe("<DataStoreProvider /> and useDataStore", () => {
     );
 
     const beforeUnloadEvent = new Event("beforeunload", { cancelable: true });
-    const preventDefaultSpy = jest.spyOn(beforeUnloadEvent, "preventDefault");
+    const preventDefaultSpy = vi.spyOn(beforeUnloadEvent, "preventDefault");
 
     window.dispatchEvent(beforeUnloadEvent);
 
