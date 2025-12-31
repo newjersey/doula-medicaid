@@ -40,6 +40,7 @@ export default defineConfig([
           varsIgnorePattern: "^_",
         },
       ],
+      "react-refresh/only-export-components": "off",
       "@typescript-eslint/no-floating-promises": "off",
       // "@typescript-eslint/prefer-nullish-coalescing": "error",
       // "@typescript-eslint/strict-boolean-expressions": [
@@ -58,3 +59,5 @@ export default defineConfig([
     },
   },
 ]);
+
+const a = "test";

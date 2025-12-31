@@ -1,5 +1,5 @@
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
-import RootLayout from "@/RootLayout";
+import RootLayout from "@/app/RootLayout";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 

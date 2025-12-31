@@ -1,9 +1,9 @@
 import { BASE_PATH } from "@/app/basePath";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import WipBanner from "@/app/form/(formSteps)/welcome/WipBanner";
-import ClientRoutes from "@/app/form/ClientRoutes";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
+import { Outlet } from "react-router";
 // import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
 
 const RootLayout = () => {
@@ -58,7 +58,7 @@ const RootLayout = () => {
       <main id="main-content">
         {import.meta.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE !== "1" && <WipBanner />}
         <div className="usa-section">
-          <div className="grid-container">{<ClientRoutes />}</div>
+          <div className="grid-container">{<Outlet />}</div>
         </div>
       </main>
       <HorizontalDivider />
