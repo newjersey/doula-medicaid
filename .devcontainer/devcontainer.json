@@ -7,9 +7,9 @@
     }
   },
   "postCreateCommand": "npm install && npm run dev",
-  "forwardPorts": [3000],
+  "forwardPorts": [5173],
   "portsAttributes": {
-    "3000": {
+    "5173": {
       "label": "Application"
     }
   }
