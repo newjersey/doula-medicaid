@@ -6,7 +6,7 @@ import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
 // import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
 
-const App = () => {
+const RootLayout = () => {
   return (
     <>
       {" "}
@@ -113,4 +113,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default RootLayout;

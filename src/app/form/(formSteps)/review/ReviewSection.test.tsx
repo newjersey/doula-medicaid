@@ -1,16 +1,20 @@
 import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import { type DataStore } from "@/app/form/_utils/dataStore";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
+import * as googleAnalytics from "@/app/form/_utils/googleAnalytics";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { screen, waitFor } from "@testing-library/react";
 import type { Mock } from "vitest";
 
-vi.mock("@form/_utils/fillPdf/form", () => ({
-  ...(jest.requireActual("@form/_utils/fillPdf/form") as object),
-  fillForm: vi.fn((_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
-    return { filename, bytes: new Uint8Array(0) };
-  }),
-}));
+vi.mock(import("@form/_utils/fillPdf/form"), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    fillForm: vi.fn(async (_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
+      return { filename, bytes: new Uint8Array(0) };
+    }),
+  };
+});
 
 const renderFunction = (dataStore: DataStore) =>
   renderWithProviders(<ReviewSection />, "/form/review/1", dataStore);
@@ -22,7 +26,7 @@ describe("<ReviewSection />", () => {
 
   it("builds form, renders download link, and previous buttons", async () => {
     const mockCreateObjectURL = vi.fn().mockReturnValue("mock-blob-url");
-    (global.URL.createObjectURL as Mock) = mockCreateObjectURL;
+    (window.URL.createObjectURL as Mock) = mockCreateObjectURL;
     const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
 
     const dataStore = generateDataStoreWithRequiredFields();

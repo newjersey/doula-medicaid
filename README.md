@@ -33,9 +33,9 @@ with your browser to see the result.
 # Run all unit tests
 npm test
 # Run test in specific file path, matching test description
-npm test -- --runTestsByPath "<path to file>" -t "<included in test block name>"
+npm test -- "<path to file>" -t "<included in test block name>"
 # e.g.
-npm test -- --runTestsByPath "src/app/form/(formSteps)/personal-information/PersonalStep1.test.tsx" -t "updates first name"
+npm test -- "src/app/form/(formSteps)/personal-information/PersonalStep1.test.tsx" -t "updates first name"
 ```
 
 ### End to end tests
