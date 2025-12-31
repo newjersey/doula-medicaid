@@ -1,11 +1,13 @@
+import { formatTitle } from "@/app/_utils/title";
+
 export const Status = () => {
   return (
     <div>
+      <title>{formatTitle("Status")}</title>
       {JSON.stringify({
         featureFlags: {
-          NEXT_PUBLIC_FLAG_TEST: import.meta.env.NEXT_PUBLIC_FLAG_TEST,
-          NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE: import.meta.env
-            .NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE,
+          VITE_FLAG_TEST: import.meta.env.VITE_FLAG_TEST,
+          VITE_FLAG_WEBSITE_UNAVAILABLE: import.meta.env.VITE_FLAG_WEBSITE_UNAVAILABLE,
         },
       })}
     </div>

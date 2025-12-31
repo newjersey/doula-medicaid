@@ -1,10 +1,10 @@
-import { BASE_PATH } from "@/app/basePath";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import WipBanner from "@/app/form/(formSteps)/welcome/WipBanner";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
+import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
+import { Footer, Logo } from "@trussworks/react-uswds";
 import { Outlet } from "react-router";
-// import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
 
 const RootLayout = () => {
   return (
@@ -18,7 +18,7 @@ const RootLayout = () => {
           <div className="grid-container">
             <div className="nj-banner__inner">
               <div>
-                {/* <Image className="nj-banner__header-seal" src={njStateSeal} alt="NJ flag"></Image> */}
+                <img src={njStateSeal} className="nj-banner__header-seal" alt="NJ flag" />
               </div>
               <div className="grid-col-fill">
                 <a href="https://nj.gov" target="_blank" rel="noopener">
@@ -42,7 +42,7 @@ const RootLayout = () => {
                           focusable="false"
                           role="img"
                         >
-                          <use href={`${BASE_PATH}/img/sprite.svg#mail`}></use>
+                          <use href={`/img/sprite.svg#mail`}></use>
                         </svg>
                         <span className="usa-sr-only">opens in a new tab.</span>
                         Get Updates
@@ -56,27 +56,19 @@ const RootLayout = () => {
         </div>
       </header>
       <main id="main-content">
-        {import.meta.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE !== "1" && <WipBanner />}
+        {import.meta.env.VITE_FLAG_WEBSITE_UNAVAILABLE !== "1" && <WipBanner />}
         <div className="usa-section">
           <div className="grid-container">{<Outlet />}</div>
         </div>
       </main>
       <HorizontalDivider />
-      {/* <Footer
+      <Footer
         size="slim"
         primary={null}
         secondary={
           <Logo
             size="slim"
-            image={
-              "hi"
-              // <Image
-              //   src={`${BASE_PATH}/img/DHS_logo.svg`}
-              //   width={210}
-              //   height={107}
-              //   alt="DHS logo"
-              // />
-            }
+            image={<img src={`/img/DHS_logo.svg`} width={210} height={107} alt="DHS logo" />}
             heading={
               <div className="grid-row flex-align-center">
                 <div className="tablet:grid-col-auto tablet:border-right tablet:margin-right-2 tablet:padding-right-2">
@@ -87,7 +79,7 @@ const RootLayout = () => {
                       focusable="false"
                       role="img"
                     >
-                      <use href={`${BASE_PATH}/img/sprite.svg#mail`}></use>
+                      <use href={`/img/sprite.svg#mail`}></use>
                     </svg>
                     mahs.doulaguide@dhs.nj.gov
                   </a>{" "}
@@ -108,7 +100,7 @@ const RootLayout = () => {
             }
           />
         }
-      /> */}
+      />
     </>
   );
 };

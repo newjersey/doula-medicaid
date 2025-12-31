@@ -1,7 +1,6 @@
 import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import {} from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
-import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Form } from "@trussworks/react-uswds";
 import { useEffect, useRef, useState } from "react";
@@ -63,7 +62,7 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
   };
   const onError = (errors: FieldErrors<T>) => {
     for (const name of Object.keys(errors)) {
-      sendGAEvent("event", "formValidationError", {
+      gtag("event", "formValidationError", {
         fieldName: name,
         type: errors[name]?.type,
       });

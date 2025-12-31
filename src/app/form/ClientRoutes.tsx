@@ -18,22 +18,23 @@ import WebsiteUnavailable from "@/app/form/(formSteps)/welcome/WebsiteUnavailabl
 import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
 import RootLayout from "@/app/RootLayout";
 import { Status } from "@/app/Status";
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import LegalStep1 from "./(formSteps)/legal/1/LegalStep1";
 import LegalStep2 from "./(formSteps)/legal/2/LegalStep2";
 import LegalStep3 from "./(formSteps)/legal/3/LegalStep3";
 
 export const websiteUnavailableRoutes = (
   <Routes>
-    {/* <Route path="form">
-      <Route path="welcome" element={<WebsiteUnavailable />} />
-    </Route> */}
-    <Route path="*" element={<WebsiteUnavailable />} />
+    <Route path="status" element={<Status />} />
+    <Route path="*" element={<RootLayout />}>
+      <Route path="*" element={<WebsiteUnavailable />} />
+    </Route>
   </Routes>
 );
 
 export const routes = (
   <Routes>
+    <Route path="/" element={<Navigate to="/form/welcome" replace />} />
     <Route path="status" element={<Status />} />
     <Route path="*" element={<RootLayout />}>
       <Route path="form">
@@ -76,8 +77,5 @@ export const routes = (
 );
 
 export default function ClientRoutes() {
-  if (import.meta.env.NEXT_PUBLIC_FLAG_WEBSITE_UNAVAILABLE === "1") {
-    return websiteUnavailableRoutes;
-  }
-  return routes;
+  return import.meta.env.VITE_FLAG_WEBSITE_UNAVAILABLE === "1" ? websiteUnavailableRoutes : routes;
 }

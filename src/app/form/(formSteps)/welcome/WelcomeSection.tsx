@@ -3,7 +3,6 @@ import {
   formatFormProgressUrl,
   useFormProgressPosition,
 } from "@/app/form/_utils/formProgressRouting";
-import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import {
   Icon,
   IconList,
@@ -121,7 +120,7 @@ const WelcomeSection = () => {
             key="start"
             to={formatFormProgressUrl(formProgressPosition.next)}
             className="usa-button margin-top-0"
-            onClick={() => sendGAEvent("event", "progressStart")}
+            onClick={() => gtag("event", "progressStart")}
           >
             Start now
           </NavLink>

@@ -1,5 +1,4 @@
 import type { DataStore } from "@/app/form/_utils/dataStore";
-import { sendGAEvent } from "@/app/form/_utils/googleAnalytics";
 import { createContext, useContext, useEffect, useState } from "react";
 
 export const DataStoreContext = createContext<DataStore>({});
@@ -17,7 +16,7 @@ export const DataStoreProvider = ({ children }: { children: React.ReactNode }) =
       if (hasData) {
         event.preventDefault();
         event.returnValue = true; // Legacy browser support, e.g. Chrome/Edge < 119
-        sendGAEvent("event", "leavePageConfirmationShown");
+        gtag("event", "leavePageConfirmationShown");
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
