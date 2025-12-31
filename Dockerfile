@@ -10,5 +10,5 @@ COPY --from=builder /app/dist /usr/local/apache2/htdocs/
 # Copy custom config to conf/extra and include it from the main httpd.conf
 COPY httpd.conf /usr/local/apache2/conf/extra/doula.conf
 RUN printf '\n# Include doula app custom config\nIncludeOptional conf/extra/doula.conf\n' >> /usr/local/apache2/conf/httpd.conf
-EXPOSE 8080
+EXPOSE 3000
 CMD ["httpd-foreground"]
