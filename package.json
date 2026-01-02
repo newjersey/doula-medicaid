@@ -37,7 +37,7 @@
     "react-router": "7.11.0"
   },
   "devDependencies": {
-    "@aws-sdk/client-ec2": "^3.919.0",
+    "@aws-sdk/client-ec2": "3.919.0",
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.2",
     "@testing-library/dom": "10.4.1",
@@ -66,11 +66,11 @@
     "prettier": "latest",
     "prettier-plugin-jsdoc": "1.8.0",
     "prettier-plugin-organize-imports": "latest",
-    "tsx": "^4.20.6",
+    "tsx": "4.20.6",
     "typescript": "5.9.3",
     "typescript-eslint": "8.50.1",
-    "vite": "^7.2.4",
-    "vitest": "^4.0.16"
+    "vite": "7.2.4",
+    "vitest": "4.0.16"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
