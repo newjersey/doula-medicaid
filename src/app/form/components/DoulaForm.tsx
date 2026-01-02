@@ -41,13 +41,8 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
   const navigate = useNavigate();
   const formProgressPosition = useFormProgressPosition();
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
-  // const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const { updateDataStore } = useDataStore();
-
-  // useEffect(() => {
-  //   setIsDataLoaded(true);
-  // }, []);
 
   const onSubmit = (data: T) => {
     const stringData: { [key: string]: string } = {};

@@ -1,4 +1,8 @@
 {
   "files": [],
+  "compilerOptions": {
+    "strict": true // https://github.com/mightyiam/eslint-config-love/issues/481#issuecomment-747475360
+  },
+  // https://stackoverflow.com/questions/72027949/why-does-vite-create-two-typescript-config-files-tsconfig-json-and-tsconfig-nod
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
