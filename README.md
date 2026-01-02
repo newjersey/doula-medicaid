@@ -61,7 +61,7 @@ npm run cypress:gui
 To run e2e tests that _are_ labelled `[productionFlags]`, we need to turn environment favorable
 flags off.
 
-When running with `NODE_ENV=test` (as is done with `npm run dev:test`, NextJS will first check for a
+When running with `--mode test` (as is done with `npm run dev:test`, Vite will first check for a
 `.env.test.local` file (gitignored), then `.env.test` (not gitignored). The local file enables us to
 make any changes and test with them locally, without having to reset any changes before git
 committing.
@@ -69,7 +69,7 @@ committing.
 ```sh
 cp cypress/.env.test-production-flags .env.test.local
 
-# Restart the NextJS process
+# Restart the Vite process
 npm run dev:test
 
 # Then run cypress tests with `[productionFlags]` in their name

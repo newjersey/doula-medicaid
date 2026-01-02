@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:test": "NODE_ENV=test NODE_OPTIONS='--inspect' vite",
+    "dev:test": "NODE_OPTIONS='--inspect' vite --mode test",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "vite preview --port 3000",
     "prettier": "prettier . --write",
     "prettier:check": "prettier . --check",
     "prepare": "husky",
