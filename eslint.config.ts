@@ -1,5 +1,5 @@
 import js from "@eslint/js";
-import { importX } from "eslint-plugin-import-x";
+// import { importX } from "eslint-plugin-import-x";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -70,11 +70,11 @@ export default defineConfig([
       ],
     },
   },
-  {
-    plugins: {
-      "import-x": importX,
-    },
-    extends: ["import-x/flat/recommended", "import-x/flat/typescript"],
-    rules: { "import-x/no-named-as-default-member": "off" },
-  },
+  // {
+  //   plugins: {
+  //     "import-x": importX,
+  //   },
+  //   extends: ["import-x/flat/recommended", "import-x/flat/typescript"],
+  //   rules: { "import-x/no-named-as-default-member": "off" },
+  // },
 ]);
