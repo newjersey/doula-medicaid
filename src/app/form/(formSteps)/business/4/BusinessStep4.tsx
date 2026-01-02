@@ -1,5 +1,3 @@
-"use client";
-
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { type Business4Data } from "@/app/form/(formSteps)/business/BusinessData";
 import { DoulaDateInput } from "@/app/form/(formSteps)/components/DoulaDateInput";

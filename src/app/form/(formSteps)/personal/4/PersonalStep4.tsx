@@ -1,5 +1,3 @@
-"use client";
-
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaAddressState } from "@/app/form/(formSteps)/components/DoulaAddressState";
 import { DoulaAddressZip } from "@/app/form/(formSteps)/components/DoulaAddressZip";

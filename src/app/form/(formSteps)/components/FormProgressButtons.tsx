@@ -1,5 +1,3 @@
-"use client";
-
 import { getAllSections, isFinalFormProgress } from "@/app/form/_utils/formProgress";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
 import { Button, ButtonGroup } from "@trussworks/react-uswds";

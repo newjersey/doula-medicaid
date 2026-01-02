@@ -51,7 +51,7 @@ export const WelcomeFaq = (props: { headingLevel: HeadingLevel }) => {
           >
             American Heart Association
           </a>
-          . 
+          .
         </p>
       ),
       expanded: false,
