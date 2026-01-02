@@ -3,7 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 
 describe("DoulaYesNoRadio", () => {
   it("renders a radio group with options Yes and No", () => {
-    render(<DoulaYesNoRadio name="testRadio" value="" label="Yes or no?" register={jest.fn()} />);
+    render(<DoulaYesNoRadio name="testRadio" value="" label="Yes or no?" register={vi.fn()} />);
     const group = screen.getByRole("group", { name: "Yes or no? Select one" });
     for (const optionLabel of ["Yes", "No"]) {
       expect(within(group).getByRole("radio", { name: optionLabel })).toBeInTheDocument();
@@ -16,7 +16,7 @@ describe("DoulaYesNoRadio", () => {
   ])(
     "when $invalidLabel is set as InvalidOption, it shows the error messsage and fails validation",
     ({ invalidLabel, trueIsValid, falseIsValid }) => {
-      const mockRegister = jest.fn();
+      const mockRegister = vi.fn();
       render(
         <DoulaYesNoRadio
           name="testRadio"

@@ -1,11 +1,8 @@
-"use client";
-
 import { ValueNotFoundError } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { fillFfsIndividualForm } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { getFormData } from "@form/_utils/fillPdf/form";
-import { sendGAEvent } from "@next/third-parties/google";
 import { useEffect, useState } from "react";
 
 const ReviewSection = () => {
@@ -70,7 +67,7 @@ const ReviewSection = () => {
               href={downloadData.url}
               download={downloadData.filename}
               className="usa-button margin-right-0 margin-top-4"
-              onClick={() => sendGAEvent("event", "downloadApplication")}
+              onClick={() => gtag("event", "downloadApplication")}
             >
               Download your application
             </a>

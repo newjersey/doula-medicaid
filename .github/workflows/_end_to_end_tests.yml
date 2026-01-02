@@ -19,17 +19,17 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
       - name: Install dependencies
         run: npm ci
       - name: Use ${{ inputs.env_test_file }}
         if: ${{ inputs.env_test_file != '.env.test' }}
         run: mv ${{ inputs.env_test_file }} .env.test
       - name: Build the application
-        run: NODE_ENV=test npm run build
+        run: npm run build --mode test
       - name: Start the application
         run:
-          NODE_ENV=test npm start & npx wait-on
+          npm run preview --mode test & npx wait-on
           http://localhost:3000/humanservices/dmahs/info/doulahelp
       - name: Run cypress tests
         run: npm run "${{ inputs.cypress_run_command }}"

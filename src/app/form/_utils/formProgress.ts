@@ -10,6 +10,8 @@ export interface FormProgress {
   section: Section;
   step?: number;
 }
+export const welcomeSectionId = "welcome";
+
 export const getProgressBarSections = (): Array<Section> => {
   return [
     {
@@ -66,7 +68,7 @@ export const getProgressBarSections = (): Array<Section> => {
 export const getAllSections = (): Array<Section> => {
   return [
     {
-      id: "welcome",
+      id: welcomeSectionId,
       name: "Welcome",
       shouldShowProgressBar: false,
       shouldShowProgressHeadingAndRequiredMessage: false,

@@ -2,11 +2,12 @@ import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProvi
 import { routes } from "@/app/form/ClientRoutes";
 import { waitFor } from "@testing-library/dom";
 import { screen } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 describe("<FormLayout />", () => {
-  let scrollToSpy: jest.SpyInstance;
+  let scrollToSpy: Mock;
   beforeEach(() => {
-    scrollToSpy = jest.spyOn(window, "scrollTo");
+    scrollToSpy = vi.spyOn(window, "scrollTo");
   });
 
   afterEach(() => {

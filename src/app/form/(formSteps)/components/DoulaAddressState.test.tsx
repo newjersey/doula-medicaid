@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 
 describe("<DoulaAddressState />", () => {
   it("renders the input with a label", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaAddressState name={"testState"} label={"State"} errors={{}} register={mockRegister} />,
     );
@@ -20,7 +20,7 @@ describe("<DoulaAddressState />", () => {
   });
 
   it("sets appropriate attributes when the input is required", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaAddressState name="testState" label="State" errors={{}} register={mockRegister} />,
     );
@@ -43,7 +43,7 @@ describe("<DoulaAddressState />", () => {
             message: "State is required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("combobox", { name: "State *" });
@@ -58,7 +58,7 @@ describe("<DoulaAddressState />", () => {
         label={"State"}
         autocomplete={"shipping"}
         errors={{}}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     expect(screen.getByRole("combobox", { name: "State *" })).toHaveAttribute(
