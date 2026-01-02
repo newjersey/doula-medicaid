@@ -30,5 +30,6 @@
     }
   },
 
-  "include": ["scripts", "./*.config.ts", "./*.setup.ts"]
+  "include": ["scripts", "./*.config.ts", "./*.setup.ts"],
+  "ignores": ["cypress.config.ts"]
 }

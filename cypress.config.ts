@@ -1,5 +1,5 @@
-import { BASE_PATH } from "@/app/basePath";
 import { defineConfig } from "cypress";
+import { BASE_PATH } from "./src/app/basePath";
 
 module.exports = defineConfig({
   e2e: {
