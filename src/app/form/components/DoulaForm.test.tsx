@@ -1,6 +1,5 @@
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";
 import FormProgressButtons from "@/app/form/(formSteps)/components/FormProgressButtons";
-import * as googleAnalytics from "@/app/form/_utils/googleAnalytics";
 import {
   fillAllInputs,
   fillAllInputsExcept,
@@ -122,7 +121,6 @@ describe("submission behavior", () => {
   });
 
   it("does not save fields to the data store and does not route on error", async () => {
-    const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
     const { mockUpdateDataStore } = renderWithProviders(
       <DoulaFormTestPage showErrorSummary={true} />,
       "/form/personal/2",
@@ -131,11 +129,11 @@ describe("submission behavior", () => {
     await fillAllInputsExcept(screen, user, doulaTestFormFields, new Set(["field1"]));
     await user.click(screen.getByRole("button", { name: "Next" }));
 
-    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+    expect(window.gtag).toHaveBeenCalledWith("event", "formValidationError", {
       fieldName: "field1",
       type: "required",
     });
-    expect(mockSendGAEvent).not.toHaveBeenCalledWith("event", "formValidationError", {
+    expect(window.gtag).not.toHaveBeenCalledWith("event", "formValidationError", {
       fieldName: "field2",
       type: "required",
     });
@@ -145,12 +143,8 @@ describe("submission behavior", () => {
 });
 
 describe("error summary", () => {
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
   describe("when showErrorSummary is true", () => {
     it("shows an error summary if there are 3 or more errors", async () => {
-      const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
       const user = userEvent.setup();
       renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.click(screen.getByRole("button", { name: "Next" }));
@@ -171,22 +165,21 @@ describe("error summary", () => {
         expect(focusedElement).toHaveTextContent(errorMessage);
       }
 
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+      expect(window.gtag).toHaveBeenCalledWith("event", "formValidationError", {
         fieldName: "field1",
         type: "required",
       });
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+      expect(window.gtag).toHaveBeenCalledWith("event", "formValidationError", {
         fieldName: "field2",
         type: "required",
       });
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+      expect(window.gtag).toHaveBeenCalledWith("event", "formValidationError", {
         fieldName: "field3",
         type: "required",
       });
     });
 
     it("does not show an error summary if there are fewer than 3 errors, instead it focuses on the first error", async () => {
-      const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
       const user = userEvent.setup();
       renderWithProviders(<DoulaFormTestPage showErrorSummary={true} />, "/form/personal/2");
       await user.type(
@@ -208,15 +201,15 @@ describe("error summary", () => {
       const focusedElement = document.activeElement as HTMLElement;
       expect(focusedElement).toHaveAccessibleDescription(errorMessage);
 
-      expect(mockSendGAEvent).not.toHaveBeenCalledWith("event", "formValidationError", {
+      expect(window.gtag).not.toHaveBeenCalledWith("event", "formValidationError", {
         fieldName: "field1",
         type: "required",
       });
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+      expect(window.gtag).toHaveBeenCalledWith("event", "formValidationError", {
         fieldName: "field2",
         type: "required",
       });
-      expect(mockSendGAEvent).toHaveBeenCalledWith("event", "formValidationError", {
+      expect(window.gtag).toHaveBeenCalledWith("event", "formValidationError", {
         fieldName: "field3",
         type: "required",
       });

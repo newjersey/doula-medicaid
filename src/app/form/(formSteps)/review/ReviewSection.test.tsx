@@ -1,7 +1,6 @@
 import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import { type DataStore } from "@/app/form/_utils/dataStore";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
-import * as googleAnalytics from "@/app/form/_utils/googleAnalytics";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import { screen, waitFor } from "@testing-library/react";
 import type { Mock } from "vitest";
@@ -20,14 +19,9 @@ const renderFunction = (dataStore: DataStore) =>
   renderWithProviders(<ReviewSection />, "/form/review/1", dataStore);
 
 describe("<ReviewSection />", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
   it("builds form, renders download link, and previous buttons", async () => {
     const mockCreateObjectURL = vi.fn().mockReturnValue("mock-blob-url");
     (window.URL.createObjectURL as Mock) = mockCreateObjectURL;
-    const mockSendGAEvent = vi.spyOn(googleAnalytics, "sendGAEvent");
 
     const dataStore = generateDataStoreWithRequiredFields();
     renderFunction(dataStore);
@@ -44,7 +38,7 @@ describe("<ReviewSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "Fee For Service Application.pdf");
 
     await downloadLink.click();
-    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "downloadApplication");
+    expect(window.gtag).toHaveBeenCalledWith("event", "downloadApplication");
   });
 
   it("shows a message if not all required fields have been filled", async () => {
