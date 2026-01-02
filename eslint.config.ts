@@ -1,4 +1,5 @@
 import js from "@eslint/js";
+import { importX } from "eslint-plugin-import-x";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import { defineConfig, globalIgnores } from "eslint/config";
@@ -20,12 +21,12 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
       },
     },
     rules: {
       "func-style": "error",
       "prefer-template": "error",
+      "no-restricted-imports": ["error", { patterns: ["..*"] }],
       "react-hooks/exhaustive-deps": "error",
       "react-hooks/incompatible-library": "off", // https://github.com/react-hook-form/react-hook-form/issues/11910
       /**
@@ -45,6 +46,7 @@ export default defineConfig([
        *    rule does not recognize this.
        */
       "react-hooks/refs": "off",
+      "react-refresh/only-export-components": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -52,7 +54,6 @@ export default defineConfig([
           varsIgnorePattern: "^_",
         },
       ],
-      "react-refresh/only-export-components": "off",
       "@typescript-eslint/no-floating-promises": "off",
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/strict-boolean-expressions": [
@@ -67,14 +68,13 @@ export default defineConfig([
           fixStyle: "separate-type-imports",
         },
       ],
-      "no-restricted-imports": ["error", { patterns: ["..*"] }],
     },
   },
   {
-    // plugins: {
-    //   // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/11543
-    //   "import-x": importX, // https://github.com/un-ts/eslint-plugin-import-x/issues/421
-    // },
-    // extends: ["import-x/flat/recommended", "import-x/flat/typescript"],
+    plugins: {
+      "import-x": importX,
+    },
+    extends: ["import-x/flat/recommended", "import-x/flat/typescript"],
+    rules: { "import-x/no-named-as-default-member": "off" },
   },
 ]);
