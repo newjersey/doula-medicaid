@@ -15,6 +15,7 @@ import {
 } from "@/app/form/_utils/testUtils/fillInputs";
 import type { Screen } from "@testing-library/dom";
 import userEvent, { type UserEvent } from "@testing-library/user-event";
+import type { Mock } from "vitest";
 
 type TestFieldParameters = {
   name: string | RegExp;
@@ -47,7 +48,7 @@ export type TestField = {
 };
 
 type RenderFunction = (dataStore?: DataStore) => {
-  mockUpdateDataStore: jest.Mock;
+  mockUpdateDataStore: Mock;
   pathname: string;
 };
 

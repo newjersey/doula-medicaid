@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 describe("DoulaTextInput", () => {
   it("renders the input with a label", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(<DoulaTextInput name="testInput" label="Test label" register={mockRegister} />);
 
     expect(mockRegister).toHaveBeenCalledWith("testInput", {});
@@ -19,7 +19,7 @@ describe("DoulaTextInput", () => {
 
   it("describes the input with a string hint", () => {
     render(
-      <DoulaTextInput name="testInput" label="Test label" hint="Test hint" register={jest.fn()} />,
+      <DoulaTextInput name="testInput" label="Test label" hint="Test hint" register={vi.fn()} />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
     expect(input).toHaveAccessibleDescription("Test hint");
@@ -32,7 +32,7 @@ describe("DoulaTextInput", () => {
           name="testInput"
           label="Test label"
           aria-describedby="anotherDescriptonID"
-          register={jest.fn()}
+          register={vi.fn()}
         />
         <span id="anotherDescriptonID">Additional description</span>
       </>,
@@ -43,7 +43,7 @@ describe("DoulaTextInput", () => {
 
   it("includes both the input and provided input prefix", () => {
     render(
-      <DoulaTextInput name="testInput" label="Test label" inputPrefix="$" register={jest.fn()} />,
+      <DoulaTextInput name="testInput" label="Test label" inputPrefix="$" register={vi.fn()} />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
     expect(input).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("DoulaTextInput", () => {
   });
 
   it("sets appropriate attributes when the input is required", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(<DoulaTextInput name="testInput" label="Test label" required register={mockRegister} />);
 
     expect(mockRegister).toHaveBeenCalledWith("testInput", { required: "Test label is required" });
@@ -111,7 +111,7 @@ describe("DoulaTextInput", () => {
             message: "This field has a custom required error message",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
         additionalRegisterOptions={{
           required: "This field has a custom required error message",
         }}
@@ -134,7 +134,7 @@ describe("DoulaTextInput", () => {
             message: "This field has a custom required error message",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
         additionalRegisterOptions={{
           required: "This field has a custom required error message",
         }}
@@ -167,7 +167,7 @@ describe("DoulaTextInput", () => {
             message: "This other field is required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
@@ -190,7 +190,7 @@ describe("DoulaTextInput", () => {
               message: "This field has a custom required error message",
             },
           }}
-          register={jest.fn()}
+          register={vi.fn()}
           additionalRegisterOptions={{
             required: "This field has a custom required error message",
           }}

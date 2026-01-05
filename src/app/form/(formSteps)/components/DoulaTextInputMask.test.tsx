@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 
 describe("DoulaTextInputMask", () => {
   it("renders the input with a label", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaTextInputMask
         name="testInput"
@@ -23,7 +23,7 @@ describe("DoulaTextInputMask", () => {
   });
 
   it("sets appropriate attributes when the input is required", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaTextInputMask
         name="testInput"
@@ -51,7 +51,7 @@ describe("DoulaTextInputMask", () => {
         inputMode="numeric"
         mask="___-___-____"
         pattern="\d{3}-\d{3}-\d{4}"
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
@@ -68,7 +68,7 @@ describe("DoulaTextInputMask", () => {
           inputMode="numeric"
           mask="___-___-____"
           pattern="\d{3}-\d{3}-\d{4}"
-          register={jest.fn()}
+          register={vi.fn()}
         />
         <span id="anotherDescriptonID">Additional description</span>
       </>,
@@ -92,7 +92,7 @@ describe("DoulaTextInputMask", () => {
             message: "This field has a custom required error message",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
         additionalRegisterOptions={{
           required: "This field has a custom required error message",
         }}
@@ -118,7 +118,7 @@ describe("DoulaTextInputMask", () => {
             message: "This field has a custom required error message",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
         additionalRegisterOptions={{
           required: "This field has a custom required error message",
         }}
@@ -154,7 +154,7 @@ describe("DoulaTextInputMask", () => {
             message: "This other field is required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
@@ -180,7 +180,7 @@ describe("DoulaTextInputMask", () => {
               message: "This field has a custom required error message",
             },
           }}
-          register={jest.fn()}
+          register={vi.fn()}
           additionalRegisterOptions={{
             required: "This field has a custom required error message",
           }}

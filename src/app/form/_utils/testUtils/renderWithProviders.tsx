@@ -8,7 +8,7 @@ export const renderWithProviders = (
   pathname: string,
   dataStore: DataStore = {},
 ) => {
-  const mockUpdateDataStore = jest.fn();
+  const mockUpdateDataStore = vi.fn();
   render(
     <MemoryRouter initialEntries={[pathname]}>
       <DataStoreContext value={dataStore}>

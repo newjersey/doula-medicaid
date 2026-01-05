@@ -92,7 +92,7 @@ describe("DoulaAddress", () => {
           testZip: "ZIP Code",
         }}
         errors={{}}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
       "/form/personal/2",
     );
@@ -147,7 +147,7 @@ describe("DoulaAddress", () => {
         }}
         autocomplete="shipping"
         errors={{}}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     expect(screen.getByRole("textbox", { name: "Street address *" })).toHaveAttribute(
