@@ -13,7 +13,6 @@ import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import FormProgressButtons from "@form/(formSteps)/components/FormProgressButtons";
 import { Checkbox } from "@trussworks/react-uswds";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 
 const manualFocusOrder: Array<keyof Personal4Data> = [
@@ -196,7 +195,7 @@ const PersonalStep4 = () => {
             <p className="usa-hint">
               Please reference the image below to find your account numbers.
             </p>
-            <Image
+            <img
               src={`${BASE_PATH}/img/voided_check.png`}
               width={568}
               height={355}
