@@ -2,9 +2,8 @@ import ErrorSummary from "@/app/form/(formSteps)/components/ErrorSummary";
 import {} from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { sendGAEvent } from "@next/third-parties/google";
 import { Form } from "@trussworks/react-uswds";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type {
   FieldErrors,
   FieldPath,
@@ -42,13 +41,8 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
   const navigate = useNavigate();
   const formProgressPosition = useFormProgressPosition();
   const [shouldSummarizeErrors, setShouldSummarizeErrors] = useState(false);
-  const [isDataLoaded, setIsDataLoaded] = useState<boolean>(false);
   const errorSummaryRef = useRef<HTMLDivElement>(null);
   const { updateDataStore } = useDataStore();
-
-  useEffect(() => {
-    setIsDataLoaded(true);
-  }, []);
 
   const onSubmit = (data: T) => {
     const stringData: { [key: string]: string } = {};
@@ -63,7 +57,7 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
   };
   const onError = (errors: FieldErrors<T>) => {
     for (const name of Object.keys(errors)) {
-      sendGAEvent("event", "formValidationError", {
+      gtag("event", "formValidationError", {
         fieldName: name,
         type: errors[name]?.type,
       });
@@ -88,23 +82,21 @@ export const DoulaForm = <T extends FieldValues>(props: DoulaFormProps<T>) => {
 
   return (
     <div>
-      {isDataLoaded && (
-        <Form onSubmit={onSubmitHandler} className="maxw-full" noValidate>
-          {props.showErrorSummary && (
-            <div className={`grid-row grid-gap-3 ${shouldSummarizeErrors && "margin-top-3"}`}>
-              <div className="desktop:grid-col-8">
-                <ErrorSummary<T>
-                  shouldSummarizeErrors={shouldSummarizeErrors}
-                  errors={props.errors}
-                  ref={errorSummaryRef}
-                  setFocus={props.setFocus}
-                />
-              </div>
+      <Form onSubmit={onSubmitHandler} className="maxw-full" noValidate>
+        {props.showErrorSummary && (
+          <div className={`grid-row grid-gap-3 ${shouldSummarizeErrors && "margin-top-3"}`}>
+            <div className="desktop:grid-col-8">
+              <ErrorSummary<T>
+                shouldSummarizeErrors={shouldSummarizeErrors}
+                errors={props.errors}
+                ref={errorSummaryRef}
+                setFocus={props.setFocus}
+              />
             </div>
-          )}
-          {props.children}
-        </Form>
-      )}
+          </div>
+        )}
+        {props.children}
+      </Form>
     </div>
   );
 };
