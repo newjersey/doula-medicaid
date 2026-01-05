@@ -54,8 +54,7 @@ const BusinessStep1 = () => {
   try {
     addressOptions = getAddressOptions(dataStore);
   } catch (e) {
-    if (e instanceof ValueNotFoundError) {
-    } else {
+    if (!(e instanceof ValueNotFoundError)) {
       throw e;
     }
   }
