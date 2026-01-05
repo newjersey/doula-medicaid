@@ -1,7 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["cypress"]
+    "types": ["cypress"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../src/*"],
+      "@form/*": ["../src/app/form/*"]
+    }
   },
   "include": ["./**/*.ts", "./**/*.tsx"],
   "exclude": []

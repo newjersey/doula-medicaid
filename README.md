@@ -74,7 +74,7 @@ committing.
 ```sh
 cp cypress/.env.test-production-flags .env.test.local
 
-# Restart the NextJS process
+# Restart the Vite process
 npm run dev:test
 
 # Then run cypress tests with `[productionFlags]` in their name
