@@ -1,31 +1,8 @@
 {
+  "files": [],
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "paths": {
-      "@/*": ["src/*"],
-      "@form/*": ["src/app/form/*"]
-    },
-    "types": ["jest"]
+    "strict": true // https://github.com/mightyiam/eslint-config-love/issues/481#issuecomment-747475360
   },
-  "files": ["node_modules/jest-expect-message/types/index.d.ts"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "eslint.config.ts"],
-  "exclude": ["node_modules", "./cypress.config.ts", "./cypress/**/*"]
+  // https://stackoverflow.com/questions/72027949/why-does-vite-create-two-typescript-config-files-tsconfig-json-and-tsconfig-nod
+  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
 }
