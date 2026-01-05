@@ -1,24 +1,11 @@
-"use client";
-
-import { getCurrentFormProgress } from "@/app/form/_utils/formProgress";
+import { getCurrentFormProgress, welcomeSectionId } from "@/app/form/_utils/formProgress";
 import { Alert } from "@trussworks/react-uswds";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 const WipBanner = () => {
-  const pathname = usePathname();
-  const pathParts = pathname.split("/");
-  const sectionsIdsWithBanner = ["welcome"];
-
-  const [pageIsLoaded, setPageIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setPageIsLoaded(true);
-  }, []);
-
-  if (!pageIsLoaded || pathParts.length !== 3) {
-    return <></>;
-  }
+  const location = useLocation();
+  const pathname = location.pathname;
+  const sectionsIdsWithBanner = [welcomeSectionId];
 
   const { section: currentSection } = getCurrentFormProgress(pathname);
 

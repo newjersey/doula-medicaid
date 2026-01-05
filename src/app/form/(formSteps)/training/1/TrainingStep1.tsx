@@ -1,5 +1,3 @@
-"use client";
-
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaAddress } from "@/app/form/(formSteps)/components/DoulaAddress";
 import DoulaRadio from "@/app/form/(formSteps)/components/DoulaRadio";
