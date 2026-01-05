@@ -1,5 +1,3 @@
-"use client";
-
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { formatAddressLabel } from "@/app/form/(formSteps)/business/1/_utils/formatAddressLabel";
 import type { Business1Data } from "@/app/form/(formSteps)/business/BusinessData";

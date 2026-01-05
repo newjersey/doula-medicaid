@@ -1,5 +1,3 @@
-"use client";
-
 import { BASE_PATH } from "@/app/basePath";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaAddressState } from "@/app/form/(formSteps)/components/DoulaAddressState";
