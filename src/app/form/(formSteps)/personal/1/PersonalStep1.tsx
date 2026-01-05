@@ -1,5 +1,3 @@
-"use client";
-
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DoulaDateInput } from "@/app/form/(formSteps)/components/DoulaDateInput";
 import DoulaTextInput from "@/app/form/(formSteps)/components/DoulaTextInput";

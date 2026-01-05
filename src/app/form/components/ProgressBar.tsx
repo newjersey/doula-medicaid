@@ -1,11 +1,12 @@
 import { getCurrentFormProgress, getProgressBarSections } from "@form/_utils/formProgress";
 import { RequiredMarker } from "@trussworks/react-uswds";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router";
 
 type CompletionState = "complete" | "current" | "incomplete";
 
 export const ProgressBar = () => {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
   const { section: currentSection, step: currentStep } = getCurrentFormProgress(pathname);
   const currentSectionIndex = getProgressBarSections().findIndex(
     (sections) => sections.id === currentSection.id,

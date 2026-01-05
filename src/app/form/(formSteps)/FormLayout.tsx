@@ -3,12 +3,12 @@ import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import { DataStoreProvider } from "@/app/form/_utils/DataStoreProvider";
 import { ProgressBar } from "@/app/form/components/ProgressBar";
 import { getCurrentFormProgress } from "@form/_utils/formProgress";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 export const FormLayout = () => {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
   const { section: currentSection, step: currentStep } = getCurrentFormProgress(pathname);
   let pageTitle = currentSection.name;
   if (currentStep !== undefined) {

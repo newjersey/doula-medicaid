@@ -17,6 +17,7 @@ import TrainingStep1 from "@/app/form/(formSteps)/training/1/TrainingStep1";
 import WebsiteUnavailable from "@/app/form/(formSteps)/welcome/WebsiteUnavailable";
 import WelcomeSection from "@/app/form/(formSteps)/welcome/WelcomeSection";
 import RootLayout from "@/app/RootLayout";
+import { Status } from "@/app/Status";
 import { Navigate, Route, Routes } from "react-router";
 import LegalStep1 from "./(formSteps)/legal/1/LegalStep1";
 import LegalStep2 from "./(formSteps)/legal/2/LegalStep2";
@@ -24,10 +25,10 @@ import LegalStep3 from "./(formSteps)/legal/3/LegalStep3";
 
 export const websiteUnavailableRoutes = (
   <Routes>
-    {/* <Route path="form">
-      <Route path="welcome" element={<WebsiteUnavailable />} />
-    </Route> */}
-    <Route path="*" element={<WebsiteUnavailable />} />
+    <Route path="status" element={<Status />} />
+    <Route path="*" element={<RootLayout />}>
+      <Route path="*" element={<WebsiteUnavailable />} />
+    </Route>
   </Routes>
 );
 
