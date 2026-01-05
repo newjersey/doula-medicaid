@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 
 describe("DoulaTextareaCharacterCount", () => {
   it("renders the input with a label", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaTextareaCharacterCount
         name="testInput"
@@ -31,7 +31,7 @@ describe("DoulaTextareaCharacterCount", () => {
         label="Test label"
         hint="Test hint"
         maxLength={10}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
@@ -46,7 +46,7 @@ describe("DoulaTextareaCharacterCount", () => {
           label="Test label"
           aria-describedby="anotherDescriptonID"
           maxLength={10}
-          register={jest.fn()}
+          register={vi.fn()}
         />
         <span id="anotherDescriptonID">Additional description</span>
       </>,
@@ -56,7 +56,7 @@ describe("DoulaTextareaCharacterCount", () => {
   });
 
   it("sets appropriate attributes when the input is required", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaTextareaCharacterCount
         name="testInput"
@@ -90,7 +90,7 @@ describe("DoulaTextareaCharacterCount", () => {
             message: "This field has a custom required error message",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
         additionalRegisterOptions={{
           required: "This field has a custom required error message",
         }}
@@ -113,7 +113,7 @@ describe("DoulaTextareaCharacterCount", () => {
             message: "This other field is required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });
@@ -137,7 +137,7 @@ describe("DoulaTextareaCharacterCount", () => {
               message: "This field has a custom required error message",
             },
           }}
-          register={jest.fn()}
+          register={vi.fn()}
           additionalRegisterOptions={{
             required: "This field has a custom required error message",
           }}
@@ -160,7 +160,7 @@ describe("DoulaTextareaCharacterCount", () => {
         name="testInput"
         label="Test label"
         maxLength={5}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const input = screen.getByRole("textbox", { name: "Test label" });

@@ -53,7 +53,7 @@ describe("<DoulaDateInput />", () => {
         dayName="dateOfBirthDay"
         yearName="dateOfBirthYear"
         errors={{}}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
 

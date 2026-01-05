@@ -12,6 +12,11 @@ export default defineConfig({
       "@form": path.resolve(__dirname, "./src/app/form"),
     },
   },
+  test: {
+    environment: "jsdom",
+    globals: true,
+    setupFiles: "./vitest.setup.ts",
+  },
   server: {
     port: 3000,
   },
