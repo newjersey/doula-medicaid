@@ -18,7 +18,7 @@ const threeOptions = [
 
 describe("DoulaRadio", () => {
   it("renders a group with all the radio options", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     render(
       <DoulaRadio
         name="testRadio"
@@ -64,7 +64,7 @@ describe("DoulaRadio", () => {
             value: "option2",
           },
         ]}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     const group = screen.getByRole("group", { name: "What option do you choose? Select one" });
@@ -81,7 +81,7 @@ describe("DoulaRadio", () => {
         value="option2"
         label="What option do you choose?"
         options={threeOptions}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
 
@@ -92,7 +92,7 @@ describe("DoulaRadio", () => {
   });
 
   it("calls registered with required and sets appropriate attributes when the input is required", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     const expectedRegisterOptions = {
       required: "This question is required",
     };
@@ -127,7 +127,7 @@ describe("DoulaRadio", () => {
           required
           options={threeOptions}
           errors={{}}
-          register={jest.fn()}
+          register={vi.fn()}
         />
         <span id="anotherDescriptonID">Additional description</span>
       </>,
@@ -139,7 +139,7 @@ describe("DoulaRadio", () => {
   });
 
   it("accepts additional register options", () => {
-    const mockRegister = jest.fn();
+    const mockRegister = vi.fn();
     const validationFunction = (value: string) => value === "true";
     render(
       <DoulaRadio
@@ -185,7 +185,7 @@ describe("DoulaRadio", () => {
             message: "This question is required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
 
@@ -209,7 +209,7 @@ describe("DoulaRadio", () => {
             type: "required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
         jsxErrorMessage={[
           {
             type: "required",
@@ -244,7 +244,7 @@ describe("DoulaRadio", () => {
             message: "This other question is required",
           },
         }}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
 
@@ -273,7 +273,7 @@ describe("DoulaRadio", () => {
               value: "test value",
             },
           ]}
-          register={jest.fn()}
+          register={vi.fn()}
         />,
       ),
     ).toThrow(
@@ -297,7 +297,7 @@ describe("DoulaRadio", () => {
               message: "This question is required",
             },
           }}
-          register={jest.fn()}
+          register={vi.fn()}
         />
         <span id="anotherDescriptonID">Additional description</span>
       </>,

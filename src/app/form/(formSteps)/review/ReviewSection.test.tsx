@@ -2,29 +2,26 @@ import ReviewSection from "@/app/form/(formSteps)/review/ReviewSection";
 import { type DataStore } from "@/app/form/_utils/dataStore";
 import { generateDataStoreWithRequiredFields } from "@/app/form/_utils/fillPdf/testUtils/formData";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
-import { jest } from "@jest/globals";
-import * as nextThirdPartiesGoogle from "@next/third-parties/google";
 import { screen, waitFor } from "@testing-library/react";
+import type { Mock } from "vitest";
 
-jest.mock("@form/_utils/fillPdf/form", () => ({
-  ...(jest.requireActual("@form/_utils/fillPdf/form") as object),
-  fillForm: jest.fn((_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
-    return { filename, bytes: new Uint8Array(0) };
-  }),
-}));
+vi.mock(import("@form/_utils/fillPdf/form"), async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    fillForm: vi.fn(async (_pdfFields, _fieldOptions, _pdfPath, filename: string) => {
+      return { filename, bytes: new Uint8Array(0) };
+    }),
+  };
+});
 
 const renderFunction = (dataStore: DataStore) =>
   renderWithProviders(<ReviewSection />, "/form/review/1", dataStore);
 
 describe("<ReviewSection />", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it("builds form, renders download link, and previous buttons", async () => {
-    const mockCreateObjectURL = jest.fn().mockReturnValue("mock-blob-url");
-    (global.URL.createObjectURL as jest.Mock) = mockCreateObjectURL;
-    const mockSendGAEvent = jest.spyOn(nextThirdPartiesGoogle, "sendGAEvent");
+    const mockCreateObjectURL = vi.fn().mockReturnValue("mock-blob-url");
+    (window.URL.createObjectURL as Mock) = mockCreateObjectURL;
 
     const dataStore = generateDataStoreWithRequiredFields();
     renderFunction(dataStore);
@@ -41,7 +38,7 @@ describe("<ReviewSection />", () => {
     expect(downloadLink).toHaveAttribute("download", "Fee For Service Application.pdf");
 
     await downloadLink.click();
-    expect(mockSendGAEvent).toHaveBeenCalledWith("event", "downloadApplication");
+    expect(window.gtag).toHaveBeenCalledWith("event", "downloadApplication");
   });
 
   it("shows a message if not all required fields have been filled", async () => {

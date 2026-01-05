@@ -45,7 +45,7 @@ describe("<DoulaAddressZip />", () => {
         value={""}
         autocomplete={"shipping"}
         errors={{}}
-        register={jest.fn()}
+        register={vi.fn()}
       />,
     );
     expect(screen.getByRole("textbox", { name: "ZIP Code *" })).toHaveAttribute(
