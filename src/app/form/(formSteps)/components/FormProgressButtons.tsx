@@ -1,6 +1,5 @@
 import { getAllSections, isFinalFormProgress } from "@/app/form/_utils/formProgress";
 import { formatFormProgressUrl, useFormProgressPosition } from "@form/_utils/formProgressRouting";
-import { sendGAEvent } from "@next/third-parties/google";
 import { Button, ButtonGroup } from "@trussworks/react-uswds";
 import { NavLink } from "react-router";
 
@@ -14,7 +13,7 @@ const FormProgressButtons = (props: { overrideClassNames?: string }) => {
         key="previous"
         to={formatFormProgressUrl(formProgressPosition.previous)}
         className="usa-button usa-button--outline margin-top-0"
-        onClick={() => sendGAEvent("event", "progressPrevious")}
+        onClick={() => gtag("event", "progressPrevious")}
       >
         Previous
       </NavLink>,
@@ -26,7 +25,7 @@ const FormProgressButtons = (props: { overrideClassNames?: string }) => {
         key="next"
         type="submit"
         className="margin-top-0"
-        onClick={() => sendGAEvent("event", "progressNext")}
+        onClick={() => gtag("event", "progressNext")}
       >
         {isFinalFormProgress(formProgressPosition.next, getAllSections()) ? "Review" : "Next"}
       </Button>,
