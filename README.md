@@ -8,10 +8,10 @@ https://www.nj.gov/humanservices/dmahs/info/doulahelp
 ## Getting Started
 
 Follow https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating to install `nvm`.
-Then, install node v20:
+Then, install node v24:
 
 ```sh
-nvm install 20
+nvm install 24
 ```
 
 First, install npm packages
