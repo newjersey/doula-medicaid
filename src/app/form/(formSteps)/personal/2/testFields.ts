@@ -2,7 +2,7 @@ import {
   createTestField,
   createTestFields,
   type TestField,
-} from "@/app/form/_utils/testUtils/sharedTests";
+} from "@/app/form/_utils/testUtils/testFields";
 
 export const mailingAddressQuestion =
   "Mailing address We will send official mail here. It can be your home address.";

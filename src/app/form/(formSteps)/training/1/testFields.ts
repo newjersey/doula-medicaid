@@ -2,7 +2,7 @@ import {
   createTestField,
   createTestFields,
   type TestField,
-} from "@/app/form/_utils/testUtils/sharedTests";
+} from "@/app/form/_utils/testUtils/testFields";
 
 const trainingAddressGroupName = "What is the address of your training organization? *";
 
