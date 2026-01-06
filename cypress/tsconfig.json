@@ -6,7 +6,7 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true,
 
-    "types": ["cypress", "vitest/globals", "@testing-library/jest-dom"],
+    "types": ["cypress", "node", "vitest/globals", "@testing-library/jest-dom"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["../src/*"],
