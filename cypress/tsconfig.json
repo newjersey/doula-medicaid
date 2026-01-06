@@ -8,8 +8,8 @@
 
     "types": [
       "node",
-      "vitest/globals",
-      "@testing-library/jest-dom",
+      // "vitest/globals",
+      // "@testing-library/jest-dom",
       "cypress"
       // ,
       // "@testing-library/dom"
@@ -25,5 +25,6 @@
     // "module": "ESNext",
     "noEmit": true
   },
-  "include": ["./**/*.ts", "./**/*.tsx"]
+  "include": ["./**/*.ts", "./**/*.tsx"],
+  "exclude": ["../cypress.config.ts"]
 }

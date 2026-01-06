@@ -22,7 +22,7 @@ import { testFields as screening2TestFields } from "@/app/form/(formSteps)/scree
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
 import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
-import { type TestField } from "@/app/form/_utils/testUtils/sharedTests";
+import { type TestField } from "@/app/form/_utils/testUtils/testFields";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
 export const formPages = [
