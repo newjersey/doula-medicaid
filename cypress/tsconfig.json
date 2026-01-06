@@ -1,29 +1,21 @@
 {
   // "extends": "../tsconfig.json",
   "compilerOptions": {
-    "tsBuildInfoFile": "../node_modules/.tmp/tsconfig.cypress.tsbuildinfo",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "types": ["node", "cypress"],
     "skipLibCheck": true,
 
-    "types": [
-      "node",
-      // "vitest/globals",
-      // "@testing-library/jest-dom",
-      "cypress"
-      // ,
-      // "@testing-library/dom"
-    ],
+    "noEmit": true,
+    "strict": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["../src/*"],
       "@form/*": ["../src/app/form/*"]
-    },
-
-    "target": "ES2023",
-    "lib": ["ES2023"],
-    // "module": "ESNext",
-    "noEmit": true
+    }
   },
   "include": ["./**/*.ts", "./**/*.tsx"],
   "exclude": ["../cypress.config.ts"]
