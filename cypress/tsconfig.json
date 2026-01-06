@@ -1,13 +1,20 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["cypress"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "types": ["node", "cypress"],
+    "skipLibCheck": true,
+
+    "noEmit": true,
+    "strict": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["../src/*"],
       "@form/*": ["../src/app/form/*"]
     }
   },
-  "include": ["./**/*.ts", "./**/*.tsx"],
-  "exclude": []
+  "include": ["./**/*.ts", "./**/*.tsx"]
 }
