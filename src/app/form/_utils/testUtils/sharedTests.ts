@@ -16,6 +16,7 @@ import {
 import type { Screen } from "@testing-library/dom";
 import userEvent, { type UserEvent } from "@testing-library/user-event";
 import type { Mock } from "vitest";
+import { expect } from "vitest"; // because this file is imported by cypress, which does not recognize vitest globals
 
 type TestFieldParameters = {
   name: string | RegExp;
