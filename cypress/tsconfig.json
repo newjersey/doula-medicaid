@@ -9,9 +9,10 @@
     "types": [
       "cypress",
       "node",
-      "vitest/globals",
-      "@testing-library/jest-dom",
-      "@testing-library/dom"
+      "vitest/globals"
+      // ,
+      // "@testing-library/jest-dom",
+      // "@testing-library/dom"
     ],
     "baseUrl": ".",
     "paths": {
@@ -24,6 +25,5 @@
     // "module": "ESNext",
     "noEmit": true
   },
-  "include": ["./**/*.ts", "./**/*.tsx"],
-  "exclude": []
+  "include": ["./**/*.ts", "./**/*.tsx"]
 }
