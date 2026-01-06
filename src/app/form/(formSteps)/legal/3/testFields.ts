@@ -1,4 +1,4 @@
-import { createTestField, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
+import { createTestField, type TestField } from "@/app/form/_utils/testUtils/testFields";
 
 export const noHasDisqualification: TestField = createTestField({
   name: "No",

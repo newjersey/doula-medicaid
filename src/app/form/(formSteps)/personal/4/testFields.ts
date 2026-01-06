@@ -1,4 +1,4 @@
-import { createTestField, createTestFields } from "@/app/form/_utils/testUtils/sharedTests";
+import { createTestField, createTestFields } from "@/app/form/_utils/testUtils/testFields";
 
 export const directDepositDetailsFields = createTestFields([
   {

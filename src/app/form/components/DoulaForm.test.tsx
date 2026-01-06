@@ -6,7 +6,7 @@ import {
   getInputField,
 } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
-import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/sharedTests";
+import { createTestFields, type TestField } from "@/app/form/_utils/testUtils/testFields";
 import { DoulaForm } from "@/app/form/components/DoulaForm";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";

@@ -14,12 +14,12 @@ import type { DataStore } from "@/app/form/_utils/dataStore";
 import { getInputField } from "@/app/form/_utils/testUtils/fillInputs";
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
-  type TestField,
   testFillFromDataStore,
   testInvalidField,
   testRequiredField,
   testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
+import type { TestField } from "@/app/form/_utils/testUtils/testFields";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
