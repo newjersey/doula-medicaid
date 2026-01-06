@@ -7,11 +7,11 @@
     "skipLibCheck": true,
 
     "types": [
-      "cypress",
       "node",
-      "vitest/globals"
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "cypress"
       // ,
-      // "@testing-library/jest-dom",
       // "@testing-library/dom"
     ],
     "baseUrl": ".",
