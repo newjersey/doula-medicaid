@@ -20,11 +20,11 @@ import {
 import { renderWithProviders } from "@/app/form/_utils/testUtils/renderWithProviders";
 import {
   testConditionalRender,
-  type TestField,
   testFillFromDataStore,
   testRequiredField,
   testSaveFieldsToDataStore,
 } from "@/app/form/_utils/testUtils/sharedTests";
+import type { TestField } from "@/app/form/_utils/testUtils/testFields";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 

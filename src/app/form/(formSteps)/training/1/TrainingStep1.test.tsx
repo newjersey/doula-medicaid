@@ -17,8 +17,8 @@ import {
   testFillFromDataStore,
   testRequiredField,
   testSaveFieldsToDataStore,
-  type TestField,
 } from "@/app/form/_utils/testUtils/sharedTests";
+import type { TestField } from "@/app/form/_utils/testUtils/testFields";
 import { fillField } from "@form/_utils/testUtils/fillInputs";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
