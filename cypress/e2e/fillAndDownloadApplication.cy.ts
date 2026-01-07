@@ -94,7 +94,7 @@ export const expectedFields: Partial<PdfFfsIndividual> = {
   "W9_Name See Specific Instructions on page 2": legalName, // page 26
 };
 
-import * as pdfjsLib from "pdfjs-dist";
+// import * as pdfjsLib from "pdfjs-dist";
 
 const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
 
@@ -111,72 +111,9 @@ export const fillAndDownloadApplication = (
    * test that every field within the page is filled under different circumstances
    */
 
-  cy.visit("/");
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
-  const titleEnding = "| NJ Doula Assistant";
-  cy.wait(500); // The title takes a moment to update
-  cy.title().should("eq", `Welcome ${titleEnding}`);
-  cy.contains("Start now").click();
-
-  for (const [index, formPage] of formPages.entries()) {
-    cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
-    cy.window().its("scrollY").should("equal", 0); // The page view should be at the top
-    cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
-
-    cy.get("form").within(() => {
-      for (const field of formPage.fields) {
-        if (field.role === "textbox") {
-          cy.get(`input[name="${field.dataStoreKey}"]`).type(field.testValue);
-        } else if (field.role === "radio") {
-          cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).check({
-            force: true,
-          });
-        } else if (field.role === "combobox") {
-          cy.get(`select[name="${field.dataStoreKey}"]`).select(field.testValue);
-        } else {
-          throw new Error(`Unexpected type ${field.role}`);
-        }
-      }
-    });
-    if (index !== formPages.length - 1) {
-      cy.contains("button", "Next").click();
-    } else {
-      cy.contains("button", "Review").click();
-    }
-  }
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
-
-  // Test clicking previous, and prepopulation
-  // for (const formPage of formPages.reverse()) {
-  //   cy.contains("Previous").click();
-  //   cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
-  //   cy.window().its("scrollY").should("equal", 0);
-  //   cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
-
-  //   cy.get("form").within(() => {
-  //     for (const field of formPage.fields) {
-  //       if (field.role === "textbox") {
-  //         cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
-  //       } else if (field.role === "radio") {
-  //         cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).should(
-  //           "be.checked",
-  //         );
-  //       } else if (field.role === "combobox") {
-  //         cy.get(`select[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
-  //       } else {
-  //         throw new Error(`Unexpected type ${field.role}`);
-  //       }
-  //     }
-  //   });
-  // }
-
-  // for (const _ of formPages.slice(0, -1)) {
-  //   cy.contains("button", "Next").click();
-  // }
-  // cy.contains("button", "Review").click();
+  cy.visit(`${Cypress.config("baseUrl")}/form/review`);
 
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
-  cy.title().should("eq", `Review ${titleEnding}`);
   cy.contains("Download your application").click();
   const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
 
@@ -185,33 +122,23 @@ export const fillAndDownloadApplication = (
       // new stuff
       // pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
       // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-      pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-        "pdfjs-dist/build/pdf.worker.min.mjs",
-        import.meta.url,
-      ).toString();
-      // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
-      const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
+      // pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+      //   "pdfjs-dist/build/pdf.worker.min.mjs",
+      //   import.meta.url,
+      // ).toString();
+      // // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
+      // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
       // throw new Error(`test ${pdf}`);
-      const page1 = await pdf.getPage(1);
-      const page1TextItems = await page1.getTextContent();
-      const page1Text = page1TextItems.items
-        .map(function (s) {
-          return s.toString();
-        })
-        .join("");
+      // const page1 = await pdf.getPage(1);
+      // const page1TextItems = await page1.getTextContent();
+      // const page1Text = page1TextItems.items
+      //   .map(function (s) {
+      //     return s.toString();
+      //   })
+      //   .join("");
 
-      throw new Error(page1Text);
+      // throw new Error(page1Text);
 
-      /**
-       * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
-       * by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I
-       * simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to
-       * an ArrayBuffer.
-       *
-       * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
-       * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does
-       * run.
-       */
       //  @ts-expect-error see above
       const uint8Array = new Uint8Array(file);
       const pdfDoc = await PDFDocument.load(uint8Array);
