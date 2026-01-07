@@ -24,6 +24,12 @@ import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/t
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { type TestField } from "@/app/form/_utils/testUtils/testFields";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
+import type { PDFDocumentProxy } from "pdfjs-dist";
+import * as pdfjsLib from "pdfjs-dist";
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url,
+).toString();
 
 export const formPages = [
   { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
@@ -97,6 +103,10 @@ export const expectedFields: Partial<PdfFfsIndividual> = {
 it("should fill and download the application", () => {
   fillAndDownloadApplication(formPages, expectedFields);
 });
+afterEach(() => {
+  console.log("after test");
+  // todo: delete files in public/cypressTest dir
+});
 
 export const fillAndDownloadApplication = (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
@@ -112,6 +122,47 @@ export const fillAndDownloadApplication = (
   const titleEnding = "| NJ Doula Assistant";
   cy.wait(500); // The title takes a moment to update
   cy.title().should("eq", `Welcome ${titleEnding}`);
+
+  testFillApplication(formPages, titleEnding);
+  testPrepopulation(formPages, titleEnding);
+
+  for (const _ of formPages.slice(0, -1)) {
+    cy.contains("button", "Next").click();
+  }
+  cy.contains("button", "Review").click();
+
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
+  cy.title().should("eq", `Review ${titleEnding}`);
+  cy.contains("Download your application").click();
+
+  const fileName = "Fee For Service Application.pdf";
+  cy.readFile(`${Cypress.config("downloadsFolder")}/${fileName}`, null).then(
+    async (file: typeof Cypress.Buffer) => {
+      cy.writeFile(`public/cypressTest/${fileName}`, file, null).then(async () => {
+        /**
+         * Test that the text on the cover page can be read. We had a prior bug where the cover page
+         * of the output pdf could not be accessibly read - it seemed to be an image, that was not
+         * highlight-able or readable by a screenreader.
+         *
+         * Our usual pdf-lib [cannot read plain text outside of a form
+         * field](https://github.com/Hopding/pdf-lib#limitations), so we use pdfjs-dist which is
+         * able to do so. That said, pdfjs-dist can only read documents from URLs, and not local
+         * files. So we have cypress write the downloaded file into the `public` directory, which
+         * vite then serves for pdfjs-dist to call `getDocument` on.
+         */
+        const pdf = await pdfjsLib.getDocument(`http://localhost:3000/cypressTest/${fileName}`)
+          .promise;
+        await testCoverPageAccessibleText(pdf);
+        await testFormFields(file);
+      });
+    },
+  );
+};
+
+const testFillApplication = (
+  formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
+  titleEnding: string,
+) => {
   cy.contains("Start now").click();
 
   for (const [index, formPage] of formPages.entries()) {
@@ -141,7 +192,12 @@ export const fillAndDownloadApplication = (
     }
   }
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
+};
 
+const testPrepopulation = (
+  formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
+  titleEnding: string,
+) => {
   // Test clicking previous, and prepopulation
   for (const formPage of formPages.reverse()) {
     cy.contains("Previous").click();
@@ -165,46 +221,63 @@ export const fillAndDownloadApplication = (
       }
     });
   }
+};
 
-  for (const _ of formPages.slice(0, -1)) {
-    cy.contains("button", "Next").click();
-  }
-  cy.contains("button", "Review").click();
-
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
-  cy.title().should("eq", `Review ${titleEnding}`);
-  cy.contains("Download your application").click();
-
-  cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
-    async (file: typeof Cypress.Buffer) => {
-      /**
-       * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
-       * by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I
-       * simply could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to
-       * an ArrayBuffer.
-       *
-       * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
-       * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does
-       * run.
-       */
-      //  @ts-expect-error see above
-      const uint8Array = new Uint8Array(file);
-      const pdfDoc = await PDFDocument.load(uint8Array);
-      const form = pdfDoc.getForm();
-
-      const pageCount = pdfDoc.getPageCount();
-      expect(pageCount).to.equal(39);
-
-      for (const [key, value] of Object.entries(expectedFields)) {
-        const field = form.getField(key);
-        if (field instanceof PDFTextField) {
-          expect(field.getText()).to.equal(value);
-        } else if (field instanceof PDFCheckBox) {
-          expect(field.isChecked()).to.equal(value);
-        } else {
-          throw new Error(`Unexpected field class ${field.constructor.name}`);
-        }
+const testCoverPageAccessibleText = async (pdf: PDFDocumentProxy) => {
+  /**
+   * Test that the text on the cover page can be read. We had a prior bug where the cover page of
+   * the output pdf could not be accessibly read - it seemed to be an image, that was not
+   * highlight-able or readable by a screenreader.
+   *
+   * Our usual pdf-lib [cannot read plain text outside of a form
+   * field](https://github.com/Hopding/pdf-lib#limitations), so we use pdfjs-dist which is able to
+   * do so. That said, pdfjs-dist can only read documents from URLs, and not local files. So we have
+   * cypress write the downloaded file into the `public` directory, which vite then serves for
+   * pdfjs-dist to call `getDocument` on.
+   */
+  const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
+  const page1 = await pdf.getPage(1);
+  const page1TextItems = await page1.getTextContent();
+  const page1Text = page1TextItems.items
+    .map((item) => {
+      if ("str" in item) {
+        return item.str;
+      } else {
+        throw new Error(`Property str unexpectedly does not exist on ${item}`);
       }
-    },
-  );
+    })
+    .join(" ");
+  expect(page1Text).to.include(coverPageText);
+  throw new Error(`Unexpected cover page`);
+};
+
+const testFormFields = async (file: typeof Cypress.Buffer) => {
+  /**
+   * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned by
+   * cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I simply
+   * could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to an
+   * ArrayBuffer.
+   *
+   * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile does
+   * seem to indicate that the return is indeed Cypress.Buffer However, the codes does run.
+   */
+  //  @ts-expect-error see above
+  const uint8Array = new Uint8Array(file);
+  const pdfDoc = await PDFDocument.load(uint8Array);
+  const form = pdfDoc.getForm();
+
+  const pageCount = pdfDoc.getPageCount();
+  expect(pageCount).to.equal(39);
+
+  for (const [key, value] of Object.entries(expectedFields)) {
+    const field = form.getField(key);
+    if (field instanceof PDFTextField) {
+      expect(field.getText()).to.equal(value);
+    } else if (field instanceof PDFCheckBox) {
+      expect(field.isChecked()).to.equal(value);
+    } else {
+      throw new Error(`Unexpected field class ${field.constructor.name}`);
+    }
+  }
+  throw new Error(`Unexpected fail`);
 };
