@@ -114,12 +114,10 @@ it("should fill and download the application", () => {
 const FILE_NAME = "Fee For Service Application.pdf";
 const FILE_PATH_IN_PUBLIC_DIR = `cypressTest/fee_for_service_application.pdf`;
 
-// also do this before
 beforeEach(() => {
-  // Use cy.exec to run a shell command to remove the file. Do not fail the test if file
-  // is already missing (failOnNonZeroExit: false).
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  // cy.exec(`rm -f "public/${FILE_PATH_IN_PUBLIC_DIR}"`, { failOnNonZeroExit: false });
+  // cy.exec(`[ -e "public/cypressTest" ] && rm -r "public/cypressTest" || true`);
+  // cy.exec(`mkdir -p "public/cypressTest"`);
+  cy.exec(`rm -f "public/cypressTest/fee_for_service_application.pdf"`);
 });
 
 export const fillAndDownloadApplication = async (
@@ -272,6 +270,7 @@ const testCoverPageAccessibleText = (downloadedPdfpath: string, expectedCoverPag
   cy.exec(`cp "${downloadedPdfpath}" "public/${FILE_PATH_IN_PUBLIC_DIR}"`, {
     failOnNonZeroExit: true,
   }).then(async () => {
+    cy.wait(500);
     const pdfUrl = `${Cypress.config("baseUrl")}/${FILE_PATH_IN_PUBLIC_DIR}`;
     console.log("pdfUrl", pdfUrl);
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
