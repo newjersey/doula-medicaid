@@ -112,7 +112,9 @@ export const fillAndDownloadApplication = (
   cy.contains("Download your application").click();
   const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
 
+  cy.writeFile("public/cypressTest/foo.txt", "file");
   cy.readFile(pdfFilePath, null).then(async (file: typeof Cypress.Buffer) => {
+    throw new Error(`done`);
     pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
       "pdfjs-dist/build/pdf.worker.min.mjs",
       import.meta.url,
