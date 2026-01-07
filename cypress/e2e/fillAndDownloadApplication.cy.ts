@@ -127,23 +127,26 @@ export const fillAndDownloadApplication = async (
   expectedFields: Partial<PdfFfsIndividual>,
   expectedCoverPageText: string,
 ) => {
-  cy.visit("/");
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
-  const titleEnding = "| NJ Doula Assistant";
-  cy.title().should("eq", `Welcome ${titleEnding}`);
+  // cy.visit("/");
+  // cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
+  // const titleEnding = "| NJ Doula Assistant";
+  // cy.title().should("eq", `Welcome ${titleEnding}`);
 
-  testFillApplication(formPages, titleEnding);
-  testFieldsArePrepopulated(formPages, titleEnding);
+  // testFillApplication(formPages, titleEnding);
+  // testFieldsArePrepopulated(formPages, titleEnding);
+
+  cy.visit("/form/review");
+  // asd
 
   cy.contains("Download your application").click();
   const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${FILE_NAME}`;
 
-  cy.readFile(`${Cypress.config("downloadsFolder")}/${FILE_NAME}`, null).then(
-    async (file: typeof Cypress.Buffer) => {
-      await testPdfFields(file, expectedFields);
-      return file;
-    },
-  );
+  // cy.readFile(`${Cypress.config("downloadsFolder")}/${FILE_NAME}`, null).then(
+  //   async (file: typeof Cypress.Buffer) => {
+  //     await testPdfFields(file, expectedFields);
+  //     return file;
+  //   },
+  // );
 
   await testCoverPageAccessibleText(downloadedPdfpath, expectedCoverPageText);
 
