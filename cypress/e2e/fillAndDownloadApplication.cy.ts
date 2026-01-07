@@ -93,13 +93,14 @@ export const expectedFields: Partial<PdfFfsIndividual> = {
   "W9_Name See Specific Instructions on page 2": legalName, // page 26
 };
 
-const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
+const coverPageText = "This is your pre-filled Medicaid";
 
 it("should fill and download the application", () => {
   fillAndDownloadApplication(formPages, expectedFields);
 });
 
 import * as pdfjsLib from "pdfjs-dist";
+import type { TextItem, TextMarkedContent } from "pdfjs-dist/types/src/display/api";
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url,
@@ -125,11 +126,15 @@ export const fillAndDownloadApplication = (
       const page1 = await pdf.getPage(1);
       const page1TextItems = await page1.getTextContent();
       const page1Text = page1TextItems.items
-        .map(function (s) {
-          return s.toString();
+        .map((s: TextItem | TextMarkedContent) => {
+          if ("str" in s) {
+            return s.str;
+          } else {
+            throw new Error(`test ${page1Text}`);
+          }
         })
         .join("");
-      throw new Error(`test ${page1Text}`);
+      expect(page1Text).to.include(coverPageText);
     });
   });
 };
