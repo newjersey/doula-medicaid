@@ -30,7 +30,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
-import * as fs from "fs";
+import fs from "fs";
 
 it("should fill and download the application", () => {
   const formPages = [
@@ -110,6 +110,8 @@ it("should fill and download the application", () => {
 
   fillAndDownloadApplication(formPages, expectedFields, expectedCoverPageText);
 });
+
+// also do this before
 afterEach(() => {
   console.log("after test");
   // todo: delete files in public/cypressTest dir
