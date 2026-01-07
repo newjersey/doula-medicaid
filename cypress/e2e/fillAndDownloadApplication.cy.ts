@@ -24,139 +24,139 @@ import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/t
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { type TestField } from "@/app/form/_utils/testUtils/testFields";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
-import type { PDFDocumentProxy } from "pdfjs-dist";
 import * as pdfjsLib from "pdfjs-dist";
 pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
   import.meta.url,
 ).toString();
 
-export const formPages = [
-  { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
-  { url: "/form/screening/2", fields: screening2TestFields, titleName: "Screening 2 of 3" },
-  { url: "/form/screening/3", fields: screening3TestFields, titleName: "Screening 3 of 3" },
-  { url: "/form/insurance/1", fields: insurance1TestFields, titleName: "Insurance 1 of 2" },
-  { url: "/form/insurance/2", fields: insurance2TestFields, titleName: "Insurance 2 of 2" },
-  { url: "/form/training/1", fields: training1TestFields, titleName: "Training 1 of 1" },
-  {
-    url: "/form/personal/1",
-    fields: personal1TestFields,
-    titleName: "Personal 1 of 4",
-  },
-  {
-    url: "/form/personal/2",
-    fields: personal2TestFields,
-    titleName: "Personal 2 of 4",
-  },
-  {
-    url: "/form/personal/3",
-    fields: personal3TestFields,
-    titleName: "Personal 3 of 4",
-  },
-  {
-    url: "/form/personal/4",
-    fields: personal4TestFields,
-    titleName: "Personal 4 of 4",
-  },
-  {
-    url: "/form/business/1",
-    fields: business1TestFields,
-    titleName: "Business 1 of 4",
-  },
-  {
-    url: "/form/business/2",
-    fields: business2TestFields,
-    titleName: "Business 2 of 4",
-  },
-  {
-    url: "/form/business/3",
-    fields: business3TestFields,
-    titleName: "Business 3 of 4",
-  },
-  {
-    url: "/form/business/4",
-    fields: business4TestFields,
-    titleName: "Business 4 of 4",
-  },
-  { url: "/form/legal/1", fields: legal1TestFields, titleName: "Legal 1 of 3" },
-  { url: "/form/legal/2", fields: legal2TestFields, titleName: "Legal 2 of 3" },
-  { url: "/form/legal/3", fields: legal3TestFields, titleName: "Legal 3 of 3" },
-];
-
-const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
-export const expectedFields: Partial<PdfFfsIndividual> = {
-  fd427LegalName: legalName, // page 4
-  fd443telephoneno: phoneNumberField.expectedValue, // page 6
-  fd425legalname: legalName, // page 8
-  fd425licensesuspensionno: true, // page 9
-  "fd455aREQPAPER_Provider Name": legalName, // page 13
-  "fd452disclosingentitySole Proprietorship": true, // page 17
-  fd452affliatedprevious12monthsno: true, // page 18
-  fd452nameofotherentitywithownershipinteresline1: "N/A", // page 19
-  fd452significanttransactionsprevious5yearsline1: "N/A", // page 20
-  fd452ownershiphealthcareproviderno: true, // page 21
-  fd452operatedorfiscallymanagedno: true, // page 22
-  fd452increasedbedcapacityno: true, // page 23
-  "W9_Name See Specific Instructions on page 2": legalName, // page 26
-};
+import * as fs from "fs";
 
 it("should fill and download the application", () => {
-  fillAndDownloadApplication(formPages, expectedFields);
-});
-afterEach(() => {
-  console.log("after test");
-  // todo: delete files in public/cypressTest dir
-});
+  const formPages = [
+    { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
+    { url: "/form/screening/2", fields: screening2TestFields, titleName: "Screening 2 of 3" },
+    { url: "/form/screening/3", fields: screening3TestFields, titleName: "Screening 3 of 3" },
+    { url: "/form/insurance/1", fields: insurance1TestFields, titleName: "Insurance 1 of 2" },
+    { url: "/form/insurance/2", fields: insurance2TestFields, titleName: "Insurance 2 of 2" },
+    { url: "/form/training/1", fields: training1TestFields, titleName: "Training 1 of 1" },
+    {
+      url: "/form/personal/1",
+      fields: personal1TestFields,
+      titleName: "Personal 1 of 4",
+    },
+    {
+      url: "/form/personal/2",
+      fields: personal2TestFields,
+      titleName: "Personal 2 of 4",
+    },
+    {
+      url: "/form/personal/3",
+      fields: personal3TestFields,
+      titleName: "Personal 3 of 4",
+    },
+    {
+      url: "/form/personal/4",
+      fields: personal4TestFields,
+      titleName: "Personal 4 of 4",
+    },
+    {
+      url: "/form/business/1",
+      fields: business1TestFields,
+      titleName: "Business 1 of 4",
+    },
+    {
+      url: "/form/business/2",
+      fields: business2TestFields,
+      titleName: "Business 2 of 4",
+    },
+    {
+      url: "/form/business/3",
+      fields: business3TestFields,
+      titleName: "Business 3 of 4",
+    },
+    {
+      url: "/form/business/4",
+      fields: business4TestFields,
+      titleName: "Business 4 of 4",
+    },
+    { url: "/form/legal/1", fields: legal1TestFields, titleName: "Legal 1 of 3" },
+    { url: "/form/legal/2", fields: legal2TestFields, titleName: "Legal 2 of 3" },
+    { url: "/form/legal/3", fields: legal3TestFields, titleName: "Legal 3 of 3" },
+  ];
 
-export const fillAndDownloadApplication = (
-  formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
-  expectedFields: Partial<PdfFfsIndividual>,
-) => {
+  const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
   /**
    * Test one field per page, and one of every type of field. Leaving unit individual-page tests to
    * test that every field within the page is filled under different circumstances
    */
+  const expectedFields: Partial<PdfFfsIndividual> = {
+    fd427LegalName: legalName, // page 4
+    fd443telephoneno: phoneNumberField.expectedValue, // page 6
+    fd425legalname: legalName, // page 8
+    fd425licensesuspensionno: true, // page 9
+    "fd455aREQPAPER_Provider Name": legalName, // page 13
+    "fd452disclosingentitySole Proprietorship": true, // page 17
+    fd452affliatedprevious12monthsno: true, // page 18
+    fd452nameofotherentitywithownershipinteresline1: "N/A", // page 19
+    fd452significanttransactionsprevious5yearsline1: "N/A", // page 20
+    fd452ownershiphealthcareproviderno: true, // page 21
+    fd452operatedorfiscallymanagedno: true, // page 22
+    fd452increasedbedcapacityno: true, // page 23
+    "W9_Name See Specific Instructions on page 2": legalName, // page 26
+  };
 
+  const expectedCoverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
+
+  fillAndDownloadApplication(formPages, expectedFields, expectedCoverPageText);
+});
+afterEach(() => {
+  console.log("after test");
+  // todo: delete files in public/cypressTest dir
+  fs.unlink(`public/cypressTest/Fee For Service Application.pdf`, (err) => {
+    if (err) throw err;
+    console.log("path/file.txt was deleted");
+  });
+});
+
+export const fillAndDownloadApplication = async (
+  formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
+  expectedFields: Partial<PdfFfsIndividual>,
+  expectedCoverPageText: string,
+) => {
   cy.visit("/");
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
   const titleEnding = "| NJ Doula Assistant";
-  cy.wait(500); // The title takes a moment to update
   cy.title().should("eq", `Welcome ${titleEnding}`);
 
   testFillApplication(formPages, titleEnding);
-  testPrepopulation(formPages, titleEnding);
+  testFieldsArePrepopulated(formPages, titleEnding);
 
-  for (const _ of formPages.slice(0, -1)) {
-    cy.contains("button", "Next").click();
-  }
-  cy.contains("button", "Review").click();
-
-  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
-  cy.title().should("eq", `Review ${titleEnding}`);
   cy.contains("Download your application").click();
-
   const fileName = "Fee For Service Application.pdf";
-  cy.readFile(`${Cypress.config("downloadsFolder")}/${fileName}`, null).then(
-    async (file: typeof Cypress.Buffer) => {
+  cy.readFile(`${Cypress.config("downloadsFolder")}/${fileName}`, null)
+    .then(async (file: typeof Cypress.Buffer) => {
+      await testPdfFields(file, expectedFields);
+      return file;
+    })
+    .then((file: typeof Cypress.Buffer) => {
+      /**
+       * Our usual pdf-lib [cannot read plain text outside of a form
+       * field](https://github.com/Hopding/pdf-lib#limitations), so we use pdfjs-dist which is able
+       * to do so. That said, pdfjs-dist can only read documents from URLs, and not local files. So
+       * we have cypress write the downloaded file into the `public` directory, which vite then
+       * serves for pdfjs-dist to call `getDocument` on.
+       *
+       * There's probably a way to just copy the file using a filesystem library, instead of reading
+       * and writing it. But couldn't figure the imports out in a timebox.
+       */
       cy.writeFile(`public/cypressTest/${fileName}`, file, null).then(async () => {
-        /**
-         * Test that the text on the cover page can be read. We had a prior bug where the cover page
-         * of the output pdf could not be accessibly read - it seemed to be an image, that was not
-         * highlight-able or readable by a screenreader.
-         *
-         * Our usual pdf-lib [cannot read plain text outside of a form
-         * field](https://github.com/Hopding/pdf-lib#limitations), so we use pdfjs-dist which is
-         * able to do so. That said, pdfjs-dist can only read documents from URLs, and not local
-         * files. So we have cypress write the downloaded file into the `public` directory, which
-         * vite then serves for pdfjs-dist to call `getDocument` on.
-         */
-        const pdf = await pdfjsLib.getDocument(`http://localhost:3000/cypressTest/${fileName}`)
-          .promise;
-        await testCoverPageAccessibleText(pdf);
-        await testFormFields(file);
+        await testCoverPageAccessibleText(
+          `http://localhost:3000/cypressTest/${fileName}`,
+          expectedCoverPageText,
+        );
       });
-    },
-  );
+    });
 };
 
 const testFillApplication = (
@@ -192,13 +192,14 @@ const testFillApplication = (
     }
   }
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
+  cy.title().should("eq", `Review ${titleEnding}`);
 };
 
-const testPrepopulation = (
+const testFieldsArePrepopulated = (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
   titleEnding: string,
 ) => {
-  // Test clicking previous, and prepopulation
+  // Starting from the Review page, test clicking previous, and prepopulation
   for (const formPage of formPages.reverse()) {
     cy.contains("Previous").click();
     cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
@@ -221,37 +222,19 @@ const testPrepopulation = (
       }
     });
   }
+
+  // Go back to review page
+  for (const _ of formPages.slice(0, -1)) {
+    cy.contains("button", "Next").click();
+  }
+  cy.contains("button", "Review").click();
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
 };
 
-const testCoverPageAccessibleText = async (pdf: PDFDocumentProxy) => {
-  /**
-   * Test that the text on the cover page can be read. We had a prior bug where the cover page of
-   * the output pdf could not be accessibly read - it seemed to be an image, that was not
-   * highlight-able or readable by a screenreader.
-   *
-   * Our usual pdf-lib [cannot read plain text outside of a form
-   * field](https://github.com/Hopding/pdf-lib#limitations), so we use pdfjs-dist which is able to
-   * do so. That said, pdfjs-dist can only read documents from URLs, and not local files. So we have
-   * cypress write the downloaded file into the `public` directory, which vite then serves for
-   * pdfjs-dist to call `getDocument` on.
-   */
-  const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
-  const page1 = await pdf.getPage(1);
-  const page1TextItems = await page1.getTextContent();
-  const page1Text = page1TextItems.items
-    .map((item) => {
-      if ("str" in item) {
-        return item.str;
-      } else {
-        throw new Error(`Property str unexpectedly does not exist on ${item}`);
-      }
-    })
-    .join(" ");
-  expect(page1Text).to.include(coverPageText);
-  throw new Error(`Unexpected cover page`);
-};
-
-const testFormFields = async (file: typeof Cypress.Buffer) => {
+const testPdfFields = async (
+  file: typeof Cypress.Buffer,
+  expectedFields: Partial<PdfFfsIndividual>,
+) => {
   /**
    * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned by
    * cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I simply
@@ -279,5 +262,25 @@ const testFormFields = async (file: typeof Cypress.Buffer) => {
       throw new Error(`Unexpected field class ${field.constructor.name}`);
     }
   }
-  throw new Error(`Unexpected fail`);
+};
+
+/**
+ * Test that the text on the cover page can be read. We had a prior bug where the cover page of the
+ * output pdf could not be accessibly read - it seemed to be an image, that was not highlight-able
+ * or readable by a screenreader.
+ */
+const testCoverPageAccessibleText = async (pdfUrl: string, expectedCoverPageText: string) => {
+  const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+  const page1 = await pdf.getPage(1);
+  const page1TextItems = await page1.getTextContent();
+  const page1Text = page1TextItems.items
+    .map((item) => {
+      if ("str" in item) {
+        return item.str;
+      } else {
+        throw new Error(`Property str unexpectedly does not exist on ${item}`);
+      }
+    })
+    .join(" ");
+  expect(page1Text).to.include(expectedCoverPageText);
 };
