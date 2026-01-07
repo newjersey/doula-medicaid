@@ -119,7 +119,7 @@ beforeEach(() => {
   // Use cy.exec to run a shell command to remove the file. Do not fail the test if file
   // is already missing (failOnNonZeroExit: false).
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  cy.exec(`rm -f "public/${FILE_PATH_IN_PUBLIC_DIR}"`, { failOnNonZeroExit: false });
+  // cy.exec(`rm -f "public/${FILE_PATH_IN_PUBLIC_DIR}"`, { failOnNonZeroExit: false });
 });
 
 export const fillAndDownloadApplication = async (
@@ -141,16 +141,8 @@ export const fillAndDownloadApplication = async (
   cy.contains("Download your application").click();
   const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${FILE_NAME}`;
 
-  // cy.readFile(`${Cypress.config("downloadsFolder")}/${FILE_NAME}`, null).then(
-  //   async (file: typeof Cypress.Buffer) => {
-  //     await testPdfFields(file, expectedFields);
-  //     return file;
-  //   },
-  // );
-
-  await testCoverPageAccessibleText(downloadedPdfpath, expectedCoverPageText);
-
-  // throw new Error("test");
+  testCoverPageAccessibleText(downloadedPdfpath, expectedCoverPageText);
+  testPdfFields(downloadedPdfpath, expectedFields);
 };
 
 const testFillApplication = (
@@ -226,36 +218,38 @@ const testFieldsArePrepopulated = (
 };
 
 const testPdfFields = async (
-  file: typeof Cypress.Buffer,
+  downloadedPdfpath: string,
   expectedFields: Partial<PdfFfsIndividual>,
 ) => {
-  /**
-   * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned by
-   * cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I simply
-   * could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to an
-   * ArrayBuffer.
-   *
-   * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile does
-   * seem to indicate that the return is indeed Cypress.Buffer However, the codes does run.
-   */
-  //  @ts-expect-error see above
-  const uint8Array = new Uint8Array(file);
-  const pdfDoc = await PDFDocument.load(uint8Array);
-  const form = pdfDoc.getForm();
+  cy.readFile(downloadedPdfpath, null).then(async (file: typeof Cypress.Buffer) => {
+    /**
+     * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned by
+     * cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I simply
+     * could not figure out how to convert https://docs.cypress.io/api/utilities/buffer to an
+     * ArrayBuffer.
+     *
+     * I don't know if I'm typing file incorrectly. https://docs.cypress.io/api/commands/readfile
+     * does seem to indicate that the return is indeed Cypress.Buffer However, the codes does run.
+     */
+    //  @ts-expect-error see above
+    const uint8Array = new Uint8Array(file);
+    const pdfDoc = await PDFDocument.load(uint8Array);
+    const form = pdfDoc.getForm();
 
-  const pageCount = pdfDoc.getPageCount();
-  expect(pageCount).to.equal(39);
+    const pageCount = pdfDoc.getPageCount();
+    expect(pageCount).to.equal(39);
 
-  for (const [key, value] of Object.entries(expectedFields)) {
-    const field = form.getField(key);
-    if (field instanceof PDFTextField) {
-      expect(field.getText()).to.equal(value);
-    } else if (field instanceof PDFCheckBox) {
-      expect(field.isChecked()).to.equal(value);
-    } else {
-      throw new Error(`Unexpected field class ${field.constructor.name}`);
+    for (const [key, value] of Object.entries(expectedFields)) {
+      const field = form.getField(key);
+      if (field instanceof PDFTextField) {
+        expect(field.getText()).to.equal(value);
+      } else if (field instanceof PDFCheckBox) {
+        expect(field.isChecked()).to.equal(value);
+      } else {
+        throw new Error(`Unexpected field class ${field.constructor.name}`);
+      }
     }
-  }
+  });
 };
 
 /**
@@ -274,14 +268,12 @@ const testPdfFields = async (
  * output pdf could not be accessibly read - it seemed to be an image, that was not highlight-able
  * or readable by a screenreader.
  */
-const testCoverPageAccessibleText = async (
-  downloadedPdfpath: string,
-  expectedCoverPageText: string,
-) => {
+const testCoverPageAccessibleText = (downloadedPdfpath: string, expectedCoverPageText: string) => {
   cy.exec(`cp "${downloadedPdfpath}" "public/${FILE_PATH_IN_PUBLIC_DIR}"`, {
     failOnNonZeroExit: true,
   }).then(async () => {
     const pdfUrl = `${Cypress.config("baseUrl")}/${FILE_PATH_IN_PUBLIC_DIR}`;
+    console.log("pdfUrl", pdfUrl);
     const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
     const page1 = await pdf.getPage(1);
     const page1TextItems = await page1.getTextContent();
