@@ -23,7 +23,6 @@ import { testFields as screening3TestFields } from "@/app/form/(formSteps)/scree
 import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
 import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import { type TestField } from "@/app/form/_utils/testUtils/testFields";
-import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
 
 export const formPages = [
   { url: "/form/screening/1", fields: screening1TestFields, titleName: "Screening 1 of 3" },
@@ -101,6 +100,10 @@ it("should fill and download the application", () => {
 });
 
 import * as pdfjsLib from "pdfjs-dist";
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url,
+).toString();
 
 export const fillAndDownloadApplication = (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
@@ -112,46 +115,21 @@ export const fillAndDownloadApplication = (
   cy.contains("Download your application").click();
   const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
 
-  cy.writeFile("public/cypressTest/foo.txt", "file");
   cy.readFile(pdfFilePath, null).then(async (file: typeof Cypress.Buffer) => {
-    throw new Error(`done`);
-    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-      "pdfjs-dist/build/pdf.worker.min.mjs",
-      import.meta.url,
-    ).toString();
-    // const pdf = await pdfjsLib.getDocument("https://www.pdf995.com/samples/pdf.pdf").promise;
-    const pdf = await pdfjsLib.getDocument(
-      "http://localhost:3000/a40b434b-0a23-49f6-b5b2-ab7d291b7736",
-    ).promise;
-    // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
-    throw new Error(`test ${pdf}`);
-    const page1 = await pdf.getPage(1);
-    const page1TextItems = await page1.getTextContent();
-    const page1Text = page1TextItems.items
-      .map(function (s) {
-        return s.toString();
-      })
-      .join("");
-
-    // throw new Error(page1Text);
-
-    //  @ts-expect-error see above
-    const uint8Array = new Uint8Array(file);
-    const pdfDoc = await PDFDocument.load(uint8Array);
-    const form = pdfDoc.getForm();
-
-    const pageCount = pdfDoc.getPageCount();
-    expect(pageCount).to.equal(39);
-
-    for (const [key, value] of Object.entries(expectedFields)) {
-      const field = form.getField(key);
-      if (field instanceof PDFTextField) {
-        expect(field.getText()).to.equal(value);
-      } else if (field instanceof PDFCheckBox) {
-        expect(field.isChecked()).to.equal(value);
-      } else {
-        throw new Error(`Unexpected field class ${field.constructor.name}`);
-      }
-    }
+    cy.writeFile("public/cypressTest/foo.pdf", file, null).then(async () => {
+      // throw new Error(`done`);
+      // const pdf = await pdfjsLib.getDocument("https://www.pdf995.com/samples/pdf.pdf").promise;
+      const pdf = await pdfjsLib.getDocument("http://localhost:3000/cypressTest/foo.pdf").promise;
+      // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
+      // throw new Error(`test ${pdf}`);
+      const page1 = await pdf.getPage(1);
+      const page1TextItems = await page1.getTextContent();
+      const page1Text = page1TextItems.items
+        .map(function (s) {
+          return s.toString();
+        })
+        .join("");
+      throw new Error(`test ${page1Text}`);
+    });
   });
 };
