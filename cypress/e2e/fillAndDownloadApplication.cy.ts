@@ -94,23 +94,18 @@ export const expectedFields: Partial<PdfFfsIndividual> = {
   "W9_Name See Specific Instructions on page 2": legalName, // page 26
 };
 
-// import * as pdfjsLib from "pdfjs-dist";
-
 const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
 
 it("should fill and download the application", () => {
   fillAndDownloadApplication(formPages, expectedFields);
 });
 
+import * as pdfjsLib from "pdfjs-dist";
+
 export const fillAndDownloadApplication = (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
   expectedFields: Partial<PdfFfsIndividual>,
 ) => {
-  /**
-   * Test one field per page, and one of every type of field. Leaving unit individual-page tests to
-   * test that every field within the page is filled under different circumstances
-   */
-
   cy.visit(`${Cypress.config("baseUrl")}/form/review`);
 
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
@@ -121,20 +116,21 @@ export const fillAndDownloadApplication = (
     // new stuff
     // pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
     // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-    // pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-    //   "pdfjs-dist/build/pdf.worker.min.mjs",
-    //   import.meta.url,
-    // ).toString();
-    // // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+      "pdfjs-dist/build/pdf.worker.min.mjs",
+      import.meta.url,
+    ).toString();
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
+    const pdf = await pdfjsLib.getDocument("https://www.pdf995.com/samples/pdf.pdf").promise;
     // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
-    // throw new Error(`test ${pdf}`);
-    // const page1 = await pdf.getPage(1);
-    // const page1TextItems = await page1.getTextContent();
-    // const page1Text = page1TextItems.items
-    //   .map(function (s) {
-    //     return s.toString();
-    //   })
-    //   .join("");
+    throw new Error(`test ${pdf}`);
+    const page1 = await pdf.getPage(1);
+    const page1TextItems = await page1.getTextContent();
+    const page1Text = page1TextItems.items
+      .map(function (s) {
+        return s.toString();
+      })
+      .join("");
 
     // throw new Error(page1Text);
 
