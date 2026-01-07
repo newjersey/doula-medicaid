@@ -117,46 +117,44 @@ export const fillAndDownloadApplication = (
   cy.contains("Download your application").click();
   const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
 
-  cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
-    async (file: typeof Cypress.Buffer) => {
-      // new stuff
-      // pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-      // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
-      // pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-      //   "pdfjs-dist/build/pdf.worker.min.mjs",
-      //   import.meta.url,
-      // ).toString();
-      // // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
-      // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
-      // throw new Error(`test ${pdf}`);
-      // const page1 = await pdf.getPage(1);
-      // const page1TextItems = await page1.getTextContent();
-      // const page1Text = page1TextItems.items
-      //   .map(function (s) {
-      //     return s.toString();
-      //   })
-      //   .join("");
+  cy.readFile(pdfFilePath, null).then(async (file: typeof Cypress.Buffer) => {
+    // new stuff
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+    // pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+    //   "pdfjs-dist/build/pdf.worker.min.mjs",
+    //   import.meta.url,
+    // ).toString();
+    // // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
+    // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
+    // throw new Error(`test ${pdf}`);
+    // const page1 = await pdf.getPage(1);
+    // const page1TextItems = await page1.getTextContent();
+    // const page1Text = page1TextItems.items
+    //   .map(function (s) {
+    //     return s.toString();
+    //   })
+    //   .join("");
 
-      // throw new Error(page1Text);
+    // throw new Error(page1Text);
 
-      //  @ts-expect-error see above
-      const uint8Array = new Uint8Array(file);
-      const pdfDoc = await PDFDocument.load(uint8Array);
-      const form = pdfDoc.getForm();
+    //  @ts-expect-error see above
+    const uint8Array = new Uint8Array(file);
+    const pdfDoc = await PDFDocument.load(uint8Array);
+    const form = pdfDoc.getForm();
 
-      const pageCount = pdfDoc.getPageCount();
-      expect(pageCount).to.equal(39);
+    const pageCount = pdfDoc.getPageCount();
+    expect(pageCount).to.equal(39);
 
-      for (const [key, value] of Object.entries(expectedFields)) {
-        const field = form.getField(key);
-        if (field instanceof PDFTextField) {
-          expect(field.getText()).to.equal(value);
-        } else if (field instanceof PDFCheckBox) {
-          expect(field.isChecked()).to.equal(value);
-        } else {
-          throw new Error(`Unexpected field class ${field.constructor.name}`);
-        }
+    for (const [key, value] of Object.entries(expectedFields)) {
+      const field = form.getField(key);
+      if (field instanceof PDFTextField) {
+        expect(field.getText()).to.equal(value);
+      } else if (field instanceof PDFCheckBox) {
+        expect(field.isChecked()).to.equal(value);
+      } else {
+        throw new Error(`Unexpected field class ${field.constructor.name}`);
       }
-    },
-  );
+    }
+  });
 };
