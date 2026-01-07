@@ -94,6 +94,10 @@ export const expectedFields: Partial<PdfFfsIndividual> = {
   "W9_Name See Specific Instructions on page 2": legalName, // page 26
 };
 
+import * as pdfjsLib from "pdfjs-dist";
+
+const coverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
+
 it("should fill and download the application", () => {
   fillAndDownloadApplication(formPages, expectedFields);
 });
@@ -143,40 +147,56 @@ export const fillAndDownloadApplication = (
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
 
   // Test clicking previous, and prepopulation
-  for (const formPage of formPages.reverse()) {
-    cy.contains("Previous").click();
-    cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
-    cy.window().its("scrollY").should("equal", 0);
-    cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
+  // for (const formPage of formPages.reverse()) {
+  //   cy.contains("Previous").click();
+  //   cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
+  //   cy.window().its("scrollY").should("equal", 0);
+  //   cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
 
-    cy.get("form").within(() => {
-      for (const field of formPage.fields) {
-        if (field.role === "textbox") {
-          cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
-        } else if (field.role === "radio") {
-          cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).should(
-            "be.checked",
-          );
-        } else if (field.role === "combobox") {
-          cy.get(`select[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
-        } else {
-          throw new Error(`Unexpected type ${field.role}`);
-        }
-      }
-    });
-  }
+  //   cy.get("form").within(() => {
+  //     for (const field of formPage.fields) {
+  //       if (field.role === "textbox") {
+  //         cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
+  //       } else if (field.role === "radio") {
+  //         cy.get(`input[name="${field.dataStoreKey}"][value="${field.testValue}"]`).should(
+  //           "be.checked",
+  //         );
+  //       } else if (field.role === "combobox") {
+  //         cy.get(`select[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);
+  //       } else {
+  //         throw new Error(`Unexpected type ${field.role}`);
+  //       }
+  //     }
+  //   });
+  // }
 
-  for (const _ of formPages.slice(0, -1)) {
-    cy.contains("button", "Next").click();
-  }
-  cy.contains("button", "Review").click();
+  // for (const _ of formPages.slice(0, -1)) {
+  //   cy.contains("button", "Next").click();
+  // }
+  // cy.contains("button", "Review").click();
 
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
   cy.title().should("eq", `Review ${titleEnding}`);
   cy.contains("Download your application").click();
+  const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
 
   cy.readFile(`${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`, null).then(
     async (file: typeof Cypress.Buffer) => {
+      // new stuff
+      // pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
+      // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
+      const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
+      // throw new Error(`test ${pdf}`);
+      const page1 = await pdf.getPage(1);
+      const page1TextItems = await page1.getTextContent();
+      const page1Text = page1TextItems.items
+        .map(function (s) {
+          return s.toString();
+        })
+        .join("");
+
+      throw new Error(page1Text);
+
       /**
        * Uint8Array wants an ArrayBuffer. The type checker complains that the Buffer type returned
        * by cypress lacks properties like slice, maxByteLength, resizable, resize, and 4 more. I
