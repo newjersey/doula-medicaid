@@ -113,15 +113,14 @@ export const fillAndDownloadApplication = (
   const pdfFilePath = `${Cypress.config("downloadsFolder")}/Fee For Service Application.pdf`;
 
   cy.readFile(pdfFilePath, null).then(async (file: typeof Cypress.Buffer) => {
-    // new stuff
-    // pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
-    // pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
     pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
       "pdfjs-dist/build/pdf.worker.min.mjs",
       import.meta.url,
     ).toString();
-    // pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.js";
-    const pdf = await pdfjsLib.getDocument("https://www.pdf995.com/samples/pdf.pdf").promise;
+    // const pdf = await pdfjsLib.getDocument("https://www.pdf995.com/samples/pdf.pdf").promise;
+    const pdf = await pdfjsLib.getDocument(
+      "http://localhost:3000/a40b434b-0a23-49f6-b5b2-ab7d291b7736",
+    ).promise;
     // const pdf = await pdfjsLib.getDocument(pdfFilePath).promise;
     throw new Error(`test ${pdf}`);
     const page1 = await pdf.getPage(1);
