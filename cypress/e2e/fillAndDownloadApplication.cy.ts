@@ -138,25 +138,40 @@ export const fillAndDownloadApplication = async (
     // const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
     // const page1 = await pdf.getPage(1);
     // expect(true).to.eq(true);
-    cy.exec(`curl -f -LI ${pdfUrl}`).then(async () => {
-      console.log("pdfUrl", pdfUrl);
-      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-      const page1 = await pdf.getPage(1);
-      const page1TextItems = await page1.getTextContent();
-      const page1Text = page1TextItems.items
-        .map((item) => {
-          if ("str" in item) {
-            return item.str;
-          } else {
-            throw new Error(`Property str unexpectedly does not exist on ${item}`);
-          }
-        })
-        .join(" ");
-      expect(page1Text).to.include(expectedCoverPageText);
+    // cy.exec(`curl -f -LI ${pdfUrl}`).then(async () => {
 
-      // expect(true).to.eq(false);
-      // throw new Error(`fail`);
-    });
+    const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+    const page1 = await pdf.getPage(1);
+    const page1TextItems = await page1.getTextContent();
+    const page1Text = page1TextItems.items
+      .map((item) => {
+        if ("str" in item) {
+          return item.str;
+        } else {
+          throw new Error(`Property str unexpectedly does not exist on ${item}`);
+        }
+      })
+      .join(" ");
+    expect(page1Text).to.include(expectedCoverPageText);
+    // cy.exec(`echo "hi"`).then(async () => {
+    //   console.log("pdfUrl", pdfUrl);
+    //   const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+    //   const page1 = await pdf.getPage(1);
+    //   const page1TextItems = await page1.getTextContent();
+    //   const page1Text = page1TextItems.items
+    //     .map((item) => {
+    //       if ("str" in item) {
+    //         return item.str;
+    //       } else {
+    //         throw new Error(`Property str unexpectedly does not exist on ${item}`);
+    //       }
+    //     })
+    //     .join(" ");
+    //   expect(page1Text).to.include(expectedCoverPageText + "hi");
+
+    //   // expect(true).to.eq(false);
+    //   // throw new Error(`fail`);
+    // });
   });
 
   // cy.visit("/");
