@@ -116,7 +116,7 @@ const FILE_PATH_IN_PUBLIC_DIR = `cypressTest/fee_for_service_application.pdf`;
 
 beforeEach(() => {
   // cy.exec(`[ -e "public/cypressTest" ] && rm -r "public/cypressTest" || true`);
-  // cy.exec(`mkdir -p "public/cypressTest"`);
+  cy.exec(`mkdir -p "public/cypressTest"`);
   cy.exec(`rm -f "public/cypressTest/fee_for_service_application.pdf"`);
 });
 afterEach(() => {
@@ -130,57 +130,19 @@ export const fillAndDownloadApplication = async (
   expectedFields: Partial<PdfFfsIndividual>,
   expectedCoverPageText: string,
 ) => {
-  cy.exec(
-    `cp "public/pdf/ffs_individual.pdf" "public/cypressTest/fee_for_service_application.pdf"`,
-  ).then(async () => {
-    const pdfUrl = `${Cypress.config("baseUrl")}/${FILE_PATH_IN_PUBLIC_DIR}`;
-    // cy.intercept(pdfUrl).as("getActivities");
-    // const testPdf = await pdfjsLib.getDocument(pdfUrl);
-    // the wait here does actually make a difference
-    // cy.wait(2000);
-    // each of these aliases
-    // cy.wait(["@getActivities"]);
-    // const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    // const page1 = await pdf.getPage(1);
-    // expect(true).to.eq(true);
-    // cy.exec(`curl -f -LI ${pdfUrl}`).then(async () => {
-    cy.exec(`echo "hi"`).then(async () => {
-      console.log("pdfUrl", pdfUrl);
-      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-      const page1 = await pdf.getPage(1);
-      const page1TextItems = await page1.getTextContent();
-      const page1Text = page1TextItems.items
-        .map((item) => {
-          if ("str" in item) {
-            return item.str;
-          } else {
-            throw new Error(`Property str unexpectedly does not exist on ${item}`);
-          }
-        })
-        .join(" ");
-      expect(page1Text).to.include(expectedCoverPageText);
+  cy.visit("/");
+  cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
+  const titleEnding = "| NJ Doula Assistant";
+  cy.title().should("eq", `Welcome ${titleEnding}`);
 
-      // expect(true).to.eq(false);
-      // throw new Error(`fail`);
-    });
-  });
+  testFillApplication(formPages, titleEnding);
+  testFieldsArePrepopulated(formPages, titleEnding);
 
-  // cy.visit("/");
-  // cy.url().should("eq", `${Cypress.config("baseUrl")}/form/welcome`);
-  // const titleEnding = "| NJ Doula Assistant";
-  // cy.title().should("eq", `Welcome ${titleEnding}`);
+  cy.contains("Download your application").click();
+  const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${FILE_NAME}`;
 
-  // testFillApplication(formPages, titleEnding);
-  // testFieldsArePrepopulated(formPages, titleEnding);
-
-  // cy.visit("/form/review");
-  // // asd
-
-  // cy.contains("Download your application").click();
-  // const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${FILE_NAME}`;
-
-  // testCoverPageAccessibleText(downloadedPdfpath, expectedCoverPageText);
-  // testPdfFields(downloadedPdfpath, expectedFields);
+  testCoverPageAccessibleText(downloadedPdfpath, expectedCoverPageText);
+  testPdfFields(downloadedPdfpath, expectedFields);
 };
 
 const testFillApplication = (
@@ -312,19 +274,22 @@ const testCoverPageAccessibleText = (downloadedPdfpath: string, expectedCoverPag
   }).then(async () => {
     cy.wait(500);
     const pdfUrl = `${Cypress.config("baseUrl")}/${FILE_PATH_IN_PUBLIC_DIR}`;
-    console.log("pdfUrl", pdfUrl);
-    const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    const page1 = await pdf.getPage(1);
-    const page1TextItems = await page1.getTextContent();
-    const page1Text = page1TextItems.items
-      .map((item) => {
-        if ("str" in item) {
-          return item.str;
-        } else {
-          throw new Error(`Property str unexpectedly does not exist on ${item}`);
-        }
-      })
-      .join(" ");
-    expect(page1Text).to.include(expectedCoverPageText);
+
+    cy.exec(`echo "hi"`).then(async () => {
+      console.log("pdfUrl", pdfUrl);
+      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+      const page1 = await pdf.getPage(1);
+      const page1TextItems = await page1.getTextContent();
+      const page1Text = page1TextItems.items
+        .map((item) => {
+          if ("str" in item) {
+            return item.str;
+          } else {
+            throw new Error(`Property str unexpectedly does not exist on ${item}`);
+          }
+        })
+        .join(" ");
+      expect(page1Text).to.include(expectedCoverPageText);
+    });
   });
 };
