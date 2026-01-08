@@ -138,7 +138,7 @@ export const fillAndDownloadApplication = async (
     // const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
     // const page1 = await pdf.getPage(1);
     // expect(true).to.eq(true);
-    cy.exec(` curl -f -LI ${pdfUrl}`).then(async () => {
+    cy.exec(`curl -f -LI ${pdfUrl}`).then(async () => {
       console.log("pdfUrl", pdfUrl);
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       const page1 = await pdf.getPage(1);
