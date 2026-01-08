@@ -20,7 +20,7 @@
 // require('./commands')
 
 const isRelevantSuite = (): boolean => {
-  const potentialCypressEnvs = ["productionFlags", "websiteUnavailable"];
+  const potentialCypressEnvs = ["productionFlags", "websiteUnavailable", "accessibleCoverPage"];
 
   const relevantCypressEnvs = potentialCypressEnvs.filter(
     (cypressEnv) => Cypress.env(cypressEnv) === true,
