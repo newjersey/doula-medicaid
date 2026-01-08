@@ -119,6 +119,11 @@ beforeEach(() => {
   // cy.exec(`mkdir -p "public/cypressTest"`);
   cy.exec(`rm -f "public/cypressTest/fee_for_service_application.pdf"`);
 });
+afterEach(() => {
+  // cy.exec(`[ -e "public/cypressTest" ] && rm -r "public/cypressTest" || true`);
+  // cy.exec(`mkdir -p "public/cypressTest"`);
+  cy.exec(`rm -f "public/cypressTest/fee_for_service_application.pdf"`);
+});
 
 export const fillAndDownloadApplication = async (
   formPages: Array<{ url: string; fields: TestField[]; titleName: string }>,
@@ -139,39 +144,25 @@ export const fillAndDownloadApplication = async (
     // const page1 = await pdf.getPage(1);
     // expect(true).to.eq(true);
     // cy.exec(`curl -f -LI ${pdfUrl}`).then(async () => {
+    cy.exec(`echo "hi"`).then(async () => {
+      console.log("pdfUrl", pdfUrl);
+      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+      const page1 = await pdf.getPage(1);
+      const page1TextItems = await page1.getTextContent();
+      const page1Text = page1TextItems.items
+        .map((item) => {
+          if ("str" in item) {
+            return item.str;
+          } else {
+            throw new Error(`Property str unexpectedly does not exist on ${item}`);
+          }
+        })
+        .join(" ");
+      expect(page1Text).to.include(expectedCoverPageText);
 
-    const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    const page1 = await pdf.getPage(1);
-    const page1TextItems = await page1.getTextContent();
-    const page1Text = page1TextItems.items
-      .map((item) => {
-        if ("str" in item) {
-          return item.str;
-        } else {
-          throw new Error(`Property str unexpectedly does not exist on ${item}`);
-        }
-      })
-      .join(" ");
-    expect(page1Text).to.include(expectedCoverPageText);
-    // cy.exec(`echo "hi"`).then(async () => {
-    //   console.log("pdfUrl", pdfUrl);
-    //   const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    //   const page1 = await pdf.getPage(1);
-    //   const page1TextItems = await page1.getTextContent();
-    //   const page1Text = page1TextItems.items
-    //     .map((item) => {
-    //       if ("str" in item) {
-    //         return item.str;
-    //       } else {
-    //         throw new Error(`Property str unexpectedly does not exist on ${item}`);
-    //       }
-    //     })
-    //     .join(" ");
-    //   expect(page1Text).to.include(expectedCoverPageText + "hi");
-
-    //   // expect(true).to.eq(false);
-    //   // throw new Error(`fail`);
-    // });
+      // expect(true).to.eq(false);
+      // throw new Error(`fail`);
+    });
   });
 
   // cy.visit("/");
