@@ -20,19 +20,27 @@ jobs:
     uses: ./.github/workflows/_end_to_end_tests.yml
     with:
       env_test_file: cypress/.env.test-production-flags
-      cypress_run_command: cypress:run:productionFlags
+      cypress_run_command: cypress:run --  --env productionFlags=true
+
+  end-to-end-tests-accessible-cover-page:
+    uses: ./.github/workflows/_end_to_end_tests.yml
+    with:
+      env_test_file: .env.test
+      cypress_run_command: cypress:run -- --env accessibleCoverPage=true
+      use_dev_server: true
 
   end-to-end-tests-website-unavailable:
     uses: ./.github/workflows/_end_to_end_tests.yml
     with:
       env_test_file: cypress/.env.test-website-unavailable
-      cypress_run_command: cypress:run:websiteUnavailable
+      cypress_run_command: cypress:run -- --env websiteUnavailable=true
 
   end-to-end-tests:
     needs:
       [
         end-to-end-tests-development-flags,
         end-to-end-tests-production-flags,
+        end-to-end-tests-accessible-cover-page,
         end-to-end-tests-website-unavailable,
       ]
     runs-on: ubuntu-latest
