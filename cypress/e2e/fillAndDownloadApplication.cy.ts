@@ -129,21 +129,34 @@ export const fillAndDownloadApplication = async (
     `cp "public/pdf/ffs_individual.pdf" "public/cypressTest/fee_for_service_application.pdf"`,
   ).then(async () => {
     const pdfUrl = `${Cypress.config("baseUrl")}/${FILE_PATH_IN_PUBLIC_DIR}`;
-    cy.wait(500);
-    console.log("pdfUrl", pdfUrl);
-    const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
-    const page1 = await pdf.getPage(1);
-    const page1TextItems = await page1.getTextContent();
-    const page1Text = page1TextItems.items
-      .map((item) => {
-        if ("str" in item) {
-          return item.str;
-        } else {
-          throw new Error(`Property str unexpectedly does not exist on ${item}`);
-        }
-      })
-      .join(" ");
-    expect(page1Text).to.include(expectedCoverPageText);
+    // cy.intercept(pdfUrl).as("getActivities");
+    // const testPdf = await pdfjsLib.getDocument(pdfUrl);
+    // the wait here does actually make a difference
+    // cy.wait(2000);
+    // each of these aliases
+    // cy.wait(["@getActivities"]);
+    // const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+    // const page1 = await pdf.getPage(1);
+    // expect(true).to.eq(true);
+    cy.exec(` curl -f -LI ${pdfUrl}`).then(async () => {
+      console.log("pdfUrl", pdfUrl);
+      const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+      const page1 = await pdf.getPage(1);
+      const page1TextItems = await page1.getTextContent();
+      const page1Text = page1TextItems.items
+        .map((item) => {
+          if ("str" in item) {
+            return item.str;
+          } else {
+            throw new Error(`Property str unexpectedly does not exist on ${item}`);
+          }
+        })
+        .join(" ");
+      expect(page1Text).to.include(expectedCoverPageText);
+
+      // expect(true).to.eq(false);
+      // throw new Error(`fail`);
+    });
   });
 
   // cy.visit("/");
