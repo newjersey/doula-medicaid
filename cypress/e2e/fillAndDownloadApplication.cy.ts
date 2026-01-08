@@ -8,11 +8,6 @@ import type { PdfFfsIndividual } from "@/app/form/_utils/fillPdf/ffsIndividual/f
 import { type TestField } from "@/app/form/_utils/testUtils/testFields";
 import { DOWNLOAD_FILE_NAME, formPages, testFillApplication } from "e2e/utils/fillApplication";
 import { PDFCheckBox, PDFDocument, PDFTextField } from "pdf-lib";
-import * as pdfjsLib from "pdfjs-dist";
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
 
 it("should fill and download the application", () => {
   const legalName = `${firstNameField.expectedValue} ${middleNameField.expectedValue} ${lastNameField.expectedValue}`;
