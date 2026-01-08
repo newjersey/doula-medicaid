@@ -26,8 +26,7 @@ it("should download the application with a cover page that has accessibly readab
 
   cy.exec(`cp "${downloadedPdfpath}" "public/${filePathInPublicDir}"`, {
     failOnNonZeroExit: true,
-  }).then(async () => {
-    // cy.wait(500);
+  }).should(async () => {
     const pdfUrl = `${Cypress.config("baseUrl")}/${filePathInPublicDir}`;
     cy.exec(`echo "hi"`).then(async () => {
       /**
@@ -35,18 +34,22 @@ it("should download the application with a cover page that has accessibly readab
        * works in that the test passes, but also in that in a manual attempt, the test will fail if
        * e.g. changing `expectedCoverPageText` to something invalid, both locally and on CI.
        *
-       * Cypress docs are a little confusing on cy. statements and .then() behavior. Note that even
-       * though `cy.exec()` is then-able, it's not actually a promise, and you can't await them.
-       *
        * Without it, `await pdfjsLib.getDocument(pdfUrl).promise` gets the error:
        * "InvalidPDFException: Invalid PDF structure.". Even though the pdf if indeed available at
        * `pdfUrl`, when manually checked.
        *
+       * Cypress docs are a little confusing on cy. statements and .then() behavior. Note that even
+       * though `cy.exec()` is then-able, it's not actually a promise, and you can't await them.
+       *
+       * The following attempts do not work:
+       *
+       * - Breaking up into a single flat chain of .then, without the exec
+       * - Using top-level .should() instead of .then(), which
+       *   https://docs.cypress.io/api/commands/should#Differences
+       *
        * A long enough cy.wait() of 2000 usually is long enough to fix the Invalid PDF structure
        * error. However, wait's aren't great because they add time and are not actually
        * deterministic.
-       *
-       * Breaking up into a single flat chain of .then, without the exec, does not work
        */
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       const page1Text = await getAllPageText(pdf, 1);
