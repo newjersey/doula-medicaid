@@ -35,6 +35,9 @@ it("should download the application with a cover page that has accessibly readab
        * works in that the test passes, but also in that in a manual attempt, the test will fail if
        * e.g. changing `expectedCoverPageText` to something invalid, both locally and on CI.
        *
+       * Cypress docs are a little confusing on cy. statements and .then() behavior. Note that even
+       * though `cy.exec()` is then-able, it's not actually a promise, and you can't await them.
+       *
        * Without it, `await pdfjsLib.getDocument(pdfUrl).promise` gets the error:
        * "InvalidPDFException: Invalid PDF structure.". Even though the pdf if indeed available at
        * `pdfUrl`, when manually checked.
@@ -42,8 +45,6 @@ it("should download the application with a cover page that has accessibly readab
        * A long enough cy.wait() of 2000 usually is long enough to fix the Invalid PDF structure
        * error. However, wait's aren't great because they add time and are not actually
        * deterministic.
-       *
-       * Note that even though `cy.exec()` is then-able, it's not actually a promise.
        *
        * Breaking up into a single flat chain of .then, without the exec, does not work
        */
