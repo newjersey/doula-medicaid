@@ -18,9 +18,7 @@ afterEach(() => {
 it("should download the application with a cover page that has accessibly readable text [accessibleCoverPage]", () => {
   cy.visit("/");
   const titleEnding = "| NJ Doula Assistant";
-
   testFillApplication(formPages, titleEnding);
-
   cy.contains("Download your application").click();
 
   const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${DOWNLOAD_FILE_NAME}`;
@@ -46,6 +44,8 @@ it("should download the application with a cover page that has accessibly readab
        * deterministic.
        *
        * Note that even though `cy.exec()` is then-able, it's not actually a promise.
+       *
+       * Breaking up into a single flat chain of .then, without the exec, does not work
        */
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       const page1Text = await getAllPageText(pdf, 1);

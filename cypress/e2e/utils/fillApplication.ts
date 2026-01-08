@@ -15,6 +15,7 @@ import { testFields as screening1TestFields } from "@/app/form/(formSteps)/scree
 import { testFields as screening2TestFields } from "@/app/form/(formSteps)/screening/2/testFields";
 import { testFields as screening3TestFields } from "@/app/form/(formSteps)/screening/3/testFields";
 import { path1TestFields as training1TestFields } from "@/app/form/(formSteps)/training/1/testFields";
+import type { TestField } from "@/app/form/_utils/testUtils/testFields";
 
 export const DOWNLOAD_FILE_NAME = "Fee For Service Application.pdf";
 
