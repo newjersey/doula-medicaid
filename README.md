@@ -78,10 +78,10 @@ cp cypress/.env.test-production-flags .env.test.local
 npm run dev:test
 
 # Then run cypress tests with `[productionFlags]` in their name
-npm run cypress:run:productionFlags
+npm run cypress:run -- --env productionFlags=true
 
 # To run with cypress GUI
-npm run cypress:gui:productionFlags
+npm run cypress:gui -- --env productionFlags=true
 ```
 
 The local file may need to be updated if you want to turn flags back on again

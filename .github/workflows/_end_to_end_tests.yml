@@ -9,6 +9,9 @@ on:
       cypress_run_command:
         required: true
         type: string
+      use_dev_server:
+        required: false
+        type: boolean
 
 jobs:
   end-to-end-tests:
@@ -25,11 +28,15 @@ jobs:
       - name: Use ${{ inputs.env_test_file }}
         if: ${{ inputs.env_test_file != '.env.test' }}
         run: mv ${{ inputs.env_test_file }} .env.test
-      - name: Build the application
-        run: npm run build -- --mode test
-      - name: Start the application
+      - name: Build and start the production application
+        if: ${{ !inputs.use_dev_server }}
         run:
-          npm run preview -- --mode test & npx wait-on
+          (npm run build -- --mode test && npm run preview -- --mode test) & npx wait-on
+          http://localhost:3000/humanservices/dmahs/info/doulahelp
+      - name: Start the development application
+        if: ${{ inputs.use_dev_server }}
+        run:
+          npm run dev -- --mode test & npx wait-on
           http://localhost:3000/humanservices/dmahs/info/doulahelp
       - name: Run cypress tests
-        run: npm run "${{ inputs.cypress_run_command }}"
+        run: npm run ${{ inputs.cypress_run_command }}

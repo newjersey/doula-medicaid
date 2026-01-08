@@ -48,6 +48,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 /cypress/screenshots/
 /cypress/downloads/
 /cypress/videos/
+/public/cypressTest/
 
 # CDK asset staging directory
 .cdk.staging
