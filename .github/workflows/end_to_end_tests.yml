@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/_end_to_end_tests.yml
     with:
       env_test_file: cypress/.env.test-production-flags
-      cypress_run_command: cypress:run --  --env productionFlags=true
+      cypress_run_command: cypress:run -- --env productionFlags=true
 
   end-to-end-tests-accessible-cover-page:
     uses: ./.github/workflows/_end_to_end_tests.yml

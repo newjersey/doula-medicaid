@@ -29,15 +29,27 @@ it("should download the application with a cover page that has accessibly readab
   cy.exec(`cp "${downloadedPdfpath}" "public/${filePathInPublicDir}"`, {
     failOnNonZeroExit: true,
   }).then(async () => {
-    cy.wait(500);
+    // cy.wait(500);
     const pdfUrl = `${Cypress.config("baseUrl")}/${filePathInPublicDir}`;
-
     cy.exec(`echo "hi"`).then(async () => {
-      console.log("pdfUrl", pdfUrl);
+      /**
+       * I truly do not understand why this cy exec statement makes a difference, but it does. It
+       * works in that the test passes, but also in that in a manual attempt, the test will fail if
+       * e.g. changing `expectedCoverPageText` to something invalid, both locally and on CI.
+       *
+       * Without it, `await pdfjsLib.getDocument(pdfUrl).promise` gets the error:
+       * "InvalidPDFException: Invalid PDF structure.". Even though the pdf if indeed available at
+       * `pdfUrl`, when manually checked.
+       *
+       * A long enough cy.wait() of 2000 usually is long enough to fix the Invalid PDF structure
+       * error. However, wait's aren't great because they add time and are not actually
+       * deterministic.
+       *
+       * Note that even though `cy.exec()` is then-able, it's not actually a promise.
+       */
       const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
       const page1Text = await getAllPageText(pdf, 1);
-      const expectedCoverPageText = "This is your pre-filled Medicaid Fee-for-Service application";
-      expect(page1Text).to.include(expectedCoverPageText);
+      expect(page1Text).to.include("This is your pre-filled Medicaid Fee-for-Service application");
     });
   });
 });
