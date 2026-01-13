@@ -32,7 +32,7 @@ const RootLayout = () => {
                   <ul>
                     <li>
                       <a href="https://nj.gov/governor/" target="_blank" rel="noopener">
-                        Governor Phil Murphy &bull; Lt. Governor Tahesha Way
+                        Governor Mikie Sherrill &bull; Lt. Governor Dr. Dale G. Caldwell
                       </a>
                     </li>
                     <li>
