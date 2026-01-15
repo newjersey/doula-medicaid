@@ -1,5 +1,3 @@
-"use client";
-
 import {
   getAllSections,
   getCurrentFormProgress,
@@ -7,7 +5,7 @@ import {
   getPreviousFormProgress,
   type FormProgress,
 } from "@form/_utils/formProgress";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router";
 
 export interface FormProgressPosition {
   previous: FormProgress | null;
@@ -16,7 +14,8 @@ export interface FormProgressPosition {
 }
 
 export const useFormProgressPosition = (): FormProgressPosition => {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
   const current = getCurrentFormProgress(pathname);
   const next = getNextFormProgress(current, getAllSections());
   const previous = getPreviousFormProgress(current, getAllSections());

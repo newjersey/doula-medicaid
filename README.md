@@ -8,10 +8,10 @@ https://www.nj.gov/humanservices/dmahs/info/doulahelp
 ## Getting Started
 
 Follow https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating to install `nvm`.
-Then, install node v20:
+Then, install node v24:
 
 ```sh
-nvm install 20
+nvm install 24
 ```
 
 First, install npm packages
@@ -38,9 +38,9 @@ with your browser to see the result.
 # Run all unit tests
 npm test
 # Run test in specific file path, matching test description
-npm test -- --runTestsByPath "<path to file>" -t "<included in test block name>"
+npm test -- "<path to file>" -t "<included in test block name>"
 # e.g.
-npm test -- --runTestsByPath "src/app/form/(formSteps)/personal-information/PersonalStep1.test.tsx" -t "updates first name"
+npm test -- "src/app/form/(formSteps)/personal-information/PersonalStep1.test.tsx" -t "updates first name"
 ```
 
 ### End to end tests
@@ -66,7 +66,7 @@ npm run cypress:gui
 To run e2e tests that _are_ labelled `[productionFlags]`, we need to turn environment favorable
 flags off.
 
-When running with `NODE_ENV=test` (as is done with `npm run dev:test`, NextJS will first check for a
+When running with `--mode test` (as is done with `npm run dev:test`, Vite will first check for a
 `.env.test.local` file (gitignored), then `.env.test` (not gitignored). The local file enables us to
 make any changes and test with them locally, without having to reset any changes before git
 committing.
@@ -74,7 +74,7 @@ committing.
 ```sh
 cp cypress/.env.test-production-flags .env.test.local
 
-# Restart the NextJS process
+# Restart the Vite process
 npm run dev:test
 
 # Then run cypress tests with `[productionFlags]` in their name
