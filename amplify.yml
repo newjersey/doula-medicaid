@@ -10,14 +10,17 @@ frontend:
   artifacts:
     baseDirectory: dist
     files:
-      - '**/*'
+      - "**/*"
   cache:
     paths:
       - .npm/**/*
   rewrites:
     - source: /humanservices/dmahs/info/doulahelp/
-      target: /humanservices/dmahs/info/doulahelp/index.html
+      target: /index.html
       status: 200
     - source: ^/humanservices/dmahs/info/doulahelp/([^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|eot)$)([^.]+$))
-      target: /humanservices/dmahs/info/doulahelp/index.html
+      target: /index.html
+      status: 200
+    - source: /humanservices/dmahs/info/doulahelp/assets/(.*)
+      target: /assets/$1
       status: 200
