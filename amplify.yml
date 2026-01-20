@@ -15,7 +15,7 @@ frontend:
     paths:
       - .npm/**/*
   rewrites:
-    - source: </^[^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp)$)([^.]+$)/>
+    - source: </^((?!\.(css|gif|ico|jpg|js|png|txt|svg|woff|ttf)$).)*$/>
       target: /index.html
       status: 200
     # - source: ^/humanservices/dmahs/info/doulahelp/([^.]+$|\.(?!(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|eot)$)([^.]+$))
