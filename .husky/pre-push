@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+if ! npm run prettier:check ; then
+    echo "Run \`npm run prettier\` to fix";
+    exit 1;
+fi
+
+npm run lint
+npm run typecheck
