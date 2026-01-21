@@ -1,0 +1,45 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci --cache .npm --prefer-offline
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: dist
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - .npm/**/*
+
+# Rewrites and redirect currently cannot be configured in this file (https://github.com/aws-amplify/amplify-hosting/issues/18). They are manually configured via the Amplify Console, using the json below. We could, however, factor this to be configured via cdk.
+
+# [
+#   {
+#     "source": "/humanservices/dmahs/info/doulahelp",
+#     "status": "200",
+#     "target": "/index.html"
+#   },
+#   {
+#     "source": "</^\\/humanservices\\/dmahs\\/info\\/doulahelp\\/((?!\\.(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|pdf)$).)*$/>",
+#     "status": "200",
+#     "target": "/index.html"
+#   },
+#   {
+#     "source": "/humanservices/dmahs/info/doulahelp/<*>",
+#     "status": "200",
+#     "target": "/<*>"
+#   }
+# ]
+
+# We have also configured App settings -> Branch settings ->
+# https://docs.aws.amazon.com/amplify/latest/userguide/pattern-based-feature-branch-deployments.html
+
+# - Selected "Automatically connect branches to Amplify that match a pattern set"
+# - Branch autodetection - patterns: `*amplify,amplify*,*amplify*`
+#     Don't actually know if we need all three, but don't know if it's actually regex, and hey it works
+# - Selected "Restrict access to auto-detected branches with a username and password"
+# - Selected "Automatically disconnect branches in Amplify when deleting a branch in your source repository"
