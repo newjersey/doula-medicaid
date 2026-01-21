@@ -12,15 +12,18 @@ Then, install node v24:
 
 ```sh
 nvm install 24
+
+# Run below to confirm that the version is 24
+node -v
 ```
 
-First, install npm packages
+Then, install npm packages
 
 ```sh
 npm install
 ```
 
-Second, run the development server:
+Next, run the development server:
 
 ```sh
 npm run dev
