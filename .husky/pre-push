@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
 if ! npm run prettier:check ; then
     echo "Run \`npm run prettier\` to fix";
     exit 1;
