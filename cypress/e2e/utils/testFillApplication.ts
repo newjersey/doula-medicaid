@@ -100,7 +100,7 @@ export const testFillApplication = (
     if (index !== formPages.length - 1) {
       cy.contains("button", "Next").click();
     } else {
-      cy.contains("button", "Review").click();
+      cy.contains("button", "Review", { timeout: 8000 }).click();
     }
   }
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);

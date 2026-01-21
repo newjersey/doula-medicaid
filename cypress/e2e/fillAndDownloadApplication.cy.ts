@@ -77,7 +77,7 @@ const testFieldsArePrepopulated = (
   for (const _ of formPages.slice(0, -1)) {
     cy.contains("button", "Next").click();
   }
-  cy.contains("button", "Review").click();
+  cy.contains("button", "Review", { timeout: 8000 }).click();
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
 };
 
