@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "hi"
+
 npm run prettier:check
 npm run lint
 npm run typecheck
