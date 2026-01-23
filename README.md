@@ -12,6 +12,7 @@ Then, install node v24:
 
 ```sh
 nvm install 24
+nvm use 24
 ```
 
 First, install npm packages
