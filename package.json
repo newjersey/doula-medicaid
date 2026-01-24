@@ -22,7 +22,7 @@
     "url": "https://github.com/newjersey"
   },
   "dependencies": {
-    "@newjersey/njwds": "2.8.0",
+    "@newjersey/njwds": "2.9.0",
     "@trussworks/react-uswds": "10.2.0",
     "jszip": "3.10.1",
     "pdf-lib": "1.17.1",
