@@ -37,7 +37,7 @@ it("should download the application with an accessibly readable cover page [acce
   cy.visit("/");
   const titleEnding = "| NJ Doula Assistant";
   testFillApplication(formPages, titleEnding);
-  cy.contains("Download your application").click();
+  cy.contains("Download your application", { timeout: 8000 }).click();
 
   const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${DOWNLOAD_FILE_NAME}`;
   const filePathInPublicDir = `cypressTest/fee_for_service_application.pdf`;

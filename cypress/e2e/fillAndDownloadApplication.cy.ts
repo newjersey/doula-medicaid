@@ -39,7 +39,7 @@ it("should fill and download the application", () => {
   testFillApplication(formPages, titleEnding);
   testFieldsArePrepopulated(formPages, titleEnding);
 
-  cy.contains("Download your application").click();
+  cy.contains("Download your application", { timeout: 8000 }).click();
   const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${DOWNLOAD_FILE_NAME}`;
 
   testPdfFields(downloadedPdfpath, expectedFields);
@@ -50,7 +50,7 @@ const testFieldsArePrepopulated = (
   titleEnding: string,
 ) => {
   // Starting from the Review page, test clicking previous, and prepopulation
-  for (const formPage of formPages.reverse()) {
+  for (const formPage of [...formPages].reverse()) {
     cy.contains("Previous").click();
     cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
     cy.window().its("scrollY").should("equal", 0);

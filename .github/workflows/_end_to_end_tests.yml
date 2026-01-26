@@ -3,6 +3,9 @@ name: end-to-end-tests
 on:
   workflow_call:
     inputs:
+      name:
+        required: true
+        type: string
       env_test_file:
         required: true
         type: string
@@ -44,5 +47,5 @@ jobs:
         uses: actions/upload-artifact@v6
         if: failure()
         with:
-          name: cypress-screenshots
+          name: cypress-screenshots-${{ inputs.name }} # inputs.name prevents artifact name conflicts if multiple tests fail and want to upload screenshots
           path: cypress/screenshots
