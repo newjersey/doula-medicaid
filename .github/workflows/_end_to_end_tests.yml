@@ -40,3 +40,9 @@ jobs:
           http://localhost:3000/humanservices/dmahs/info/doulahelp
       - name: Run cypress tests
         run: npm run ${{ inputs.cypress_run_command }}
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
