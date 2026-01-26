@@ -9,7 +9,7 @@ const trainingAddressGroupName = "What is the address of your training organizat
 export const childrensFuturesTrainingOrganization: TestField = createTestField({
   name: "Which state-approved training did you complete? Select one *",
   required: true,
-  alternateRequiredFieldError: "This question is required",
+  alternateRequiredFieldError: "State approved training is required",
   role: "combobox",
   testValue: "Children's Futures (Trenton)",
   dataStoreKey: "stateApprovedTraining",
@@ -18,7 +18,7 @@ export const childrensFuturesTrainingOrganization: TestField = createTestField({
 export const noneTrainingOrganization: TestField = createTestField({
   name: "Which state-approved training did you complete? Select one *",
   required: true,
-  alternateRequiredFieldError: "This question is required",
+  alternateRequiredFieldError: "State approved training is required",
   role: "combobox",
   testValue: "None of these",
   dataStoreKey: "stateApprovedTraining",
@@ -27,7 +27,7 @@ export const noneTrainingOrganization: TestField = createTestField({
 export const nameOfTrainingOrganization: TestField = createTestField({
   name: "What is the name of your training organization? *",
   required: true,
-  alternateRequiredFieldError: "This question is required",
+  alternateRequiredFieldError: "Name of training organization is required",
   role: "textbox",
   testValue: "Test organization",
   dataStoreKey: "nameOfTrainingOrganization",
@@ -38,6 +38,7 @@ export const yesDoulaTrainingInPerson: TestField = createTestField({
   name: "Yes, in person or hybrid",
   dataStoreKey: "isDoulaTrainingInPerson",
   required: true,
+  alternateRequiredFieldError: "Training class location is required",
   role: "radio",
   testValue: "true",
   withinGroupName: "Did you attend your doula training classes in person? Select one *",
@@ -47,6 +48,7 @@ export const noDoulaTrainingInPerson: TestField = createTestField({
   name: "No, it was virtual",
   dataStoreKey: "isDoulaTrainingInPerson",
   required: true,
+  alternateRequiredFieldError: "Training class location is required",
   role: "radio",
   testValue: "false",
   withinGroupName: "Did you attend your doula training classes in person? Select one *",

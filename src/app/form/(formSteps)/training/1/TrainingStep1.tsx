@@ -84,7 +84,7 @@ const TrainingStep1 = () => {
             aria-invalid={errors.stateApprovedTraining ? "true" : "false"}
             aria-describedby={errors.stateApprovedTraining && "stateApprovedTrainingErrorMessage"}
             {...register("stateApprovedTraining", {
-              required: `This question is required`,
+              required: "State approved training is required",
             })}
           >
             {Object.values(StateApprovedTraining).map((trainingOrg) => (
@@ -109,7 +109,7 @@ const TrainingStep1 = () => {
                 errors={errors}
                 register={register}
                 additionalRegisterOptions={{
-                  required: `This question is required`,
+                  required: "Name of training organization is required",
                 }}
               />
               <Alert id="nameOfTrainingOrganizationAlert" type="info" headingLevel="h3" noIcon>
@@ -137,10 +137,16 @@ const TrainingStep1 = () => {
               {
                 label: "Yes, in person or hybrid",
                 value: "true",
+                additionalRegisterOptions: {
+                  required: "Training class location is required",
+                },
               },
               {
                 label: "No, it was virtual",
                 value: "false",
+                additionalRegisterOptions: {
+                  required: "Training class location is required",
+                },
               },
             ]}
             errors={errors}
