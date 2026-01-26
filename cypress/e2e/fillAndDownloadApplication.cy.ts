@@ -74,10 +74,17 @@ const testFieldsArePrepopulated = (
   }
 
   // Go back to review page
-  for (const _ of formPages.slice(0, -1)) {
+  for (const formPage of formPages.slice(0, -1)) {
+    /**
+     * We don't really need to test that the URL is correct. However, it helps make sure that we are
+     * on the next page before clicking "Next" again. We have gotten CI flakes e.g.
+     * https://github.com/org-njdhs-mahs/doula-medicaid/actions/runs/21365005037/job/61494218856,
+     * that my be due to "Next" being clicked twice on the same page.
+     */
+    cy.url().should("eq", `${Cypress.config("baseUrl")}${formPage.url}`);
     cy.contains("button", "Next").click();
   }
-  cy.contains("button", "Review", { timeout: 8000 }).click();
+  cy.contains("button", "Review").click();
   cy.url().should("eq", `${Cypress.config("baseUrl")}/form/review`);
 };
 
