@@ -40,6 +40,7 @@ jobs:
       cypress_run_command: cypress:run -- --env websiteUnavailable=true
 
   end-to-end-tests-all-complete:
+    if: ${{ always() }}
     needs:
       [
         end-to-end-tests-development-flags,
@@ -49,5 +50,9 @@ jobs:
       ]
     runs-on: ubuntu-latest
     steps:
-      - name: To detect that required e2e tests are complete
-        run: echo "All e2e tests have passed"
+      - name: Fail unless required checks pass
+        if:
+          ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') ||
+          contains(needs.*.result, 'skipped') }}
+        run: exit 1
+      - run: 'echo "✅ All required jobs have passed!"'
