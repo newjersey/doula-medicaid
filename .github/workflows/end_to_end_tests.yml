@@ -11,21 +11,21 @@ on:
 
 jobs:
   end-to-end-tests-development-flags:
-    uses: ./.github/workflows/_end_to_end_tests.yml
+    uses: ./.github/workflows/_end_to_end_tests_single_suite.yml
     with:
       name: development-flags
       env_test_file: .env.test
       cypress_run_command: cypress:run
 
   end-to-end-tests-production-flags:
-    uses: ./.github/workflows/_end_to_end_tests.yml
+    uses: ./.github/workflows/_end_to_end_tests_single_suite.yml
     with:
       name: production-flags
       env_test_file: cypress/.env.test-production-flags
       cypress_run_command: cypress:run -- --env productionFlags=true
 
   end-to-end-tests-accessible-cover-page:
-    uses: ./.github/workflows/_end_to_end_tests.yml
+    uses: ./.github/workflows/_end_to_end_tests_single_suite.yml
     with:
       name: accessible-cover-page
       env_test_file: .env.test
@@ -33,13 +33,13 @@ jobs:
       use_dev_server: true
 
   end-to-end-tests-website-unavailable:
-    uses: ./.github/workflows/_end_to_end_tests.yml
+    uses: ./.github/workflows/_end_to_end_tests_single_suite.yml
     with:
       name: website-unavailable
       env_test_file: cypress/.env.test-website-unavailable
       cypress_run_command: cypress:run -- --env websiteUnavailable=true
 
-  end-to-end-tests:
+  end-to-end-tests-all-complete:
     needs:
       [
         end-to-end-tests-development-flags,
