@@ -56,7 +56,7 @@ const testFieldsArePrepopulated = (
     cy.window().its("scrollY").should("equal", 0);
     cy.title().should("eq", `${formPage.titleName} ${titleEnding}`);
 
-    cy.get("form").within(() => {
+    cy.get("main form").within(() => {
       for (const field of formPage.fields) {
         if (field.role === "textbox") {
           cy.get(`input[name="${field.dataStoreKey}"]`).should("have.value", field.expectedValue);

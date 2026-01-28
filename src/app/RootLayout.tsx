@@ -2,10 +2,21 @@ import { BASE_PATH } from "@/app/basePath";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import WipBanner from "@/app/form/(formSteps)/welcome/WipBanner";
 import "@/app/globals.css";
+import "@newjersey/feedback-widget/feedback-widget.min.js";
 import "@newjersey/njwds/dist/css/styles.css";
 import njStateSeal from "@newjersey/njwds/dist/img/nj_state_seal.png";
 import { Footer, Logo } from "@trussworks/react-uswds";
 import { Outlet } from "react-router";
+
+declare module "react/jsx-runtime" {
+  // Not worth working around this lint rule for adding the feedback widget
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      "feedback-widget": React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
+}
 
 const RootLayout = () => {
   return (
@@ -65,7 +76,16 @@ const RootLayout = () => {
       <HorizontalDivider />
       <Footer
         size="slim"
-        primary={null}
+        primary={
+          <div className="bg-base-lighter">
+            <div className="grid-container">
+              <feedback-widget
+                contact-link="mailto:mahs.doulaguide@dhs.nj.gov"
+                skip-email-step="true"
+              ></feedback-widget>
+            </div>
+          </div>
+        }
         secondary={
           <Logo
             size="slim"

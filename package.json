@@ -22,6 +22,7 @@
     "url": "https://github.com/newjersey"
   },
   "dependencies": {
+    "@newjersey/feedback-widget": "0.7.1",
     "@newjersey/njwds": "2.8.0",
     "@trussworks/react-uswds": "10.2.0",
     "jszip": "3.10.1",
