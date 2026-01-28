@@ -1,4 +1,5 @@
 import { BASE_PATH } from "@/app/basePath";
+import ErrorBoundary from "@/app/components/ErrorBoundary";
 import { HorizontalDivider } from "@/app/components/HorizontalDivider";
 import WipBanner from "@/app/form/(formSteps)/welcome/WipBanner";
 import "@/app/globals.css";
@@ -70,7 +71,11 @@ const RootLayout = () => {
       <main id="main-content">
         {import.meta.env.VITE_FLAG_WEBSITE_UNAVAILABLE !== "1" && <WipBanner />}
         <div className="usa-section">
-          <div className="grid-container">{<Outlet />}</div>
+          <div className="grid-container">
+            <ErrorBoundary>
+              <Outlet />
+            </ErrorBoundary>
+          </div>
         </div>
       </main>
       <HorizontalDivider />

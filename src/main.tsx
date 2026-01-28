@@ -1,4 +1,5 @@
 import { BASE_PATH } from "@/app/basePath";
+import ErrorBoundary from "@/app/components/ErrorBoundary";
 import ClientRoutes from "@/app/form/ClientRoutes";
 import "@/app/globals.css";
 import "@newjersey/njwds/dist/css/styles.css";
@@ -8,8 +9,10 @@ import { BrowserRouter } from "react-router";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <BrowserRouter basename={BASE_PATH}>
-      <ClientRoutes />
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter basename={BASE_PATH}>
+        <ClientRoutes />
+      </BrowserRouter>
+    </ErrorBoundary>
   </StrictMode>,
 );
