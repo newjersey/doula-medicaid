@@ -29,7 +29,7 @@ const WelcomeSection = () => {
           <h1 className="text-primary-darkest font-heading-2xl">
             Welcome to the NJ Doula Assistant
             <span className="display-block text-primary font-heading-2xl margin-top-0">
-              Focus on care, not paperwork
+              Focus on care, not forms
             </span>
           </h1>
           <div className="grid-row flex-no-wrap">
