@@ -10,7 +10,7 @@ export const expectNoDuplicateTest = <T>(pdfKey: keyof T, testedPdfKeys: Set<key
   testedPdfKeys.add(pdfKey);
 };
 
-export const testLegalName = (pdfKey: keyof PdfFfsIndividual) => {
+export const testName = (pdfKey: keyof PdfFfsIndividual) => {
   const formDataWithMiddleName: FormData = generateFormData({
     firstName: "First",
     middleName: "Middle",
@@ -25,6 +25,23 @@ export const testLegalName = (pdfKey: keyof PdfFfsIndividual) => {
   });
   const pdfFieldsWithoutMiddleName = mapFfsIndividualFields(formDataWithoutMiddleName);
   expect(pdfFieldsWithoutMiddleName[pdfKey]).toEqual("First Last");
+};
+
+export const testNameAndDoulaTitle = (pdfKey: keyof PdfFfsIndividual) => {
+  const formDataWithMiddleName: FormData = generateFormData({
+    firstName: "First",
+    middleName: "Middle",
+    lastName: "Last",
+  });
+  const pdfFieldsWithMiddleName = mapFfsIndividualFields(formDataWithMiddleName);
+  expect(pdfFieldsWithMiddleName[pdfKey]).toEqual("First Middle Last, Doula");
+
+  const formDataWithoutMiddleName: FormData = generateFormData({
+    firstName: "First",
+    lastName: "Last",
+  });
+  const pdfFieldsWithoutMiddleName = mapFfsIndividualFields(formDataWithoutMiddleName);
+  expect(pdfFieldsWithoutMiddleName[pdfKey]).toEqual("First Last, Doula");
 };
 
 export const testDateOfBirth = (pdfKey: keyof PdfFfsIndividual) => {

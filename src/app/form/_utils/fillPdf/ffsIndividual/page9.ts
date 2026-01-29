@@ -1,3 +1,5 @@
+import { DOULA_TITLE } from "@/app/form/_utils/fillPdf/doulaTitle";
+import { formatName } from "@/app/form/_utils/fillPdf/formatters";
 import { mapYesNoExplainYesFields } from "@/app/form/_utils/fillPdf/mappers";
 import { type FormData } from "@form/_utils/fillPdf/form";
 
@@ -94,6 +96,11 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     },
   );
 
+  const signatureFields = {
+    fd425printnamedoulaprov: formatName(formData),
+    fd425titleofdoulaprov: DOULA_TITLE,
+  };
+
   return {
     ...medicaidProviderFields,
     ...crimeChargeFields,
@@ -101,6 +108,7 @@ export const getPage9Fields = (formData: FormData): Partial<PdfFfsIndividualPage
     ...disqualificationsFields,
     ...healthProgramCompanyFields,
     ...njEmploymentFields,
+    ...signatureFields,
   };
 
   return {};

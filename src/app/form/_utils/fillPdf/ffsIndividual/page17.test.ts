@@ -3,7 +3,7 @@ import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/
 import type { PdfFfsIndividualPage17 } from "@/app/form/_utils/fillPdf/ffsIndividual/page17";
 import {
   expectNoDuplicateTest,
-  testLegalName,
+  testName,
   testNpiNumber,
   testPhoneNumber,
   testSocialSecurityNumber,
@@ -39,7 +39,7 @@ describe("Page 17 - disclosure of ownership and control interest statement", () 
     it("fills in name of disclosing entity", () => {
       const pdfKey = "fd452nameofdisclosingentity";
       expectNoDuplicateTest<PdfFfsIndividualPage17>(pdfKey, testedPdfKeys);
-      testLegalName(pdfKey);
+      testName(pdfKey);
     });
 
     it("fills in business address", () => {

@@ -3,7 +3,7 @@ import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/
 import type { PdfFfsIndividualPage6 } from "@/app/form/_utils/fillPdf/ffsIndividual/page6";
 import {
   expectNoDuplicateTest,
-  testLegalName,
+  testName,
   testNpiNumber,
   testPhoneNumber,
 } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
@@ -150,7 +150,7 @@ describe("Page 6 - authorization agreement for automated deposits of state payme
   it("fills printed name", () => {
     const pdfKey = "fd443printedname";
     expectNoDuplicateTest<PdfFfsIndividualPage6>(pdfKey, testedPdfKeys);
-    testLegalName(pdfKey);
+    testName(pdfKey);
   });
 
   describe("joint account other owner's printed name", () => {

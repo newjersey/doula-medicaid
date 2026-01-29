@@ -91,6 +91,20 @@ The local file may need to be updated if you want to turn flags back on again
 cp .env.test .env.test.local
 ```
 
+## PDF field overflow
+
+Some fields seem to always truncate any overflow. Other fields vary depending on the pdf client
+whether the text size is reduced, or if any overflow is truncated.
+
+E.g.,
+
+- For `fd452managingagentsnametitleline1` on page 19, all pdf clients seem to truncate
+- For `fd62aPrintNameTitle` on page 11, MacOS preview will reduce the size of text so that it fits
+  the field. However, Chrome on both Mac and Windows will truncate, and Adobe Reader on Windows will
+  truncate
+
+The text size, and whether the text size is reduced if the text would
+
 ## Deployment
 
 See [deployment.md](./docs/deployment.md).

@@ -1,6 +1,6 @@
 import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
 import type { PdfFfsIndividualPage9 } from "@/app/form/_utils/fillPdf/ffsIndividual/page9";
-import { expectNoDuplicateTest } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
+import { expectNoDuplicateTest, testName } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
 
 describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
@@ -176,7 +176,7 @@ describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
     });
   });
 
-  describe("employed by the State of New Jersey", () => {
+  describe("6. employed by the State of New Jersey", () => {
     it("checks the No checkbox when formData.isEmployedByNj is false", () => {
       const yesPdfKey = "fd425employedbystateofnjyes";
       const noPdfKey = "fd425employedbystateofnjno";
@@ -207,6 +207,21 @@ describe("Page 9 - SECTION II – PROVIDER IDENTIFICATION", () => {
       expect(pdfFields[yesPdfKey]).toEqual(true);
       expect(pdfFields[noPdfKey]).toEqual(undefined);
       expect(pdfFields[explanationPdfKey]).toEqual("Brief explanation of company involvement");
+    });
+  });
+
+  describe("signature fields", () => {
+    it("fills in print name", () => {
+      const pdfKey = "fd425printnamedoulaprov";
+      expectNoDuplicateTest<PdfFfsIndividualPage9>(pdfKey, testedPdfKeys);
+      testName(pdfKey);
+    });
+
+    it("fills in title", () => {
+      const pdfKey = "fd425titleofdoulaprov";
+      expectNoDuplicateTest<PdfFfsIndividualPage9>(pdfKey, testedPdfKeys);
+      const pdfFields = mapFfsIndividualFields(generateFormData({}));
+      expect(pdfFields[pdfKey]).toEqual("Doula");
     });
   });
 });

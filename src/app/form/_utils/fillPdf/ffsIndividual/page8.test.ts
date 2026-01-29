@@ -3,7 +3,7 @@ import type { PdfFfsIndividualPage8 } from "@/app/form/_utils/fillPdf/ffsIndivid
 import {
   expectNoDuplicateTest,
   testDateOfBirth,
-  testLegalName,
+  testName,
   testNpiNumber,
   testPhoneNumber,
   testSocialSecurityNumber,
@@ -17,7 +17,7 @@ describe("Page 8 - individual doula provider application section I provider iden
   it("fills in legal name", () => {
     const pdfKey = "fd425legalname";
     expectNoDuplicateTest<PdfFfsIndividualPage8>(pdfKey, testedPdfKeys);
-    testLegalName(pdfKey);
+    testName(pdfKey);
   });
 
   it("fills in Social Security Number", () => {

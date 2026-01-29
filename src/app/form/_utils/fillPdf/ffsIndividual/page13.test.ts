@@ -2,7 +2,7 @@ import { mapFfsIndividualFields } from "@/app/form/_utils/fillPdf/ffsIndividual/
 import type { PdfFfsIndividualPage13 } from "@/app/form/_utils/fillPdf/ffsIndividual/page13";
 import {
   expectNoDuplicateTest,
-  testLegalName,
+  testName,
   testNpiNumber,
   testPhoneNumber,
 } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
@@ -15,7 +15,7 @@ describe("Page 13 - request for paper updates", () => {
   it("fills in legal name", () => {
     const pdfKey = "fd455aREQPAPER_Provider Name";
     expectNoDuplicateTest<PdfFfsIndividualPage13>(pdfKey, testedPdfKeys);
-    testLegalName(pdfKey);
+    testName(pdfKey);
   });
 
   it("fills in provider number", () => {

@@ -4,7 +4,7 @@ import type { PdfFfsIndividualPage4 } from "@/app/form/_utils/fillPdf/ffsIndivid
 import {
   expectNoDuplicateTest,
   testDateOfBirth,
-  testLegalName,
+  testName,
   testSocialSecurityNumber,
 } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
 import { generateFormData } from "@/app/form/_utils/fillPdf/testUtils/formData";
@@ -16,7 +16,7 @@ describe("Page 4 - doula qualifications form", () => {
     it("fills legal name", () => {
       const pdfKey = "fd427LegalName";
       expectNoDuplicateTest<PdfFfsIndividualPage4>(pdfKey, testedPdfKeys);
-      testLegalName(pdfKey);
+      testName(pdfKey);
     });
 
     it("fills social security number", () => {

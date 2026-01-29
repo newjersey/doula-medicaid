@@ -1,5 +1,9 @@
 import type { PdfFfsIndividualPage11 } from "@/app/form/_utils/fillPdf/ffsIndividual/page11";
-import { expectNoDuplicateTest, testLegalName } from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
+import {
+  expectNoDuplicateTest,
+  testName,
+  testNameAndDoulaTitle,
+} from "@/app/form/_utils/fillPdf/testUtils/fillPdf";
 
 describe("Page 11 - provider agreement", () => {
   const testedPdfKeys = new Set<keyof PdfFfsIndividualPage11>([]);
@@ -7,6 +11,12 @@ describe("Page 11 - provider agreement", () => {
   it("fills in provider name", () => {
     const pdfKey = "fd62aprovidername";
     expectNoDuplicateTest<PdfFfsIndividualPage11>(pdfKey, testedPdfKeys);
-    testLegalName(pdfKey);
+    testName(pdfKey);
+  });
+
+  it("fills in print name an title", () => {
+    const pdfKey = "fd62aPrintNameTitle";
+    expectNoDuplicateTest<PdfFfsIndividualPage11>(pdfKey, testedPdfKeys);
+    testNameAndDoulaTitle(pdfKey);
   });
 });

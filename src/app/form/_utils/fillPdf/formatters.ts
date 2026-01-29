@@ -1,3 +1,4 @@
+import { DOULA_TITLE } from "@/app/form/_utils/fillPdf/doulaTitle";
 import { formatCityStateZipAddressSingleField } from "@/app/form/_utils/formatters";
 import type { AddressState } from "@/app/form/_utils/inputFields/addressState";
 import { type FormData } from "@form/_utils/fillPdf/form";
@@ -30,6 +31,10 @@ export const formatName = (formData: FormData): string => {
     return `${formData.firstName} ${formData.middleName} ${formData.lastName}`;
   }
   return `${formData.firstName} ${formData.lastName}`;
+};
+
+export const formatNameAndDoulaTitle = (formData: FormData): string => {
+  return `${formatName(formData)}, ${DOULA_TITLE}`;
 };
 
 export const formatDate = (date: Date): string => {

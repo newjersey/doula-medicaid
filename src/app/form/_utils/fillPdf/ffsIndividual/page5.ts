@@ -21,5 +21,6 @@ export const getPage5Fields = (formData: FormData): Partial<PdfFfsIndividualPage
   return {
     fd444Providername: formatName(formData),
     fd444providerNPINumber: formData.npiNumber,
+    fd444authorizationname1: formatName(formData),
   };
 };

@@ -1,4 +1,8 @@
 import {
+  getPage10Fields,
+  type PdfFfsIndividualPage10,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page10";
+import {
   getPage11Fields,
   type PdfFfsIndividualPage11,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page11";
@@ -35,10 +39,18 @@ import {
   type PdfFfsIndividualPage23,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page23";
 import {
+  getPage24Fields,
+  type PdfFfsIndividualPage24,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page24";
+import {
   getPage26Fields,
   pdfFfsIndividualPage26FieldOptions,
   type PdfFfsIndividualPage26,
 } from "@/app/form/_utils/fillPdf/ffsIndividual/page26";
+import {
+  getPage29Fields,
+  type PdfFfsIndividualPage29,
+} from "@/app/form/_utils/fillPdf/ffsIndividual/page29";
 import {
   getPage4Fields,
   type PdfFfsIndividualPage4,
@@ -71,6 +83,7 @@ export interface PdfFfsIndividual
     PdfFfsIndividualPage6,
     PdfFfsIndividualPage8,
     PdfFfsIndividualPage9,
+    PdfFfsIndividualPage10,
     PdfFfsIndividualPage11,
     PdfFfsIndividualPage13,
     PdfFfsIndividualPage17,
@@ -80,7 +93,9 @@ export interface PdfFfsIndividual
     PdfFfsIndividualPage21,
     PdfFfsIndividualPage22,
     PdfFfsIndividualPage23,
-    PdfFfsIndividualPage26 {}
+    PdfFfsIndividualPage24,
+    PdfFfsIndividualPage26,
+    PdfFfsIndividualPage29 {}
 
 export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndividual> => {
   const pdfFields = {
@@ -89,6 +104,7 @@ export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndivi
     ...getPage6Fields(formData),
     ...getPage8Fields(formData),
     ...getPage9Fields(formData),
+    ...getPage10Fields(formData),
     ...getPage11Fields(formData),
     ...getPage13Fields(formData),
     ...getPage17Fields(formData),
@@ -98,7 +114,9 @@ export const mapFfsIndividualFields = (formData: FormData): Partial<PdfFfsIndivi
     ...getPage21Fields(formData),
     ...getPage22Fields(formData),
     ...getPage23Fields(formData),
+    ...getPage24Fields(formData),
     ...getPage26Fields(formData),
+    ...getPage29Fields(formData),
   };
   return pdfFields;
 };
