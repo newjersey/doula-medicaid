@@ -30,10 +30,10 @@ describe("<ReviewSection />", () => {
     expect(screen.queryByRole("link", { name: "Next" })).not.toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByRole("link", { name: "Download your application" })).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: "Download and review" })).toBeInTheDocument();
     });
 
-    const downloadLink = screen.getByRole("link", { name: "Download your application" });
+    const downloadLink = screen.getByRole("link", { name: "Download and review" });
     expect(downloadLink).toHaveAttribute("href", "mock-blob-url");
     expect(downloadLink).toHaveAttribute("download", "Fee For Service Application.pdf");
 

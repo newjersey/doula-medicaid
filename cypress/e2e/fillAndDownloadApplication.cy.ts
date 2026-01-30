@@ -39,7 +39,7 @@ it("should fill and download the application", () => {
   testFillApplication(formPages, titleEnding);
   testFieldsArePrepopulated(formPages, titleEnding);
 
-  cy.contains("Download your application", { timeout: 8000 }).click();
+  cy.contains("a", "Download and review", { timeout: 8000 }).click();
   const downloadedPdfpath = `${Cypress.config("downloadsFolder")}/${DOWNLOAD_FILE_NAME}`;
 
   testPdfFields(downloadedPdfpath, expectedFields);

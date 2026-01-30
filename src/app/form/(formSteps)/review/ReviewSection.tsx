@@ -1,3 +1,4 @@
+import { BASE_PATH } from "@/app/basePath";
 import { ValueNotFoundError } from "@/app/form/_utils/dataStore";
 import { useDataStore } from "@/app/form/_utils/DataStoreProvider";
 import { fillFfsIndividualForm } from "@/app/form/_utils/fillPdf/ffsIndividual/fillFfsIndividual";
@@ -57,11 +58,18 @@ const ReviewSection = () => {
         )}
         {downloadData && (
           <>
-            <div className="font-heading-2xl">🎉</div>
-            <h1 className="font-heading-lg">Great job! Next, download your application.</h1>
-            <p style={{ textAlign: "center" }}>
-              Download your pre-filled application forms and follow the instructions on the cover
-              page to complete and submit your Medicaid Fee-for-Service application.
+            <div>
+              <img src={`${BASE_PATH}/img/review_checklist.png`} width={53} alt="Checklist" />
+            </div>
+            <h1 className="font-heading-lg">Great job! You are almost done.</h1>
+            <p>
+              We pre-populated your Medicaid FFS application with the information you entered, but
+              you need to finish some remaining sections.
+            </p>
+            <p>
+              Click <span className="text-italic">“Download and review”</span> below. Carefully
+              follow instructions on the cover page to review, complete, and submit your application
+              packet.
             </p>
             <a
               href={downloadData.url}
@@ -69,7 +77,7 @@ const ReviewSection = () => {
               className="usa-button margin-right-0 margin-top-4"
               onClick={() => gtag("event", "downloadApplication")}
             >
-              Download your application
+              Download and review
             </a>
           </>
         )}
