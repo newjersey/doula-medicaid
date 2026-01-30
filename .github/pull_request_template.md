@@ -1,11 +1,10 @@
 ## Link to issue
 
-This commit resolves newjersey/doula-pm#
+This PR resolves newjersey/doula-pm#
 
 ## What was done?
 
-- Explain the implementation goals being solved or the feature with the reviewer in mind
-- Mention any relevant issues, insights, or alternatives considered to be shared with the reviewer.
+<!-- Summarize the changes in this PR. Mention any any relevant issues, insights, or alternatives considered -->
 
 ## Accessibility
 
@@ -14,11 +13,12 @@ This commit resolves newjersey/doula-pm#
 
 ## How should a reviewer test?
 
-- Describe how a reviewer should test the changes, including:
-  - Unit/integration/manual tests
-  - Test data used
+- Clone the repo and check out the branch. Locally, run `npm install` then `npm run dev`.
+- Go to http://localhost:3000/humanservices/dmahs/info/doulahelp
+-
 
 ## Screenshots (for visual changes)
 
-- Before
-- After
+Before:
+
+After:
