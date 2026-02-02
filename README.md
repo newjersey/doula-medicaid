@@ -15,13 +15,13 @@ nvm install 24
 nvm use 24
 ```
 
-First, install npm packages
+Install npm packages
 
 ```sh
 npm install
 ```
 
-Second, run the development server:
+Run the development server:
 
 ```sh
 npm run dev
