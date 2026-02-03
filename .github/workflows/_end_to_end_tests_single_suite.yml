@@ -35,12 +35,12 @@ jobs:
         if: ${{ !inputs.use_dev_server }}
         run:
           (npm run build -- --mode test && npm run preview -- --mode test) & npx wait-on
-          http://localhost:3000/humanservices/dmahs/info/doulahelp
+          http://localhost:3000/humanservices/dmahs/info/doulahelp-test
       - name: Start the development application
         if: ${{ inputs.use_dev_server }}
         run:
           npm run dev -- --mode test & npx wait-on
-          http://localhost:3000/humanservices/dmahs/info/doulahelp
+          http://localhost:3000/humanservices/dmahs/info/doulahelp-test
       - name: Run cypress tests
         run: npm run ${{ inputs.cypress_run_command }}
       - name: Upload screenshots

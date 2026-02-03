@@ -19,17 +19,17 @@ frontend:
 
 # [
 #   {
-#     "source": "/humanservices/dmahs/info/doulahelp",
+#     "source": "/humanservices/dmahs/info/doulahelp-test",
 #     "status": "200",
 #     "target": "/index.html"
 #   },
 #   {
-#     "source": "</^\\/humanservices\\/dmahs\\/info\\/doulahelp\\/((?!\\.(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|pdf)$).)*$/>",
+#     "source": "</^\\/humanservices\\/dmahs\\/info\\/doulahelp-test\\/((?!\\.(css|gif|ico|jpg|js|png|txt|svg|woff|woff2|ttf|map|json|webp|pdf)$).)*$/>",
 #     "status": "200",
 #     "target": "/index.html"
 #   },
 #   {
-#     "source": "/humanservices/dmahs/info/doulahelp/<*>",
+#     "source": "/humanservices/dmahs/info/doulahelp-test/<*>",
 #     "status": "200",
 #     "target": "/<*>"
 #   }
