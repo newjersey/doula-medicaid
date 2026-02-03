@@ -3,8 +3,6 @@
   "timezone": "US/Eastern",
   "minimumReleaseAge": "3 days",
   "extends": ["config:recommended", ":maintainLockFilesWeekly"],
-  "schedule": ["* 17-23,0-8 * * *", "* * * * 0,6"],
-  "automergeSchedule": ["* 9-13 * * 1-5"],
   "ignorePaths": ["**/scripts/**"],
   "labels": ["renovate"],
   "packageRules": [
