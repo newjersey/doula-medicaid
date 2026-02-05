@@ -13,7 +13,7 @@
     {
       "matchPackageNames": ["@newjersey/feedback-widget"],
       "enabled": false,
-      "comment": "Pinned to 0.6.0 until accessibility false error is fixed https://github.com/org-njdhs-mahs/doula-medicaid/pull/497"
+      "description": "Pinned to 0.6.0 until accessibility false error is fixed https://github.com/org-njdhs-mahs/doula-medicaid/pull/497"
     },
     {
       "matchPackagePrefixes": ["cypress"],
