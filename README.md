@@ -3,7 +3,9 @@
 Helping doulas start the Fee-for-Service (FFS) application to become an NJ FamilyCare community
 doula.
 
-https://www.nj.gov/humanservices/dmahs/info/doulahelp
+https://doula-assistant.nj.gov/
+
+This repository has been moved to the New Jersey Department of Human Services GitHub.
 
 ## Getting Started
 
