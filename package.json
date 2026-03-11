@@ -55,7 +55,7 @@
     "globals": "16.5.0",
     "jiti": "2.6.1",
     "jsdom": "27.4.0",
-    "pdfjs-dist": "5.4.530",
+    "pdfjs-dist": "5.5.207",
     "prettier": "latest",
     "prettier-plugin-jsdoc": "1.8.0",
     "prettier-plugin-organize-imports": "latest",
